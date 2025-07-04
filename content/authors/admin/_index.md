@@ -33,7 +33,7 @@ bio: Dr. Christopher M. Castille is the Director of the People Analytics Lab of 
 # Interests to show in About widget
 interests:
   - People Analytics
-  - Psychological Assessment
+  - Personality in the Workplace
   - Open Science
 
 # Education to show in About widget
@@ -109,7 +109,7 @@ social:
     link: https://github.com/chriscastille
   - icon: linkedin
     icon_pack: fab
-    link: https://www.linkedin.com/in/christopher-castille
+    link: https://www.linkedin.com/in/christopher-castille-0b0860b/
   - icon: cv
     icon_pack: ai
     link: uploads/resume.pdf
