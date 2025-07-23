@@ -1,0 +1,223 @@
+# Hugo Blox Builder Configuration File
+# Academic CV Template
+# Documentation: https://docs.hugoblox.com/
+
+# Website info
+title: 'Dr. Christopher M. Castille'
+baseURL: 'https://cmcastille.netlify.com/'
+copyright: '© 2024 Christopher M. Castille'
+
+############################
+## LANGUAGE
+############################
+
+defaultContentLanguage: en
+hasCJKLanguage: false
+defaultContentLanguageInSubdir: false
+removePathAccents: true
+
+############################
+## MODULES
+############################
+
+module:
+  imports:
+    - path: github.com/HugoBlox/hugo-blox-builder/modules/blox-bootstrap/v5
+    - path: github.com/HugoBlox/hugo-blox-builder/modules/blox-seo
+    - path: github.com/HugoBlox/hugo-blox-builder/modules/blox-analytics
+
+############################
+## HUGO
+############################
+
+pagination:
+  pagerSize: 10
+enableEmoji: true
+enableGitInfo: false
+
+permalinks:
+  authors: '/author/:slug/'
+  tags: '/tag/:slug/'
+  categories: '/category/:slug/'
+
+disableAliases: true
+outputs:
+  home: [HTML, RSS, JSON, WebAppManifest, headers, redirects]
+  section: [HTML, RSS]
+
+imaging:
+  resampleFilter: lanczos
+  quality: 75
+  anchor: smart
+
+timeout: 600000
+
+taxonomies:
+  tag: tags
+  category: categories
+  author: authors
+
+markup:
+  _merge: deep
+
+related:
+  threshold: 80
+  includeNewer: true
+  toLower: true
+  indices:
+    - name: tags
+      weight: 100
+    - name: categories
+      weight: 70
+
+security:
+  _merge: deep
+
+sitemap:
+  _merge: deep
+
+minify:
+  _merge: deep
+
+############################
+## SITE PARAMS
+############################
+
+params:
+  # Appearance
+  appearance:
+    mode: system
+    color: blue
+
+  # SEO
+  marketing:
+    seo:
+      site_type: Person
+      local_business_type: ''
+      org_name: 'Dr. Christopher M. Castille'
+      description: 'Assistant Professor of Management at Nicholls State University'
+      twitter: 'cmcastille'
+    analytics:
+      google_analytics: ''
+      baidu_tongji: ''
+      google_tag_manager: ''
+    verification:
+      google: ''
+      baidu: ''
+
+  # Site header
+  header:
+    navbar:
+      enable: true
+      fixed_to_top: true
+      show_search: true
+      show_theme_chooser: true
+      show_language: false
+      show_day_night: true
+      highlight_active_link: true
+
+  # Site features
+  features:
+    syntax_highlighter:
+      enable: true
+      theme_light: 'github-light'
+      theme_dark: 'github-dark'
+    math:
+      enable: false
+    privacy_pack:
+      enable: false
+    repository:
+      url: 'https://github.com/chriscastille/Website'
+      content_dir: content
+      branch: master
+    avatar:
+      gravatar: false
+      shape: circle
+    comment:
+      provider: ''
+    search:
+      provider: wowchemy
+      algolia:
+        rank: 1
+        search_only_api_key: ''
+        app_id: ''
+        index_name: ''
+        show_logo: false
+    map:
+      provider: 'mapnik'
+      zoom: 15
+
+  # Personal info
+  author:
+    name: 'Christopher M. Castille'
+    role: 'Assistant Professor of Management'
+    organizations:
+      - name: 'Nicholls State University'
+        url: 'https://www.nicholls.edu/management/faculty-staff/dr-chris-castille/'
+  email: 'christopher.castille@nicholls.edu'
+  
+  # Academic CV specific settings
+  theme: 'minimal'
+  day_night: true
+  font: ''
+  font_size: 'L'
+  
+  # Contact details
+  phone: '985 449 7015'
+  address:
+    street: '906 East 1st St., College of Business Administration'
+    city: 'Thibodaux'
+    region: 'LA'
+    postcode: '70301'
+    country: 'United States'
+    country_code: 'US'
+  coordinates:
+    latitude: '29.7952'
+    longitude: '-90.8226'
+  
+  # Office hours
+  office_hours:
+    - 'Tuesday and Thursday 8-9AM, 10:30-12PM, 2-5PM'
+    - 'Or email for appointment'
+
+  # Social
+  social:
+    twitter: 'cmcastille'
+    github: 'chriscastille'
+    linkedin: 'christopher-castille'
+
+############################
+## NAVIGATION
+############################
+
+menu:
+  main:
+    - name: 'Home'
+      url: '#about'
+      weight: 10
+    - name: 'Posts'
+      url: '#posts'
+      weight: 20
+    - name: 'Projects'
+      url: '#projects'
+      weight: 30
+    - name: 'Publications'
+      url: '#featured'
+      weight: 40
+    - name: 'Contact'
+      url: '#contact'
+      weight: 50
+
+# Security
+security:
+  enableInlineShortcodes: false
+  funcs:
+    getenv:
+      - '^HUGO_'
+      - '^WC_'
+
+# Markup settings
+markup:
+  goldmark:
+    renderer:
+      unsafe: true 

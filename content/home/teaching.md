@@ -15,6 +15,8 @@ weight = 60
 
 +++
 
+The People Analytics Lab of the Bayou is dedicated to advancing research and teaching in organizational behavior, human resource management, and workplace analytics. We focus on educating the next generation of organizational leaders by helping them understand how people work, lead, and thrive in organizations, using data and evidence to become better employees, managers, and leaders.
+
 Below is my teaching philosophy. I share it with all my students at the beginning of every course that I teach. It was inspired by [Adam Grant's](https://journals.aom.org/doi/pdf/10.5465/amle.2013.0098) teaching philosophy (he is a well-known organizational psychologist).:
 
 *I take it as my personal responsibility to expose you to [evidence-based management] (https://www.cebma.org) so that you might make wiser decisions as an employee, manager, and business leader. In our classes, we'll discuss the most reliable and credible science that I'm aware of on various topics, we'll weigh this evidence against our own experiences, and consider how best to act given this information. By the end of our time together, I hope that you will have cultivated an attitude of wisdom, which means acting with the best information on hand while doubting what we believe to be true.*

@@ -4,8 +4,8 @@ widget = "projects"
 active = true
 date = 2016-04-20T00:00:00
 
-title = "The People Analytics Lab"
-subtitle = "@NSU"
+title = "The People Analytics Lab of the Bayou"
+subtitle = "Educating the Next Generation of Organizational Leaders Through Data and Evidence"
 
 # Order that this section will appear in.
 weight = 50

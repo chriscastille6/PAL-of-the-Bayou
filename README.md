@@ -1,52 +1,166 @@
-# Academic Kickstart
+# Dr. Christopher M. Castille - Academic Website
 
-**Academic** is a framework to help you create a beautiful website quickly. Perfect for personal, student, or academic websites. [Check out the latest demo](https://themes.gohugo.io/theme/academic/) of what you'll get in less than 10 minutes or [view the documentation](https://sourcethemes.com/academic/docs/).
+A modern academic website built with Hugo Blox Builder, showcasing research, teaching, and the People Analytics Lab.
 
-**Academic Kickstart** provides a minimal template to kickstart your new website by following the simple steps below.
+## 🚀 Features
 
-[![Screenshot](https://raw.githubusercontent.com/gcushen/hugo-academic/master/academic.png)](https://github.com/gcushen/hugo-academic/)
+- **Modern Design**: Clean, professional academic CV layout
+- **Responsive**: Works perfectly on desktop, tablet, and mobile
+- **Fast**: Static site generation for optimal performance
+- **Dark/Light Mode**: Easy on the eyes in any lighting
+- **SEO Optimized**: Built-in search engine optimization
+- **Academic Focus**: Designed specifically for academic professionals
 
-## Getting Started
+## 📋 Content Sections
 
-The following two methods describe how to install in the cloud using your web browser and how to install on your PC using the Command Prompt/Terminal app.
+- **Biography**: Academic background and research interests
+- **Skills**: Technical and research method competencies
+- **Experience**: Professional experience and teaching
+- **Publications**: Featured and recent research papers
+- **Projects**: People Analytics Lab and research initiatives
+- **Blog Posts**: Academic insights and updates
+- **Contact**: Professional contact information
 
-### Quick install using your web browser
+## 🛠️ Technology Stack
 
-1. [Install Academic with Netlify](https://app.netlify.com/start/deploy?repository=https://github.com/sourcethemes/academic-kickstart)
-    * Netlify will provide you with a customizable URL to access your new site
-2. On GitHub, go to your newly created `academic-kickstart` repository and edit `config.toml` to personalize your site. Shortly after saving the file, your site will automatically update
-3. Read the [Quick Start Guide](https://sourcethemes.com/academic/docs/) to learn how to add Markdown content. For inspiration, refer to the [Markdown content](https://github.com/gcushen/hugo-academic/tree/master/exampleSite) which powers the [Demo](https://themes.gohugo.io/theme/academic/)
+- **Hugo**: Static site generator
+- **Hugo Blox Builder**: Modern theme framework
+- **Tailwind CSS**: Utility-first CSS framework
+- **GitHub Pages/Netlify**: Hosting and deployment
 
-### Install on your PC
+## 🚀 Quick Start
 
-Prerequisites:
+### Prerequisites
 
-* [Download and install Git](https://git-scm.com/downloads)
-* [Download and install Hugo](https://gohugo.io/getting-started/installing/#quick-install)
+- Hugo v0.147.9 or later
+- Go v1.21 or later
 
-1. Clone (or [Fork](https://github.com/sourcethemes/academic-kickstart#fork-destination-box) or [download](https://github.com/sourcethemes/academic-kickstart/archive/master.zip)) the *Academic Kickstart* repository with Git: 
+### Local Development
 
-       git clone https://github.com/sourcethemes/academic-kickstart.git My_Website
-    
-    *Note that if you forked Academic Kickstart, the above command should be edited to clone your fork.*
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/chriscastille/cmcastille-website.git
+   cd cmcastille-website
+   ```
 
-2. Initialize the theme:
+2. Install dependencies:
+   ```bash
+   hugo mod get
+   ```
 
-       cd My_Website
-       git submodule update --init --recursive
+3. Start the development server:
+   ```bash
+   hugo server --bind 0.0.0.0 --port 1313
+   ```
 
-3. View your new website:
-      
-       hugo server
+4. Visit `http://localhost:1313` in your browser
 
-    Now you can go to [localhost:1313](http://localhost:1313) and your new Academic powered website should appear.
-  
-4. Read the [Quick Start Guide](https://sourcethemes.com/academic/docs/) to learn how to add Markdown content, customize your site, and deploy it.
+### Building for Production
 
-## License
+```bash
+hugo --minify
+```
 
-Copyright 2017 [George Cushen](https://georgecushen.com).
+## 📁 Project Structure
 
-Released under the [MIT](https://github.com/sourcethemes/academic-kickstart/blob/master/LICENSE.md) license.
+```
+cmcastille-website/
+├── content/
+│   ├── authors/admin/     # Author profile
+│   ├── post/             # Blog posts
+│   ├── publication/      # Research publications
+│   └── project/          # Research projects
+├── static/               # Static assets
+├── hugo.toml            # Hugo configuration
+├── go.mod               # Go modules
+└── README.md            # This file
+```
 
-[![Analytics](https://ga-beacon.appspot.com/UA-78646709-2/academic-kickstart/readme?pixel)](https://github.com/igrigorik/ga-beacon)
+## 🎯 Content Management
+
+### Adding New Publications
+
+Create a new file in `content/publication/` with the following front matter:
+
+```yaml
+---
+title: "Your Publication Title"
+date: 2024-01-01
+authors: ["Christopher M. Castille"]
+publication_types: ["2"]
+abstract: "Brief abstract of the publication"
+featured: true  # Set to true for homepage display
+publication: "*Journal Name*"
+doi: "10.xxxx/xxxxx"
+---
+```
+
+### Adding New Blog Posts
+
+Create a new file in `content/post/` with the following front matter:
+
+```yaml
+---
+title: "Your Post Title"
+date: 2024-01-01T00:00:00Z
+draft: false
+authors: ["admin"]
+tags: ["tag1", "tag2"]
+categories: ["Category"]
+---
+```
+
+### Adding New Projects
+
+Create a new file in `content/project/` with the following front matter:
+
+```yaml
+---
+title: "Project Title"
+summary: "Brief project description"
+tags: ["tag1", "tag2"]
+date: "2024-01-01T00:00:00Z"
+---
+```
+
+## 🌐 Deployment
+
+### Netlify (Recommended)
+
+1. Connect your GitHub repository to Netlify
+2. Set build command: `hugo --minify`
+3. Set publish directory: `public`
+4. Deploy!
+
+### GitHub Pages
+
+1. Enable GitHub Pages in repository settings
+2. Set source to GitHub Actions
+3. Push changes to trigger deployment
+
+## 📊 Analytics
+
+The site is configured for Google Analytics. Add your tracking ID to `hugo.toml`:
+
+```toml
+[params.marketing.analytics]
+google_analytics = "G-XXXXXXXXXX"
+```
+
+## 🤝 Contributing
+
+This is a personal academic website, but suggestions for improvements are welcome!
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 📞 Contact
+
+- **Email**: christopher.castille@nicholls.edu
+- **Twitter**: [@cmcastille](https://twitter.com/cmcastille)
+- **LinkedIn**: [Christopher Castille](https://www.linkedin.com/in/christopher-castille)
+
+---
+
+Built with ❤️ using [Hugo Blox Builder](https://hugoblox.com/)
