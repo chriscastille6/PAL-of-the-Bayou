@@ -16,4 +16,4 @@
   command = "hugo --buildFuture --buildDrafts"
 
 [context.branch-deploy]
-  command = "hugo --buildDrafts"
+  command = "hugo --buildDrafts" 
