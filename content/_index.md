@@ -79,7 +79,7 @@ work:
     date_end: ''
     summary: |2-
       Responsibilities include:
-      - Teaching courses on Human Resource Management, HR Analytics, Managing Human Capital, Human Relations, and Performance and Compensation Management
+      - Teaching undergraduate students in Human Relations and Interpersonal Skills (MNGT 370), Performance and Compensation Management (MNGT 475), and HR Analytics (MNGT 425), and teaching in the graduate (MBA) and Executive MBA programs where he teaches Managing Human Capital (MNGT 502)
       - Conducting research on personality and individual differences in workplace behavior
       - Co-directing the People Analytics Lab
       - Mentoring undergraduate and graduate students in research methods and open science practices
