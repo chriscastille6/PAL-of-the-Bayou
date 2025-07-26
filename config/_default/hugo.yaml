@@ -61,3 +61,14 @@ security:
   _merge: deep
 sitemap:
   _merge: deep
+
+############################
+## SERVER CONFIGURATION
+############################
+
+# Limit file watching to project directory only
+server:
+  watch: true
+  disableFastRender: true
+  noHTTPCache: true
+  ignoreCache: true
