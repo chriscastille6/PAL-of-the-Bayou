@@ -3,8 +3,9 @@ title: "AOM 2025 Copenhagen: Building Credibility, Collaboration, and Methodolog
 authors:
   - admin
 date: 2025-07-26T00:00:00Z
+doi: ""
 publishDate: 2025-07-26T00:00:00Z
-publication_types: ["post"]
+publication_types: ["0"]
 publication: ""
 publication_short: ""
 abstract: "Reflections from the Academy of Management's 85th Annual Meeting in Copenhagen, Denmark—the first AOM conference held outside North America. This post explores sessions on research credibility, replication initiatives, advanced methodological techniques, and large-scale collaboration in management research."
