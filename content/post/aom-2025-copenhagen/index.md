@@ -147,4 +147,6 @@ The sessions documented here—focusing on research credibility, replication ini
 
 ---
 
-*This blog post reflects on the transformative experience of attending AOM 2025 in Copenhagen, highlighting how the conference is shaping the future of management research through enhanced credibility, collaboration, and methodological innovation.* 
+*Keywords: Academy of Management, Copenhagen, Research Methods, Open Science, Replication, Team Science, Statistical Modeling*
+
+<!-- Deployment update: January 27, 2025 --> 
