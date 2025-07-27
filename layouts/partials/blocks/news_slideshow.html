@@ -1,11 +1,11 @@
-{{/* Collection Block Template for Hugo Blox Builder */}}
+{{/* Custom News Slideshow Block */}}
 {{ $page := .page }}
 {{ $block := .block }}
 
 <div class="container">
   <div class="row">
     <div class="col-lg-12">
-      <h2 style="text-align: center; font-weight: bold; font-size: 2.5rem; margin-bottom: 2rem; color: #2c3e50;">Latest News</h2>
+      <h2 style="text-align: center; font-weight: bold; font-size: 2.5rem; margin-bottom: 2rem; color: #2c3e50;">{{ $block.content.title | default "Latest News" }}</h2>
       
       {{/* News Slideshow Container */}}
       <div id="news-slideshow" style="position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
@@ -98,26 +98,26 @@ document.addEventListener('DOMContentLoaded', function() {
   let currentSlide = 0;
   
   function showSlide(index) {
-    // Fade out all slides
-    slides.forEach(slide => {
+    // Fade out all slides first
+    slides.forEach((slide) => {
       slide.style.opacity = '0';
       slide.classList.remove('active');
     });
     
-    // After fade out, show current slide and fade in
+    // After fade out completes, show the target slide
     setTimeout(() => {
-      slides.forEach(slide => {
-        slide.style.display = 'none';
+      slides.forEach((slide, i) => {
+        if (i === index) {
+          slide.style.display = 'block';
+          setTimeout(() => {
+            slide.style.opacity = '1';
+            slide.classList.add('active');
+          }, 50); // Small delay for smooth transition
+        } else {
+          slide.style.display = 'none';
+        }
       });
-      
-      slides[index].style.display = 'block';
-      slides[index].classList.add('active');
-      
-      // Trigger fade in
-      setTimeout(() => {
-        slides[index].style.opacity = '1';
-      }, 50);
-    }, 400); // Half of the transition time
+    }, 800); // Match the CSS transition duration
   }
   
   function nextSlide() {
@@ -125,8 +125,10 @@ document.addEventListener('DOMContentLoaded', function() {
     showSlide(currentSlide);
   }
   
-  // Auto-advance every 4 seconds
-  setInterval(nextSlide, 4000);
+  // Auto-advance slides every 6 seconds
+  if (slides.length > 1) {
+    setInterval(nextSlide, 6000);
+  }
   
   // Initialize first slide
   showSlide(0);
