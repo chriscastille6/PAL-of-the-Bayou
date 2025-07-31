@@ -6,7 +6,7 @@ date: "2025-07-30T00:00:00Z"
 doi: ""
 publishDate: "2025-07-30T00:00:00Z"
 draft: false
-publication_types: ["0"]
+publication_types: ["post"]
 publication: ""
 publication_short: ""
 abstract: "Reflections from the Academy of Management's 85th Annual Meeting in Copenhagen, Denmark—the first AOM conference held outside North America. This post explores sessions on research credibility, replication initiatives, advanced methodological techniques, and large-scale collaboration in management research."
