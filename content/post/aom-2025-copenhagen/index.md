@@ -39,15 +39,16 @@ image:
 
 ---
 
-## Introduction: AOM Goes Global
+AOM Goes Global
 
-The Academy of Management's 85th Annual Meeting (AOM 2025) marked a historic milestone as the first time the conference was held outside North America. From July 25-29, 2025, nearly 13,000 management scholars, practitioners, and students gathered at Copenhagen's Bella Convention Center to engage with cutting-edge research across the field.
+The Academy of Management's 85th Annual Meeting (AOM 2025) marked a historic milestone as the first time the conference was held outside North America. It was also my first time presenting at AOM! From July 25-29, 2025, nearly 13,000 management scholars, practitioners, and students gathered at Copenhagen's Bella Convention Center to engage with cutting-edge research across the field. It is my field's leading academic conference and I am proud to have represented Nicholls State University at this venue. 
 
-This international expansion underscores the Academy's commitment to building a truly global, inclusive research community. The program featured approximately 4,000 sessions and symposia, along with 900 poster presentations, addressing contemporary topics ranging from artificial intelligence and entrepreneurship to corporate social responsibility, work-life balance, hybrid work arrangements, and employee wellbeing.
+This international expansion underscores the Academy's commitment to building a truly global, inclusive research community. The program featured over 5,000 sessions and symposia, along with 900 poster presentations, addressing contemporary topics ranging from artificial intelligence and entrepreneurship to corporate social responsibility, work-life balance, hybrid work arrangements, and employee wellbeing.
 
-Unlike previous years with overarching themes, AOM 2025 embraced diversity by encouraging innovative, research-focused submissions across all divisions. This approach allowed for rich methodological and topical variety, reflecting the multifaceted nature of modern management research.
+![Copenhagen dinner experience](copenhagen/copenhagen-dinner.jpeg)
+*Experiencing Copenhagen's culinary scene during AOM 2025 - the international setting added a unique dimension to scholarly networking and collaboration*
 
-## Session Highlights: Building Research Credibility
+I was fortunate enough to have two presentations accepted and, given my work reputation for working in open science and big team science, was invited to another join another two sessions. These sessions are below.
 
 ### Enhancing Research Credibility & Transparency (PDW #21939)
 
@@ -55,15 +56,13 @@ Unlike previous years with overarching themes, AOM 2025 embraced diversity by en
 
 Organized by Roman Briker (Maastricht University), Fabiola Heike Gerpott (WHU Otto Beisheim School of Management), and Jost Sieweke (Vrije University Amsterdam), this Professional Development Workshop directly addressed the credibility and integrity crisis in management research.
 
-Alongside Nicolas Bastardoz and Johannes Stark, I presented on practical tools for improving research trustworthiness. The workshop provided hands-on introduction to best practices including:
+### Navigating Large-Scale Collaborations: Mega-studies, Crowdsourced Research & Massive Meta-Analyses (#11625)
 
-- **Pre-registration** of research designs and hypotheses
-- **Registered reports** for reducing publication bias
-- **Causal identification** strategies for stronger inference
-- **Better measurement** practices and validation
-- **Data sharing** and transparency protocols
+**Sunday, July 27, 2025 | 10:00-12:00 CEST | Bella Center, Hall B – B6-m3**
 
-The session's key message was clear: building a "credibility community" requires researchers to advocate for these practices systematically. By improving research robustness and transparency, we can increase both policy relevance and the broader impact of management research.
+Organized by Bart De Jong and Kevin M. Kniffin, this PDW explored the "science of team science" and strategies for managing large-scale collaborations. Presenters included Kevin M. Kniffin, Katherine Milkman, George Banks, Piers Steel, and Bart De Jong, with Matthew A. Cronin serving as discussant.
+
+*Note: I was invited to attend this session last-minute as an observer, which provided valuable insights into the coordination challenges and opportunities of large-scale collaborative research.*
 
 ### Collaboration Initiative for Doctoral Students: ARIM Symposium (#20376)
 
@@ -73,14 +72,8 @@ This symposium introduced the Advancement of Replications Initiative in Manageme
 
 ARIM coordinates joint execution and publication of multi-study replications by teams of doctoral students, faculty mentors, and replication-minded scholars. The initiative addresses a critical gap in management research: the need for systematic replication to build evidence-based management theory.
 
-**Key Activities:**
-- Brief presentations outlining ARIM's operational model
-- Panel discussion exploring replication opportunities and challenges
-- Q&A session addressing practical implementation questions
-
-
-
-## Methodological Innovation: Advanced Latent Variable Modeling
+![AOM presentation session](copenhagen/aom-presentation.jpeg)
+*Research presentation at AOM 2025 Copenhagen - sessions focused on building research credibility and methodological rigor*
 
 ### Enhancing Model Precision: Advanced Solutions for Common Challenges (#19189)
 
@@ -88,41 +81,7 @@ ARIM coordinates joint execution and publication of multi-study replications by 
 
 This symposium addressed critical methodological challenges in structural equation modeling (SEM) and latent variable modeling, featuring presentations by Andrew A. Hanna, Larry J. Williams, and Jinsoo Choi. I participated alongside Steven Culpepper, Bo Zhang, Susu Zhang, and Yonguk Park.
 
-**Key Papers Discussed:**
-
-1. **Model Selection Using RMSEA-P Fit Index** (Williams, Culpepper & Castille)
-   - Comparison of Traditional vs. Sequential Model Comparison strategies
-   - Evidence-based guidance for choosing between approaches
-
-2. **Pseudo-Augmentation Strategy for Underidentification** (Choi & colleagues)
-   - Novel method for addressing underidentification in bifactor predictive models
-   - Supported by Monte Carlo simulations and empirical examples
-
-3. **Parceling Approaches for Multidimensional Constructs** (Hanna)
-   - Examination of how different parceling strategies affect model fit
-   - Evidence-based recommendations for practice
-
-
-
-## Large-Scale Collaboration: The Science of Team Science
-
-### Navigating Large-Scale Collaborations: Mega-studies, Crowdsourced Research & Massive Meta-Analyses (#11625)
-
-**Sunday, July 27, 2025 | 10:00-12:00 CEST | Bella Center, Hall B – B6-m3**
-
-Organized by Bart De Jong and Kevin M. Kniffin, this PDW explored the "science of team science" and strategies for managing large-scale collaborations. Presenters included Kevin M. Kniffin, Katherine Milkman, George Banks, Piers Steel, and Bart De Jong, with Matthew A. Cronin serving as discussant.
-
-**Session Focus:**
-- Managing mega-studies and crowdsourced research projects
-- Coordinating massive meta-analyses across multiple teams
-- Addressing challenges in authorship, data quality, and resource allocation
-
-**Key Activities:**
-- Introductory talks setting the stage for collaboration challenges
-- Roundtable discussions where attendees shared experiences
-- Report-back sessions synthesizing insights and best practices
-
-
+I must credit my coauthor, Dr. Larry Williams, for his exceptional work advancing the RMSEA-P. **Model Selection Using RMSEA-P Fit Index**. I contributed here by helping Larry make this work independently reproducible. 
 
 ## Cross-Cutting Themes: Building a Stronger Research Community
 

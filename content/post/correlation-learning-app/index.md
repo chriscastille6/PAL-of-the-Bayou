@@ -36,11 +36,11 @@ image:
 
 ---
 
-## Introduction
-
-How well can you spot the strength of relationships in data? This seemingly simple question reveals one of the fundamental challenges in teaching statistics: the gap between theoretical understanding and intuitive feel. As someone who teaches organizational research methods, I've found that correlation coefficients—while mathematically straightforward—are surprisingly difficult for students to grasp intuitively.
-
 **I'm experimenting with Generative AI to become a more effective teacher.** This blog post shares one of those experiments: an interactive web application designed to help students develop an intuitive understanding of correlation coefficients through experiential learning. It – and the tool that I created – were done so with the help of [Cursor](https://cursor.sh), an AI-powered code editor that has been incredibly helpful for my development workflow. 
+
+### How well can you spot the strength of relationships in data? 
+
+This seemingly simple question reveals one of the fundamental challenges in teaching statistics: the gap between theoretical understanding and intuitive feel. As someone who teaches HR strategy and analytics, I've found that the concept of a correlation—while mathematically straightforward—can be surprisingly difficult for students to grasp intuitively. So I've created a tool to help them get some practice. Sometimes the effects they think are obvious are surprisingly small while others are much larger than anticipated.
 
 ### The Challenge of Teaching the Concept of a Correlation
 
@@ -48,110 +48,33 @@ Correlation coefficients are deceptively simple. The math is straightforward: a 
 
 The answer lies in the difference between knowing and feeling. Students can memorize that r = 0.3 represents a "moderate" correlation, but without repeated exposure to visual patterns, they lack the intuitive sense of what that actually looks like in data. This gap becomes particularly problematic when they need to interpret research findings or communicate statistical concepts to non-technical audiences. In practice, meaningful correlations are often small, reflecting underlying causes that may not yet be clearly understood.
 
-### Getting this Intuitive Feeling About Correlations with a Web App
+### Getting this Intuitive Feeling About Correlations
 
-Enter the "Guess the Correlation" app—a web-based interactive tool that transforms abstract statistical concepts into hands-on learning experiences. The app presents users with scatter plots and asks them to estimate the correlation coefficient, providing immediate feedback and educational explanations.
+Enter the "Guess the Correlation" app—a web-based interactive tool that transforms abstract statistical concepts into hands-on learning experiences. The app presents users with scatter plots and asks them to estimate the correlation coefficient, providing immediate feedback and educational explanations. I was inspired by Daniel Läkens, a social psychologist who created a similar game (who I'm sure was inspired by this [game](https://www.guessthecorrelation.com)).
 
 **[🎯 Try the app now!](https://christopher-m-castille.shinyapps.io/correlation-learning-app/)**
 
 ![Correlation Learning App Main Interface](/img/correlation-app/main_interface.png)
 
-**Key Features:**
-- **No technical knowledge required** - anyone can use it in their browser
-- **Four structured learning phases** that build understanding progressively
-- **Real-time visual feedback** with smooth transitions
-- **Effect size interpretation** through BESD (Binomial Effect Size Display)
-- **Educational explanations** for each correlation
+To use the app, select the correlation coefficient (r) that represents your best guess for the relationship between the two variables using the slider. Then, click “Generate Plot” to visualize how your chosen correlation would look in the data. You can explore how different values of r change the scatterplot. When you’re ready to see how your guess compares to the actual research finding, click “Submit for Feedback.” The app will show you the correct answer and provide an explanation, helping you build intuition for what different correlations look like in real data (which can also be downloaded by interested students). The app provides immediate feedback on guesses, showing the actual correlation and explaining the relationship. This instant reinforcement helps students develop an intuitive understanding of what different correlation values look like in practice.
 
-
-
-## Educational Benefits
-
-### Why This Approach Works
-
-**Experiential learning is at the heart of the app’s effectiveness.** Students learn by doing, not just reading. The immediate feedback loop—make a guess, see the result, understand the explanation—creates powerful learning moments that stick.
-
-To use the app, select the correlation coefficient (r) that represents your best guess for the relationship between the two variables using the slider. Then, click “Generate Plot” to visualize how your chosen correlation would look in the data. You can explore how different values of r change the scatterplot. When you’re ready to see how your guess compares to the actual research finding, click “Submit for Feedback.” The app will show you the correct answer and provide an explanation, helping you build intuition for what different correlations look like in real data.
+The app proceeds in a few phases with the first one generating obvious and intuitive examples. Then come a few non-intuitive examples that may be surprising. Later, I draw on examples from the psychological assessment literature, drawing on work by Meyer et al. (2001) that highlights the predictive power of psychological testing.
 
 ![Phase 1: Intuitive Examples](/img/correlation-app/phase1_height_weight.png)
 
-**Progressive difficulty** ensures that students build skills systematically. Each phase introduces new challenges while reinforcing previously learned concepts. The visual nature of scatter plots leverages our natural pattern recognition abilities, making statistical concepts more accessible.
+![Feedback and Scoring System](/img/correlation-app/feedback_scoring.png)
 
-### Research Foundation
+Meyer et al. (2001) surveyed hundreds of both real world effects (e.g., the correlation linking batting averages to getting a hit on base) and psychological assessment studies (e.g., the correlation linking hiring interviews to future job performance). Sometimes these effects were not in the metric of a correlation coefficient and had to be converted into that metric. This helps people to see correlations in 'real life' real-world associations that most anyone can relate to. For example, Meyer et al. compiled research showing that conscientiousness personality tests correlate only 0.23 with job performance, while integrity tests correlate 0.27 with supervisory ratings. I find that student guesses can be wildly offbase here. They either think both test are not at all predictive of future performance (because people will lie on these test) or think that psychology is so powerful as to trump other factors. Fortunately, looking at the data can be a moment for humility. These findings help students understand that meaningful workplace relationships are often surprisingly modest in magnitude.
 
-The app is grounded in educational psychology research and incorporates findings from Meyer et al. (2001) meta-analysis. This landmark study systematically reviewed thousands of psychological assessment studies and provided real-world correlation coefficients that students encounter in organizational research. For example, Meyer et al. compiled research showing that conscientiousness personality tests correlate only 0.23 with job performance, while integrity tests correlate 0.27 with supervisory ratings—much smaller than most people expect. These findings help students understand that meaningful workplace relationships are often surprisingly modest in magnitude.
-
-The app uses the Binomial Effect Size Display (BESD) method (Rosenthal & Rubin, 1982) for effect size interpretation, helping students understand the practical significance of correlations beyond just the numerical value. BESD translates correlation coefficients into more intuitive language by showing how the relationship affects success rates. For instance, a correlation of **0.67** means that if you split people into high and low groups on the predictor variable, **68.5%** of the high group will be above average on the outcome, compared to only **35%** of the low group. This makes abstract statistical concepts concrete and meaningful for business decision-making.
+I programmed the app uses the Binomial Effect Size Display (BESD) method (Rosenthal & Rubin, 1982) for effect size interpretation, helping students understand the practical significance of correlations beyond just the numerical value. BESD translates correlation coefficients into more intuitive language by showing how the relationship affects success rates. For instance, a correlation of **0.67** means that if you split people into high and low groups on the predictor variable, **68.5%** of the high group will be above average on the outcome, compared to only **35%** of the low group. This makes abstract statistical concepts concrete and meaningful for business decision-making.
 
 ![BESD Visualization](/img/correlation-app/besd_visualization.png)
 
-Research by Brooks et al. (2014) demonstrates that managers and practitioners find common language effect sizes like BESD significantly easier to understand than traditional effect size measures like correlation coefficients, making this approach particularly valuable for students who will communicate research findings to business audiences.
-
-## Using the App for Teaching
-
-### For Faculty
-
-The app serves multiple purposes in the classroom:
-- **In-class demonstrations** that engage students visually
-- **Homework assignments** that provide structured practice
-- **Discussion starters** using surprising correlations to spark debate
-- **Assessment tools** to gauge student understanding
-
-### For Students
-
-Students can use the app for:
-- **Self-paced learning** through the structured phases
-- **Review and reinforcement** of classroom concepts
-- **Practice** building intuition through repeated exposure
-- **Preparation** for research methods courses and real-world applications
-
-The app features four progressive learning phases, each building on the previous one:
-
-## Technical Implementation
-
-The app is **web-based** with no software installation required, making it accessible to anyone with internet access. It's **mobile-friendly** and works on phones and tablets, allowing students to practice anywhere, anytime. The **free access** and **no registration** requirements remove barriers to learning.
-
-![Interactive Hover Information](/img/correlation-app/hover_information.png)
-
-## Impact and Outcomes
-
-### Expected Learning Outcomes
-
-Students who use the app develop:
-- **Intuitive understanding** of correlation strength
-- **Better effect size interpretation** skills
-- **Increased confidence** in interpreting research findings
-- **Enhanced ability** to communicate statistical concepts
-
-The app provides immediate feedback on guesses, showing the actual correlation and explaining the relationship. This instant reinforcement helps students develop an intuitive understanding of what different correlation values look like in practice.
-
-![Feedback and Scoring System](/img/correlation-app/feedback_scoring.png)
-
-### Measurable Benefits
-
-The structured learning approach leads to:
-- Improved correlation estimation accuracy
-- Better understanding of effect sizes
-- Increased confidence in interpreting research
-- Enhanced ability to communicate statistical concepts to non-technical audiences
+I was deliberate in choosing the BESD. Although we do our best to help business professionals appreciate the value of a correlation coefficient, it is quite common for professionals in practice to want associations depicted as a bar chart. Indeed, research by Brooks et al. (2014) demonstrates that managers and practitioners find common language effect sizes like BESD significantly easier to understand than traditional effect size measures like correlation coefficients, making this approach particularly valuable for students who will communicate research findings to business audiences.
 
 ## Future Directions
 
-This experiment with GenAI-assisted teaching has opened up exciting possibilities. Future enhancements could include:
-- Additional correlation types (non-linear, categorical)
-- More business-relevant examples
-- Integration with learning management systems
-- Analytics for tracking learning progress
-
-The broader applications extend beyond correlation coefficients to other statistical concepts like regression, ANOVA, and domain-specific versions for healthcare, education, and finance.
-
-![Trend Line Visualization](/img/correlation-app/trend_line_example.png)
-
-
-
-## Conclusion
-
-The power of interactive learning cannot be overstated. By transforming abstract statistical concepts into hands-on experiences, we can make complex ideas accessible to everyone. This GenAI experiment has reinforced my belief that technology, when thoughtfully designed, can significantly enhance educational effectiveness.
+One reason why I built this app is to help my studnets move a little closer toward understanding how to speak about the power of interventions in organizational settings. I'm speaking to an old literature here referring to utility analysis, which is my field's best effort at positioning HR interventions as investments that are comparable to tangible forms of investments (e.g., new buildings, equipment)...but that is for another blog post. 
 
 **[Try the app yourself](https://christopher-m-castille.shinyapps.io/correlation-learning-app/)** and see how quickly you develop an intuitive feel for correlation coefficients. Share it with your students, colleagues, or anyone interested in understanding data relationships better. The app is designed to be accessible to everyone, regardless of their statistical background.
 
