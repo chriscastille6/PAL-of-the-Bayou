@@ -20,8 +20,8 @@ sections:
         country: United States
         country_code: US
       coordinates:
-        latitude: '29.7952'
-        longitude: '-90.8226'
+        latitude: '29.7956'
+        longitude: '-90.8218'
       directions: The lab is located in Powell Hall, Room 150, on the first floor.
       office_hours:
         - 'Tuesday and Thursday 8:00 AM to 9:00 AM'
