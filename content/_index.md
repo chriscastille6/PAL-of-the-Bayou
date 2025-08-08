@@ -25,7 +25,7 @@ sections:
 
   - block: latest_publications
     content:
-      title: Latest Publications
+      title: Latest Research
     design:
       columns: '1'
 ---
