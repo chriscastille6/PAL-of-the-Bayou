@@ -5,7 +5,7 @@
 
   {{ if .content.email }}
   <div class="mb-3">
-    <form id="contact-form" name="contact" method="POST" data-netlify="true" action="/thank-you" netlify-honeypot="bot-field">
+    <form id="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-recaptcha="true" action="/thank-you" netlify-honeypot="bot-field">
       <p class="d-none">
         <label>Don't fill this out if you're human: <input name="bot-field" /></label>
       </p>
@@ -30,8 +30,13 @@
         <label for="message" class="form-label">Message</label>
         <textarea name="message" class="form-control" id="message" rows="5" required></textarea>
       </div>
+
+      <div class="mb-3">
+        <div data-netlify-recaptcha="true"></div>
+      </div>
       
       <button type="submit" class="btn btn-primary px-3 py-2">Send</button>
+      <small class="text-muted d-block mt-2">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</small>
     </form>
 
     <div id="success-message" style="display: none;" class="alert alert-success mt-3">
@@ -52,7 +57,6 @@
               e.preventDefault();
               form.style.display = 'none';
               if (successMessage) successMessage.style.display = 'block';
-              // Optional: Log for local testing
               try {
                 var fd = new FormData(form);
                 console.log('Local dev form submission:');

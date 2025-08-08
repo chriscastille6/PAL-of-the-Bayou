@@ -7,7 +7,7 @@
   <style>body{display:none}</style>
 </head>
 <body>
-  <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+  <form name="contact" method="POST" data-netlify="true" data-netlify-recaptcha="true" netlify-honeypot="bot-field">
     <p class="d-none">
       <label>Don't fill this out if you're human: <input name="bot-field" /></label>
     </p>
@@ -16,6 +16,7 @@
     <label>Email <input type="email" name="email" /></label>
     <label>Subject <input type="text" name="subject" /></label>
     <label>Message <textarea name="message"></textarea></label>
+    <div data-netlify-recaptcha="true"></div>
     <button type="submit">Send</button>
   </form>
 </body>
