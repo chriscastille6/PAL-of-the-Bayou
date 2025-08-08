@@ -2,8 +2,8 @@
 title: "Teaching Correlation Coefficients with Interactive Apps: A GenAI-Enhanced Approach"
 authors:
   - admin
-date: 2025-01-27T00:00:00Z
-publishDate: 2025-01-27T00:00:00Z
+date: 2025-07-04T00:00:00Z
+publishDate: 2025-07-04T00:00:00Z
 publication_types: ["post"]
 publication: ""
 publication_short: ""
