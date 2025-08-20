@@ -5,11 +5,11 @@
 <div class="container">
   <div class="row">
     {{/* Left Column - Latest News */}}
-    <div class="col-lg-8 col-md-12">
+    <div class="col-lg-6 col-md-12">
       <h2 style="text-align: center; font-weight: bold; font-size: 2.5rem; margin-bottom: 2rem; color: #2c3e50;">Latest News</h2>
       
       {{/* News Slideshow Container */}}
-      <div id="news-slideshow" style="position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+      <div id="news-slideshow" style="position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); min-height: 350px;">
         
         {{/* Dynamic slides from news posts */}}
         {{ range $index, $post := (where site.RegularPages "Type" "news") }}
@@ -57,11 +57,11 @@
     </div>
 
     {{/* Right Column - Latest Publications */}}
-    <div class="col-lg-4 col-md-12">
+    <div class="col-lg-6 col-md-12">
       <h2 style="text-align: center; font-weight: bold; font-size: 2.5rem; margin-bottom: 2rem; color: #2c3e50;">Latest Research</h2>
       
       {{/* Publications Slideshow Container */}}
-      <div id="publications-slideshow" style="position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+      <div id="publications-slideshow" style="position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); min-height: 350px;">
         
         {{/* Slide 1 - Women's and Men's Authorship Experiences */}}
         <div class="publication-slide active" style="display: block; padding: 2rem; background: white; opacity: 1; transition: opacity 0.8s ease-in-out;">
