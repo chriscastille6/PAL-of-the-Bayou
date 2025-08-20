@@ -3,7 +3,6 @@
 title:
 date: 2022-10-24
 type: landing
-# Force deployment trigger - January 27, 2025
 
 sections:
   - block: hero
@@ -17,15 +16,9 @@ sections:
         
         Founded in 2017 by Dr. Chris Castille, PAL of the Bayou is housed in Nicholls State University's Al Danos College of Business Administration in the Management and Marketing Department. We study how people make decisions in organizational life, focusing on the role of personality at work and goal striving.
 
-  - block: news_slideshow
+  - block: news_and_publications
     content:
-      title: Latest News
-    design:
-      columns: '1'
-
-  - block: latest_publications
-    content:
-      title: Latest Research
+      title: Latest Updates
     design:
       columns: '1'
 ---
