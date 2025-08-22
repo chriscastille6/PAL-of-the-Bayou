@@ -32,11 +32,6 @@ url_source: ""
 url_video: ""
 url_app: "https://christopher-m-castille.shinyapps.io/cognitive-load-analysis/"
 
-image:
-  caption: "Cognitive Load Analysis Tool Interface"
-  focal_point: "Center"
-  preview_only: false
-
 ---
 
 Recently, a colleague asked me to review some experimental stimuli for a study. The issue at hand was how cognitively loaded (i.e., how mentally demanding or effortful) the materials were, and whether the stimuli might unintentionally be a confound in the study by taxing participants’ working memory or attentional resources. In lay terms, complex stuff is much easier to read if you know big fancy words and are not initimidated by trying to understand them. If you don't understand the big fancy words or find them intimidating, you may make less optimal judgments.

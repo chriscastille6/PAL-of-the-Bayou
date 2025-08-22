@@ -1,5 +1,0 @@
-label,base_pay_inc,learning_hrs,manager_prog,internal_market,health_enhanced,cost_k,invest_delta_musd,turnover_rate,turnover_drop_pp,savings_musd,net_benefit_musd
-A,0,0,0,0,1,2,NA,NA,NA,NA,NA
-B,0,0,0,0,0,0,-2,0.16,-0.010000000000000009,-2.0000000000000018,-1.7763568394002505e-15
-C,0,0,0,0,1,2,0,0.15,0,0,0
-D,10,0,0,0,0,10,8,0.135,0.014999999999999986,2.9999999999999973,-5.000000000000003
