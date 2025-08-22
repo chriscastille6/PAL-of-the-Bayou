@@ -10,6 +10,9 @@ main:
   - name: News
     url: news
     weight: 10
+  - name: Blog
+    url: post
+    weight: 15
   - name: Bio
     url: author/christopher-m.-castille
     weight: 20
