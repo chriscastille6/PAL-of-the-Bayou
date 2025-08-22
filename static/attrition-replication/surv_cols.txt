@@ -1,0 +1,1 @@
+employee_id,hire_date,job_level.x,job_family.x,location.x,sex.x,age_band.x,base_pay,performance.x,voluntary,termination_date,end_time,event,time_days,tenure0,job_level.y,job_family.y,location.y,sex.y,age_band.y,performance.y,compa_ratio

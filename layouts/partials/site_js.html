@@ -1,2 +1,15 @@
 {{/* Site-wide JavaScript */}}
-{{ partial "publication_list_script.html" . }} 
+{{ partial "publication_list_script.html" . }}
+
+{{ if eq .Section "post" }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var container = document.querySelector('.article-container .article-style');
+  if (!container) return;
+  var note = document.createElement('p');
+  note.className = 'post-assist-note text-muted small mt-4';
+  note.textContent = 'This post was created with the assistance of Cursor.';
+  container.appendChild(note);
+});
+</script>
+{{ end }} 

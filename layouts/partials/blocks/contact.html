@@ -1,8 +1,9 @@
-{{/* Contact widget (PAL-of-the-Bayou override) */}}
+{{/* Contact widget (PAL-of-the-Bayou override) - TESTING TEMPLATE */}}
 {{ $page := .page }} {{ $block := .block }}
 {{ $title := $block.content.title | default "Contact" }}
 {{ $text := $block.content.text | default "" }}
 <div class="col-12">
+  <!-- TEST: This is the custom contact template -->
   <div class="mb-3">{{ $text | markdownify | emojify }}</div>
 
   {{ with $block.content.coordinates }}
