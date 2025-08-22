@@ -72,4 +72,6 @@ Just, M. A., Carpenter, P. A., Keller, T. A., Eddy, W. F., & Thulborn, K. R. (19
 
 Vogelzang, M., Thiel, C., Rosemann, S., Rieger, J., & Ruigendijk, E. (2020). Neural mechanisms underlying the processing of complex sentences: An fMRI study. *Neurobiology of Language*, *1*, 226-248. https://doi.org/10.1162/nol_a_00011
 
+Benoit, K., Watanabe, K., Wang, H., Nulty, P., Obeng, A., Müller, S., & Matsuo, A. (2018). quanteda: An R package for the quantitative analysis of textual data. *Journal of Open Source Software*, *3*(30), 774. https://doi.org/10.21105/joss.00774
+
 ---
