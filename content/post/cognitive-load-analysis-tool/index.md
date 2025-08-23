@@ -74,4 +74,6 @@ Vogelzang, M., Thiel, C., Rosemann, S., Rieger, J., & Ruigendijk, E. (2020). Neu
 
 Benoit, K., Watanabe, K., Wang, H., Nulty, P., Obeng, A., Müller, S., & Matsuo, A. (2018). quanteda: An R package for the quantitative analysis of textual data. *Journal of Open Source Software*, *3*(30), 774. https://doi.org/10.21105/joss.00774
 
+Castille, C. M. (2024). *Cognitive load analysis* [Web application]. https://christopher-m-castille.shinyapps.io/cognitive-load-analysis/
+
 ---
