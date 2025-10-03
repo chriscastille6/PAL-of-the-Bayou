@@ -12,17 +12,39 @@
        style="padding:0.5rem 1.5rem;font-weight:500;" 
        target="_blank"
        rel="noopener noreferrer"
-       aria-label="Subscribe via RSS feed">
+       aria-label="Subscribe via RSS feed"
+       onclick="copyRSSFeed('{{ .Get "feed" }}'); return false;">
       <i class="fas fa-rss" aria-hidden="true"></i> Subscribe via RSS
     </a>
     <button class="btn btn-primary" 
             style="padding:0.5rem 1.5rem;font-weight:500;" 
-            onclick="alert('Email subscription coming soon! For now, please use the RSS feed to stay updated.')">
-      <i class="fas fa-envelope" aria-hidden="true"></i> Subscribe via Email
+            onclick="copyRSSFeed('{{ .Get "feed" }}')">
+      <i class="fas fa-copy" aria-hidden="true"></i> Copy RSS Link
     </button>
   </div>
   <p style="font-size:0.85rem;color:#6c757d;margin-top:1rem;margin-bottom:0;">
-    RSS is a simple way to receive updates in your feed reader (e.g., Feedly, Inoreader, NetNewsWire).
+    <strong>RSS feeds:</strong> Use the RSS link in your feed reader (Feedly, Inoreader, NetNewsWire) or click "Copy RSS Link" to copy the URL.
   </p>
+  
+  <script>
+    function copyRSSFeed(feedUrl) {
+      // Convert relative URL to absolute
+      const absoluteUrl = feedUrl.startsWith('http') ? feedUrl : window.location.origin + feedUrl;
+      
+      // Copy to clipboard
+      navigator.clipboard.writeText(absoluteUrl).then(function() {
+        alert('RSS feed URL copied to clipboard!\n\n' + absoluteUrl + '\n\nPaste this URL into your RSS reader to subscribe.');
+      }).catch(function() {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = absoluteUrl;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('RSS feed URL copied to clipboard!\n\n' + absoluteUrl + '\n\nPaste this URL into your RSS reader to subscribe.');
+      });
+    }
+  </script>
 </div>
 
