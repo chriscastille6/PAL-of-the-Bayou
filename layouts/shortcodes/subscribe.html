@@ -36,15 +36,15 @@
       
       // For now, we'll use a simple mailto link
       // In the future, this could be connected to a proper email service
-      const subject = 'Subscribe to {{ .Get "title" }}';
-      const body = `Hi,\n\nI would like to subscribe to your {{ .Get "title" }} updates.\n\nEmail: ${email}\n\nThank you!`;
-      const mailtoLink = `mailto:chris@bayoupal.net?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const subject = 'Subscribe to {{ .Get "title" | safeJS }}';
+      const body = 'Hi,\n\nI would like to subscribe to your {{ .Get "title" | safeJS }} updates.\n\nEmail: ' + email + '\n\nThank you!';
+      const mailtoLink = 'mailto:chris@bayoupal.net?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
       
       // Open email client
       window.location.href = mailtoLink;
       
       // Show confirmation
-      alert('Thank you for your interest!\\n\\nAn email client will open where you can send your subscription request.\\n\\nWe\\'ll add you to our mailing list and send you updates when new content is published.');
+      alert('Thank you for your interest!\n\nAn email client will open where you can send your subscription request.\n\nWe\'ll add you to our mailing list and send you updates when new content is published.');
       
       // Clear the form
       emailInput.value = '';
