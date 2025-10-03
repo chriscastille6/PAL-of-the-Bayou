@@ -6,9 +6,22 @@
 <div style="background:#f8f9fa;padding:1.5rem;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.05);text-align:center;margin-bottom:2rem;">
   <h3 style="font-size:1.3rem;margin-bottom:1rem;color:#2c3e50;">{{ .Get "title" }}</h3>
   <p style="color:#555;margin-bottom:1rem;">Stay updated with our latest research insights and analyses.</p>
-  <form style="display:flex;justify-content:center;gap:0.5rem;flex-wrap:wrap;align-items:center;" 
-        onsubmit="handleEmailSignup(event)">
+  <form name="{{ .Get "title" | lower | replace " " "-" }}-subscribe" 
+        method="POST" 
+        data-netlify="true" 
+        data-netlify-honeypot="bot-field"
+        style="display:flex;justify-content:center;gap:0.5rem;flex-wrap:wrap;align-items:center;">
+    
+    <!-- Hidden field for Netlify bot protection -->
+    <div style="display:none;">
+      <input name="bot-field" />
+    </div>
+    
+    <!-- Hidden field to identify which section they're subscribing to -->
+    <input type="hidden" name="subscription-type" value="{{ .Get "title" }}" />
+    
     <input type="email" 
+           name="email"
            placeholder="Enter your email address" 
            required
            style="padding:0.5rem 1rem;border:1px solid #ddd;border-radius:4px;min-width:250px;font-size:1rem;">
@@ -23,32 +36,27 @@
   </p>
   
   <script>
-    function handleEmailSignup(event) {
-      event.preventDefault();
+    // Netlify Forms handles the submission automatically
+    // This script provides user feedback after successful submission
+    document.addEventListener('DOMContentLoaded', function() {
+      const forms = document.querySelectorAll('form[data-netlify="true"]');
       
-      const emailInput = event.target.querySelector('input[type="email"]');
-      const email = emailInput.value.trim();
-      
-      if (!email) {
-        alert('Please enter a valid email address.');
-        return;
-      }
-      
-      // For now, we'll use a simple mailto link
-      // In the future, this could be connected to a proper email service
-      const subject = 'Subscribe to {{ .Get "title" | safeJS }}';
-      const body = 'Hi,\n\nI would like to subscribe to your {{ .Get "title" | safeJS }} updates.\n\nEmail: ' + email + '\n\nThank you!';
-      const mailtoLink = 'mailto:chris@bayoupal.net?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-      
-      // Open email client
-      window.location.href = mailtoLink;
-      
-      // Show confirmation
-      alert('Thank you for your interest!\n\nAn email client will open where you can send your subscription request.\n\nWe\'ll add you to our mailing list and send you updates when new content is published.');
-      
-      // Clear the form
-      emailInput.value = '';
-    }
+      forms.forEach(form => {
+        form.addEventListener('submit', function(event) {
+          // Show loading state
+          const submitBtn = form.querySelector('button[type="submit"]');
+          const originalText = submitBtn.innerHTML;
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Subscribing...';
+          submitBtn.disabled = true;
+          
+          // Reset after a delay (Netlify will handle the actual submission)
+          setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+          }, 3000);
+        });
+      });
+    });
   </script>
 </div>
 
