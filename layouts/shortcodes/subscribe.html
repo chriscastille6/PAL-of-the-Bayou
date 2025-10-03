@@ -6,44 +6,48 @@
 <div style="background:#f8f9fa;padding:1.5rem;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.05);text-align:center;margin-bottom:2rem;">
   <h3 style="font-size:1.3rem;margin-bottom:1rem;color:#2c3e50;">{{ .Get "title" }}</h3>
   <p style="color:#555;margin-bottom:1rem;">Stay updated with our latest research insights and analyses.</p>
-  <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;">
-    <a href="{{ .Get "feed" }}" 
-       class="btn btn-outline-primary" 
-       style="padding:0.5rem 1.5rem;font-weight:500;" 
-       target="_blank"
-       rel="noopener noreferrer"
-       aria-label="Subscribe via RSS feed"
-       onclick="copyRSSFeed('{{ .Get "feed" }}'); return false;">
-      <i class="fas fa-rss" aria-hidden="true"></i> Subscribe via RSS
-    </a>
-    <button class="btn btn-primary" 
-            style="padding:0.5rem 1.5rem;font-weight:500;" 
-            onclick="copyRSSFeed('{{ .Get "feed" }}')">
-      <i class="fas fa-copy" aria-hidden="true"></i> Copy RSS Link
+  <form style="display:flex;justify-content:center;gap:0.5rem;flex-wrap:wrap;align-items:center;" 
+        onsubmit="handleEmailSignup(event)">
+    <input type="email" 
+           placeholder="Enter your email address" 
+           required
+           style="padding:0.5rem 1rem;border:1px solid #ddd;border-radius:4px;min-width:250px;font-size:1rem;">
+    <button type="submit" 
+            class="btn btn-primary" 
+            style="padding:0.5rem 1.5rem;font-weight:500;">
+      <i class="fas fa-envelope" aria-hidden="true"></i> Subscribe
     </button>
-  </div>
+  </form>
   <p style="font-size:0.85rem;color:#6c757d;margin-top:1rem;margin-bottom:0;">
-    <strong>RSS feeds:</strong> Use the RSS link in your feed reader (Feedly, Inoreader, NetNewsWire) or click "Copy RSS Link" to copy the URL.
+    <strong>Email updates:</strong> Get notified when new content is published. No spam, unsubscribe anytime.
   </p>
   
   <script>
-    function copyRSSFeed(feedUrl) {
-      // Convert relative URL to absolute
-      const absoluteUrl = feedUrl.startsWith('http') ? feedUrl : window.location.origin + feedUrl;
+    function handleEmailSignup(event) {
+      event.preventDefault();
       
-      // Copy to clipboard
-      navigator.clipboard.writeText(absoluteUrl).then(function() {
-        alert('RSS feed URL copied to clipboard!\n\n' + absoluteUrl + '\n\nPaste this URL into your RSS reader to subscribe.');
-      }).catch(function() {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea');
-        textArea.value = absoluteUrl;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        alert('RSS feed URL copied to clipboard!\n\n' + absoluteUrl + '\n\nPaste this URL into your RSS reader to subscribe.');
-      });
+      const emailInput = event.target.querySelector('input[type="email"]');
+      const email = emailInput.value.trim();
+      
+      if (!email) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+      
+      // For now, we'll use a simple mailto link
+      // In the future, this could be connected to a proper email service
+      const subject = 'Subscribe to {{ .Get "title" }}';
+      const body = `Hi,\n\nI would like to subscribe to your {{ .Get "title" }} updates.\n\nEmail: ${email}\n\nThank you!`;
+      const mailtoLink = `mailto:chris@bayoupal.net?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      
+      // Open email client
+      window.location.href = mailtoLink;
+      
+      // Show confirmation
+      alert('Thank you for your interest!\\n\\nAn email client will open where you can send your subscription request.\\n\\nWe\\'ll add you to our mailing list and send you updates when new content is published.');
+      
+      // Clear the form
+      emailInput.value = '';
     }
   </script>
 </div>
