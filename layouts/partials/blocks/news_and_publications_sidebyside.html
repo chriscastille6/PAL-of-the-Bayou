@@ -1,0 +1,241 @@
+{{/* Side-by-Side News and Publications Layout */}}
+{{ $page := .page }}
+{{ $block := .block }}
+
+<div class="container">
+  <div class="row">
+    {{/* Left Column - Latest News */}}
+    <div class="col-lg-6 col-md-12">
+      <h2 style="text-align: center; font-weight: bold; font-size: 2.5rem; margin-bottom: 2rem; color: #2c3e50;">Latest News</h2>
+      
+      {{/* News Slideshow Container */}}
+      <div id="news-slideshow" style="position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); min-height: 350px;">
+        
+        {{/* Dynamic slides from news posts */}}
+        {{ range $index, $post := (where site.RegularPages "Type" "news") }}
+        <div class="news-slide {{ if eq $index 0 }}active{{ end }}" style="display: {{ if eq $index 0 }}block{{ else }}none{{ end }}; padding: 2rem; background: white; opacity: {{ if eq $index 0 }}1{{ else }}0{{ end }}; transition: opacity 0.8s ease-in-out;">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="mb-0" style="color: #2c3e50; font-weight: 600; font-size: 1.3rem;">
+              <a href="{{ $post.RelPermalink }}" style="color: #2c3e50; text-decoration: none;">
+                {{ $post.Title }}
+              </a>
+            </h5>
+            <small class="text-muted">{{ $post.Date.Format "Jan 2006" }}</small>
+          </div>
+          
+          <p style="color: #555; line-height: 1.6; font-size: 1.1rem; margin-bottom: 1rem;">
+            {{ $post.Summary | default $post.Params.abstract | truncate 200 }}
+          </p>
+          
+          <div>
+            {{ with $post.Params.tags }}
+              {{ range . }}
+                <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">{{ . }}</span>
+              {{ end }}
+            {{ else }}
+              {{ with $post.Params.categories }}
+                {{ range . }}
+                  <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">{{ . }}</span>
+                {{ end }}
+              {{ else }}
+                <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">Research</span>
+              {{ end }}
+            {{ end }}
+          </div>
+        </div>
+        {{ end }}
+
+      </div>
+
+      {{/* View All News Link */}}
+      <div class="text-center mt-4">
+        <a href="/news/" class="btn btn-outline-primary">
+          View All News
+          <i class="fas fa-arrow-right ms-2"></i>
+        </a>
+      </div>
+    </div>
+
+    {{/* Right Column - Latest Publications */}}
+    <div class="col-lg-6 col-md-12">
+      <h2 style="text-align: center; font-weight: bold; font-size: 2.5rem; margin-bottom: 2rem; color: #2c3e50;">Latest Research</h2>
+      
+      {{/* Publications Slideshow Container */}}
+      <div id="publications-slideshow" style="position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); min-height: 350px;">
+        
+        {{/* Slide 1 - Women's and Men's Authorship Experiences */}}
+        <div class="publication-slide active" style="display: block; padding: 2rem; background: white; opacity: 1; transition: opacity 0.8s ease-in-out;">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="mb-0" style="color: #2c3e50; font-weight: 600; font-size: 1.3rem;">
+              <a href="https://doi.org/10.1177/01492063251315701" target="_blank" style="color: #2c3e50; text-decoration: none;">
+                Women's and men's authorship experiences: A prospective meta-analysis
+              </a>
+            </h5>
+            <small class="text-muted">2025</small>
+          </div>
+          
+          <p style="color: #555; line-height: 1.6; font-size: 1.1rem; margin-bottom: 1rem;">
+            Published in <em>Journal of Management</em> - A comprehensive meta-analysis examining gender differences in authorship experiences across multiple studies.
+          </p>
+          
+          <div>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">Meta-Analysis</span>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">Gender</span>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">Authorship</span>
+          </div>
+        </div>
+
+        {{/* Slide 2 - Translational Science */}}
+        <div class="publication-slide" style="display: none; padding: 2rem; background: white; opacity: 0; transition: opacity 0.8s ease-in-out;">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="mb-0" style="color: #2c3e50; font-weight: 600; font-size: 1.3rem;">
+              <a href="https://www.siop.org/tip-article/translational-science-open-science-and-accelerating-practical-impact/" target="_blank" style="color: #2c3e50; text-decoration: none;">
+                Translational science, open science, and accelerating practical impact
+              </a>
+            </h5>
+            <small class="text-muted">2024</small>
+          </div>
+          
+          <p style="color: #555; line-height: 1.6; font-size: 1.1rem; margin-bottom: 1rem;">
+            Published in <em>The Industrial-Organizational Psychologist</em> - Exploring the intersection of translational science and open science practices.
+          </p>
+          
+          <div>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">Translational Science</span>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">Open Science</span>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">Practice</span>
+          </div>
+        </div>
+
+        {{/* Slide 3 - Big Team Science */}}
+        <div class="publication-slide" style="display: none; padding: 2rem; background: white; opacity: 0; transition: opacity 0.8s ease-in-out;">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="mb-0" style="color: #2c3e50; font-weight: 600; font-size: 1.3rem;">
+              <a href="https://doi.org/10.1016/j.actpsy.2023.104101" target="_blank" style="color: #2c3e50; text-decoration: none;">
+                Big team science initiatives: A catalyst for trustworthy advancements in IO psychology
+              </a>
+            </h5>
+            <small class="text-muted">2024</small>
+          </div>
+          
+          <p style="color: #555; line-height: 1.6; font-size: 1.1rem; margin-bottom: 1rem;">
+            Published in <em>Acta Psychologica</em> - Research on collaborative science initiatives and their impact on organizational psychology.
+          </p>
+          
+          <div>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">Open Science</span>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">Collaboration</span>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">Research</span>
+          </div>
+        </div>
+
+        {{/* Slide 4 - Shedding Light on Invisible Influences */}}
+        <div class="publication-slide" style="display: none; padding: 2rem; background: white; opacity: 0; transition: opacity 0.8s ease-in-out;">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="mb-0" style="color: #2c3e50; font-weight: 600; font-size: 1.3rem;">
+              <a href="https://doi.org/10.1108/s0742-730120240000042007" target="_blank" style="color: #2c3e50; text-decoration: none;">
+                Shedding light on invisible influences: Reviewing HROB scholars' use of unmeasured latent method factors
+              </a>
+            </h5>
+            <small class="text-muted">2024</small>
+          </div>
+          
+          <p style="color: #555; line-height: 1.6; font-size: 1.1rem; margin-bottom: 1rem;">
+            Published in <em>Research in Personnel and Human Resources Management</em> - Methodological review of unmeasured latent method factors in HROB research.
+          </p>
+          
+          <div>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">Methodology</span>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">HROB</span>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.8rem;">Research Methods</span>
+          </div>
+        </div>
+
+      </div>
+
+      {{/* View All Publications Link */}}
+      <div class="text-center mt-4">
+        <a href="/publication/" class="btn btn-outline-primary">
+          View All Publications
+          <i class="fas fa-arrow-right ms-2"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{/* Combined JavaScript for both slideshows */}}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // News slideshow
+  const newsSlides = document.querySelectorAll('.news-slide');
+  let currentNewsSlide = 0;
+  
+  function showNewsSlide(index) {
+    newsSlides.forEach((slide) => {
+      slide.style.opacity = '0';
+      slide.classList.remove('active');
+    });
+    
+    setTimeout(() => {
+      newsSlides.forEach((slide, i) => {
+        if (i === index) {
+          slide.style.display = 'block';
+          setTimeout(() => {
+            slide.style.opacity = '1';
+            slide.classList.add('active');
+          }, 50);
+        } else {
+          slide.style.display = 'none';
+        }
+      });
+    }, 800);
+  }
+  
+  function nextNewsSlide() {
+    currentNewsSlide = (currentNewsSlide + 1) % newsSlides.length;
+    showNewsSlide(currentNewsSlide);
+  }
+  
+  // Publications slideshow
+  const pubSlides = document.querySelectorAll('.publication-slide');
+  let currentPubSlide = 0;
+  
+  function showPubSlide(index) {
+    pubSlides.forEach(slide => {
+      slide.style.opacity = '0';
+      slide.classList.remove('active');
+    });
+    
+    setTimeout(() => {
+      pubSlides.forEach(slide => {
+        slide.style.display = 'none';
+      });
+      
+      pubSlides[index].style.display = 'block';
+      pubSlides[index].classList.add('active');
+      
+      setTimeout(() => {
+        pubSlides[index].style.opacity = '1';
+      }, 50);
+    }, 400);
+  }
+  
+  function nextPubSlide() {
+    currentPubSlide = (currentPubSlide + 1) % pubSlides.length;
+    showPubSlide(currentPubSlide);
+  }
+  
+  // Auto-advance slides
+  if (newsSlides.length > 1) {
+    setInterval(nextNewsSlide, 6000);
+  }
+  if (pubSlides.length > 1) {
+    setInterval(nextPubSlide, 4000);
+  }
+  
+  // Initialize
+  showNewsSlide(0);
+  showPubSlide(0);
+});
+</script>

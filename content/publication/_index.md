@@ -1,5 +1,9 @@
 ---
+<<<<<<< HEAD
 title: Research Program
+=======
+title: Research
+>>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
 
 # Custom page layout
 type: page

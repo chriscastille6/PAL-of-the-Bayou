@@ -1,8 +1,12 @@
 {{/* JavaScript to add DOI links to publication citations */}}
 <script>
+<<<<<<< HEAD
 console.log('DOI script loading...');
 document.addEventListener('DOMContentLoaded', function() {
   console.log('DOI script ready, searching for publications...');
+=======
+document.addEventListener('DOMContentLoaded', function() {
+>>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
   // Publication DOI mappings (excluding TIP articles which don't have DOIs)
   const publicationDOIs = {
     'womens-and-mens-authorship-experiences-a-prospecti': '10.1177/01492063251315701',
@@ -27,7 +31,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Find all publication list items
   const pubItems = document.querySelectorAll('.pub-list-item');
+<<<<<<< HEAD
   console.log('Found publication items:', pubItems.length);
+=======
+>>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
   
   pubItems.forEach(function(item) {
     // Find the publication link to get the slug

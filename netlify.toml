@@ -1,10 +1,13 @@
 [build]
+<<<<<<< HEAD
   base = "PAL-of-the-Bayou"
+=======
+>>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
   command = "hugo --gc --minify --buildFuture -b $URL"
   publish = "public"
 
 [build.environment]
-  HUGO_VERSION = "0.135.0"
+  HUGO_VERSION = "0.147.9"
   HUGO_ENABLEGITINFO = "true"
 
 [context.production.environment]
@@ -20,3 +23,17 @@
   package = "netlify-plugin-hugo-cache-resources"
   [plugins.inputs]
     debug = true
+
+# Form handling configuration
+[[redirects]]
+  from = "/subscribe-success"
+  to = "/thank-you"
+  status = 301
+
+# Handle form submissions
+[[headers]]
+  for = "/thank-you"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"

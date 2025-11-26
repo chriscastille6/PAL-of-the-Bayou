@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{/* Contact widget */}}
 <div class="col-12">
   <div class="section-subheading">{{ .content.title | markdownify | emojify }}</div>
@@ -6,6 +7,46 @@
   {{ if .content.email }}
   <div class="mb-3">
     <form id="contact-form" name="contact" method="POST" data-netlify="true" action="/thank-you" netlify-honeypot="bot-field">
+=======
+{{/* Contact widget (PAL-of-the-Bayou override) - TESTING TEMPLATE */}}
+{{ $page := .page }} {{ $block := .block }}
+{{ $title := $block.content.title | default "Contact" }}
+{{ $text := $block.content.text | default "" }}
+<div class="col-12">
+  <!-- TEST: This is the custom contact template -->
+  <div class="mb-3">{{ $text | markdownify | emojify }}</div>
+
+  {{ with $block.content.coordinates }}
+  {{ $lat := .latitude }}
+  {{ $lng := .longitude }}
+  <div class="mb-3">
+    <div id="contact-map" style="height: 360px; border-radius: 8px; overflow: hidden; background: #f5f5f5;" data-lat="{{ $lat }}" data-lng="{{ $lng }}"></div>
+  </div>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var el = document.getElementById('contact-map');
+      if (!el || typeof L === 'undefined') return;
+      var lat = parseFloat(el.dataset.lat);
+      var lng = parseFloat(el.dataset.lng);
+      if (isNaN(lat) || isNaN(lng)) return;
+      var map = L.map('contact-map', { scrollWheelZoom: false }).setView([lat, lng], 16);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+      L.marker([lat, lng]).addTo(map);
+    });
+  </script>
+  {{ end }}
+
+  {{ with $block.content.directions }}
+  <p class="text-muted">{{ . }}</p>
+  {{ end }}
+
+  <div class="mb-3">
+    <form id="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-recaptcha="true" action="/thank-you" netlify-honeypot="bot-field">
+>>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
       <p class="d-none">
         <label>Don't fill this out if you're human: <input name="bot-field" /></label>
       </p>
@@ -30,8 +71,18 @@
         <label for="message" class="form-label">Message</label>
         <textarea name="message" class="form-control" id="message" rows="5" required></textarea>
       </div>
+<<<<<<< HEAD
       
       <button type="submit" class="btn btn-primary px-3 py-2">Send</button>
+=======
+
+      <div class="mb-3">
+        <div data-netlify-recaptcha="true"></div>
+      </div>
+      
+      <button type="submit" class="btn btn-primary px-3 py-2">Send</button>
+      <small class="text-muted d-block mt-2">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</small>
+>>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
     </form>
 
     <div id="success-message" style="display: none;" class="alert alert-success mt-3">
@@ -41,6 +92,7 @@
     </div>
 
     <script>
+<<<<<<< HEAD
       // Check if we're in local development
       if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '0.0.0.0') {
         const form = document.getElementById('contact-form');
@@ -81,13 +133,58 @@
     {{ end }}
 
     {{ with .content.address }}
+=======
+      // Local dev convenience: show success and avoid posting to Netlify when running on localhost
+      (function(){
+        var host = window.location.hostname;
+        if (host === 'localhost' || host === '127.0.0.1' || host === '0.0.0.0') {
+          var form = document.getElementById('contact-form');
+          var successMessage = document.getElementById('success-message');
+          if (form) {
+            form.addEventListener('submit', function(e) {
+              e.preventDefault();
+              form.style.display = 'none';
+              if (successMessage) successMessage.style.display = 'block';
+              try {
+                var fd = new FormData(form);
+                console.log('Local dev form submission:');
+                fd.forEach(function(v,k){ console.log(k+':', v); });
+              } catch (err) {}
+            });
+          }
+        }
+      })();
+    </script>
+  </div>
+
+  <ul class="fa-ul">
+    {{ if $block.content.phone }}
+    <li>
+      <i class="fa-li fas fa-phone fa-2x" aria-hidden="true"></i>
+      {{ if $block.content.autolink }}<a href="tel:{{ $block.content.phone }}">{{ $block.content.phone }}</a>{{ else }}{{ $block.content.phone }}{{ end }}
+    </li>
+    {{ end }}
+
+    {{ if $block.content.email }}
+    <li>
+      <i class="fa-li fas fa-envelope fa-2x" aria-hidden="true"></i>
+      {{ if $block.content.autolink }}<a href="mailto:{{ $block.content.email }}">{{ $block.content.email }}</a>{{ else }}{{ $block.content.email }}{{ end }}
+    </li>
+    {{ end }}
+
+    {{ with $block.content.address }}
+>>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
     <li>
       <i class="fa-li fas fa-map-marker fa-2x" aria-hidden="true"></i>
       <span>{{ . | markdownify | emojify }}</span>
     </li>
     {{ end }}
 
+<<<<<<< HEAD
     {{ with .content.office_hours }}
+=======
+    {{ with $block.content.office_hours }}
+>>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
     <li>
       <i class="fa-li fas fa-clock fa-2x" aria-hidden="true"></i>
       <span>{{ . | markdownify | emojify }}</span>
