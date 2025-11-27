@@ -884,6 +884,10 @@
             showResults(fitResult);
         }
 
+        // Store globally for radar chart redrawing
+        let globalFitResult = null;
+        let globalDomainFitMap = null;
+
         function showResults(fitResult) {
             document.getElementById('assessment-screen').classList.add('hidden');
             document.getElementById('results-screen').classList.remove('hidden');
@@ -900,6 +904,10 @@
                 const pct = Math.round(((fs.correlation + 1) / 2) * 100);
                 domainFitMap[fs.domain] = pct;
             });
+            
+            // Store globally for later use
+            globalFitResult = fitResult;
+            globalDomainFitMap = domainFitMap;
 
             // Update sidebar summary
             const sidebarSummary = document.getElementById('sidebar-summary');
@@ -937,10 +945,15 @@
                 }
             }
 
-            // Draw all radar charts
+            // Draw all radar charts after ensuring DOM is ready and overview is visible
             setTimeout(() => {
+                // Ensure overview is visible before drawing charts
+                const overview = document.getElementById('overview');
+                if (overview) {
+                    overview.classList.add('active');
+                }
                 drawAllRadarCharts(fitResult, domainFitMap);
-            }, 100);
+            }, 300);
 
             // Initialize navigation after DOM is ready
             setTimeout(() => {
@@ -1959,7 +1972,15 @@
         // Radar Chart Drawing Function
         function drawRadarChart(containerId, data, maxValue = 100) {
             const container = document.getElementById(containerId);
-            if (!container || data.length === 0) return;
+            if (!container) {
+                console.warn(`Radar chart container not found: ${containerId}`);
+                return;
+            }
+            
+            if (!data || data.length === 0) {
+                console.warn(`Radar chart has no data: ${containerId}`, data);
+                return;
+            }
             
             const size = 400;
             const center = size / 2;
@@ -2106,6 +2127,61 @@
                     const targetContent = document.getElementById(outcomeId);
                     if (targetContent) {
                         targetContent.classList.add('active');
+                        
+                        // Redraw radar chart for this section if it exists and data is available
+                        if (globalFitResult && globalDomainFitMap) {
+                            setTimeout(() => {
+                                if (outcomeId === 'overview') {
+                                    // Redraw overview radar chart
+                                    const domainLabelMap = {
+                                        'interests_basic': 'Basic Interests',
+                                        'interests_riasec': 'RIASEC Interests',
+                                        'values': 'Work Values',
+                                        'knowledge': 'Knowledge Interest',
+                                        'skills': 'Skills Interest',
+                                        'personality': 'Personality'
+                                    };
+                                    const overviewData = globalFitResult.fit_scores
+                                        .map(fs => ({
+                                            label: domainLabelMap[fs.domain] || fs.domain,
+                                            value: globalDomainFitMap[fs.domain] || 0
+                                        }))
+                                        .sort((a, b) => {
+                                            const order = ['Basic Interests', 'Knowledge Interest', 'Work Values', 'Skills Interest', 'Personality'];
+                                            return (order.indexOf(a.label) !== -1 ? order.indexOf(a.label) : 99) - (order.indexOf(b.label) !== -1 ? order.indexOf(b.label) : 99);
+                                        });
+                                    drawRadarChart('overview-radar', overviewData);
+                                } else {
+                                    // Redraw outcome-specific radar chart
+                                    const radarContainer = document.getElementById(outcomeId + '-radar');
+                                    if (radarContainer && outcomeWeights[outcomeId]) {
+                                        const weights = outcomeWeights[outcomeId];
+                                        const domainLabelMap = {
+                                            'interests_basic': 'Basic Interests',
+                                            'interests_riasec': 'RIASEC Interests',
+                                            'values': 'Work Values',
+                                            'knowledge': 'Knowledge Interest',
+                                            'skills': 'Skills Interest',
+                                            'personality': 'Personality'
+                                        };
+                                        const domainWeightPairs = Object.entries(weights)
+                                            .map(([domain, weight]) => ({
+                                                domain,
+                                                weight,
+                                                label: domainLabelMap[domain] || domain,
+                                                value: globalDomainFitMap[domain] || 0
+                                            }))
+                                            .sort((a, b) => b.weight - a.weight);
+                                        const outcomeData = domainWeightPairs.map(d => ({
+                                            label: d.label,
+                                            value: d.value
+                                        }));
+                                        drawRadarChart(outcomeId + '-radar', outcomeData);
+                                    }
+                                }
+                            }, 50);
+                        }
+                        
                         // Scroll to top of results content
                         const resultsContent = document.getElementById('results-content');
                         if (resultsContent) {
