@@ -1,16 +1,3 @@
----
-<<<<<<< HEAD
-title: Thank You
-date: 2024-03-20
-type: page
----
-
-## Thank You for Your Message
-
-Your message has been successfully sent. We appreciate you contacting the People Analytics Lab of the Bayou, and we will get back to you shortly.
-
-[← Return to Home](/) 
-=======
 # /content/thank-you/index.md
 # Thank you page for email subscription confirmations
 # Provides confirmation after users subscribe to blog or news updates
@@ -49,4 +36,3 @@ Thank you for your interest in our research and academic work!
 ---
 
 *This page is automatically shown after successful email subscription form submission.*
->>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886

@@ -23,15 +23,9 @@ He teaches undergraduate students in Human Relations and Interpersonal Skills (M
 
 ### Research Interests
 
-<<<<<<< HEAD
 - **Personality and Individual Differences at Work (PAID @ Work)**
 - **Organizational Research Methods** (including Open Science)
 - **People Strategy and Tactics** (People Analytics)
-=======
-- **People Analytics**
-- **Personality and Individual Differences in the Workplace** 
-- **Open Science**
->>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
 
 ### Education
 

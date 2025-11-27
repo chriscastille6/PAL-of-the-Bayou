@@ -32,14 +32,11 @@ url_source: ""
 url_video: ""
 url_app: "https://christopher-m-castille.shinyapps.io/cognitive-load-analysis/"
 
-<<<<<<< HEAD
 image:
   caption: "Cognitive Load Analysis Tool Interface"
   focal_point: "Center"
   preview_only: false
 
-=======
->>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
 ---
 
 Recently, a colleague asked me to review some experimental stimuli for a study. The issue at hand was how cognitively loaded (i.e., how mentally demanding or effortful) the materials were, and whether the stimuli might unintentionally be a confound in the study by taxing participants’ working memory or attentional resources. In lay terms, complex stuff is much easier to read if you know big fancy words and are not initimidated by trying to understand them. If you don't understand the big fancy words or find them intimidating, you may make less optimal judgments.
@@ -48,11 +45,7 @@ I don’t formally study cognitive load but am familiar with the literature. Sti
 
 Across these studies, the evidence was consistent: increased linguistic complexity (longer sentences, abstract vocabulary, complex syntax) elevated cognitive load, as shown in slower response times, higher self-reported effort, and physiological indicators such as pupil dilation and EEG theta power (Cohen et al., 2021; Castro-Meneses et al., 2019; Just et al., 1996; Vogelzang et al., 2020). Importantly, the effects were not uniform. Some studies found that complexity primarily affected speed and effort, while others documented reductions in response validity, particularly in participants with lower working memory, lower language proficiency, or higher anxiety (Révész et al., 2015; Güvendir & Uzun, 2023).
 
-<<<<<<< HEAD
 So far, no surprise, but it got me thinking about mission statements. I talk about the importance of mission statements in my HR classes, as well as how designing them may go off the rails. Mission statements are often aspirational, but when written in overly complex or jargon-laden language - often by a well-intended committee - they risk introducing unnecessary cognitive load for the very audiences they are meant to inspire—students, faculty, alumni, and community partners.
-=======
-So far, no surprise, but it got me thinking about mission statements. I talk about the importance of mission statements in my HR classes, as well as how designing them maygo off the rails. Mission statements are often aspirational, but when written in overly complex or jargon-laden language - often by a well-intended committee - they risk introducing unnecessary cognitive load for the very audiences they are meant to inspire—students, faculty, alumni, and community partners.
->>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
 
 Consider Dan Heath's take on mission statements "[How to Write a Mission Statement That Doesn't Suck](https://www.fastcompany.com/1404951/how-write-mission-statement-doesnt-suck-video)" (Fast Company, 2010). Heath provides a perfect example of cognitive load confounds in action. He illustrates how a pizza parlor's mission statement evolved through committee revisions:
 
@@ -62,11 +55,7 @@ Consider Dan Heath's take on mission statements "[How to Write a Mission Stateme
 **Condition B (Committee-Revised Mission):**
 > "Our mission is to present with integrity the highest-quality entertainment solutions to families."
 
-<<<<<<< HEAD
-Heath did not talk about cognitive load (why would he as it kinda gets in the way of the point he's rightly making). That said, I was curious to analyze these conditions using a web tool I created (with the help of Cursor) to measure the cognitive load of text extractions. **The app is freely available at: [cognitive-load-analysis.shinyapps.io](https://christopher-m-castille.shinyapps.io/cognitive-load-analysis/)**. The tool incorporates multiple validated readability indices and cognitive complexity measures based on sentence length, word length, and overall readability scores. Not surprisingly, the cognitive load metrics revealed differences that you would expect: the committee-revised mission statement was more cognitively loaded, containing more abstract terms "entertainment solutions" versus concrete "pizza," and corporate jargon ("present with integrity," "highest-quality") versus plain language ("tastiest damn"). More specific details are below. 
-=======
 Heath did not talk about cognitive load (why would he as it kinda gets in the way of the point he's rightly making). That said, I was curious to analyze these conditions using a web tool I created (with the help of Cursor) to measure the cognitive load of text extractions. **The app is freely available at: [cognitive-load-analysis.shinyapps.io](https://christopher-m-castille.shinyapps.io/cognitive-load-analysis/)**. The tool incorporates multiple validated readability indices (Flesch, Gunning Fog, SMOG, etc.) and cognitive complexity measures based on sentence length, word length, and overall readability scores, using the `quanteda` and `quanteda.textstats` R packages for text analysis. Not surprisingly, the cognitive load metrics revealed differences that you would expect: the committee-revised mission statement was more cognitively loaded, containing more abstract terms "entertainment solutions" versus concrete "pizza," and corporate jargon ("present with integrity," "highest-quality") versus plain language ("tastiest damn"). More specific details are below. 
->>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
 
 - **Flesch Score Gap:** 63.5 points (the committee version is rated "very difficult" to read compared to the original, which is "fairly easy" to read)
 - **Word Count Difference:** Only 1 word (14 vs 13), yet vastly different complexity. The words are longer in the revised mission statement.
@@ -88,12 +77,7 @@ Just, M. A., Carpenter, P. A., Keller, T. A., Eddy, W. F., & Thulborn, K. R. (19
 
 Vogelzang, M., Thiel, C., Rosemann, S., Rieger, J., & Ruigendijk, E. (2020). Neural mechanisms underlying the processing of complex sentences: An fMRI study. *Neurobiology of Language*, *1*, 226-248. https://doi.org/10.1162/nol_a_00011
 
-<<<<<<< HEAD
----
-
-*This work represents a collaboration between traditional psycholinguistic research methods and modern AI-assisted analysis, motivated by practical research needs and grounded in established cognitive load theory.*
-=======
 Benoit, K., Watanabe, K., Wang, H., Nulty, P., Obeng, A., Müller, S., & Matsuo, A. (2018). quanteda: An R package for the quantitative analysis of textual data. *Journal of Open Source Software*, *3*(30), 774. https://doi.org/10.21105/joss.00774
 
 ---
->>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
+*This work represents a collaboration between traditional psycholinguistic research methods and modern AI-assisted analysis, motivated by practical research needs and grounded in established cognitive load theory.*

@@ -10,11 +10,7 @@ main:
   - name: News
     url: news
     weight: 10
-<<<<<<< HEAD
   - name: In the Weeds
-=======
-  - name: Blog
->>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
     url: post
     weight: 15
   - name: Bio
