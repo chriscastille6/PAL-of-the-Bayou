@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>People Analyst Fit Assessment - PAL of the Bayou</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -60,6 +61,12 @@
         }
         .nav-item {
             transition: all 0.2s ease;
+            cursor: pointer;
+            -webkit-tap-highlight-color: rgba(59, 130, 246, 0.3);
+            touch-action: manipulation;
+            min-height: 44px; /* Minimum touch target size for mobile */
+            display: flex;
+            align-items: center;
         }
         .nav-item.active {
             background-color: #1e40af;
@@ -68,6 +75,10 @@
         }
         .nav-item:hover:not(.active) {
             background-color: #f3f4f6;
+        }
+        .nav-item:active {
+            background-color: #dbeafe;
+            transform: scale(0.98);
         }
         .radar-chart {
             font-family: system-ui, -apple-system, sans-serif;
@@ -240,12 +251,12 @@
     <div id="results-screen" class="hidden min-h-screen bg-gray-50">
         <div class="flex flex-col md:flex-row max-w-7xl mx-auto">
             <!-- Sidebar Navigation -->
-            <aside class="w-full md:w-64 bg-white border-r border-gray-200 md:min-h-screen">
+            <aside class="w-full md:w-64 bg-white border-r border-gray-200 md:min-h-screen" style="position: relative; z-index: 10;">
                 <div class="sticky top-0 p-6">
                     <!-- Summary Card in Sidebar -->
                     <div id="sidebar-summary" class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-5 mb-6 border border-blue-100"></div>
 
-                    <nav class="space-y-1">
+                    <nav class="space-y-1" style="position: relative; z-index: 11;">
                         <a href="#" class="nav-item active block px-4 py-3 rounded-lg text-sm font-medium text-gray-700" data-outcome="overview">
                             <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
@@ -911,8 +922,10 @@
                 drawAllRadarCharts(fitResult, domainFitMap);
             }, 100);
 
-            // Initialize navigation
-            initializeNavigation();
+            // Initialize navigation after DOM is ready
+            setTimeout(() => {
+                initializeNavigation();
+            }, 200);
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -1079,7 +1092,7 @@
                 ${generateOutcomeHTML('needs-supplies', 'Needs-Supplies Fit', 'How well People Analytics can fulfill what you value in work', outcomeScores['needs-supplies'], domainFitMap, outcomeWeights['needs-supplies'])}
                 ${generateOutcomeHTML('demands-abilities', 'Demands-Abilities Fit', 'The match between job demands and your capabilities', outcomeScores['demands-abilities'], domainFitMap, outcomeWeights['demands-abilities'])}
                 ${generateOutcomeHTML('income', 'Income & Salary Information', 'Actual salary data from I-O Psychology careers and how fit relates to income potential', outcomeScores['income'], domainFitMap, outcomeWeights['income'])}
-                ${generateCareerProspectsHTML()}
+                ${generateCareerProspectsHTML(fitPercentage)}
             `;
         }
 
@@ -1368,7 +1381,7 @@
         }
 
         // Generate Career Prospects HTML
-        function generateCareerProspectsHTML() {
+        function generateCareerProspectsHTML(fitPercentage) {
             return `
                 <div id="career-prospects" class="outcome-content">
                     <div class="mb-8">
@@ -1736,18 +1749,18 @@
                         <div class="flex flex-col sm:flex-row gap-4">
                             <button 
                                 onclick="printResults()"
-                                class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold flex items-center justify-center gap-2"
+                                class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-colors font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                                 </svg>
-                                Print / Save as PDF
+                                Download PDF
                             </button>
                             <div class="text-sm text-gray-600 flex items-center">
                                 <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
-                                <span>When printing, select "Save as PDF" as your destination to create a PDF file.</span>
+                                <span>Click to download a PDF file with all your results. Works on mobile and desktop.</span>
                             </div>
                         </div>
                     </div>
@@ -1755,60 +1768,114 @@
             `;
         }
 
-        // Print results function
-        function printResults() {
-            // Hide sidebar and navigation for print
-            const sidebar = document.querySelector('aside');
-            const nav = document.querySelector('nav');
-            const restartBtn = document.querySelector('button[onclick="restartAssessment()"]');
+        // Download PDF function
+        async function printResults(event) {
+            const button = (event?.target?.closest('button') || document.querySelector('button[onclick*="printResults"]'));
+            const originalText = button?.innerHTML || '';
             
-            if (sidebar) sidebar.style.display = 'none';
-            if (nav) nav.style.display = 'none';
-            if (restartBtn) restartBtn.style.display = 'none';
+            // Show loading state
+            if (button) {
+                button.disabled = true;
+                button.innerHTML = '<svg class="w-5 h-5 animate-spin inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Generating PDF...';
+            }
             
-            // Add print styles
-            const printStyles = document.createElement('style');
-            printStyles.textContent = `
-                @media print {
-                    @page {
-                        margin: 1cm;
-                    }
-                    body {
-                        background: white;
-                    }
-                    aside, nav, button {
-                        display: none !important;
-                    }
-                    .outcome-content {
-                        display: block !important;
-                        page-break-after: always;
-                    }
-                    .outcome-content:last-child {
-                        page-break-after: auto;
-                    }
-                    .bg-gradient-to-r, .bg-blue-600, .bg-indigo-600 {
-                        background: #2563eb !important;
-                        color: white !important;
-                        -webkit-print-color-adjust: exact;
-                        print-color-adjust: exact;
-                    }
-                    .text-white {
-                        color: white !important;
-                    }
+            try {
+                // Get the results content element
+                const element = document.getElementById('results-content');
+                if (!element) {
+                    throw new Error('Results content not found');
                 }
-            `;
-            document.head.appendChild(printStyles);
-            
-            // Trigger print dialog
-            window.print();
-            
-            // Restore elements after print
-            setTimeout(() => {
-                if (sidebar) sidebar.style.display = '';
-                if (nav) nav.style.display = '';
-                if (restartBtn) restartBtn.style.display = '';
-                document.head.removeChild(printStyles);
-            }, 1000);
+                
+                // Hide sidebar and navigation for PDF
+                const sidebar = document.querySelector('aside');
+                const nav = document.querySelector('nav');
+                const restartBtn = document.querySelector('button[onclick="restartAssessment()"]');
+                const sectionNav = document.getElementById('section-nav');
+                
+                const originalSidebarDisplay = sidebar?.style.display || '';
+                const originalNavDisplay = nav?.style.display || '';
+                const originalRestartDisplay = restartBtn?.style.display || '';
+                const originalSectionNavDisplay = sectionNav?.style.display || '';
+                
+                if (sidebar) sidebar.style.display = 'none';
+                if (nav) nav.style.display = 'none';
+                if (restartBtn) restartBtn.style.display = 'none';
+                if (sectionNav) sectionNav.style.display = 'none';
+                
+                // Show all outcome sections for PDF
+                document.querySelectorAll('.outcome-content').forEach(content => {
+                    content.classList.add('active');
+                });
+                
+                // Configure PDF options
+                const opt = {
+                    margin: [0.5, 0.5, 0.5, 0.5],
+                    filename: 'People-Analytics-Fit-Assessment-Results.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { 
+                        scale: 2,
+                        useCORS: true,
+                        logging: false,
+                        backgroundColor: '#ffffff'
+                    },
+                    jsPDF: { 
+                        unit: 'in', 
+                        format: 'letter', 
+                        orientation: 'portrait' 
+                    }
+                };
+                
+                // Generate PDF
+                await html2pdf().set(opt).from(element).save();
+                
+                // Restore elements
+                if (sidebar) sidebar.style.display = originalSidebarDisplay;
+                if (nav) nav.style.display = originalNavDisplay;
+                if (restartBtn) restartBtn.style.display = originalRestartDisplay;
+                if (sectionNav) sectionNav.style.display = originalSectionNavDisplay;
+                
+                // Restore active state to overview
+                document.querySelectorAll('.outcome-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                const overview = document.getElementById('overview');
+                if (overview) overview.classList.add('active');
+                
+                // Restore button
+                if (button) {
+                    button.disabled = false;
+                    button.innerHTML = originalText;
+                }
+            } catch (error) {
+                console.error('PDF generation error:', error);
+                
+                // Fallback to print dialog
+                if (button) {
+                    button.disabled = false;
+                    button.innerHTML = originalText;
+                }
+                
+                alert('PDF generation failed. Using print dialog instead. Please select "Save as PDF" when printing.');
+                
+                // Hide sidebar and navigation for print
+                const sidebar = document.querySelector('aside');
+                const nav = document.querySelector('nav');
+                const restartBtn = document.querySelector('button[onclick="restartAssessment()"]');
+                
+                if (sidebar) sidebar.style.display = 'none';
+                if (nav) nav.style.display = 'none';
+                if (restartBtn) restartBtn.style.display = 'none';
+                
+                // Trigger print dialog
+                window.print();
+                
+                // Restore elements after print
+                setTimeout(() => {
+                    if (sidebar) sidebar.style.display = '';
+                    if (nav) nav.style.display = '';
+                    if (restartBtn) restartBtn.style.display = '';
+                }, 1000);
+            }
         }
 
         // Toggle explanation
@@ -1973,10 +2040,20 @@
 
         // Initialize navigation
         function initializeNavigation() {
+            // Remove existing listeners to avoid duplicates
             document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', (e) => {
+                const newItem = item.cloneNode(true);
+                item.parentNode.replaceChild(newItem, item);
+            });
+            
+            // Add click and touch event handlers
+            document.querySelectorAll('.nav-item').forEach(item => {
+                const handleNavigation = (e) => {
                     e.preventDefault();
+                    e.stopPropagation();
+                    
                     const outcomeId = item.getAttribute('data-outcome');
+                    if (!outcomeId) return;
                     
                     // Update nav states
                     document.querySelectorAll('.nav-item').forEach(nav => {
@@ -1991,11 +2068,23 @@
                     const targetContent = document.getElementById(outcomeId);
                     if (targetContent) {
                         targetContent.classList.add('active');
+                        // Scroll to top of results content
+                        const resultsContent = document.getElementById('results-content');
+                        if (resultsContent) {
+                            resultsContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    } else {
+                        console.warn('Target content not found:', outcomeId);
                     }
-                    
-                    // Scroll to top
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
+                };
+                
+                // Add both click and touchstart for better mobile support
+                item.addEventListener('click', handleNavigation);
+                item.addEventListener('touchend', handleNavigation);
+                
+                // Ensure pointer events work
+                item.style.cursor = 'pointer';
+                item.style.userSelect = 'none';
             });
         }
 
