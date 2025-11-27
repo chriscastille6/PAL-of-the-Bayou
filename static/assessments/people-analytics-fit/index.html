@@ -1208,7 +1208,7 @@
                     <div class="bg-purple-50 rounded-lg shadow-sm p-6 mb-6 border-l-4 border-purple-500">
                         <h2 class="text-xl font-semibold text-gray-900 mb-3">💰 Your Predicted Income Potential</h2>
                         <p class="text-sm text-gray-700 mb-4">
-                            Based on your fit score (${score}%) and using Liu et al. (2025) income prediction weights, here are your predicted salary ranges for I-O Psychology careers:
+                            Based on your fit score (${score}%) and using Liu et al. (2025) income prediction weights, this predicts your potential position in the <strong>overall income distribution</strong> of I-O psychologists. This represents what you might earn if you graduate with strong knowledge and skills (reflecting your fit level) and progress in your career. The prediction assumes you'll develop above-average knowledge and skills aligned with People Analytics, which would place you in the ${score}th percentile of earners:
                         </p>
                         <div class="grid md:grid-cols-2 gap-6 mb-4">
                             ${(() => {
@@ -1230,11 +1230,25 @@
                                 `;
                             })()}
                         </div>
+                        <div class="bg-blue-50 border border-blue-300 rounded-lg p-4 mb-4">
+                            <p class="text-xs text-blue-900 mb-2">
+                                <strong>📊 What This Prediction Means:</strong> This predicts where you might fall in the overall income distribution of I-O psychologists across all career stages, 
+                                assuming you graduate with strong knowledge and skills that reflect your fit level (${score}%). 
+                                If you have above-average knowledge and skills upon graduation (reflecting your ${score}% fit), 
+                                you would likely earn at approximately the ${score}th percentile over your career—meaning you'd earn more than about ${score}% of I-O psychologists.
+                            </p>
+                            <p class="text-xs text-blue-900">
+                                <strong>Interpretation:</strong> Yes—if you graduate today with above-average knowledge and skills (reflecting your ${score}% fit), 
+                                you would likely earn at approximately the ${score}th percentile over your career. This means you'd start higher than median starting salaries 
+                                and progress faster, ultimately earning more than about ${score}% of I-O psychologists across all career stages. 
+                                See "Career Stage Data" below to see typical starting salaries and how they increase with experience.
+                            </p>
+                        </div>
                         <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-4">
                             <p class="text-xs text-yellow-900">
                                 <strong>⚠️ Important Limitations:</strong> These predictions are based on your <em>interest in learning</em> knowledge and skills, not your actual knowledge and skills. 
                                 Liu et al. (2025) found that actual income is predicted by real knowledge and skill fit (r=.19 for knowledge, r=.15 for skills), not interests. 
-                                These predictions should be interpreted very cautiously. See actual SIOP salary data below for real-world earnings.
+                                These predictions should be interpreted very cautiously. See actual SIOP salary data below for real-world earnings by career stage.
                             </p>
                         </div>
                     </div>
@@ -1275,6 +1289,77 @@
                                 <strong>Inflation Adjustment:</strong> All salary figures from the 2021 SIOP report have been adjusted to 2025 dollars using CPI-U 
                                 (inflation factor: 1.1903, representing 19% cumulative inflation from 2021 to 2025).
                             </p>
+                        </div>
+                        
+                        <!-- Career Stage Salary Data -->
+                        <div class="bg-white rounded-lg shadow-sm p-6 mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">📈 Salary by Career Stage</h3>
+                            <p class="text-sm text-gray-700 mb-4">
+                                Salaries increase with experience. Here are median salaries by years since earning your degree (2021 data, adjusted to 2025 dollars):
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 mb-3">Master's Degree (Practitioners)</h4>
+                                    <div class="space-y-2 text-sm">
+                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                            <span class="text-gray-700">&lt; 2 years</span>
+                                            <span class="font-semibold text-gray-900">$77K</span>
+                                        </div>
+                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                            <span class="text-gray-700">2-4 years</span>
+                                            <span class="font-semibold text-gray-900">$105K</span>
+                                        </div>
+                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                            <span class="text-gray-700">5-9 years</span>
+                                            <span class="font-semibold text-gray-900">$121K</span>
+                                        </div>
+                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                            <span class="text-gray-700">10-14 years</span>
+                                            <span class="font-semibold text-gray-900">$144K</span>
+                                        </div>
+                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                            <span class="text-gray-700">15-19 years</span>
+                                            <span class="font-semibold text-gray-900">$183K</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 mb-3">Doctoral Degree (Practitioners)</h4>
+                                    <div class="space-y-2 text-sm">
+                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                            <span class="text-gray-700">&lt; 2 years</span>
+                                            <span class="font-semibold text-gray-900">$120K</span>
+                                        </div>
+                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                            <span class="text-gray-700">2-4 years</span>
+                                            <span class="font-semibold text-gray-900">$143K</span>
+                                        </div>
+                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                            <span class="text-gray-700">5-9 years</span>
+                                            <span class="font-semibold text-gray-900">$178K</span>
+                                        </div>
+                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                            <span class="text-gray-700">10-14 years</span>
+                                            <span class="font-semibold text-gray-900">$185K</span>
+                                        </div>
+                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                            <span class="text-gray-700">15-19 years</span>
+                                            <span class="font-semibold text-gray-900">$205K</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 mt-4 italic">
+                                Source: SIOP Income and Employment Report 2021, Table 3 (Doctoral) and Table 4 (Master's). 
+                                Adjusted to 2025 dollars using CPI-U. These are median salaries for practitioners only.
+                            </p>
+                            <div class="bg-blue-50 border-l-4 border-blue-400 rounded-lg p-3 mt-4">
+                                <p class="text-xs text-blue-900">
+                                    <strong>Connection to Your Prediction:</strong> The predicted salary shown above represents where you'd likely fall in the overall income distribution. 
+                                    If you graduate with above-average knowledge and skills (reflecting your ${score}% fit), 
+                                    you'd start higher than the median starting salaries shown here and progress faster, ultimately reaching approximately the ${score}th percentile earning level over your career.
+                                </p>
+                            </div>
                         </div>
                     </div>
                     ` : ''}
