@@ -1,8 +1,4 @@
 [build]
-<<<<<<< HEAD
-  base = "PAL-of-the-Bayou"
-=======
->>>>>>> 32f7b08dbd66f53e7eaf9f439c3bfbb2789b2886
   command = "hugo --gc --minify --buildFuture -b $URL"
   publish = "public"
 
