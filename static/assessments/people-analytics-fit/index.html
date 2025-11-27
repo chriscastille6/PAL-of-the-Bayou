@@ -917,6 +917,26 @@
             const resultsContent = document.getElementById('results-content');
             resultsContent.innerHTML = generateResultsHTML(fitResult, outcomeScores, domainFitMap, interpretation);
 
+            // Ensure overview is active and visible on initial load
+            const overview = document.getElementById('overview');
+            if (overview) {
+                // Remove active from all outcome sections
+                document.querySelectorAll('.outcome-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                // Activate overview
+                overview.classList.add('active');
+                
+                // Ensure overview nav item is active
+                const overviewNav = document.querySelector('.nav-item[data-outcome="overview"]');
+                if (overviewNav) {
+                    document.querySelectorAll('.nav-item').forEach(nav => {
+                        nav.classList.remove('active');
+                    });
+                    overviewNav.classList.add('active');
+                }
+            }
+
             // Draw all radar charts
             setTimeout(() => {
                 drawAllRadarCharts(fitResult, domainFitMap);
@@ -2040,11 +2060,29 @@
 
         // Initialize navigation
         function initializeNavigation() {
+            // Ensure overview is active if no other section is active
+            const activeContent = document.querySelector('.outcome-content.active');
+            if (!activeContent) {
+                const overview = document.getElementById('overview');
+                if (overview) {
+                    overview.classList.add('active');
+                }
+            }
+            
             // Remove existing listeners to avoid duplicates
             document.querySelectorAll('.nav-item').forEach(item => {
                 const newItem = item.cloneNode(true);
                 item.parentNode.replaceChild(newItem, item);
             });
+            
+            // Ensure overview nav is active if no other nav is active
+            const activeNav = document.querySelector('.nav-item.active');
+            if (!activeNav) {
+                const overviewNav = document.querySelector('.nav-item[data-outcome="overview"]');
+                if (overviewNav) {
+                    overviewNav.classList.add('active');
+                }
+            }
             
             // Add click and touch event handlers
             document.querySelectorAll('.nav-item').forEach(item => {
