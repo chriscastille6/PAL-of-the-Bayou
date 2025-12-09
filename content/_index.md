@@ -14,7 +14,7 @@ sections:
       text: |
         <br>
         
-        Founded in 2017 by Dr. Chris Castille, PAL of the Bayou is housed in Nicholls State University's Al Danos College of Business Administration. We bridge rigorous psychological science with practical organizational applications, focusing on three interconnected areas: Personality and Individual Differences at Work (PAID @ Work), Organizational Research Methods, and People Strategy and Tactics.
+        Founded in 2017 by Dr. Chris Castille, PAL of the Bayou is housed in Nicholls State University's Al Danos College of Business Administration. We focus on three interconnected areas: Personality and Individual Differences at Work (PAID @ Work), Organizational Research Methods, and People Strategy and Tactics.
 
   - block: news_and_publications
     content:

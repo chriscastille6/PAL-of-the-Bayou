@@ -10,7 +10,7 @@ main:
   - name: News
     url: news
     weight: 10
-  - name: In the Weeds
+  - name: In the Roseaus
     url: post
     weight: 15
   - name: Bio
@@ -19,8 +19,8 @@ main:
   - name: Research
     url: publication
     weight: 30
-  - name: Assessments
-    url: /assessments/library/
+  - name: Ongoing Studies
+    url: /ongoing-studies/
     weight: 35
   - name: Contact
     url: contact

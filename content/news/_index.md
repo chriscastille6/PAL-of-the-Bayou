@@ -18,4 +18,3 @@ banner:
   image: ''
 ---
 
-{{< subscribe title="Subscribe to News" feed="/news/index.xml" >}}

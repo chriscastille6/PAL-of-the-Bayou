@@ -22,3 +22,5 @@ themes/
 
 # Tenure documents (sensitive)
 Tenure Review Packet/
+node_modules/
+static/assessments/people-analytics-fit/node_modules/

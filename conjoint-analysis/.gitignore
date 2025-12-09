@@ -1,0 +1,27 @@
+# R
+*.RData
+*.Rhistory
+*.Rapp.history
+.RData
+.Rhistory
+.Ruserdata
+
+# Outputs
+outputs/
+*.png
+*.pdf
+*.csv
+*.html
+
+# RStudio
+.Rproj.user/
+.Rproj.user
+*.Rproj
+
+# Temporary files
+*.tmp
+*.bak
+*~
+.DS_Store
+
+

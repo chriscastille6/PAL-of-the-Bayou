@@ -49,3 +49,4 @@ If you want to fetch fresh data from Google Trends API instead of using the CSV:
 Adapted from: van der Laken, P. (2021, February 3). *People analytics vs HR analytics – Google Trends*. https://paulvanderlaken.com/2021/02/03/people-analytics-hr-analytics-google-trends/
 
 
+

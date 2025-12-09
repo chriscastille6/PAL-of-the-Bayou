@@ -18,7 +18,7 @@ organizations:
     url: 'https://www.nicholls.edu/management/faculty-staff/dr-chris-castille/'
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research bridges rigorous psychological science with practical organizational applications, focusing on Personality and Individual Differences at Work, Organizational Research Methods (including Open Science), and HR Strategy and Tactics (People Analytics).
+bio: My research bridges psychological science with practical organizational applications, focusing on Personality and Individual Differences at Work, Organizational Research Methods (including Open Science), and HR Strategy and Tactics (People Analytics).
 
 interests:
   - People Analytics
@@ -69,8 +69,4 @@ user_groups:
   - Principal Investigators
 ---
 
-Dr. Christopher M. Castille is the Director of the People Analytics Lab of the Bayou and the Gerald Gaston Endowed Associate Professor of Management at Nicholls State University. He was recognized as one of Leadership Lafourche's [2024 Best of Lafourche Forty Under Forty](https://www.lafourchegazette.com/local_news/leadership-lafourche-honors-2024-s-best-of-lafourche-forty-under-forty/article_0fd64224-919f-11ef-9447-9b3f424c9316.html) honorees.
-
-His research bridges rigorous psychological science with practical organizational applications, focusing on three interconnected areas: (1) **Personality and Individual Differences at Work**—examining how personality traits, values, and abilities influence workplace outcomes; (2) **Organizational Research Methods**—developing better approaches to organizational research, including open science practices and techniques for understanding method variance; and (3) **HR Strategy and Tactics**—applying rigorous analytics to real-world HR challenges, including predictive attrition modeling, compensation strategy, and demonstrating ROI through utility analysis.
-
-He teaches undergraduate students in Human Relations and Interpersonal Skills (MNGT 370), Performance and Compensation Management (MNGT 475), and HR Analytics (MNGT 425). He also teaches in the graduate (MBA) and Executive MBA programs where he teaches Managing Human Capital (MNGT 502).
+Dr. Christopher M. Castille is the Director of the People Analytics Lab of the Bayou and the Gerald Gaston Endowed Associate Professor of Management at Nicholls State University. He was recognized as one of Leadership Lafourche's [2024 Best of Lafourche Forty Under Forty](https://www.lafourchegazette.com/local_news/leadership-lafourche-honors-2024-s-best-of-lafourche-forty-under-forty/article_0fd64224-919f-11ef-9447-9b3f424c9316.html) honorees. His research bridges psychological science with practical organizational applications, focusing on three interconnected areas: (1) **Personality and Individual Differences at Work**—examining how personality traits, values, and abilities influence workplace outcomes; (2) **Organizational Research Methods**—developing better approaches to organizational research, including open science practices and techniques for understanding method variance; and (3) **HR Strategy and Tactics**—applying analytics to real-world HR challenges, including predictive attrition modeling, compensation strategy, and demonstrating ROI through utility analysis. He teaches undergraduate students in Human Relations and Interpersonal Skills (MNGT 370), Performance and Compensation Management (MNGT 475), and HR Analytics (MNGT 425), and also teaches in the graduate (MBA) and Executive MBA programs where he teaches Managing Human Capital (MNGT 502).

@@ -2,7 +2,7 @@
 {{ $page := .page }}
 {{ $block := .block }}
 
-<div class="container">
+<div class="container news-publications-container">
   <div class="row">
     {{/* News Section - Left Side */}}
     <div class="col-lg-6 col-md-12 mb-4">
@@ -56,7 +56,7 @@
       {{/* Publications Slideshow Container */}}
       <div id="publications-slideshow" style="position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); height: 400px;">
         
-        {{/* Sample publications - you can make this dynamic like news */}}
+        {{/* Slide 1 - 2025 Publication */}}
         <div class="publication-slide active" style="display: block; padding: 2rem; background: white; opacity: 1; transition: opacity 0.8s ease-in-out; height: 100%;">
           <div class="d-flex justify-content-between align-items-start mb-3">
             <h5 class="mb-0" style="color: #2c3e50; font-weight: 600; font-size: 1.2rem;">
@@ -68,13 +68,79 @@
           </div>
           
           <p style="color: #555; line-height: 1.6; font-size: 1rem; margin-bottom: 1rem;">
-            Published in <em>Journal of Management</em> - A comprehensive meta-analysis examining gender differences in authorship experiences.
+            Published in <em>Journal of Management</em> - A comprehensive meta-analysis examining gender differences in authorship experiences across multiple studies.
           </p>
           
           <div>
             <span class="badge bg-light text-dark me-1" style="font-size: 0.7rem;">Meta-Analysis</span>
             <span class="badge bg-light text-dark me-1" style="font-size: 0.7rem;">Gender</span>
             <span class="badge bg-light text-dark me-1" style="font-size: 0.7rem;">Authorship</span>
+          </div>
+        </div>
+
+        {{/* Slide 2 - 2024 Publication: Shedding Light on Invisible Influences */}}
+        <div class="publication-slide" style="display: none; padding: 2rem; background: white; opacity: 0; transition: opacity 0.8s ease-in-out; height: 100%;">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="mb-0" style="color: #2c3e50; font-weight: 600; font-size: 1.2rem;">
+              <a href="https://doi.org/10.1108/s0742-730120240000042007" target="_blank" style="color: #2c3e50; text-decoration: none;">
+                Shedding light on invisible influences: Reviewing HROB scholars' use of unmeasured latent method factors
+              </a>
+            </h5>
+            <small class="text-muted">2024</small>
+          </div>
+          
+          <p style="color: #555; line-height: 1.6; font-size: 1rem; margin-bottom: 1rem;">
+            Published in <em>Research in Personnel and Human Resources Management</em> - Methodological review of unmeasured latent method factors in HROB research.
+          </p>
+          
+          <div>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.7rem;">Methodology</span>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.7rem;">HROB</span>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.7rem;">Research Methods</span>
+          </div>
+        </div>
+
+        {{/* Slide 3 - 2024 Publication: A Primer on Open Science */}}
+        <div class="publication-slide" style="display: none; padding: 2rem; background: white; opacity: 0; transition: opacity 0.8s ease-in-out; height: 100%;">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="mb-0" style="color: #2c3e50; font-weight: 600; font-size: 1.2rem;">
+              <a href="https://doi.org/10.1017/iop.2022.70" target="_blank" style="color: #2c3e50; text-decoration: none;">
+                A Primer on Open Science for Industrial-Organizational Psychologists
+              </a>
+            </h5>
+            <small class="text-muted">2024</small>
+          </div>
+          
+          <p style="color: #555; line-height: 1.6; font-size: 1rem; margin-bottom: 1rem;">
+            Published in <em>The Industrial-Organizational Psychologist</em> - An introduction to open science practices for I-O psychologists.
+          </p>
+          
+          <div>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.7rem;">Open Science</span>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.7rem;">I-O Psychology</span>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.7rem;">Research Methods</span>
+          </div>
+        </div>
+
+        {{/* Slide 4 - In Press: RMSEAp Publication */}}
+        <div class="publication-slide" style="display: none; padding: 2rem; background: white; opacity: 0; transition: opacity 0.8s ease-in-out; height: 100%;">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="mb-0" style="color: #2c3e50; font-weight: 600; font-size: 1.2rem;">
+              <span style="color: #2c3e50;">
+                In defense of the RMSEA-p for latent variable model evaluation: A failed reproducibility study of Lance et al. (2016)
+              </span>
+            </h5>
+            <small class="text-muted">In Press</small>
+          </div>
+          
+          <p style="color: #555; line-height: 1.6; font-size: 1rem; margin-bottom: 1rem;">
+            <em>Forthcoming</em> in <em>Journal of Management Scientific Reports</em> - Co-authored with Larry Williams and Steven Culpepper. Methodological work defending RMSEA-p for latent variable model evaluation.
+          </p>
+          
+          <div>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.7rem;">Methodology</span>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.7rem;">SEM</span>
+            <span class="badge bg-light text-dark me-1" style="font-size: 0.7rem;">Model Fit</span>
           </div>
         </div>
       </div>
@@ -130,5 +196,43 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Initialize first slide
   showNewsSlide(0);
+  
+  // Publications slideshow
+  const pubSlides = document.querySelectorAll('.publication-slide');
+  let currentPubSlide = 0;
+  
+  function showPubSlide(index) {
+    pubSlides.forEach((slide) => {
+      slide.style.opacity = '0';
+      slide.classList.remove('active');
+    });
+    
+    setTimeout(() => {
+      pubSlides.forEach((slide, i) => {
+        if (i === index) {
+          slide.style.display = 'block';
+          setTimeout(() => {
+            slide.style.opacity = '1';
+            slide.classList.add('active');
+          }, 50);
+        } else {
+          slide.style.display = 'none';
+        }
+      });
+    }, 400);
+  }
+  
+  function nextPubSlide() {
+    currentPubSlide = (currentPubSlide + 1) % pubSlides.length;
+    showPubSlide(currentPubSlide);
+  }
+  
+  // Auto-advance publications slides every 5 seconds
+  if (pubSlides.length > 1) {
+    setInterval(nextPubSlide, 5000);
+  }
+  
+  // Initialize first publication slide
+  showPubSlide(0);
 });
 </script> 

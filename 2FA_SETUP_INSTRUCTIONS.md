@@ -177,3 +177,4 @@ Users can manage 2FA from their dashboard:
 - 2FA verification happens server-side through Supabase Auth
 - Users can disable 2FA, but will be prompted to re-enable when accessing protected features
 
+

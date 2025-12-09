@@ -1,0 +1,868 @@
+onet_code,occupation_title,annual_10th,annual_25th,annual_median,annual_75th,annual_90th,data_source,data_year,bls_link
+11-1011.00,"Chief Executives",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes111011.htm
+11-1021.00,"General and Operations Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes111021.htm
+11-1031.00,"Legislators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes111031.htm
+11-2011.00,"Advertising and Promotions Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes112011.htm
+11-2021.00,"Marketing Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes112021.htm
+11-2022.00,"Sales Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes112022.htm
+11-2032.00,"Public Relations Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes112032.htm
+11-2033.00,"Fundraising Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes112033.htm
+11-3012.00,"Administrative Services Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes113012.htm
+11-3013.00,"Facilities Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes113013.htm
+11-3021.00,"Computer and Information Systems Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes113021.htm
+11-3031.00,"Financial Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes113031.htm
+11-3051.00,"Industrial Production Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes113051.htm
+11-3061.00,"Purchasing Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes113061.htm
+11-3071.00,"Transportation, Storage, and Distribution Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes113071.htm
+11-3111.00,"Compensation and Benefits Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes113111.htm
+11-3121.00,"Human Resources Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes113121.htm
+11-3131.00,"Training and Development Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes113131.htm
+11-9013.00,"Farmers, Ranchers, and Other Agricultural Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119013.htm
+11-9021.00,"Construction Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119021.htm
+11-9031.00,"Education and Childcare Administrators, Preschool and Daycare",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119031.htm
+11-9032.00,"Education Administrators, Kindergarten through Secondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119032.htm
+11-9033.00,"Education Administrators, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119033.htm
+11-9039.00,"Education Administrators, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119039.htm
+11-9041.00,"Architectural and Engineering Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119041.htm
+11-9051.00,"Food Service Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119051.htm
+11-9071.00,"Gambling Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119071.htm
+11-9072.00,"Entertainment and Recreation Managers, Except Gambling",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119072.htm
+11-9081.00,"Lodging Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119081.htm
+11-9111.00,"Medical and Health Services Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119111.htm
+11-9121.00,"Natural Sciences Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119121.htm
+11-9131.00,"Postmasters and Mail Superintendents",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119131.htm
+11-9141.00,"Property, Real Estate, and Community Association Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119141.htm
+11-9151.00,"Social and Community Service Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119151.htm
+11-9161.00,"Emergency Management Directors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119161.htm
+11-9171.00,"Funeral Home Managers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119171.htm
+11-9179.00,"Personal Service Managers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119179.htm
+11-9199.00,"Managers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes119199.htm
+13-1011.00,"Agents and Business Managers of Artists, Performers, and Athletes",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131011.htm
+13-1021.00,"Buyers and Purchasing Agents, Farm Products",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131021.htm
+13-1022.00,"Wholesale and Retail Buyers, Except Farm Products",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131022.htm
+13-1023.00,"Purchasing Agents, Except Wholesale, Retail, and Farm Products",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131023.htm
+13-1031.00,"Claims Adjusters, Examiners, and Investigators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131031.htm
+13-1032.00,"Insurance Appraisers, Auto Damage",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131032.htm
+13-1041.00,"Compliance Officers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131041.htm
+13-1051.00,"Cost Estimators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131051.htm
+13-1071.00,"Human Resources Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131071.htm
+13-1074.00,"Farm Labor Contractors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131074.htm
+13-1075.00,"Labor Relations Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131075.htm
+13-1081.00,"Logisticians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131081.htm
+13-1082.00,"Project Management Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131082.htm
+13-1111.00,"Management Analysts",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131111.htm
+13-1121.00,"Meeting, Convention, and Event Planners",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131121.htm
+13-1131.00,"Fundraisers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131131.htm
+13-1141.00,"Compensation, Benefits, and Job Analysis Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131141.htm
+13-1151.00,"Training and Development Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131151.htm
+13-1161.00,"Market Research Analysts and Marketing Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131161.htm
+13-1199.00,"Business Operations Specialists, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes131199.htm
+13-2011.00,"Accountants and Auditors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132011.htm
+13-2022.00,"Appraisers of Personal and Business Property",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132022.htm
+13-2023.00,"Appraisers and Assessors of Real Estate",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132023.htm
+13-2031.00,"Budget Analysts",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132031.htm
+13-2041.00,"Credit Analysts",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132041.htm
+13-2051.00,"Financial and Investment Analysts",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132051.htm
+13-2052.00,"Personal Financial Advisors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132052.htm
+13-2053.00,"Insurance Underwriters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132053.htm
+13-2054.00,"Financial Risk Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132054.htm
+13-2061.00,"Financial Examiners",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132061.htm
+13-2071.00,"Credit Counselors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132071.htm
+13-2072.00,"Loan Officers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132072.htm
+13-2081.00,"Tax Examiners and Collectors, and Revenue Agents",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132081.htm
+13-2082.00,"Tax Preparers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132082.htm
+13-2099.00,"Financial Specialists, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes132099.htm
+15-1211.00,"Computer Systems Analysts",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151211.htm
+15-1212.00,"Information Security Analysts",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151212.htm
+15-1221.00,"Computer and Information Research Scientists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151221.htm
+15-1231.00,"Computer Network Support Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151231.htm
+15-1232.00,"Computer User Support Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151232.htm
+15-1241.00,"Computer Network Architects",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151241.htm
+15-1242.00,"Database Administrators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151242.htm
+15-1243.00,"Database Architects",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151243.htm
+15-1244.00,"Network and Computer Systems Administrators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151244.htm
+15-1251.00,"Computer Programmers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151251.htm
+15-1252.00,"Software Developers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151252.htm
+15-1253.00,"Software Quality Assurance Analysts and Testers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151253.htm
+15-1254.00,"Web Developers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151254.htm
+15-1255.00,"Web and Digital Interface Designers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151255.htm
+15-1299.00,"Computer Occupations, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes151299.htm
+15-2011.00,"Actuaries",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes152011.htm
+15-2021.00,"Mathematicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes152021.htm
+15-2031.00,"Operations Research Analysts",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes152031.htm
+15-2041.00,"Statisticians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes152041.htm
+15-2051.00,"Data Scientists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes152051.htm
+15-2099.00,"Mathematical Science Occupations, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes152099.htm
+17-1011.00,"Architects, Except Landscape and Naval",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes171011.htm
+17-1012.00,"Landscape Architects",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes171012.htm
+17-1021.00,"Cartographers and Photogrammetrists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes171021.htm
+17-1022.00,"Surveyors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes171022.htm
+17-2011.00,"Aerospace Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172011.htm
+17-2021.00,"Agricultural Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172021.htm
+17-2031.00,"Bioengineers and Biomedical Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172031.htm
+17-2041.00,"Chemical Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172041.htm
+17-2051.00,"Civil Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172051.htm
+17-2061.00,"Computer Hardware Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172061.htm
+17-2071.00,"Electrical Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172071.htm
+17-2072.00,"Electronics Engineers, Except Computer",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172072.htm
+17-2081.00,"Environmental Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172081.htm
+17-2111.00,"Health and Safety Engineers, Except Mining Safety Engineers and Inspectors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172111.htm
+17-2112.00,"Industrial Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172112.htm
+17-2121.00,"Marine Engineers and Naval Architects",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172121.htm
+17-2131.00,"Materials Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172131.htm
+17-2141.00,"Mechanical Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172141.htm
+17-2151.00,"Mining and Geological Engineers, Including Mining Safety Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172151.htm
+17-2161.00,"Nuclear Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172161.htm
+17-2171.00,"Petroleum Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172171.htm
+17-2199.00,"Engineers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes172199.htm
+17-3011.00,"Architectural and Civil Drafters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes173011.htm
+17-3012.00,"Electrical and Electronics Drafters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes173012.htm
+17-3013.00,"Mechanical Drafters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes173013.htm
+17-3019.00,"Drafters, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes173019.htm
+17-3021.00,"Aerospace Engineering and Operations Technologists and Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes173021.htm
+17-3022.00,"Civil Engineering Technologists and Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes173022.htm
+17-3023.00,"Electrical and Electronic Engineering Technologists and Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes173023.htm
+17-3024.00,"Electro-Mechanical and Mechatronics Technologists and Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes173024.htm
+17-3025.00,"Environmental Engineering Technologists and Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes173025.htm
+17-3026.00,"Industrial Engineering Technologists and Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes173026.htm
+17-3027.00,"Mechanical Engineering Technologists and Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes173027.htm
+17-3028.00,"Calibration Technologists and Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes173028.htm
+17-3029.00,"Engineering Technologists and Technicians, Except Drafters, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes173029.htm
+17-3031.00,"Surveying and Mapping Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes173031.htm
+19-1011.00,"Animal Scientists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes191011.htm
+19-1012.00,"Food Scientists and Technologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes191012.htm
+19-1013.00,"Soil and Plant Scientists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes191013.htm
+19-1021.00,"Biochemists and Biophysicists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes191021.htm
+19-1022.00,"Microbiologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes191022.htm
+19-1023.00,"Zoologists and Wildlife Biologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes191023.htm
+19-1029.00,"Biological Scientists, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes191029.htm
+19-1031.00,"Conservation Scientists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes191031.htm
+19-1032.00,"Foresters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes191032.htm
+19-1041.00,"Epidemiologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes191041.htm
+19-1042.00,"Medical Scientists, Except Epidemiologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes191042.htm
+19-1099.00,"Life Scientists, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes191099.htm
+19-2011.00,"Astronomers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes192011.htm
+19-2012.00,"Physicists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes192012.htm
+19-2021.00,"Atmospheric and Space Scientists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes192021.htm
+19-2031.00,"Chemists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes192031.htm
+19-2032.00,"Materials Scientists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes192032.htm
+19-2041.00,"Environmental Scientists and Specialists, Including Health",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes192041.htm
+19-2042.00,"Geoscientists, Except Hydrologists and Geographers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes192042.htm
+19-2043.00,"Hydrologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes192043.htm
+19-2099.00,"Physical Scientists, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes192099.htm
+19-3011.00,"Economists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes193011.htm
+19-3022.00,"Survey Researchers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes193022.htm
+19-3032.00,"Industrial-Organizational Psychologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes193032.htm
+19-3033.00,"Clinical and Counseling Psychologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes193033.htm
+19-3034.00,"School Psychologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes193034.htm
+19-3039.00,"Psychologists, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes193039.htm
+19-3041.00,"Sociologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes193041.htm
+19-3051.00,"Urban and Regional Planners",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes193051.htm
+19-3091.00,"Anthropologists and Archeologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes193091.htm
+19-3092.00,"Geographers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes193092.htm
+19-3093.00,"Historians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes193093.htm
+19-3094.00,"Political Scientists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes193094.htm
+19-3099.00,"Social Scientists and Related Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes193099.htm
+19-4012.00,"Agricultural Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes194012.htm
+19-4013.00,"Food Science Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes194013.htm
+19-4021.00,"Biological Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes194021.htm
+19-4031.00,"Chemical Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes194031.htm
+19-4042.00,"Environmental Science and Protection Technicians, Including Health",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes194042.htm
+19-4043.00,"Geological Technicians, Except Hydrologic Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes194043.htm
+19-4044.00,"Hydrologic Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes194044.htm
+19-4051.00,"Nuclear Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes194051.htm
+19-4061.00,"Social Science Research Assistants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes194061.htm
+19-4071.00,"Forest and Conservation Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes194071.htm
+19-4092.00,"Forensic Science Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes194092.htm
+19-4099.00,"Life, Physical, and Social Science Technicians, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes194099.htm
+19-5011.00,"Occupational Health and Safety Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes195011.htm
+19-5012.00,"Occupational Health and Safety Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes195012.htm
+21-1011.00,"Substance Abuse and Behavioral Disorder Counselors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211011.htm
+21-1012.00,"Educational, Guidance, and Career Counselors and Advisors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211012.htm
+21-1013.00,"Marriage and Family Therapists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211013.htm
+21-1014.00,"Mental Health Counselors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211014.htm
+21-1015.00,"Rehabilitation Counselors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211015.htm
+21-1019.00,"Counselors, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211019.htm
+21-1021.00,"Child, Family, and School Social Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211021.htm
+21-1022.00,"Healthcare Social Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211022.htm
+21-1023.00,"Mental Health and Substance Abuse Social Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211023.htm
+21-1029.00,"Social Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211029.htm
+21-1091.00,"Health Education Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211091.htm
+21-1092.00,"Probation Officers and Correctional Treatment Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211092.htm
+21-1093.00,"Social and Human Service Assistants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211093.htm
+21-1094.00,"Community Health Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211094.htm
+21-1099.00,"Community and Social Service Specialists, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes211099.htm
+21-2011.00,"Clergy",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes212011.htm
+21-2021.00,"Directors, Religious Activities and Education",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes212021.htm
+21-2099.00,"Religious Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes212099.htm
+23-1011.00,"Lawyers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes231011.htm
+23-1012.00,"Judicial Law Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes231012.htm
+23-1021.00,"Administrative Law Judges, Adjudicators, and Hearing Officers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes231021.htm
+23-1022.00,"Arbitrators, Mediators, and Conciliators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes231022.htm
+23-1023.00,"Judges, Magistrate Judges, and Magistrates",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes231023.htm
+23-2011.00,"Paralegals and Legal Assistants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes232011.htm
+23-2093.00,"Title Examiners, Abstractors, and Searchers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes232093.htm
+23-2099.00,"Legal Support Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes232099.htm
+25-1011.00,"Business Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251011.htm
+25-1021.00,"Computer Science Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251021.htm
+25-1022.00,"Mathematical Science Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251022.htm
+25-1031.00,"Architecture Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251031.htm
+25-1032.00,"Engineering Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251032.htm
+25-1041.00,"Agricultural Sciences Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251041.htm
+25-1042.00,"Biological Science Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251042.htm
+25-1043.00,"Forestry and Conservation Science Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251043.htm
+25-1051.00,"Atmospheric, Earth, Marine, and Space Sciences Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251051.htm
+25-1052.00,"Chemistry Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251052.htm
+25-1053.00,"Environmental Science Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251053.htm
+25-1054.00,"Physics Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251054.htm
+25-1061.00,"Anthropology and Archeology Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251061.htm
+25-1062.00,"Area, Ethnic, and Cultural Studies Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251062.htm
+25-1063.00,"Economics Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251063.htm
+25-1064.00,"Geography Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251064.htm
+25-1065.00,"Political Science Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251065.htm
+25-1066.00,"Psychology Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251066.htm
+25-1067.00,"Sociology Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251067.htm
+25-1069.00,"Social Sciences Teachers, Postsecondary, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251069.htm
+25-1071.00,"Health Specialties Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251071.htm
+25-1072.00,"Nursing Instructors and Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251072.htm
+25-1081.00,"Education Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251081.htm
+25-1082.00,"Library Science Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251082.htm
+25-1111.00,"Criminal Justice and Law Enforcement Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251111.htm
+25-1112.00,"Law Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251112.htm
+25-1113.00,"Social Work Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251113.htm
+25-1121.00,"Art, Drama, and Music Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251121.htm
+25-1122.00,"Communications Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251122.htm
+25-1123.00,"English Language and Literature Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251123.htm
+25-1124.00,"Foreign Language and Literature Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251124.htm
+25-1125.00,"History Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251125.htm
+25-1126.00,"Philosophy and Religion Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251126.htm
+25-1192.00,"Family and Consumer Sciences Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251192.htm
+25-1193.00,"Recreation and Fitness Studies Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251193.htm
+25-1194.00,"Career/Technical Education Teachers, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251194.htm
+25-1199.00,"Postsecondary Teachers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes251199.htm
+25-2011.00,"Preschool Teachers, Except Special Education",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes252011.htm
+25-2012.00,"Kindergarten Teachers, Except Special Education",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes252012.htm
+25-2021.00,"Elementary School Teachers, Except Special Education",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes252021.htm
+25-2022.00,"Middle School Teachers, Except Special and Career/Technical Education",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes252022.htm
+25-2023.00,"Career/Technical Education Teachers, Middle School",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes252023.htm
+25-2031.00,"Secondary School Teachers, Except Special and Career/Technical Education",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes252031.htm
+25-2032.00,"Career/Technical Education Teachers, Secondary School",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes252032.htm
+25-2051.00,"Special Education Teachers, Preschool",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes252051.htm
+25-2055.00,"Special Education Teachers, Kindergarten",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes252055.htm
+25-2056.00,"Special Education Teachers, Elementary School",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes252056.htm
+25-2057.00,"Special Education Teachers, Middle School",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes252057.htm
+25-2058.00,"Special Education Teachers, Secondary School",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes252058.htm
+25-2059.00,"Special Education Teachers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes252059.htm
+25-3011.00,"Adult Basic Education, Adult Secondary Education, and English as a Second Language Instructors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes253011.htm
+25-3021.00,"Self-Enrichment Teachers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes253021.htm
+25-3031.00,"Substitute Teachers, Short-Term",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes253031.htm
+25-3041.00,"Tutors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes253041.htm
+25-3099.00,"Teachers and Instructors, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes253099.htm
+25-4011.00,"Archivists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes254011.htm
+25-4012.00,"Curators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes254012.htm
+25-4013.00,"Museum Technicians and Conservators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes254013.htm
+25-4022.00,"Librarians and Media Collections Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes254022.htm
+25-4031.00,"Library Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes254031.htm
+25-9021.00,"Farm and Home Management Educators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes259021.htm
+25-9031.00,"Instructional Coordinators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes259031.htm
+25-9042.00,"Teaching Assistants, Preschool, Elementary, Middle, and Secondary School, Except Special Education",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes259042.htm
+25-9043.00,"Teaching Assistants, Special Education",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes259043.htm
+25-9044.00,"Teaching Assistants, Postsecondary",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes259044.htm
+25-9049.00,"Teaching Assistants, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes259049.htm
+25-9099.00,"Educational Instruction and Library Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes259099.htm
+27-1011.00,"Art Directors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes271011.htm
+27-1012.00,"Craft Artists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes271012.htm
+27-1013.00,"Fine Artists, Including Painters, Sculptors, and Illustrators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes271013.htm
+27-1014.00,"Special Effects Artists and Animators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes271014.htm
+27-1019.00,"Artists and Related Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes271019.htm
+27-1021.00,"Commercial and Industrial Designers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes271021.htm
+27-1022.00,"Fashion Designers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes271022.htm
+27-1023.00,"Floral Designers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes271023.htm
+27-1024.00,"Graphic Designers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes271024.htm
+27-1025.00,"Interior Designers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes271025.htm
+27-1026.00,"Merchandise Displayers and Window Trimmers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes271026.htm
+27-1027.00,"Set and Exhibit Designers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes271027.htm
+27-1029.00,"Designers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes271029.htm
+27-2011.00,"Actors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes272011.htm
+27-2012.00,"Producers and Directors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes272012.htm
+27-2021.00,"Athletes and Sports Competitors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes272021.htm
+27-2022.00,"Coaches and Scouts",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes272022.htm
+27-2023.00,"Umpires, Referees, and Other Sports Officials",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes272023.htm
+27-2031.00,"Dancers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes272031.htm
+27-2032.00,"Choreographers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes272032.htm
+27-2041.00,"Music Directors and Composers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes272041.htm
+27-2042.00,"Musicians and Singers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes272042.htm
+27-2091.00,"Disc Jockeys, Except Radio",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes272091.htm
+27-2099.00,"Entertainers and Performers, Sports and Related Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes272099.htm
+27-3011.00,"Broadcast Announcers and Radio Disc Jockeys",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes273011.htm
+27-3023.00,"News Analysts, Reporters, and Journalists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes273023.htm
+27-3031.00,"Public Relations Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes273031.htm
+27-3041.00,"Editors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes273041.htm
+27-3042.00,"Technical Writers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes273042.htm
+27-3043.00,"Writers and Authors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes273043.htm
+27-3091.00,"Interpreters and Translators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes273091.htm
+27-3092.00,"Court Reporters and Simultaneous Captioners",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes273092.htm
+27-3099.00,"Media and Communication Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes273099.htm
+27-4011.00,"Audio and Video Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes274011.htm
+27-4012.00,"Broadcast Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes274012.htm
+27-4014.00,"Sound Engineering Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes274014.htm
+27-4015.00,"Lighting Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes274015.htm
+27-4021.00,"Photographers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes274021.htm
+27-4031.00,"Camera Operators, Television, Video, and Film",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes274031.htm
+27-4032.00,"Film and Video Editors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes274032.htm
+27-4099.00,"Media and Communication Equipment Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes274099.htm
+29-1011.00,"Chiropractors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291011.htm
+29-1021.00,"Dentists, General",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291021.htm
+29-1022.00,"Oral and Maxillofacial Surgeons",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291022.htm
+29-1023.00,"Orthodontists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291023.htm
+29-1024.00,"Prosthodontists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291024.htm
+29-1029.00,"Dentists, All Other Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291029.htm
+29-1031.00,"Dietitians and Nutritionists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291031.htm
+29-1041.00,"Optometrists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291041.htm
+29-1051.00,"Pharmacists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291051.htm
+29-1071.00,"Physician Assistants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291071.htm
+29-1081.00,"Podiatrists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291081.htm
+29-1122.00,"Occupational Therapists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291122.htm
+29-1123.00,"Physical Therapists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291123.htm
+29-1124.00,"Radiation Therapists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291124.htm
+29-1125.00,"Recreational Therapists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291125.htm
+29-1126.00,"Respiratory Therapists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291126.htm
+29-1127.00,"Speech-Language Pathologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291127.htm
+29-1128.00,"Exercise Physiologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291128.htm
+29-1129.00,"Therapists, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291129.htm
+29-1131.00,"Veterinarians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291131.htm
+29-1141.00,"Registered Nurses",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291141.htm
+29-1151.00,"Nurse Anesthetists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291151.htm
+29-1161.00,"Nurse Midwives",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291161.htm
+29-1171.00,"Nurse Practitioners",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291171.htm
+29-1181.00,"Audiologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291181.htm
+29-1211.00,"Anesthesiologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291211.htm
+29-1212.00,"Cardiologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291212.htm
+29-1213.00,"Dermatologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291213.htm
+29-1214.00,"Emergency Medicine Physicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291214.htm
+29-1215.00,"Family Medicine Physicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291215.htm
+29-1216.00,"General Internal Medicine Physicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291216.htm
+29-1217.00,"Neurologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291217.htm
+29-1218.00,"Obstetricians and Gynecologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291218.htm
+29-1221.00,"Pediatricians, General",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291221.htm
+29-1222.00,"Physicians, Pathologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291222.htm
+29-1223.00,"Psychiatrists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291223.htm
+29-1224.00,"Radiologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291224.htm
+29-1229.00,"Physicians, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291229.htm
+29-1241.00,"Ophthalmologists, Except Pediatric",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291241.htm
+29-1242.00,"Orthopedic Surgeons, Except Pediatric",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291242.htm
+29-1243.00,"Pediatric Surgeons",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291243.htm
+29-1249.00,"Surgeons, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291249.htm
+29-1291.00,"Acupuncturists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291291.htm
+29-1292.00,"Dental Hygienists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291292.htm
+29-1299.00,"Healthcare Diagnosing or Treating Practitioners, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes291299.htm
+29-2011.00,"Medical and Clinical Laboratory Technologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292011.htm
+29-2012.00,"Medical and Clinical Laboratory Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292012.htm
+29-2031.00,"Cardiovascular Technologists and Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292031.htm
+29-2032.00,"Diagnostic Medical Sonographers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292032.htm
+29-2033.00,"Nuclear Medicine Technologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292033.htm
+29-2034.00,"Radiologic Technologists and Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292034.htm
+29-2035.00,"Magnetic Resonance Imaging Technologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292035.htm
+29-2036.00,"Medical Dosimetrists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292036.htm
+29-2042.00,"Emergency Medical Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292042.htm
+29-2043.00,"Paramedics",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292043.htm
+29-2051.00,"Dietetic Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292051.htm
+29-2052.00,"Pharmacy Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292052.htm
+29-2053.00,"Psychiatric Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292053.htm
+29-2055.00,"Surgical Technologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292055.htm
+29-2056.00,"Veterinary Technologists and Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292056.htm
+29-2057.00,"Ophthalmic Medical Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292057.htm
+29-2061.00,"Licensed Practical and Licensed Vocational Nurses",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292061.htm
+29-2072.00,"Medical Records Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292072.htm
+29-2081.00,"Opticians, Dispensing",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292081.htm
+29-2091.00,"Orthotists and Prosthetists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292091.htm
+29-2092.00,"Hearing Aid Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292092.htm
+29-2099.00,"Health Technologists and Technicians, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes292099.htm
+29-9021.00,"Health Information Technologists and Medical Registrars",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes299021.htm
+29-9091.00,"Athletic Trainers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes299091.htm
+29-9092.00,"Genetic Counselors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes299092.htm
+29-9093.00,"Surgical Assistants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes299093.htm
+29-9099.00,"Healthcare Practitioners and Technical Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes299099.htm
+31-1121.00,"Home Health Aides",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes311121.htm
+31-1122.00,"Personal Care Aides",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes311122.htm
+31-1131.00,"Nursing Assistants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes311131.htm
+31-1132.00,"Orderlies",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes311132.htm
+31-1133.00,"Psychiatric Aides",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes311133.htm
+31-2011.00,"Occupational Therapy Assistants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes312011.htm
+31-2012.00,"Occupational Therapy Aides",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes312012.htm
+31-2021.00,"Physical Therapist Assistants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes312021.htm
+31-2022.00,"Physical Therapist Aides",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes312022.htm
+31-9011.00,"Massage Therapists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes319011.htm
+31-9091.00,"Dental Assistants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes319091.htm
+31-9092.00,"Medical Assistants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes319092.htm
+31-9093.00,"Medical Equipment Preparers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes319093.htm
+31-9094.00,"Medical Transcriptionists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes319094.htm
+31-9095.00,"Pharmacy Aides",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes319095.htm
+31-9096.00,"Veterinary Assistants and Laboratory Animal Caretakers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes319096.htm
+31-9097.00,"Phlebotomists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes319097.htm
+31-9099.00,"Healthcare Support Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes319099.htm
+33-1011.00,"First-Line Supervisors of Correctional Officers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes331011.htm
+33-1012.00,"First-Line Supervisors of Police and Detectives",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes331012.htm
+33-1021.00,"First-Line Supervisors of Firefighting and Prevention Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes331021.htm
+33-1091.00,"First-Line Supervisors of Security Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes331091.htm
+33-1099.00,"First-Line Supervisors of Protective Service Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes331099.htm
+33-2011.00,"Firefighters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes332011.htm
+33-2021.00,"Fire Inspectors and Investigators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes332021.htm
+33-2022.00,"Forest Fire Inspectors and Prevention Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes332022.htm
+33-3011.00,"Bailiffs",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes333011.htm
+33-3012.00,"Correctional Officers and Jailers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes333012.htm
+33-3021.00,"Detectives and Criminal Investigators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes333021.htm
+33-3031.00,"Fish and Game Wardens",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes333031.htm
+33-3041.00,"Parking Enforcement Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes333041.htm
+33-3051.00,"Police and Sheriff's Patrol Officers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes333051.htm
+33-3052.00,"Transit and Railroad Police",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes333052.htm
+33-9011.00,"Animal Control Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes339011.htm
+33-9021.00,"Private Detectives and Investigators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes339021.htm
+33-9031.00,"Gambling Surveillance Officers and Gambling Investigators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes339031.htm
+33-9032.00,"Security Guards",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes339032.htm
+33-9091.00,"Crossing Guards and Flaggers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes339091.htm
+33-9092.00,"Lifeguards, Ski Patrol, and Other Recreational Protective Service Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes339092.htm
+33-9093.00,"Transportation Security Screeners",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes339093.htm
+33-9094.00,"School Bus Monitors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes339094.htm
+33-9099.00,"Protective Service Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes339099.htm
+35-1011.00,"Chefs and Head Cooks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes351011.htm
+35-1012.00,"First-Line Supervisors of Food Preparation and Serving Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes351012.htm
+35-2011.00,"Cooks, Fast Food",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes352011.htm
+35-2012.00,"Cooks, Institution and Cafeteria",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes352012.htm
+35-2013.00,"Cooks, Private Household",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes352013.htm
+35-2014.00,"Cooks, Restaurant",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes352014.htm
+35-2015.00,"Cooks, Short Order",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes352015.htm
+35-2019.00,"Cooks, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes352019.htm
+35-2021.00,"Food Preparation Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes352021.htm
+35-3011.00,"Bartenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes353011.htm
+35-3023.00,"Fast Food and Counter Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes353023.htm
+35-3031.00,"Waiters and Waitresses",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes353031.htm
+35-3041.00,"Food Servers, Nonrestaurant",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes353041.htm
+35-9011.00,"Dining Room and Cafeteria Attendants and Bartender Helpers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes359011.htm
+35-9021.00,"Dishwashers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes359021.htm
+35-9031.00,"Hosts and Hostesses, Restaurant, Lounge, and Coffee Shop",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes359031.htm
+35-9099.00,"Food Preparation and Serving Related Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes359099.htm
+37-1011.00,"First-Line Supervisors of Housekeeping and Janitorial Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes371011.htm
+37-1012.00,"First-Line Supervisors of Landscaping, Lawn Service, and Groundskeeping Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes371012.htm
+37-2011.00,"Janitors and Cleaners, Except Maids and Housekeeping Cleaners",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes372011.htm
+37-2012.00,"Maids and Housekeeping Cleaners",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes372012.htm
+37-2019.00,"Building Cleaning Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes372019.htm
+37-2021.00,"Pest Control Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes372021.htm
+37-3011.00,"Landscaping and Groundskeeping Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes373011.htm
+37-3012.00,"Pesticide Handlers, Sprayers, and Applicators, Vegetation",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes373012.htm
+37-3013.00,"Tree Trimmers and Pruners",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes373013.htm
+37-3019.00,"Grounds Maintenance Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes373019.htm
+39-1013.00,"First-Line Supervisors of Gambling Services Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes391013.htm
+39-1014.00,"First-Line Supervisors of Entertainment and Recreation Workers, Except Gambling Services",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes391014.htm
+39-1022.00,"First-Line Supervisors of Personal Service Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes391022.htm
+39-2011.00,"Animal Trainers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes392011.htm
+39-2021.00,"Animal Caretakers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes392021.htm
+39-3011.00,"Gambling Dealers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes393011.htm
+39-3012.00,"Gambling and Sports Book Writers and Runners",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes393012.htm
+39-3019.00,"Gambling Service Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes393019.htm
+39-3021.00,"Motion Picture Projectionists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes393021.htm
+39-3031.00,"Ushers, Lobby Attendants, and Ticket Takers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes393031.htm
+39-3091.00,"Amusement and Recreation Attendants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes393091.htm
+39-3092.00,"Costume Attendants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes393092.htm
+39-3093.00,"Locker Room, Coatroom, and Dressing Room Attendants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes393093.htm
+39-3099.00,"Entertainment Attendants and Related Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes393099.htm
+39-4011.00,"Embalmers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes394011.htm
+39-4012.00,"Crematory Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes394012.htm
+39-4021.00,"Funeral Attendants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes394021.htm
+39-4031.00,"Morticians, Undertakers, and Funeral Arrangers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes394031.htm
+39-5011.00,"Barbers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes395011.htm
+39-5012.00,"Hairdressers, Hairstylists, and Cosmetologists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes395012.htm
+39-5091.00,"Makeup Artists, Theatrical and Performance",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes395091.htm
+39-5092.00,"Manicurists and Pedicurists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes395092.htm
+39-5093.00,"Shampooers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes395093.htm
+39-5094.00,"Skincare Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes395094.htm
+39-6011.00,"Baggage Porters and Bellhops",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes396011.htm
+39-6012.00,"Concierges",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes396012.htm
+39-7011.00,"Tour Guides and Escorts",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes397011.htm
+39-7012.00,"Travel Guides",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes397012.htm
+39-9011.00,"Childcare Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes399011.htm
+39-9031.00,"Exercise Trainers and Group Fitness Instructors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes399031.htm
+39-9032.00,"Recreation Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes399032.htm
+39-9041.00,"Residential Advisors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes399041.htm
+39-9099.00,"Personal Care and Service Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes399099.htm
+41-1011.00,"First-Line Supervisors of Retail Sales Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes411011.htm
+41-1012.00,"First-Line Supervisors of Non-Retail Sales Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes411012.htm
+41-2011.00,"Cashiers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes412011.htm
+41-2012.00,"Gambling Change Persons and Booth Cashiers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes412012.htm
+41-2021.00,"Counter and Rental Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes412021.htm
+41-2022.00,"Parts Salespersons",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes412022.htm
+41-2031.00,"Retail Salespersons",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes412031.htm
+41-3011.00,"Advertising Sales Agents",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes413011.htm
+41-3021.00,"Insurance Sales Agents",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes413021.htm
+41-3031.00,"Securities, Commodities, and Financial Services Sales Agents",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes413031.htm
+41-3041.00,"Travel Agents",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes413041.htm
+41-3091.00,"Sales Representatives of Services, Except Advertising, Insurance, Financial Services, and Travel",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes413091.htm
+41-4011.00,"Sales Representatives, Wholesale and Manufacturing, Technical and Scientific Products",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes414011.htm
+41-4012.00,"Sales Representatives, Wholesale and Manufacturing, Except Technical and Scientific Products",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes414012.htm
+41-9011.00,"Demonstrators and Product Promoters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes419011.htm
+41-9012.00,"Models",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes419012.htm
+41-9021.00,"Real Estate Brokers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes419021.htm
+41-9022.00,"Real Estate Sales Agents",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes419022.htm
+41-9031.00,"Sales Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes419031.htm
+41-9041.00,"Telemarketers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes419041.htm
+41-9091.00,"Door-to-Door Sales Workers, News and Street Vendors, and Related Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes419091.htm
+41-9099.00,"Sales and Related Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes419099.htm
+43-1011.00,"First-Line Supervisors of Office and Administrative Support Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes431011.htm
+43-2011.00,"Switchboard Operators, Including Answering Service",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes432011.htm
+43-2021.00,"Telephone Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes432021.htm
+43-2099.00,"Communications Equipment Operators, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes432099.htm
+43-3011.00,"Bill and Account Collectors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes433011.htm
+43-3021.00,"Billing and Posting Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes433021.htm
+43-3031.00,"Bookkeeping, Accounting, and Auditing Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes433031.htm
+43-3041.00,"Gambling Cage Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes433041.htm
+43-3051.00,"Payroll and Timekeeping Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes433051.htm
+43-3061.00,"Procurement Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes433061.htm
+43-3071.00,"Tellers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes433071.htm
+43-3099.00,"Financial Clerks, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes433099.htm
+43-4011.00,"Brokerage Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434011.htm
+43-4021.00,"Correspondence Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434021.htm
+43-4031.00,"Court, Municipal, and License Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434031.htm
+43-4041.00,"Credit Authorizers, Checkers, and Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434041.htm
+43-4051.00,"Customer Service Representatives",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434051.htm
+43-4061.00,"Eligibility Interviewers, Government Programs",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434061.htm
+43-4071.00,"File Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434071.htm
+43-4081.00,"Hotel, Motel, and Resort Desk Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434081.htm
+43-4111.00,"Interviewers, Except Eligibility and Loan",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434111.htm
+43-4121.00,"Library Assistants, Clerical",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434121.htm
+43-4131.00,"Loan Interviewers and Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434131.htm
+43-4141.00,"New Accounts Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434141.htm
+43-4151.00,"Order Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434151.htm
+43-4161.00,"Human Resources Assistants, Except Payroll and Timekeeping",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434161.htm
+43-4171.00,"Receptionists and Information Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434171.htm
+43-4181.00,"Reservation and Transportation Ticket Agents and Travel Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434181.htm
+43-4199.00,"Information and Record Clerks, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes434199.htm
+43-5011.00,"Cargo and Freight Agents",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes435011.htm
+43-5021.00,"Couriers and Messengers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes435021.htm
+43-5031.00,"Public Safety Telecommunicators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes435031.htm
+43-5032.00,"Dispatchers, Except Police, Fire, and Ambulance",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes435032.htm
+43-5041.00,"Meter Readers, Utilities",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes435041.htm
+43-5051.00,"Postal Service Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes435051.htm
+43-5052.00,"Postal Service Mail Carriers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes435052.htm
+43-5053.00,"Postal Service Mail Sorters, Processors, and Processing Machine Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes435053.htm
+43-5061.00,"Production, Planning, and Expediting Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes435061.htm
+43-5071.00,"Shipping, Receiving, and Inventory Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes435071.htm
+43-5111.00,"Weighers, Measurers, Checkers, and Samplers, Recordkeeping",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes435111.htm
+43-6011.00,"Executive Secretaries and Executive Administrative Assistants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes436011.htm
+43-6012.00,"Legal Secretaries and Administrative Assistants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes436012.htm
+43-6013.00,"Medical Secretaries and Administrative Assistants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes436013.htm
+43-6014.00,"Secretaries and Administrative Assistants, Except Legal, Medical, and Executive",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes436014.htm
+43-9021.00,"Data Entry Keyers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes439021.htm
+43-9022.00,"Word Processors and Typists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes439022.htm
+43-9031.00,"Desktop Publishers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes439031.htm
+43-9041.00,"Insurance Claims and Policy Processing Clerks",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes439041.htm
+43-9051.00,"Mail Clerks and Mail Machine Operators, Except Postal Service",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes439051.htm
+43-9061.00,"Office Clerks, General",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes439061.htm
+43-9071.00,"Office Machine Operators, Except Computer",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes439071.htm
+43-9081.00,"Proofreaders and Copy Markers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes439081.htm
+43-9111.00,"Statistical Assistants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes439111.htm
+43-9199.00,"Office and Administrative Support Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes439199.htm
+45-1011.00,"First-Line Supervisors of Farming, Fishing, and Forestry Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes451011.htm
+45-2011.00,"Agricultural Inspectors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes452011.htm
+45-2021.00,"Animal Breeders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes452021.htm
+45-2041.00,"Graders and Sorters, Agricultural Products",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes452041.htm
+45-2091.00,"Agricultural Equipment Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes452091.htm
+45-2092.00,"Farmworkers and Laborers, Crop, Nursery, and Greenhouse",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes452092.htm
+45-2093.00,"Farmworkers, Farm, Ranch, and Aquacultural Animals",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes452093.htm
+45-2099.00,"Agricultural Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes452099.htm
+45-3031.00,"Fishing and Hunting Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes453031.htm
+45-4011.00,"Forest and Conservation Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes454011.htm
+45-4021.00,"Fallers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes454021.htm
+45-4022.00,"Logging Equipment Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes454022.htm
+45-4023.00,"Log Graders and Scalers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes454023.htm
+45-4029.00,"Logging Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes454029.htm
+47-1011.00,"First-Line Supervisors of Construction Trades and Extraction Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes471011.htm
+47-2011.00,"Boilermakers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472011.htm
+47-2021.00,"Brickmasons and Blockmasons",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472021.htm
+47-2022.00,"Stonemasons",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472022.htm
+47-2031.00,"Carpenters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472031.htm
+47-2041.00,"Carpet Installers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472041.htm
+47-2042.00,"Floor Layers, Except Carpet, Wood, and Hard Tiles",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472042.htm
+47-2043.00,"Floor Sanders and Finishers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472043.htm
+47-2044.00,"Tile and Stone Setters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472044.htm
+47-2051.00,"Cement Masons and Concrete Finishers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472051.htm
+47-2053.00,"Terrazzo Workers and Finishers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472053.htm
+47-2061.00,"Construction Laborers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472061.htm
+47-2071.00,"Paving, Surfacing, and Tamping Equipment Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472071.htm
+47-2072.00,"Pile Driver Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472072.htm
+47-2073.00,"Operating Engineers and Other Construction Equipment Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472073.htm
+47-2081.00,"Drywall and Ceiling Tile Installers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472081.htm
+47-2082.00,"Tapers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472082.htm
+47-2111.00,"Electricians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472111.htm
+47-2121.00,"Glaziers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472121.htm
+47-2131.00,"Insulation Workers, Floor, Ceiling, and Wall",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472131.htm
+47-2132.00,"Insulation Workers, Mechanical",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472132.htm
+47-2141.00,"Painters, Construction and Maintenance",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472141.htm
+47-2142.00,"Paperhangers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472142.htm
+47-2151.00,"Pipelayers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472151.htm
+47-2152.00,"Plumbers, Pipefitters, and Steamfitters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472152.htm
+47-2161.00,"Plasterers and Stucco Masons",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472161.htm
+47-2171.00,"Reinforcing Iron and Rebar Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472171.htm
+47-2181.00,"Roofers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472181.htm
+47-2211.00,"Sheet Metal Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472211.htm
+47-2221.00,"Structural Iron and Steel Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472221.htm
+47-2231.00,"Solar Photovoltaic Installers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes472231.htm
+47-3011.00,"Helpers--Brickmasons, Blockmasons, Stonemasons, and Tile and Marble Setters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes473011.htm
+47-3012.00,"Helpers--Carpenters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes473012.htm
+47-3013.00,"Helpers--Electricians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes473013.htm
+47-3014.00,"Helpers--Painters, Paperhangers, Plasterers, and Stucco Masons",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes473014.htm
+47-3015.00,"Helpers--Pipelayers, Plumbers, Pipefitters, and Steamfitters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes473015.htm
+47-3016.00,"Helpers--Roofers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes473016.htm
+47-3019.00,"Helpers, Construction Trades, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes473019.htm
+47-4011.00,"Construction and Building Inspectors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes474011.htm
+47-4021.00,"Elevator and Escalator Installers and Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes474021.htm
+47-4031.00,"Fence Erectors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes474031.htm
+47-4041.00,"Hazardous Materials Removal Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes474041.htm
+47-4051.00,"Highway Maintenance Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes474051.htm
+47-4061.00,"Rail-Track Laying and Maintenance Equipment Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes474061.htm
+47-4071.00,"Septic Tank Servicers and Sewer Pipe Cleaners",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes474071.htm
+47-4091.00,"Segmental Pavers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes474091.htm
+47-4099.00,"Construction and Related Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes474099.htm
+47-5011.00,"Derrick Operators, Oil and Gas",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes475011.htm
+47-5012.00,"Rotary Drill Operators, Oil and Gas",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes475012.htm
+47-5013.00,"Service Unit Operators, Oil and Gas",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes475013.htm
+47-5022.00,"Excavating and Loading Machine and Dragline Operators, Surface Mining",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes475022.htm
+47-5023.00,"Earth Drillers, Except Oil and Gas",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes475023.htm
+47-5032.00,"Explosives Workers, Ordnance Handling Experts, and Blasters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes475032.htm
+47-5041.00,"Continuous Mining Machine Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes475041.htm
+47-5043.00,"Roof Bolters, Mining",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes475043.htm
+47-5044.00,"Loading and Moving Machine Operators, Underground Mining",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes475044.htm
+47-5049.00,"Underground Mining Machine Operators, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes475049.htm
+47-5051.00,"Rock Splitters, Quarry",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes475051.htm
+47-5071.00,"Roustabouts, Oil and Gas",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes475071.htm
+47-5081.00,"Helpers--Extraction Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes475081.htm
+47-5099.00,"Extraction Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes475099.htm
+49-1011.00,"First-Line Supervisors of Mechanics, Installers, and Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes491011.htm
+49-2011.00,"Computer, Automated Teller, and Office Machine Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes492011.htm
+49-2021.00,"Radio, Cellular, and Tower Equipment Installers and Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes492021.htm
+49-2022.00,"Telecommunications Equipment Installers and Repairers, Except Line Installers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes492022.htm
+49-2091.00,"Avionics Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes492091.htm
+49-2092.00,"Electric Motor, Power Tool, and Related Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes492092.htm
+49-2093.00,"Electrical and Electronics Installers and Repairers, Transportation Equipment",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes492093.htm
+49-2094.00,"Electrical and Electronics Repairers, Commercial and Industrial Equipment",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes492094.htm
+49-2095.00,"Electrical and Electronics Repairers, Powerhouse, Substation, and Relay",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes492095.htm
+49-2096.00,"Electronic Equipment Installers and Repairers, Motor Vehicles",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes492096.htm
+49-2097.00,"Audiovisual Equipment Installers and Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes492097.htm
+49-2098.00,"Security and Fire Alarm Systems Installers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes492098.htm
+49-3011.00,"Aircraft Mechanics and Service Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes493011.htm
+49-3021.00,"Automotive Body and Related Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes493021.htm
+49-3022.00,"Automotive Glass Installers and Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes493022.htm
+49-3023.00,"Automotive Service Technicians and Mechanics",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes493023.htm
+49-3031.00,"Bus and Truck Mechanics and Diesel Engine Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes493031.htm
+49-3041.00,"Farm Equipment Mechanics and Service Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes493041.htm
+49-3042.00,"Mobile Heavy Equipment Mechanics, Except Engines",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes493042.htm
+49-3043.00,"Rail Car Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes493043.htm
+49-3051.00,"Motorboat Mechanics and Service Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes493051.htm
+49-3052.00,"Motorcycle Mechanics",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes493052.htm
+49-3053.00,"Outdoor Power Equipment and Other Small Engine Mechanics",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes493053.htm
+49-3091.00,"Bicycle Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes493091.htm
+49-3092.00,"Recreational Vehicle Service Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes493092.htm
+49-3093.00,"Tire Repairers and Changers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes493093.htm
+49-9011.00,"Mechanical Door Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499011.htm
+49-9012.00,"Control and Valve Installers and Repairers, Except Mechanical Door",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499012.htm
+49-9021.00,"Heating, Air Conditioning, and Refrigeration Mechanics and Installers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499021.htm
+49-9031.00,"Home Appliance Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499031.htm
+49-9041.00,"Industrial Machinery Mechanics",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499041.htm
+49-9043.00,"Maintenance Workers, Machinery",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499043.htm
+49-9044.00,"Millwrights",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499044.htm
+49-9045.00,"Refractory Materials Repairers, Except Brickmasons",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499045.htm
+49-9051.00,"Electrical Power-Line Installers and Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499051.htm
+49-9052.00,"Telecommunications Line Installers and Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499052.htm
+49-9061.00,"Camera and Photographic Equipment Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499061.htm
+49-9062.00,"Medical Equipment Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499062.htm
+49-9063.00,"Musical Instrument Repairers and Tuners",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499063.htm
+49-9064.00,"Watch and Clock Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499064.htm
+49-9069.00,"Precision Instrument and Equipment Repairers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499069.htm
+49-9071.00,"Maintenance and Repair Workers, General",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499071.htm
+49-9081.00,"Wind Turbine Service Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499081.htm
+49-9091.00,"Coin, Vending, and Amusement Machine Servicers and Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499091.htm
+49-9092.00,"Commercial Divers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499092.htm
+49-9094.00,"Locksmiths and Safe Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499094.htm
+49-9095.00,"Manufactured Building and Mobile Home Installers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499095.htm
+49-9096.00,"Riggers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499096.htm
+49-9097.00,"Signal and Track Switch Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499097.htm
+49-9098.00,"Helpers--Installation, Maintenance, and Repair Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499098.htm
+49-9099.00,"Installation, Maintenance, and Repair Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes499099.htm
+51-1011.00,"First-Line Supervisors of Production and Operating Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes511011.htm
+51-2011.00,"Aircraft Structure, Surfaces, Rigging, and Systems Assemblers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes512011.htm
+51-2021.00,"Coil Winders, Tapers, and Finishers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes512021.htm
+51-2022.00,"Electrical and Electronic Equipment Assemblers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes512022.htm
+51-2023.00,"Electromechanical Equipment Assemblers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes512023.htm
+51-2031.00,"Engine and Other Machine Assemblers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes512031.htm
+51-2041.00,"Structural Metal Fabricators and Fitters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes512041.htm
+51-2051.00,"Fiberglass Laminators and Fabricators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes512051.htm
+51-2061.00,"Timing Device Assemblers and Adjusters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes512061.htm
+51-2092.00,"Team Assemblers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes512092.htm
+51-2099.00,"Assemblers and Fabricators, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes512099.htm
+51-3011.00,"Bakers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes513011.htm
+51-3021.00,"Butchers and Meat Cutters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes513021.htm
+51-3022.00,"Meat, Poultry, and Fish Cutters and Trimmers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes513022.htm
+51-3023.00,"Slaughterers and Meat Packers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes513023.htm
+51-3091.00,"Food and Tobacco Roasting, Baking, and Drying Machine Operators and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes513091.htm
+51-3092.00,"Food Batchmakers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes513092.htm
+51-3093.00,"Food Cooking Machine Operators and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes513093.htm
+51-3099.00,"Food Processing Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes513099.htm
+51-4021.00,"Extruding and Drawing Machine Setters, Operators, and Tenders, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514021.htm
+51-4022.00,"Forging Machine Setters, Operators, and Tenders, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514022.htm
+51-4023.00,"Rolling Machine Setters, Operators, and Tenders, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514023.htm
+51-4031.00,"Cutting, Punching, and Press Machine Setters, Operators, and Tenders, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514031.htm
+51-4032.00,"Drilling and Boring Machine Tool Setters, Operators, and Tenders, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514032.htm
+51-4033.00,"Grinding, Lapping, Polishing, and Buffing Machine Tool Setters, Operators, and Tenders, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514033.htm
+51-4034.00,"Lathe and Turning Machine Tool Setters, Operators, and Tenders, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514034.htm
+51-4035.00,"Milling and Planing Machine Setters, Operators, and Tenders, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514035.htm
+51-4041.00,"Machinists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514041.htm
+51-4051.00,"Metal-Refining Furnace Operators and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514051.htm
+51-4052.00,"Pourers and Casters, Metal",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514052.htm
+51-4061.00,"Model Makers, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514061.htm
+51-4062.00,"Patternmakers, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514062.htm
+51-4071.00,"Foundry Mold and Coremakers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514071.htm
+51-4072.00,"Molding, Coremaking, and Casting Machine Setters, Operators, and Tenders, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514072.htm
+51-4081.00,"Multiple Machine Tool Setters, Operators, and Tenders, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514081.htm
+51-4111.00,"Tool and Die Makers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514111.htm
+51-4121.00,"Welders, Cutters, Solderers, and Brazers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514121.htm
+51-4122.00,"Welding, Soldering, and Brazing Machine Setters, Operators, and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514122.htm
+51-4191.00,"Heat Treating Equipment Setters, Operators, and Tenders, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514191.htm
+51-4192.00,"Layout Workers, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514192.htm
+51-4193.00,"Plating Machine Setters, Operators, and Tenders, Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514193.htm
+51-4194.00,"Tool Grinders, Filers, and Sharpeners",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514194.htm
+51-4199.00,"Metal Workers and Plastic Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes514199.htm
+51-5111.00,"Prepress Technicians and Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes515111.htm
+51-5112.00,"Printing Press Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes515112.htm
+51-5113.00,"Print Binding and Finishing Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes515113.htm
+51-6011.00,"Laundry and Dry-Cleaning Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516011.htm
+51-6021.00,"Pressers, Textile, Garment, and Related Materials",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516021.htm
+51-6031.00,"Sewing Machine Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516031.htm
+51-6041.00,"Shoe and Leather Workers and Repairers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516041.htm
+51-6042.00,"Shoe Machine Operators and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516042.htm
+51-6051.00,"Sewers, Hand",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516051.htm
+51-6052.00,"Tailors, Dressmakers, and Custom Sewers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516052.htm
+51-6061.00,"Textile Bleaching and Dyeing Machine Operators and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516061.htm
+51-6062.00,"Textile Cutting Machine Setters, Operators, and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516062.htm
+51-6063.00,"Textile Knitting and Weaving Machine Setters, Operators, and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516063.htm
+51-6064.00,"Textile Winding, Twisting, and Drawing Out Machine Setters, Operators, and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516064.htm
+51-6091.00,"Extruding and Forming Machine Setters, Operators, and Tenders, Synthetic and Glass Fibers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516091.htm
+51-6092.00,"Fabric and Apparel Patternmakers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516092.htm
+51-6093.00,"Upholsterers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516093.htm
+51-6099.00,"Textile, Apparel, and Furnishings Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes516099.htm
+51-7011.00,"Cabinetmakers and Bench Carpenters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes517011.htm
+51-7021.00,"Furniture Finishers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes517021.htm
+51-7031.00,"Model Makers, Wood",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes517031.htm
+51-7032.00,"Patternmakers, Wood",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes517032.htm
+51-7041.00,"Sawing Machine Setters, Operators, and Tenders, Wood",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes517041.htm
+51-7042.00,"Woodworking Machine Setters, Operators, and Tenders, Except Sawing",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes517042.htm
+51-7099.00,"Woodworkers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes517099.htm
+51-8011.00,"Nuclear Power Reactor Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes518011.htm
+51-8012.00,"Power Distributors and Dispatchers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes518012.htm
+51-8013.00,"Power Plant Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes518013.htm
+51-8021.00,"Stationary Engineers and Boiler Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes518021.htm
+51-8031.00,"Water and Wastewater Treatment Plant and System Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes518031.htm
+51-8091.00,"Chemical Plant and System Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes518091.htm
+51-8092.00,"Gas Plant Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes518092.htm
+51-8093.00,"Petroleum Pump System Operators, Refinery Operators, and Gaugers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes518093.htm
+51-8099.00,"Plant and System Operators, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes518099.htm
+51-9011.00,"Chemical Equipment Operators and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519011.htm
+51-9012.00,"Separating, Filtering, Clarifying, Precipitating, and Still Machine Setters, Operators, and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519012.htm
+51-9021.00,"Crushing, Grinding, and Polishing Machine Setters, Operators, and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519021.htm
+51-9022.00,"Grinding and Polishing Workers, Hand",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519022.htm
+51-9023.00,"Mixing and Blending Machine Setters, Operators, and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519023.htm
+51-9031.00,"Cutters and Trimmers, Hand",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519031.htm
+51-9032.00,"Cutting and Slicing Machine Setters, Operators, and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519032.htm
+51-9041.00,"Extruding, Forming, Pressing, and Compacting Machine Setters, Operators, and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519041.htm
+51-9051.00,"Furnace, Kiln, Oven, Drier, and Kettle Operators and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519051.htm
+51-9061.00,"Inspectors, Testers, Sorters, Samplers, and Weighers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519061.htm
+51-9071.00,"Jewelers and Precious Stone and Metal Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519071.htm
+51-9081.00,"Dental Laboratory Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519081.htm
+51-9082.00,"Medical Appliance Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519082.htm
+51-9083.00,"Ophthalmic Laboratory Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519083.htm
+51-9111.00,"Packaging and Filling Machine Operators and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519111.htm
+51-9123.00,"Painting, Coating, and Decorating Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519123.htm
+51-9124.00,"Coating, Painting, and Spraying Machine Setters, Operators, and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519124.htm
+51-9141.00,"Semiconductor Processing Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519141.htm
+51-9151.00,"Photographic Process Workers and Processing Machine Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519151.htm
+51-9161.00,"Computer Numerically Controlled Tool Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519161.htm
+51-9162.00,"Computer Numerically Controlled Tool Programmers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519162.htm
+51-9191.00,"Adhesive Bonding Machine Operators and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519191.htm
+51-9192.00,"Cleaning, Washing, and Metal Pickling Equipment Operators and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519192.htm
+51-9193.00,"Cooling and Freezing Equipment Operators and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519193.htm
+51-9194.00,"Etchers and Engravers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519194.htm
+51-9195.00,"Molders, Shapers, and Casters, Except Metal and Plastic",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519195.htm
+51-9196.00,"Paper Goods Machine Setters, Operators, and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519196.htm
+51-9197.00,"Tire Builders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519197.htm
+51-9198.00,"Helpers--Production Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519198.htm
+51-9199.00,"Production Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes519199.htm
+53-1041.00,"Aircraft Cargo Handling Supervisors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes531041.htm
+53-1042.00,"First-Line Supervisors of Helpers, Laborers, and Material Movers, Hand",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes531042.htm
+53-1043.00,"First-Line Supervisors of Material-Moving Machine and Vehicle Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes531043.htm
+53-1044.00,"First-Line Supervisors of Passenger Attendants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes531044.htm
+53-1049.00,"First-Line Supervisors of Transportation Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes531049.htm
+53-2011.00,"Airline Pilots, Copilots, and Flight Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes532011.htm
+53-2012.00,"Commercial Pilots",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes532012.htm
+53-2021.00,"Air Traffic Controllers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes532021.htm
+53-2022.00,"Airfield Operations Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes532022.htm
+53-2031.00,"Flight Attendants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes532031.htm
+53-3011.00,"Ambulance Drivers and Attendants, Except Emergency Medical Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes533011.htm
+53-3031.00,"Driver/Sales Workers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes533031.htm
+53-3032.00,"Heavy and Tractor-Trailer Truck Drivers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes533032.htm
+53-3033.00,"Light Truck Drivers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes533033.htm
+53-3051.00,"Bus Drivers, School",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes533051.htm
+53-3052.00,"Bus Drivers, Transit and Intercity",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes533052.htm
+53-3053.00,"Shuttle Drivers and Chauffeurs",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes533053.htm
+53-3054.00,"Taxi Drivers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes533054.htm
+53-3099.00,"Motor Vehicle Operators, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes533099.htm
+53-4011.00,"Locomotive Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes534011.htm
+53-4013.00,"Rail Yard Engineers, Dinkey Operators, and Hostlers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes534013.htm
+53-4022.00,"Railroad Brake, Signal, and Switch Operators and Locomotive Firers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes534022.htm
+53-4031.00,"Railroad Conductors and Yardmasters",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes534031.htm
+53-4041.00,"Subway and Streetcar Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes534041.htm
+53-4099.00,"Rail Transportation Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes534099.htm
+53-5011.00,"Sailors and Marine Oilers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes535011.htm
+53-5021.00,"Captains, Mates, and Pilots of Water Vessels",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes535021.htm
+53-5022.00,"Motorboat Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes535022.htm
+53-5031.00,"Ship Engineers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes535031.htm
+53-6011.00,"Bridge and Lock Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes536011.htm
+53-6021.00,"Parking Attendants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes536021.htm
+53-6031.00,"Automotive and Watercraft Service Attendants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes536031.htm
+53-6032.00,"Aircraft Service Attendants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes536032.htm
+53-6041.00,"Traffic Technicians",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes536041.htm
+53-6051.00,"Transportation Inspectors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes536051.htm
+53-6061.00,"Passenger Attendants",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes536061.htm
+53-6099.00,"Transportation Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes536099.htm
+53-7011.00,"Conveyor Operators and Tenders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537011.htm
+53-7021.00,"Crane and Tower Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537021.htm
+53-7031.00,"Dredge Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537031.htm
+53-7041.00,"Hoist and Winch Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537041.htm
+53-7051.00,"Industrial Truck and Tractor Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537051.htm
+53-7061.00,"Cleaners of Vehicles and Equipment",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537061.htm
+53-7062.00,"Laborers and Freight, Stock, and Material Movers, Hand",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537062.htm
+53-7063.00,"Machine Feeders and Offbearers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537063.htm
+53-7064.00,"Packers and Packagers, Hand",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537064.htm
+53-7065.00,"Stockers and Order Fillers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537065.htm
+53-7071.00,"Gas Compressor and Gas Pumping Station Operators",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537071.htm
+53-7072.00,"Pump Operators, Except Wellhead Pumpers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537072.htm
+53-7073.00,"Wellhead Pumpers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537073.htm
+53-7081.00,"Refuse and Recyclable Material Collectors",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537081.htm
+53-7121.00,"Tank Car, Truck, and Ship Loaders",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537121.htm
+53-7199.00,"Material Moving Workers, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes537199.htm
+55-1011.00,"Air Crew Officers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes551011.htm
+55-1012.00,"Aircraft Launch and Recovery Officers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes551012.htm
+55-1013.00,"Armored Assault Vehicle Officers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes551013.htm
+55-1014.00,"Artillery and Missile Officers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes551014.htm
+55-1015.00,"Command and Control Center Officers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes551015.htm
+55-1016.00,"Infantry Officers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes551016.htm
+55-1017.00,"Special Forces Officers",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes551017.htm
+55-1019.00,"Military Officer Special and Tactical Operations Leaders, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes551019.htm
+55-2011.00,"First-Line Supervisors of Air Crew Members",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes552011.htm
+55-2012.00,"First-Line Supervisors of Weapons Specialists/Crew Members",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes552012.htm
+55-2013.00,"First-Line Supervisors of All Other Tactical Operations Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes552013.htm
+55-3011.00,"Air Crew Members",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes553011.htm
+55-3012.00,"Aircraft Launch and Recovery Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes553012.htm
+55-3013.00,"Armored Assault Vehicle Crew Members",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes553013.htm
+55-3014.00,"Artillery and Missile Crew Members",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes553014.htm
+55-3015.00,"Command and Control Center Specialists",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes553015.htm
+55-3016.00,"Infantry",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes553016.htm
+55-3018.00,"Special Forces",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes553018.htm
+55-3019.00,"Military Enlisted Tactical Operations and Air/Weapons Specialists and Crew Members, All Other",,,,,,BLS OEWS 2024 - National,2024,https://www.bls.gov/oes/current/oes553019.htm

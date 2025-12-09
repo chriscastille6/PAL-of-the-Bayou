@@ -17,7 +17,7 @@ image:
 
 # Research Assessment Library
 
-Our assessment library provides validated psychological instruments designed for academic research and organizational applications. Each assessment combines rigorous scientific methodology with modern, user-friendly interfaces.
+Our assessment library provides validated psychological instruments designed for academic research and organizational applications. Each assessment combines scientific methodology with modern, user-friendly interfaces.
 
 ## Available Assessments
 

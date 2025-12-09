@@ -5,10 +5,56 @@
 
 // Expand blog post content width for better desktop experience
 // Target all possible wrapper and container classes
+// Add some padding/margin for white space on sides
 .universal-wrapper,
 .container,
 .article-container {
-  max-width: 100% !important;
+  max-width: 95% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+  
+  @media (min-width: 992px) {
+    max-width: 90% !important;
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+  }
+  
+  @media (min-width: 1200px) {
+    max-width: 85% !important;
+    padding-left: 4rem !important;
+    padding-right: 4rem !important;
+  }
+}
+
+// Give more space to news and publications block on homepage
+// Target the container within the news_and_publications block specifically
+.news-publications-container,
+section[class*="news_and_publications"] .container,
+.block-news_and_publications .container,
+.news_and_publications .container {
+  max-width: 98% !important;
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+  
+  @media (min-width: 768px) {
+    max-width: 96% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  @media (min-width: 992px) {
+    max-width: 94% !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+  
+  @media (min-width: 1200px) {
+    max-width: 92% !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
 }
 
 // Specifically for blog post pages - make content wider but with more margin

@@ -46,23 +46,25 @@ p <- ggplot(turnover_data, aes(x = factor(connections), y = multiplier, fill = f
   scale_fill_manual(values = color_map, guide = "none") +
   geom_text(aes(x = factor(connections), y = multiplier, label = label), 
             vjust = -0.5, 
-            size = 4, 
+            size = 5.5, 
             fontface = "bold",
             inherit.aes = FALSE) +
   labs(
     x = "Number of Connections Who Have Left",
     y = "Turnover Probability Multiplier",
     title = "Compounding Turnover Probabilities",
-    subtitle = "The odds of an employee turning over increase by approximately 2.1x\nfor every connection that has left Allstate"
+    subtitle = "The odds of an employee turning over increase by approximately 2.1x\nfor every connection that has left"
   ) +
   scale_y_continuous(limits = c(0, 9), breaks = seq(0, 9, by = 1)) +
-  theme_minimal(base_size = 12) +
+  theme_minimal(base_size = 14) +
   theme(
-    plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
-    plot.subtitle = element_text(size = 11, hjust = 0.5, margin = margin(b = 15)),
-    axis.title.x = element_text(size = 12, margin = margin(t = 10)),
-    axis.title.y = element_text(size = 12, margin = margin(r = 10)),
-    axis.text = element_text(size = 10),
+    plot.title = element_text(face = "bold", size = 18, hjust = 0),
+    plot.subtitle = element_text(size = 13, hjust = 0, margin = margin(b = 15)),
+    axis.title.x = element_text(size = 14, margin = margin(t = 10)),
+    axis.title.y = element_text(size = 14, margin = margin(r = 10)),
+    axis.text = element_text(size = 12),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
     panel.grid.major.x = element_blank(),
     panel.grid.minor = element_blank(),
     plot.margin = margin(20, 20, 20, 20)

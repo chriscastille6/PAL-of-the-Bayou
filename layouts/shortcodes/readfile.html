@@ -1,0 +1,17 @@
+{{/* /layouts/shortcodes/readfile.html */}}
+{{/* Hugo shortcode to read and display file contents as code */}}
+{{/* Usage: {{< readfile file="path/to/file" >}} */}}
+{{/* RELEVANT FILES: content/post/what-is-pal-of-the-bayou/index.md */}}
+
+{{- $file := .Get "file" -}}
+{{- if $file -}}
+  {{- if fileExists $file -}}
+    {{- $content := readFile $file -}}
+    {{- $content | htmlEscape -}}
+  {{- else -}}
+    <p style="color: red;">Error: File not found: {{ $file }}</p>
+  {{- end -}}
+{{- else -}}
+  <p style="color: red;">Error: No file specified for readfile shortcode.</p>
+{{- end -}}
+

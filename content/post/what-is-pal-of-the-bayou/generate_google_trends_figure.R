@@ -70,7 +70,7 @@ trend_data_clean <- trend_data %>%
   filter(!is.na(hits)) %>%
   mutate(
     hits = as.numeric(hits),
-    keyword = factor(keyword, levels = unique(keyword))
+    keyword = factor(keyword, levels = names(color_map))
   )
 
 # Manually define label positions for the plot
@@ -94,12 +94,12 @@ color_map <- c(
 # CREATE PLOT
 # -----------------------------------------------------------------------------
 
-p <- ggplot(trend_data_clean, aes(x = date, y = hits, group = keyword)) +
-  geom_point(aes(color = keyword), alpha = 0.3, size = 1) +
-  geom_smooth(aes(color = keyword), method = "loess", se = FALSE, linewidth = 1.2) +
+p <- ggplot(trend_data_clean, aes(x = date, y = hits, color = keyword, group = keyword)) +
+  geom_point(alpha = 0.3, size = 1) +
+  geom_smooth(method = "loess", se = FALSE, linewidth = 1.2) +
   geom_label(data = manual_labels,
              aes(x = x, y = y, label = keyword, fill = keyword),
-             color = "black", fontface = "bold", size = 3,
+             color = "black", fontface = "bold", size = 5,
              label.size = 0.3, label.r = unit(0.15, "lines")) +
   geom_hline(yintercept = 0, color = "black", linewidth = 0.5) +
   geom_vline(xintercept = min(trend_data_clean$date), color = "black", linewidth = 0.5) +
@@ -118,15 +118,17 @@ p <- ggplot(trend_data_clean, aes(x = date, y = hits, group = keyword)) +
     y = "Search Interest",
     caption = "Adapted from van der Laken, P. (2021, February 3). *People analytics vs HR analytics – Google Trends*.\nhttps://paulvanderlaken.com/2021/02/03/people-analytics-hr-analytics-google-trends/"
   ) +
-  theme_minimal(base_size = 13) +
+  theme_minimal(base_size = 14) +
   theme(
     legend.position = "none",
     panel.grid.minor = element_blank(),
-    plot.title = element_text(face = "bold", size = 16, hjust = 0),
-    plot.subtitle = element_text(size = 12, hjust = 0, margin = margin(b = 10)),
-    plot.caption = element_text(size = 8, hjust = 0, margin = margin(t = 10)),
-    axis.text.x = element_text(size = 11, angle = 0, hjust = 0.5),
-    axis.title.x = element_text(size = 12, margin = margin(t = 10))
+    plot.title = element_text(face = "bold", size = 18, hjust = 0),
+    plot.subtitle = element_text(size = 13, hjust = 0, margin = margin(b = 10)),
+    plot.caption = element_text(size = 10, hjust = 0, margin = margin(t = 10)),
+    axis.text.x = element_text(size = 12, angle = 0, hjust = 0.5),
+    axis.text.y = element_text(size = 12),
+    axis.title.x = element_text(size = 14, margin = margin(t = 10)),
+    axis.title.y = element_text(size = 14, margin = margin(r = 10))
   )
 
 # -----------------------------------------------------------------------------

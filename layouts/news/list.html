@@ -58,31 +58,41 @@
     <div class="col-lg-12">
       {{ $paginator := .Paginate $query }}
       
-      {{/* Display posts in card view */}}
-      <div class="row">
+      {{/* Display posts in card view - centered if only one post */}}
+      <div class="row {{ if eq $count 1 }}justify-content-center{{ end }}">
         {{ range $paginator.Pages }}
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="card h-100" style="border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
-            <div class="card-body">
-              <h5 class="card-title">
-                <a href="{{ .RelPermalink }}" style="color: #2c3e50; text-decoration: none; font-weight: 600;">
+        {{/* Use wider column for single post, standard grid for multiple */}}
+        <div class="{{ if eq $count 1 }}col-lg-8 col-md-10{{ else }}col-lg-6 col-md-6{{ end }} mb-4">
+          <div class="card h-100" style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: transform 0.3s ease, box-shadow 0.3s ease; border: none; overflow: hidden;" 
+               onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.12)';" 
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)';">
+            <div class="card-body" style="padding: 2rem;">
+              <h4 class="card-title" style="margin-bottom: 0.75rem;">
+                <a href="{{ .RelPermalink }}" style="color: #2c3e50; text-decoration: none; font-weight: 600; font-size: 1.4rem; line-height: 1.3;">
                   {{ .Title }}
                 </a>
-              </h5>
-              <p class="card-text text-muted" style="font-size: 0.9rem;">
-                {{ .Date.Format "January 2, 2006" }}
+              </h4>
+              <p class="text-muted" style="font-size: 0.95rem; margin-bottom: 1rem; font-weight: 500;">
+                <i class="far fa-calendar-alt me-1"></i>{{ .Date.Format "January 2, 2006" }}
               </p>
-              <p class="card-text" style="color: #555; line-height: 1.6;">
-                {{ .Summary | default .Params.abstract | truncate 150 }}
+              <p class="card-text" style="color: #555; line-height: 1.7; font-size: 1rem; margin-bottom: 1.5rem;">
+                {{ .Summary | default .Params.abstract | truncate 200 }}
               </p>
               
               {{/* Tags */}}
-              <div class="mt-3">
+              <div class="mt-auto">
                 {{ with .Params.tags }}
                   {{ range . }}
-                    <span class="badge bg-light text-dark me-1" style="font-size: 0.75rem;">{{ . }}</span>
+                    <span class="badge bg-light text-dark me-2 mb-2" style="font-size: 0.8rem; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 500;">{{ . }}</span>
                   {{ end }}
                 {{ end }}
+              </div>
+              
+              {{/* Read More Link */}}
+              <div class="mt-3">
+                <a href="{{ .RelPermalink }}" class="btn btn-outline-primary btn-sm" style="font-weight: 500; padding: 0.5rem 1.25rem;">
+                  Read More <i class="fas fa-arrow-right ms-1"></i>
+                </a>
               </div>
             </div>
           </div>

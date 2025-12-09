@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example Profile - Occupational Fit Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        .nav-item {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .nav-item.active {
+            background-color: #1e40af;
+            color: white;
+            border-left: 4px solid #1e3a8a;
+        }
+        .nav-item:hover:not(.active) {
+            background-color: #f3f4f6;
+        }
+        .radar-chart {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 100%;
+            height: auto;
+        }
+        .radar-area {
+            fill: rgba(37, 99, 235, 0.3);
+            stroke: #2563eb;
+            stroke-width: 2.5;
+            transition: all 0.5s ease;
+        }
+        .radar-line {
+            stroke: #2563eb;
+            stroke-width: 2.5;
+            fill: none;
+        }
+        .radar-point {
+            fill: #2563eb;
+            stroke: white;
+            stroke-width: 2.5;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .radar-point:hover {
+            r: 6;
+            fill: #1e40af;
+            stroke-width: 3;
+        }
+        .radar-axis {
+            stroke: #9ca3af;
+            stroke-width: 1.5;
+        }
+        .radar-grid {
+            stroke: #d1d5db;
+            stroke-width: 1;
+            stroke-dasharray: 3 3;
+        }
+        .radar-label {
+            font-size: 12px;
+            fill: #1f2937;
+            font-weight: 600;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen py-8 px-4">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Occupational Fit Assessment Results</h1>
+                <p class="text-gray-600">Example Profile - Industrial-Organizational Psychologists</p>
+            </div>
+
+            <!-- Main Fit Score Card -->
+            <div class="bg-white rounded-lg shadow-md p-8 mb-6 fade-in">
+                <div class="text-center mb-6">
+                    <div class="inline-block">
+                        <div class="text-6xl font-bold text-blue-600 mb-2">67%</div>
+                        <div class="text-xl text-gray-700 font-semibold">Good Fit</div>
+                        <div class="text-gray-500 mt-2">Industrial-Organizational Psychologists</div>
+                    </div>
+                </div>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto">
+                    You show good alignment with this occupation. Your interests, values, and skills align well with the demands of this role.
+                </p>
+            </div>
+
+            <!-- Domain Scores -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Domain Fit Scores</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-gray-700">Interests (RIASEC)</span>
+                            <span class="text-xl font-bold text-blue-600">72%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 72%"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">Strong alignment with investigative and social interests</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-gray-700">Work Values</span>
+                            <span class="text-xl font-bold text-blue-600">68%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 68%"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">Good match with autonomy and achievement values</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-gray-700">Knowledge</span>
+                            <span class="text-xl font-bold text-blue-600">65%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 65%"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">Solid foundation in required knowledge areas</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-gray-700">Skills</span>
+                            <span class="text-xl font-bold text-blue-600">64%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 64%"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">Good match with analytical and communication skills</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-gray-700">Personality</span>
+                            <span class="text-xl font-bold text-blue-600">60%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 60%"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2">Moderate alignment with work style preferences</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Domain Overview Radar -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Domain Fit Overview</h2>
+                <p class="text-sm text-gray-600 mb-4 text-center">Visual representation of your fit across different domains. Hover over points for details.</p>
+                <div class="flex justify-center items-center overflow-x-auto">
+                    <div id="overview-radar" style="width: 400px; height: 400px; overflow: visible; min-width: 400px;"></div>
+                </div>
+            </div>
+
+            <!-- Outcome Predictions -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Outcome Predictions</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <div class="text-3xl font-bold text-blue-600 mb-1">69%</div>
+                        <div class="text-sm font-semibold text-gray-700">Career Satisfaction</div>
+                        <div class="text-xs text-gray-600 mt-1">Good</div>
+                    </div>
+                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <div class="text-3xl font-bold text-blue-600 mb-1">71%</div>
+                        <div class="text-sm font-semibold text-gray-700">Job Satisfaction</div>
+                        <div class="text-xs text-gray-600 mt-1">Strong</div>
+                    </div>
+                    <div class="text-center p-4 bg-green-50 rounded-lg">
+                        <div class="text-3xl font-bold text-green-600 mb-1">73%</div>
+                        <div class="text-sm font-semibold text-gray-700">Needs-Supplies</div>
+                        <div class="text-xs text-gray-600 mt-1">Excellent</div>
+                    </div>
+                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <div class="text-3xl font-bold text-blue-600 mb-1">66%</div>
+                        <div class="text-sm font-semibold text-gray-700">Demands-Abilities</div>
+                        <div class="text-xs text-gray-600 mt-1">Good</div>
+                    </div>
+                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <div class="text-3xl font-bold text-blue-600 mb-1">64%</div>
+                        <div class="text-sm font-semibold text-gray-700">Income Potential</div>
+                        <div class="text-xs text-gray-600 mt-1">Above Avg</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Income Information -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Income & Salary Information</h2>
+                
+                <!-- Predicted Income Based on Fit -->
+                <div class="bg-purple-50 rounded-lg shadow-sm p-6 mb-6 border-l-4 border-purple-500">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">💰 Your Predicted Income Potential</h3>
+                    <p class="text-sm text-gray-700 mb-4">
+                        Based on your fit score (64%) and using Liu et al. (2025) income prediction weights, this predicts your potential position in the <strong>overall income distribution</strong> for Industrial-Organizational Psychologists.
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-6 mb-4">
+                        <div class="text-center p-6 bg-white rounded-lg border-2 border-purple-200">
+                            <div class="text-sm text-purple-700 mb-2 font-medium">Predicted Annual Salary</div>
+                            <div class="text-4xl font-bold text-purple-900 mb-1">$147K</div>
+                            <div class="text-xs text-gray-600 mt-2">Predicted range: $132K - $162K</div>
+                            <div class="text-xs text-gray-500 mt-1">Based on 64% fit score (64th percentile)</div>
+                        </div>
+                        <div class="text-center p-6 bg-white rounded-lg border-2 border-purple-200">
+                            <div class="text-sm text-purple-700 mb-2 font-medium">BLS Median for Comparison</div>
+                            <div class="text-4xl font-bold text-purple-900 mb-1">$147K</div>
+                            <div class="text-xs text-gray-600 mt-2">50th percentile (median)</div>
+                            <div class="text-xs text-gray-500 mt-1">From BLS OEWS data</div>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-4">
+                        <p class="text-xs text-yellow-900">
+                            <strong>⚠️ Important Limitations:</strong> These predictions are based on your <em>interest in learning</em> knowledge and skills, not your actual knowledge and skills. 
+                            Liu et al. (2025) found that actual income is predicted by real knowledge and skill fit, not interests. 
+                            See actual BLS wage data below for real-world salary information.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Actual BLS Wage Data -->
+                <div class="bg-green-50 rounded-lg shadow-sm p-6 mb-6 border-l-4 border-green-500">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">💼 Actual Salary Data from BLS OEWS</h3>
+                    <p class="text-sm text-gray-700 mb-4">
+                        Wage data from the U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics (OEWS) for Industrial-Organizational Psychologists:
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-6 mb-4">
+                        <div class="text-center p-6 bg-white rounded-lg border-2 border-green-200">
+                            <div class="text-sm text-green-700 mb-2 font-medium">Median Annual Wage</div>
+                            <div class="text-4xl font-bold text-green-900 mb-1">$147K</div>
+                            <div class="text-xs text-gray-600 mt-2">50th percentile</div>
+                            <div class="text-xs text-gray-500 mt-1">Data year: 2023</div>
+                        </div>
+                        <div class="text-center p-6 bg-white rounded-lg border-2 border-green-200">
+                            <div class="text-sm text-green-700 mb-2 font-medium">Wage Range</div>
+                            <div class="text-2xl font-bold text-green-900 mb-1">$79K - $189K</div>
+                            <div class="text-xs text-gray-600 mt-2">25th to 75th percentile</div>
+                            <div class="text-xs text-gray-500 mt-1">10th: $46K | 90th: $220K</div>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-300 rounded-lg p-3 mb-4">
+                        <p class="text-xs text-blue-900">
+                            <strong>Data Source:</strong> BLS OEWS 2023 - National
+                        </p>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-4">
+                        <p class="text-xs text-yellow-900">
+                            <strong>Source:</strong> U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics (OEWS) program. 
+                            Data from 2023. Wages represent annual salaries for full-time workers. 
+                            <a href="https://www.bls.gov/oes/" target="_blank" class="text-blue-600 hover:underline">View more BLS wage data →</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Better Fit Alternatives -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Better Fit Alternatives</h2>
+                <p class="text-gray-600 mb-4">Based on your profile, here are occupations where you may have an even better fit. <strong>Click any occupation to view its complete profile:</strong></p>
+                
+                <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-6">
+                    <p class="text-sm text-blue-900">
+                        <strong>💡 Navigation:</strong> Each alternative occupation has its own complete profile page with fit scores, outcome predictions, income data, and recommendations—just like this one!
+                    </p>
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- Alternative 1 -->
+                    <div class="border-2 border-green-300 rounded-lg p-6 hover:shadow-lg transition-all cursor-pointer bg-gradient-to-r from-green-50 to-white">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h3 class="text-xl font-bold text-gray-900">1. Psychologists, All Other</h3>
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">78% Fit</span>
+                                    <span class="text-sm text-gray-600">Excellent Fit</span>
+                                </div>
+                                <button class="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-semibold">
+                                    View Full Profile →
+                                </button>
+                            </div>
+                            <div class="text-right ml-4">
+                                <div class="text-2xl font-bold text-green-600">$117,750</div>
+                                <div class="text-xs text-gray-600">Median Wage</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-2"><strong>Why:</strong> Your strong interest in research and analytical thinking aligns perfectly with specialized psychology roles.</p>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Apply psychological principles and methods in specialized areas such as research, consulting, or applied psychology settings.
+                        </p>
+                        <div class="text-xs text-gray-500 italic">
+                            Click "View Full Profile" to see complete fit analysis, outcome predictions, BLS wage data, and recommendations for this occupation.
+                        </div>
+                    </div>
+
+                    <!-- Alternative 2 -->
+                    <div class="border-2 border-blue-300 rounded-lg p-6 hover:shadow-lg transition-all cursor-pointer bg-gradient-to-r from-blue-50 to-white">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h3 class="text-xl font-bold text-gray-900">2. Management Analysts</h3>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">75% Fit</span>
+                                    <span class="text-sm text-gray-600">Very Good Fit</span>
+                                </div>
+                                <button class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-semibold">
+                                    View Full Profile →
+                                </button>
+                            </div>
+                            <div class="text-right ml-4">
+                                <div class="text-2xl font-bold text-blue-600">$99,410</div>
+                                <div class="text-xs text-gray-600">Median Wage</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-2"><strong>Why:</strong> Your analytical skills and interest in organizational effectiveness match consulting and analysis roles.</p>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Conduct organizational studies and evaluations, design systems and procedures, and provide management consulting services.
+                        </p>
+                        <div class="text-xs text-gray-500 italic">
+                            Click "View Full Profile" to see complete fit analysis, outcome predictions, BLS wage data, and recommendations for this occupation.
+                        </div>
+                    </div>
+
+                    <!-- Alternative 3 -->
+                    <div class="border-2 border-blue-300 rounded-lg p-6 hover:shadow-lg transition-all cursor-pointer bg-gradient-to-r from-blue-50 to-white">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h3 class="text-xl font-bold text-gray-900">3. Training and Development Specialists</h3>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">73% Fit</span>
+                                    <span class="text-sm text-gray-600">Very Good Fit</span>
+                                </div>
+                                <button class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-semibold">
+                                    View Full Profile →
+                                </button>
+                            </div>
+                            <div class="text-right ml-4">
+                                <div class="text-2xl font-bold text-blue-600">$64,340</div>
+                                <div class="text-xs text-gray-600">Median Wage</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-2"><strong>Why:</strong> Your combination of analytical skills and interest in human development fits training and development work.</p>
+                        <p class="text-gray-600 text-sm mb-3">
+                            Design and conduct training programs to improve employee skills and knowledge. Assess training needs and evaluate program effectiveness.
+                        </p>
+                        <div class="text-xs text-gray-500 italic">
+                            Click "View Full Profile" to see complete fit analysis, outcome predictions, BLS wage data, and recommendations for this occupation.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-gray-50 rounded-lg p-4 border-l-4 border-gray-400">
+                    <p class="text-sm text-gray-700">
+                        <strong>Note:</strong> Each alternative occupation profile includes the same comprehensive analysis as your selected occupation:
+                    </p>
+                    <ul class="text-sm text-gray-600 mt-2 list-disc list-inside space-y-1">
+                        <li>Complete domain fit scores (Interests, Values, Knowledge, Skills, Personality)</li>
+                        <li>Outcome predictions (Career Satisfaction, Job Satisfaction, Needs-Supplies, Demands-Abilities, Income)</li>
+                        <li>BLS wage data with full percentile distribution</li>
+                        <li>Predicted income based on fit score</li>
+                        <li>Personalized recommendations and next steps</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Recommendations</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-green-700 mb-3">Strengths to Leverage</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <span class="text-green-600 mr-2">✓</span>
+                                <span>Strong analytical and research skills</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-600 mr-2">✓</span>
+                                <span>Good alignment with investigative work</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-600 mr-2">✓</span>
+                                <span>Strong values fit with autonomy and achievement</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-blue-700 mb-3">Areas for Development</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start">
+                                <span class="text-blue-600 mr-2">→</span>
+                                <span>Consider additional training in statistical analysis</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-600 mr-2">→</span>
+                                <span>Build experience with organizational assessment tools</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-600 mr-2">→</span>
+                                <span>Develop consulting and presentation skills</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6 pt-6 border-t">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Next Steps</h3>
+                    <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                        <li><strong>Research:</strong> Explore graduate programs in I-O Psychology</li>
+                        <li><strong>Network:</strong> Connect with professionals in the field</li>
+                        <li><strong>Experience:</strong> Seek internships or entry-level positions</li>
+                        <li><strong>Certification:</strong> Consider SIOP certification after graduation</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-gray-100 rounded-lg p-6 text-center text-sm text-gray-600">
+                <p class="mb-2">
+                    This assessment is based on the integrative fit framework from Liu et al. (2024), measuring person-occupation fit across five key domains.
+                </p>
+                <p>
+                    Wage data sourced from U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics (OEWS) 2023.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for radar chart
+        const sampleData = [
+            { label: 'RIASEC Interests', value: 72 },
+            { label: 'Work Values', value: 68 },
+            { label: 'Knowledge Interest', value: 65 },
+            { label: 'Skills Interest', value: 63 },
+            { label: 'Personality', value: 60 }
+        ];
+
+        function drawRadarChart(containerId, data, maxValue = 100) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const size = 400;
+            const center = size / 2;
+            const radius = 120;
+            const numAxes = data.length;
+            const angleStep = (2 * Math.PI) / numAxes;
+            
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', size);
+            svg.setAttribute('height', size);
+            svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
+            svg.setAttribute('class', 'radar-chart');
+            svg.setAttribute('style', 'overflow: visible; max-width: 100%; height: auto;');
+            
+            // Draw grid circles
+            for (let i = 1; i <= 5; i++) {
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', center);
+                circle.setAttribute('cy', center);
+                circle.setAttribute('r', (radius * i) / 5);
+                circle.setAttribute('class', 'radar-grid');
+                circle.setAttribute('fill', 'none');
+                svg.appendChild(circle);
+            }
+            
+            // Draw axes and labels
+            const points = [];
+            data.forEach((item, index) => {
+                const angle = index * angleStep - Math.PI / 2;
+                const value = Math.min((item.value / maxValue) * radius, radius);
+                const x = center + value * Math.cos(angle);
+                const y = center + value * Math.sin(angle);
+                points.push({ x, y, angle, value: item.value, label: item.label });
+                
+                // Draw axis line
+                const axisLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                axisLine.setAttribute('x1', center);
+                axisLine.setAttribute('y1', center);
+                axisLine.setAttribute('x2', center + radius * Math.cos(angle));
+                axisLine.setAttribute('y2', center + radius * Math.sin(angle));
+                axisLine.setAttribute('class', 'radar-axis');
+                svg.appendChild(axisLine);
+                
+                // Draw label
+                const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                const labelOffset = 50;
+                const labelX = center + (radius + labelOffset) * Math.cos(angle);
+                const labelY = center + (radius + labelOffset) * Math.sin(angle);
+                
+                let textAnchor = 'middle';
+                let dy = '0.35em';
+                const degrees = (angle * 180) / Math.PI;
+                if (degrees > -45 && degrees < 45) {
+                    textAnchor = 'start';
+                    dy = '0.35em';
+                } else if (degrees > 135 || degrees < -135) {
+                    textAnchor = 'end';
+                    dy = '0.35em';
+                } else if (degrees > 45 && degrees < 135) {
+                    textAnchor = 'middle';
+                    dy = '0.1em';
+                } else {
+                    textAnchor = 'middle';
+                    dy = '0.6em';
+                }
+                
+                label.setAttribute('x', labelX);
+                label.setAttribute('y', labelY);
+                label.setAttribute('text-anchor', textAnchor);
+                label.setAttribute('dominant-baseline', 'middle');
+                label.setAttribute('dy', dy);
+                label.setAttribute('class', 'radar-label');
+                label.textContent = item.label;
+                svg.appendChild(label);
+                
+                // Add value label below domain name
+                const valueLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                valueLabel.setAttribute('x', labelX);
+                valueLabel.setAttribute('y', parseFloat(labelY) + 14);
+                valueLabel.setAttribute('text-anchor', textAnchor);
+                valueLabel.setAttribute('dominant-baseline', 'middle');
+                valueLabel.setAttribute('class', 'radar-label');
+                valueLabel.setAttribute('style', 'font-size: 10px; fill: #6b7280; font-weight: 500;');
+                valueLabel.textContent = `${item.value}%`;
+                svg.appendChild(valueLabel);
+            });
+            
+            // Draw filled area
+            if (points.length > 0) {
+                const areaPath = points.map((p, i) => 
+                    i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`
+                ).join(' ') + ' Z';
+                const area = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                area.setAttribute('d', areaPath);
+                area.setAttribute('class', 'radar-area');
+                svg.appendChild(area);
+                
+                // Draw outline
+                const outline = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                outline.setAttribute('d', areaPath);
+                outline.setAttribute('class', 'radar-line');
+                svg.appendChild(outline);
+                
+                // Draw points
+                points.forEach(point => {
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', point.x);
+                    circle.setAttribute('cy', point.y);
+                    circle.setAttribute('r', 4);
+                    circle.setAttribute('class', 'radar-point');
+                    circle.setAttribute('title', `${point.label}: ${point.value}%`);
+                    svg.appendChild(circle);
+                });
+            }
+            
+            container.innerHTML = '';
+            container.appendChild(svg);
+        }
+
+        // Draw radar chart when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            drawRadarChart('overview-radar', sampleData);
+        });
+    </script>
+</body>
+</html>
+

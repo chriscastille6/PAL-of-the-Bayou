@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- People Analyst Fit Assessment -->
+    <!-- Occupational Fit Assessment -->
     <!-- Location: /static/assessments/people-analytics-fit/index.html -->
-    <!-- Purpose: Comprehensive assessment measuring fit with People Analyst role across five key domains -->
+    <!-- Purpose: Comprehensive assessment measuring fit with any occupation across five key domains -->
     <!-- Why: Provides validated person-occupation fit measurement based on Liu et al. (2024) framework -->
     <!-- RELEVANT FILES: content/assessments.md, static/assessments/library/index.html -->
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>People Analyst Fit Assessment - PAL of the Bayou</title>
+    <title>Occupational Fit Assessment - PAL of the Bayou</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
@@ -82,42 +82,46 @@
         }
         .radar-chart {
             font-family: system-ui, -apple-system, sans-serif;
+            max-width: 100%;
+            height: auto;
         }
         .radar-area {
-            fill: rgba(37, 99, 235, 0.25);
+            fill: rgba(37, 99, 235, 0.3);
             stroke: #2563eb;
-            stroke-width: 2;
+            stroke-width: 2.5;
             transition: all 0.5s ease;
         }
         .radar-line {
             stroke: #2563eb;
-            stroke-width: 2;
+            stroke-width: 2.5;
             fill: none;
         }
         .radar-point {
             fill: #2563eb;
             stroke: white;
-            stroke-width: 2;
+            stroke-width: 2.5;
             transition: all 0.3s ease;
             cursor: pointer;
         }
         .radar-point:hover {
-            r: 5;
+            r: 6;
             fill: #1e40af;
+            stroke-width: 3;
         }
         .radar-axis {
-            stroke: #d1d5db;
-            stroke-width: 1;
+            stroke: #9ca3af;
+            stroke-width: 1.5;
         }
         .radar-grid {
-            stroke: #e5e7eb;
+            stroke: #d1d5db;
             stroke-width: 1;
-            stroke-dasharray: 2 2;
+            stroke-dasharray: 3 3;
         }
         .radar-label {
-            font-size: 11px;
-            fill: #374151;
-            font-weight: 500;
+            font-size: 12px;
+            fill: #1f2937;
+            font-weight: 600;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
         }
         .domain-bar {
             transition: width 0.8s ease-in-out;
@@ -145,7 +149,7 @@
             <div class="text-center space-y-8">
                 <div class="space-y-4">
                     <h1 class="text-5xl font-semibold text-gray-900 tracking-tight">
-                        People Analyst<br>Fit Assessment
+                        Occupational<br>Fit Assessment
                     </h1>
                     <p class="text-xl text-gray-600 max-w-xl mx-auto">
                         Based on Liu et al. (2025) Integrative Fit Assessment Framework
@@ -155,7 +159,7 @@
                 <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-left space-y-6">
                     <h2 class="text-2xl font-semibold text-gray-900">About This Assessment</h2>
                     <div class="space-y-3 text-gray-700">
-                        <p>This assessment measures your fit with the People Analyst role across <strong>five key domains</strong>:</p>
+                        <p>This assessment measures your fit with any occupation across <strong>five key domains</strong>:</p>
                         <ul class="list-disc list-inside space-y-1 ml-4 text-sm">
                             <li><strong>Interests</strong> (60 items) - Basic interests & RIASEC categories</li>
                             <li><strong>Work Values</strong> (24 items) - What you find meaningful in work</li>
@@ -170,6 +174,42 @@
                     </div>
                     <div id="loading-status" class="hidden text-sm text-blue-600">
                         Loading assessment data...
+                    </div>
+                    <div class="space-y-2">
+                        <label for="occupation-search" class="block text-sm font-medium text-gray-700">
+                            Search for an occupation:
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="text"
+                                id="occupation-search"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
+                                placeholder="Type an occupation (e.g., 'psychologist', 'engineer', 'teacher')..."
+                                disabled
+                                autocomplete="off"
+                            />
+                            <div id="search-results" class="hidden absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-96 overflow-y-auto">
+                                <!-- Search results will appear here -->
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500">
+                            Type the name of an occupation you're interested in. We'll show you matching occupations from O*NET. Select one to see your fit score and explore alternatives.
+                        </p>
+                        <div id="selected-occupation-display" class="hidden mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-blue-900">Selected:</p>
+                                    <p id="selected-occupation-title" class="text-base font-semibold text-blue-700"></p>
+                                </div>
+                                <button 
+                                    id="clear-selection"
+                                    onclick="clearOccupationSelection()"
+                                    class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                                >
+                                    Change
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <button 
                         id="start-btn"
@@ -328,6 +368,8 @@
         // Global state
         let itemBank = null;
         let occupationProfile = null;
+        let allOccupations = [];
+        let selectedOccupation = null;
         let responses = {
             interests: {},
             values: {},
@@ -346,17 +388,72 @@
         };
 
         // Load data on page load
-        function loadAssessmentData() {
+        async function loadAssessmentData() {
             try {
                 document.getElementById('loading-status').classList.remove('hidden');
+                document.getElementById('loading-status').textContent = 'Loading assessment data...';
                 
-                // Use embedded data
+                // Use embedded item bank
                 itemBank = embeddedItemBank;
-                occupationProfile = embeddedOccupationData.occupations[0];
+
+                // Load all occupations from JSON file
+                try {
+                    const response = await fetch('occupations_all.json');
+                    if (!response.ok) {
+                        throw new Error('Failed to load occupations file');
+                    }
+                    const data = await response.json();
+                    allOccupations = data.occupations || [];
+                    
+                    // Sort occupations alphabetically by title
+                    allOccupations.sort((a, b) => a.title.localeCompare(b.title));
+                    
+                    // Enable search input
+                    const searchInput = document.getElementById('occupation-search');
+                    searchInput.disabled = false;
+                    
+                    // Search functionality
+                    let searchTimeout;
+                    searchInput.addEventListener('input', function() {
+                        clearTimeout(searchTimeout);
+                        const query = this.value.trim().toLowerCase();
+                        
+                        if (query.length < 2) {
+                            document.getElementById('search-results').classList.add('hidden');
+                            return;
+                        }
+                        
+                        searchTimeout = setTimeout(() => {
+                            const results = searchOccupations(query, allOccupations, 10);
+                            displaySearchResults(results);
+                        }, 200);
+                    });
+                    
+                    // Close search results when clicking outside
+                    document.addEventListener('click', function(e) {
+                        const searchContainer = document.getElementById('occupation-search').parentElement;
+                        if (!searchContainer.contains(e.target)) {
+                            document.getElementById('search-results').classList.add('hidden');
+                        }
+                    });
+                    
+                } catch (fetchError) {
+                    console.error('Error loading occupations:', fetchError);
+                    // Fallback to embedded occupation if file not found
+                    allOccupations = embeddedOccupationData.occupations;
+                    selectedOccupation = embeddedOccupationData.occupations[0];
+                    occupationProfile = selectedOccupation;
+                    
+                    // Fallback: Set default occupation
+                    selectedOccupation = embeddedOccupationData.occupations[0];
+                    occupationProfile = selectedOccupation;
+                    document.getElementById('occupation-search').value = selectedOccupation.title;
+                    document.getElementById('selected-occupation-title').textContent = selectedOccupation.title;
+                    document.getElementById('selected-occupation-display').classList.remove('hidden');
+                    document.getElementById('start-btn').disabled = false;
+                }
 
                 document.getElementById('loading-status').classList.add('hidden');
-                document.getElementById('start-btn').disabled = false;
-                document.getElementById('start-btn').textContent = 'Begin Assessment';
             } catch (error) {
                 console.error('Error loading data:', error);
                 document.getElementById('loading-status').innerHTML = `
@@ -877,18 +974,176 @@
             };
         }
 
-        function calculateResults() {
-            const domainScores = scoreRespondent(responses, itemBank);
-            const fitResult = calculateFitScores(domainScores, occupationProfile);
+        // Calculate fit for all occupations
+        function calculateAllOccupationsFit(domainScores, occupations) {
+            const rankedOccupations = [];
             
-            showResults(fitResult);
+            for (const occupation of occupations) {
+                const fitResult = calculateFitScores(domainScores, occupation);
+                rankedOccupations.push({
+                    occupation: occupation,
+                    fitResult: fitResult
+                });
+            }
+            
+            // Sort by composite fit (descending)
+            rankedOccupations.sort((a, b) => b.fitResult.composite_fit - a.fitResult.composite_fit);
+            
+            return rankedOccupations;
         }
 
-        // Store globally for radar chart redrawing
+        // Helper function to check if two occupations are similar (same field/category)
+        function areOccupationsSimilar(occ1, occ2) {
+            const title1 = occ1.title.toLowerCase();
+            const title2 = occ2.title.toLowerCase();
+            
+            // Extract key words from selected occupation
+            const keywords = title1.split(/[\s,]+/).filter(word => 
+                word.length > 4 && // Only meaningful words
+                !['and', 'the', 'other', 'all'].includes(word)
+            );
+            
+            // Check if alternative contains any of the key words
+            for (const keyword of keywords) {
+                if (title2.includes(keyword)) {
+                    return true;
+                }
+            }
+            
+            // Also check for common field indicators
+            const fieldIndicators = [
+                ['psycholog', 'psychologist', 'psychology'],
+                ['counselor', 'counseling', 'counsel'],
+                ['teacher', 'teaching', 'educator', 'instructor'],
+                ['nurse', 'nursing'],
+                ['engineer', 'engineering'],
+                ['analyst', 'analysis', 'analytics'],
+                ['manager', 'management'],
+                ['scientist', 'science'],
+                ['therapist', 'therapy'],
+                ['social worker', 'social work'],
+                ['lawyer', 'attorney', 'legal'],
+                ['doctor', 'physician', 'medical'],
+                ['dentist', 'dental'],
+                ['veterinarian', 'veterinary'],
+                ['accountant', 'accounting'],
+                ['architect', 'architecture'],
+                ['designer', 'design'],
+            ];
+            
+            for (const fieldGroup of fieldIndicators) {
+                const hasField1 = fieldGroup.some(term => title1.includes(term));
+                const hasField2 = fieldGroup.some(term => title2.includes(term));
+                if (hasField1 && hasField2) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
+        function calculateResults() {
+            const domainScores = scoreRespondent(responses, itemBank);
+            globalDomainScores = domainScores; // Store for navigation
+            const selectedFitResult = calculateFitScores(domainScores, occupationProfile);
+            const selectedFitScore = selectedFitResult.composite_fit;
+            
+            // Calculate fit for ALL occupations and rank them by fit score (descending)
+            // This scores the user against all 867 occupations
+            const allRanked = calculateAllOccupationsFit(domainScores, allOccupations);
+            globalAllRankedOccupations = allRanked; // Store for navigation
+            
+            // Find the TOP 3 best-fitting occupations overall
+            // Criteria: (1) Must have STRICTLY HIGHER fit score than selected, (2) Exclude selected occupation, (3) Exclude similar occupations
+            // Result: Top 3 best fits from diverse fields/categories that are better than selected
+            console.log('Selected occupation:', selectedOccupation.title, 'Fit score:', selectedFitScore);
+            
+            const alternatives = allRanked
+                .filter(ranked => {
+                    // Must have STRICTLY BETTER fit score than selected occupation (> not >=)
+                    if (ranked.fitResult.composite_fit <= selectedFitScore) {
+                        return false;
+                    }
+                    // Exclude the selected occupation
+                    if (ranked.occupation.onet_code === selectedOccupation.onet_code) {
+                        return false;
+                    }
+                    // Exclude similar occupations (same field/category)
+                    if (areOccupationsSimilar(selectedOccupation, ranked.occupation)) {
+                        return false;
+                    }
+                    return true;
+                })
+                .slice(0, 3) // Get top 3 best-fitting diverse alternatives
+                .map(ranked => {
+                    console.log('Alternative:', ranked.occupation.title, 'Fit score:', ranked.fitResult.composite_fit);
+                    return ranked.fitResult;
+                });
+            
+            console.log('Found', alternatives.length, 'alternatives with better fit scores');
+            
+            // Double-check: Only pass alternatives with strictly better fit scores
+            const finalAlternatives = alternatives.filter(alt => {
+                return alt.composite_fit > selectedFitScore;
+            });
+            
+            console.log('Final alternatives count:', finalAlternatives.length);
+            if (finalAlternatives.length > 0) {
+                console.log('Final alternatives:', finalAlternatives.map(a => ({
+                    title: a.occupation.title,
+                    fit: Math.round(((a.composite_fit + 1) / 2) * 100)
+                })));
+            }
+            
+            showResults(selectedFitResult, finalAlternatives);
+        }
+
+        // Function to view an alternative occupation's full profile
+        function viewAlternativeProfile(alternativeIndex) {
+            // Get the valid alternatives (filtered to only those with better fit scores)
+            const validAlternatives = globalAlternatives.filter(alt => {
+                const selectedFitPct = Math.round(((globalFitResult.composite_fit + 1) / 2) * 100);
+                const altFitPct = Math.round(((alt.composite_fit + 1) / 2) * 100);
+                return altFitPct > selectedFitPct;
+            });
+            
+            if (!validAlternatives || alternativeIndex < 0 || alternativeIndex >= validAlternatives.length) {
+                console.warn('Invalid alternative index:', alternativeIndex, 'Valid alternatives:', validAlternatives.length);
+                return;
+            }
+            
+            const alternativeFitResult = validAlternatives[alternativeIndex];
+            
+            // Create new alternatives list: original selected + other alternatives (excluding the one we're viewing)
+            const newAlternatives = [
+                globalFitResult, // Original selected becomes an alternative
+                ...validAlternatives.filter((alt, idx) => idx !== alternativeIndex)
+            ].slice(0, 3); // Keep top 3
+            
+            // Show results with the alternative as the selected occupation
+            showResults(alternativeFitResult, newAlternatives);
+        }
+
+        // Function to return to original selected occupation
+        function returnToSelectedOccupation() {
+            if (globalFitResult && globalAlternatives) {
+                showResults(globalFitResult, globalAlternatives);
+            }
+        }
+
+        // Store globally for radar chart redrawing and navigation
         let globalFitResult = null;
         let globalDomainFitMap = null;
+        let globalAlternatives = [];
+        let globalSelectedOccupation = null;
+        let globalAllRankedOccupations = [];
+        let globalDomainScores = null; // Store domain scores to recalculate if needed
 
-        function showResults(fitResult) {
+        function showResults(fitResult, alternatives = []) {
+            // Store globally for navigation
+            globalFitResult = fitResult;
+            globalAlternatives = alternatives;
+            globalSelectedOccupation = fitResult.occupation;
             document.getElementById('assessment-screen').classList.add('hidden');
             document.getElementById('results-screen').classList.remove('hidden');
 
@@ -923,7 +1178,7 @@
 
             // Generate results content with all outcomes
             const resultsContent = document.getElementById('results-content');
-            resultsContent.innerHTML = generateResultsHTML(fitResult, outcomeScores, domainFitMap, interpretation);
+            resultsContent.innerHTML = generateResultsHTML(fitResult, outcomeScores, domainFitMap, interpretation, alternatives);
 
             // Ensure overview is active and visible on initial load
             const overview = document.getElementById('overview');
@@ -964,17 +1219,121 @@
         }
 
         // Generate HTML for all outcome sections
-        function generateResultsHTML(fitResult, outcomeScores, domainFitMap, interpretation) {
+        function generateResultsHTML(fitResult, outcomeScores, domainFitMap, interpretation, alternatives = []) {
             const fitPercentage = Math.round(((fitResult.composite_fit + 1) / 2) * 100);
             const softFeaturesPct = Math.round(((fitResult.soft_features_fit + 1) / 2) * 100);
             const learningInterestPct = Math.round(((fitResult.learning_interest_fit + 1) / 2) * 100);
+
+            // Generate alternatives HTML
+            let alternativesHTML = '';
+            const selectedFitPct = Math.round(((fitResult.composite_fit + 1) / 2) * 100);
+            
+            // Verify all alternatives actually have better fit scores
+            const validAlternatives = alternatives.filter(alt => {
+                const altFitPct = Math.round(((alt.composite_fit + 1) / 2) * 100);
+                return altFitPct > selectedFitPct;
+            });
+            
+            if (validAlternatives.length > 0) {
+                // Check if we're viewing an alternative (not the original selected)
+                const isViewingAlternative = globalSelectedOccupation && 
+                    fitResult.occupation.onet_code !== globalSelectedOccupation.onet_code;
+                
+                alternativesHTML = `
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4">${isViewingAlternative ? 'Other Occupations to Compare' : 'Better Fit Alternatives'}</h2>
+                        <p class="text-gray-600 mb-6">${isViewingAlternative ? 'Compare with these other occupations:' : `Based on your assessment across all 867 occupations, here are the top ${validAlternatives.length} occupations where you have a <strong>better fit</strong> than ${fitResult.occupation.title} (${selectedFitPct}%). These are scored from diverse fields to help you explore different career paths. Click any to view its complete profile:`}</p>
+                        ${isViewingAlternative ? `
+                        <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-6">
+                            <p class="text-sm text-blue-900">
+                                <strong>💡 Currently Viewing:</strong> ${fitResult.occupation.title} (${Math.round(((fitResult.composite_fit + 1) / 2) * 100)}% fit)
+                            </p>
+                        </div>
+                        ` : ''}
+                        <div class="space-y-6">
+                            ${validAlternatives.map((alt, index) => {
+                                const altFitPct = Math.round(((alt.composite_fit + 1) / 2) * 100);
+                                const altInterpretation = getInterpretation(altFitPct);
+                                const isSelected = alt.occupation.onet_code === globalSelectedOccupation?.onet_code;
+                                return `
+                                    <div class="bg-white rounded-lg shadow-sm p-8 cursor-pointer hover:shadow-lg transition-all ${isSelected ? 'ring-2 ring-blue-500' : ''}" 
+                                         onclick="viewAlternativeProfile(${index})"
+                                         style="background: ${altInterpretation.gradient};">
+                                        <div class="text-center text-white">
+                                            ${isSelected ? '<div class="mb-2 text-sm bg-white bg-opacity-30 px-3 py-1 rounded-full inline-block">Your Selected Occupation</div>' : ''}
+                                            <div class="flex items-center justify-center gap-2 mb-2">
+                                                <h2 class="text-2xl font-semibold">${alt.occupation.title}</h2>
+                                                <a 
+                                                    href="https://www.onetonline.org/link/summary/${alt.occupation.onet_code}" 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer"
+                                                    onclick="event.stopPropagation()"
+                                                    class="text-white hover:text-blue-200 text-sm font-medium underline"
+                                                    title="View on O*NET Online"
+                                                >
+                                                    O*NET →
+                                                </a>
+                                            </div>
+                                            <div class="text-6xl font-bold my-4">${altFitPct}%</div>
+                                            <div class="text-xl mb-1">Overall Fit Score</div>
+                                            <p class="text-sm opacity-90 mb-4">(${altInterpretation.level})</p>
+                                            ${alt.occupation.wageMedian ? `
+                                            <div class="mt-4 mb-2">
+                                                <div class="text-2xl font-bold">$${Math.round(alt.occupation.wageMedian / 1000)}K</div>
+                                                <div class="text-sm opacity-90">Median Annual Wage</div>
+                                            </div>
+                                            ` : ''}
+                                            <p class="mt-6 text-base opacity-95">${alt.occupation.description}</p>
+                                            <div class="mt-6 text-left bg-white bg-opacity-20 rounded-lg p-4">
+                                                <p class="font-medium mb-2">${altInterpretation.summary}</p>
+                                                <p class="text-sm">${altInterpretation.details}</p>
+                                            </div>
+                                            <button class="mt-6 px-6 py-3 bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-colors font-semibold shadow-lg" onclick="event.stopPropagation(); viewAlternativeProfile(${index})">
+                                                ${isSelected ? '← Currently Viewing' : 'View Full Profile →'}
+                                            </button>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                        <div class="mt-6 bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
+                            <p class="text-sm text-blue-900 mb-2">
+                                <strong>💡 Next Steps:</strong>
+                            </p>
+                            <ul class="text-sm text-blue-800 space-y-1 list-disc list-inside ml-2">
+                                <li><strong>Click any occupation above</strong> to view its complete profile with fit scores, outcome predictions, BLS wage data, and personalized recommendations</li>
+                                <li>Use the navigation buttons on the left to explore different aspects of your fit (career satisfaction, income potential, etc.)</li>
+                                <li>Download your PDF results below to save and share with career counselors or advisors</li>
+                                <li>Consider researching these occupations further to learn about education requirements, job outlook, and day-to-day work</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const selectedFitPct = Math.round(((fitResult.composite_fit + 1) / 2) * 100);
+                alternativesHTML = `
+                    <div class="mb-8 bg-green-50 rounded-lg p-6 border-l-4 border-green-500">
+                        <p class="text-green-900 font-medium mb-2">
+                            🎉 Excellent news! ${fitResult.occupation.title} appears to be among your best fits!
+                        </p>
+                        <p class="text-green-800 text-sm">
+                            After scoring your profile against all 867 occupations, ${fitResult.occupation.title} (${selectedFitPct}% fit) ranks among your top matches. While we exclude similar occupations in the same field, this suggests you've chosen well. Consider exploring related specializations or career paths within this field.
+                        </p>
+                    </div>
+                `;
+            }
 
             return `
                 <!-- Overview Section -->
                 <div id="overview" class="outcome-content active">
                     <div class="mb-8">
-                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Your People Analytics Fit Profile</h1>
-                        <p class="text-gray-600">Explore how your fit relates to different career outcomes</p>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Your ${fitResult.occupation.title} Fit Profile</h1>
+                        <p class="text-gray-600 mb-4">Explore how your fit relates to different career outcomes</p>
+                        <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
+                            <p class="text-sm text-blue-900">
+                                <strong>💡 What This Means:</strong> This assessment compares your interests, values, and learning goals with what ${fitResult.occupation.title} actually requires. Your fit score shows how well your profile matches this career path. Use the navigation buttons on the left to explore different aspects of your fit, including career satisfaction, income potential, and more.
+                            </p>
+                        </div>
                     </div>
 
                     <!-- How Fit is Measured Section -->
@@ -983,15 +1342,15 @@
                         
                         <div id="plain-explanation" class="space-y-3 text-gray-700">
                             <p>
-                                <strong>Plain Language:</strong> Think of fit like comparing two puzzle pieces. We look at how similar your interests, values, and goals are to what People Analytics careers actually need. Instead of asking if you already know everything (since you're a student), we focus on two things:
+                                <strong>Plain Language:</strong> Think of fit like comparing two puzzle pieces. We look at how similar your interests, values, and goals are to what your chosen occupation actually needs. Instead of asking if you already know everything (since you're a student), we focus on two things:
                             </p>
                             <ol class="list-decimal list-inside space-y-2 ml-4">
-                                <li><strong>Core Fit (50%):</strong> How much do your interests, work values, and personality match People Analytics? This includes what you enjoy doing, what matters to you in work, and your natural tendencies.</li>
-                                <li><strong>Learning Interest (50%):</strong> How interested are you in learning the knowledge and developing the skills that People Analysts need? We ask about your interest in learning, not what you already know, because we want to understand your potential.</li>
+                                <li><strong>Core Fit (50%):</strong> How much do your interests, work values, and personality match your chosen occupation? This includes what you enjoy doing, what matters to you in work, and your natural tendencies.</li>
+                                <li><strong>Learning Interest (50%):</strong> How interested are you in learning the knowledge and developing the skills that this occupation needs? We ask about your interest in learning, not what you already know, because we want to understand your potential.</li>
                             </ol>
                             <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
                                 <p class="text-sm text-blue-900">
-                                    <strong>Important Note:</strong> Unlike the original research study (Liu et al., 2024), we measure your <em>interest in learning</em> knowledge and skills rather than your current knowledge and skills. This makes the assessment more relevant for college students who are still building their expertise. Your interest in learning these areas shows your potential to succeed in People Analytics.
+                                    <strong>Important Note:</strong> Unlike the original research study (Liu et al., 2024), we measure your <em>interest in learning</em> knowledge and skills rather than your current knowledge and skills. This makes the assessment more relevant for college students who are still building their expertise. Your interest in learning these areas shows your potential to succeed in your chosen occupation.
                                 </p>
                             </div>
                             <p class="text-xs text-gray-500 mt-4">
@@ -1006,7 +1365,7 @@
                         
                         <div id="technical-explanation" class="hidden space-y-3 text-gray-700">
                             <p>
-                                <strong>Technical Explanation:</strong> Fit is calculated using profile correlation (Pearson r) between your personal characteristics profile and the People Analytics occupational profile across multiple domains. For each domain:
+                                <strong>Technical Explanation:</strong> Fit is calculated using profile correlation (Pearson r) between your personal characteristics profile and the occupational profile across multiple domains. For each domain:
                             </p>
                             <ol class="list-decimal list-inside space-y-2 ml-4 text-sm">
                                 <li>Your responses are aggregated into domain-level scores (raw response sums or means)</li>
@@ -1045,7 +1404,18 @@
                     <!-- Overall Fit Score Card -->
                     <div class="bg-white rounded-lg shadow-sm p-8 mb-6" style="background: ${interpretation.gradient};">
                         <div class="text-center text-white">
-                            <h2 class="text-2xl font-semibold mb-2">${fitResult.occupation.title}</h2>
+                            <div class="flex items-center justify-center gap-3 mb-2 flex-wrap">
+                                <h2 class="text-2xl font-semibold">${fitResult.occupation.title}</h2>
+                                <a 
+                                    href="https://www.onetonline.org/link/summary/${fitResult.occupation.onet_code}" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-1 rounded-full text-sm font-medium transition-all"
+                                    title="View full profile on O*NET Online"
+                                >
+                                    View on O*NET →
+                                </a>
+                            </div>
                             <div class="text-6xl font-bold my-4">${fitPercentage}%</div>
                             <div class="text-xl mb-1">Overall Fit Score</div>
                             <p class="text-sm opacity-90 mb-4">(${interpretation.level})</p>
@@ -1057,11 +1427,14 @@
                         </div>
                     </div>
 
+                    ${alternativesHTML}
+
                     <!-- Domain Overview Radar -->
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <h2 class="text-xl font-semibold text-gray-900 mb-4">Domain Fit Overview</h2>
-                        <div class="flex justify-center items-center">
-                            <div id="overview-radar" style="width: 400px; height: 400px; overflow: visible;"></div>
+                        <p class="text-sm text-gray-600 mb-4 text-center">Visual representation of your fit across different domains. Hover over points for details.</p>
+                        <div class="flex justify-center items-center overflow-x-auto">
+                            <div id="overview-radar" style="width: 400px; height: 400px; overflow: visible; min-width: 400px;"></div>
                         </div>
                     </div>
 
@@ -1114,23 +1487,23 @@
                             <p class="text-xs text-yellow-900">
                                 <strong>⚠️ Note on Income Potential:</strong> This score is based on your <em>interest in learning</em> knowledge and skills, not your actual knowledge and skills. 
                                 Research shows that actual income is predicted by real knowledge/skill fit, not interests. This prediction should be interpreted cautiously. 
-                                See the Income section below for actual salary data from I-O Psychology careers.
+                                See the Income section below for actual salary data from ${fitResult.occupation.title} careers.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                ${generateOutcomeHTML('career-satisfaction', 'Career Choice Satisfaction', 'How satisfied you\'ll be with your career choice in People Analytics', outcomeScores['career-satisfaction'], domainFitMap, outcomeWeights['career-satisfaction'])}
-                ${generateOutcomeHTML('job-satisfaction', 'Job Satisfaction', 'How satisfied you\'ll be in People Analytics jobs', outcomeScores['job-satisfaction'], domainFitMap, outcomeWeights['job-satisfaction'])}
-                ${generateOutcomeHTML('needs-supplies', 'Needs-Supplies Fit', 'How well People Analytics can fulfill what you value in work', outcomeScores['needs-supplies'], domainFitMap, outcomeWeights['needs-supplies'])}
-                ${generateOutcomeHTML('demands-abilities', 'Demands-Abilities Fit', 'The match between job demands and your capabilities', outcomeScores['demands-abilities'], domainFitMap, outcomeWeights['demands-abilities'])}
-                ${generateOutcomeHTML('income', 'Income & Salary Information', 'Actual salary data from I-O Psychology careers and how fit relates to income potential', outcomeScores['income'], domainFitMap, outcomeWeights['income'])}
+                ${generateOutcomeHTML('career-satisfaction', 'Career Choice Satisfaction', `How satisfied you'll be with your career choice in ${fitResult.occupation.title}`, outcomeScores['career-satisfaction'], domainFitMap, outcomeWeights['career-satisfaction'], fitResult.occupation.title, fitResult.occupation)}
+                ${generateOutcomeHTML('job-satisfaction', 'Job Satisfaction', `How satisfied you'll be in ${fitResult.occupation.title} jobs`, outcomeScores['job-satisfaction'], domainFitMap, outcomeWeights['job-satisfaction'], fitResult.occupation.title, fitResult.occupation)}
+                ${generateOutcomeHTML('needs-supplies', 'Needs-Supplies Fit', `How well ${fitResult.occupation.title} can fulfill what you value in work`, outcomeScores['needs-supplies'], domainFitMap, outcomeWeights['needs-supplies'], fitResult.occupation.title, fitResult.occupation)}
+                ${generateOutcomeHTML('demands-abilities', 'Demands-Abilities Fit', 'The match between job demands and your capabilities', outcomeScores['demands-abilities'], domainFitMap, outcomeWeights['demands-abilities'], fitResult.occupation.title, fitResult.occupation)}
+                ${generateOutcomeHTML('income', 'Income & Salary Information', 'How fit relates to income potential', outcomeScores['income'], domainFitMap, outcomeWeights['income'], fitResult.occupation.title, fitResult.occupation)}
                 ${generateCareerProspectsHTML(fitPercentage)}
             `;
         }
 
         // Generate HTML for a single outcome section
-        function generateOutcomeHTML(outcomeId, title, subtitle, score, domainFitMap, weights) {
+        function generateOutcomeHTML(outcomeId, title, subtitle, score, domainFitMap, weights, occupationTitle = 'this occupation', occupation = null) {
             const colorClasses = {
                 'career-satisfaction': { textClass: 'text-green-600', barClass: 'bg-green-500', label: 'High satisfaction potential' },
                 'job-satisfaction': { textClass: 'text-green-600', barClass: 'bg-green-500', label: 'High satisfaction potential' },
@@ -1148,27 +1521,27 @@
                 'career-satisfaction': {
                     definition: 'Career Choice Satisfaction reflects your overall satisfaction with your chosen career path and the extent to which your career aligns with your personal goals and identity.',
                     liuDefinition: 'Career Choice Satisfaction measures an individual\'s overall satisfaction with their career choice and the alignment between their career and personal goals (Liu et al., 2024).',
-                    modification: 'This assessment predicts career satisfaction based on fit with the People Analytics field, recognizing that satisfaction evolves as students gain experience and refine their career goals.'
+                    modification: `This assessment predicts career satisfaction based on fit with ${occupationTitle}, recognizing that satisfaction evolves as students gain experience and refine their career goals.`
                 },
                 'job-satisfaction': {
-                    definition: 'Job Satisfaction refers to your level of contentment and positive feelings about the specific job tasks, work environment, and day-to-day experiences in People Analytics roles.',
+                    definition: 'Job Satisfaction refers to your level of contentment and positive feelings about the specific job tasks, work environment, and day-to-day experiences in your chosen occupation.',
                     liuDefinition: 'Job Satisfaction is a person\'s affective response to their job, including feelings about work tasks, conditions, and the overall work experience (Liu et al., 2024).',
-                    modification: 'We predict job satisfaction based on fit with People Analytics work characteristics, acknowledging that actual satisfaction will depend on specific job context and organizational factors.'
+                    modification: `We predict job satisfaction based on fit with ${occupationTitle} work characteristics, acknowledging that actual satisfaction will depend on specific job context and organizational factors.`
                 },
                 'needs-supplies': {
-                    definition: 'Needs-Supplies Fit measures how well People Analytics careers can fulfill what you value and need in work (e.g., autonomy, meaning, growth opportunities, work-life balance).',
+                    definition: 'Needs-Supplies Fit measures how well your chosen occupation can fulfill what you value and need in work (e.g., autonomy, meaning, growth opportunities, work-life balance).',
                     liuDefinition: 'Needs-Supplies Fit (also called Person-Environment Fit) is the extent to which the work environment supplies what the individual needs and values, such as autonomy, meaning, growth opportunities, and compensation (Liu et al., 2024).',
-                    modification: 'This assessment measures fit between your work values (what you need and value) and what People Analytics careers typically provide, focusing on potential rather than specific job offers.'
+                    modification: `This assessment measures fit between your work values (what you need and value) and what ${occupationTitle} careers typically provide, focusing on potential rather than specific job offers.`
                 },
                 'demands-abilities': {
-                    definition: 'Demands-Abilities Fit assesses the match between what People Analytics jobs require (demands) and your capabilities, knowledge, and skills (abilities).',
+                    definition: 'Demands-Abilities Fit assesses the match between what your chosen occupation requires (demands) and your capabilities, knowledge, and skills (abilities).',
                     liuDefinition: 'Demands-Abilities Fit is the degree to which an individual\'s knowledge, skills, and abilities match the demands and requirements of their job (Liu et al., 2024).',
                     modification: 'For college students, we measure <em>interest in learning</em> knowledge areas and <em>interest in developing</em> skills rather than current capabilities, focusing on potential and motivation to develop required competencies.'
                 },
                 'income': {
-                    definition: 'This section shows actual salary data from I-O Psychology careers, along with how your fit relates to income potential. However, the fit-based prediction should be interpreted cautiously because we measure your interest in learning (not your actual knowledge and skills).',
+                    definition: `This section shows how your fit relates to income potential for ${occupationTitle}. However, the fit-based prediction should be interpreted cautiously because we measure your interest in learning (not your actual knowledge and skills).`,
                     liuDefinition: 'Income (objective career success) reflects actual earnings and financial rewards. Research shows that income is predicted by actual knowledge and skill fit, not interests or values (Liu et al., 2024).',
-                    modification: '<strong>Important Limitation:</strong> We are using your <em>interest in learning</em> knowledge and skills as a proxy for actual knowledge and skills, but interest ≠ actual knowledge/skills. Liu et al. (2024) found that actual knowledge and skill fit predict income, not interests. Therefore, this fit-based prediction should be interpreted very cautiously. Instead, see the actual salary data from SIOP below, which reflects real earnings in I-O Psychology careers.'
+                    modification: `<strong>Important Limitation:</strong> We are using your <em>interest in learning</em> knowledge and skills as a proxy for actual knowledge and skills, but interest ≠ actual knowledge/skills. Liu et al. (2024) found that actual knowledge and skill fit predict income, not interests. Therefore, this fit-based prediction should be interpreted very cautiously. ${occupation && occupation.wageMedian ? 'See the actual BLS wage data below for real-world salary information.' : 'See BLS wage data sources below for real-world salary information.'}`
                 }
             };
             
@@ -1213,7 +1586,9 @@
                                 </div>
                             </div>
                             <div class="flex justify-center items-center">
-                                <div id="${outcomeId}-radar" style="width: 400px; height: 400px; overflow: visible;"></div>
+                                <div class="flex justify-center items-center overflow-x-auto">
+                                    <div id="${outcomeId}-radar" style="width: 400px; height: 400px; overflow: visible; min-width: 400px;"></div>
+                                </div>
                             </div>
                         </div>
 
@@ -1254,8 +1629,64 @@
                     <div class="bg-purple-50 rounded-lg shadow-sm p-6 mb-6 border-l-4 border-purple-500">
                         <h2 class="text-xl font-semibold text-gray-900 mb-3">💰 Your Predicted Income Potential</h2>
                         <p class="text-sm text-gray-700 mb-4">
-                            Based on your fit score (${score}%) and using Liu et al. (2025) income prediction weights, this predicts your potential position in the <strong>overall income distribution</strong> of I-O psychologists. This represents what you might earn if you graduate with strong knowledge and skills (reflecting your fit level) and progress in your career. The prediction assumes you'll develop above-average knowledge and skills aligned with People Analytics, which would place you in the ${score}th percentile of earners:
+                            Based on your fit score (${score}%) and using Liu et al. (2025) income prediction weights, this predicts your potential position in the <strong>overall income distribution</strong> for ${occupationTitle}. This represents what you might earn if you graduate with strong knowledge and skills (reflecting your fit level) and progress in your career. The prediction assumes you'll develop above-average knowledge and skills aligned with this occupation, which would place you in the ${score}th percentile of earners:
                         </p>
+                        ${occupation && occupation.wageMedian ? `
+                        <div class="grid md:grid-cols-2 gap-6 mb-4">
+                            ${(() => {
+                                // Calculate predicted salary based on fit percentile and BLS wage data
+                                const p10 = occupation.wageP10 || occupation.wageMedian * 0.6;
+                                const p90 = occupation.wageP90 || occupation.wageMedian * 1.5;
+                                const median = occupation.wageMedian;
+                                
+                                // Interpolate based on fit score percentile
+                                // Fit score of 50% = median, 100% = 90th percentile, 0% = 10th percentile
+                                const percentile = score; // score is already 0-100
+                                const predictedWage = percentile <= 50 
+                                    ? median + ((p10 - median) * (50 - percentile) / 50)
+                                    : median + ((p90 - median) * (percentile - 50) / 50);
+                                
+                                const rangeLow = Math.round(predictedWage * 0.90);
+                                const rangeHigh = Math.round(predictedWage * 1.10);
+                                
+                                return `
+                                    <div class="text-center p-6 bg-white rounded-lg border-2 border-purple-200">
+                                        <div class="text-sm text-purple-700 mb-2 font-medium">Predicted Annual Salary</div>
+                                        <div class="text-4xl font-bold text-purple-900 mb-1">$${Math.round(predictedWage / 1000)}K</div>
+                                        <div class="text-xs text-gray-600 mt-2">Predicted range: $${Math.round(rangeLow / 1000)}K - $${Math.round(rangeHigh / 1000)}K</div>
+                                        <div class="text-xs text-gray-500 mt-1">Based on ${score}% fit score (${score}th percentile)</div>
+                                    </div>
+                                    <div class="text-center p-6 bg-white rounded-lg border-2 border-purple-200">
+                                        <div class="text-sm text-purple-700 mb-2 font-medium">BLS Median for Comparison</div>
+                                        <div class="text-4xl font-bold text-purple-900 mb-1">$${Math.round(median / 1000)}K</div>
+                                        <div class="text-xs text-gray-600 mt-2">50th percentile (median)</div>
+                                        <div class="text-xs text-gray-500 mt-1">From BLS OEWS data</div>
+                                    </div>
+                                `;
+                            })()}
+                        </div>
+                        ` : `
+                        <div class="grid md:grid-cols-2 gap-6 mb-4">
+                            ${(() => {
+                                // Fallback calculation without BLS data (using generic estimates)
+                                const baseSalary = 50000; // Generic base
+                                const percentile = score;
+                                const multiplier = 0.5 + (percentile / 100) * 1.0;
+                                const predictedWage = Math.round(baseSalary * multiplier);
+                                const rangeLow = Math.round(predictedWage * 0.90);
+                                const rangeHigh = Math.round(predictedWage * 1.10);
+                                
+                                return `
+                                    <div class="text-center p-6 bg-white rounded-lg border-2 border-purple-200">
+                                        <div class="text-sm text-purple-700 mb-2 font-medium">Estimated Potential</div>
+                                        <div class="text-4xl font-bold text-purple-900 mb-1">$${Math.round(predictedWage / 1000)}K</div>
+                                        <div class="text-xs text-gray-600 mt-2">Estimated range: $${Math.round(rangeLow / 1000)}K - $${Math.round(rangeHigh / 1000)}K</div>
+                                        <div class="text-xs text-gray-500 mt-1">Based on ${score}% fit score</div>
+                                    </div>
+                                `;
+                            })()}
+                        </div>
+                        `}
                         <div class="grid md:grid-cols-2 gap-6 mb-4">
                             ${(() => {
                                 const mastersPred = calculatePredictedIncome(score, 'masters');
@@ -1278,135 +1709,100 @@
                         </div>
                         <div class="bg-blue-50 border border-blue-300 rounded-lg p-4 mb-4">
                             <p class="text-xs text-blue-900 mb-2">
-                                <strong>📊 What This Prediction Means:</strong> This predicts where you might fall in the overall income distribution of I-O psychologists across all career stages, 
+                                <strong>📊 What This Prediction Means:</strong> This predicts where you might fall in the overall income distribution for ${occupationTitle} across all career stages, 
                                 assuming you graduate with strong knowledge and skills that reflect your fit level (${score}%). 
                                 If you have above-average knowledge and skills upon graduation (reflecting your ${score}% fit), 
-                                you would likely earn at approximately the ${score}th percentile over your career—meaning you'd earn more than about ${score}% of I-O psychologists.
+                                you would likely earn at approximately the ${score}th percentile over your career—meaning you'd earn more than about ${score}% of professionals in this occupation.
                             </p>
                             <p class="text-xs text-blue-900">
-                                <strong>Interpretation:</strong> Yes—if you graduate today with above-average knowledge and skills (reflecting your ${score}% fit), 
+                                <strong>Interpretation:</strong> If you graduate with above-average knowledge and skills (reflecting your ${score}% fit), 
                                 you would likely earn at approximately the ${score}th percentile over your career. This means you'd start higher than median starting salaries 
-                                and progress faster, ultimately earning more than about ${score}% of I-O psychologists across all career stages. 
-                                See "Career Stage Data" below to see typical starting salaries and how they increase with experience.
+                                and progress faster, ultimately earning more than about ${score}% of professionals in this occupation across all career stages.
+                                ${occupation && occupation.wageMedian ? 'See actual BLS wage data below for real-world salary ranges.' : 'See BLS wage data sources below for real-world salary information.'}
                             </p>
                         </div>
                         <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-4">
                             <p class="text-xs text-yellow-900">
                                 <strong>⚠️ Important Limitations:</strong> These predictions are based on your <em>interest in learning</em> knowledge and skills, not your actual knowledge and skills. 
                                 Liu et al. (2025) found that actual income is predicted by real knowledge and skill fit (r=.19 for knowledge, r=.15 for skills), not interests. 
-                                These predictions should be interpreted very cautiously. See actual SIOP salary data below for real-world earnings by career stage.
+                                These predictions should be interpreted very cautiously. ${occupation && occupation.wageMedian ? 'See actual BLS wage data below for real-world salary information.' : 'See BLS wage data sources below for real-world salary information.'}
                             </p>
                         </div>
                     </div>
                     
                     <!-- Actual Salary Data Section (only for income) -->
-                    <div class="bg-green-50 rounded-lg shadow-sm p-6 mb-6 border-l-4 border-green-500">
-                        <h2 class="text-xl font-semibold text-gray-900 mb-3">💼 Actual Salary Data from I-O Psychology</h2>
-                        <p class="text-sm text-gray-700 mb-4">
-                            For comparison, here are the actual median salary figures from the 2022 SIOP Income and Employment Report (2021 data), adjusted to 2025 dollars using CPI-U:
-                        </p>
-                        <div class="grid md:grid-cols-2 gap-6 mb-4">
-                            <div class="text-center p-6 bg-white rounded-lg border-2 border-green-200">
-                                <div class="text-sm text-green-700 mb-2 font-medium">Master's Degree</div>
-                                <div class="text-4xl font-bold text-green-900 mb-1">$119K</div>
-                                <div class="text-xs text-gray-600 mt-2">Median income (2025, adjusted for inflation)</div>
-                                <div class="text-xs text-gray-500 mt-1">$100K in 2021 dollars</div>
-                                <div class="text-xs text-gray-500 mt-1">97.8% work as practitioners</div>
-                            </div>
-                            <div class="text-center p-6 bg-white rounded-lg border-2 border-green-200">
-                                <div class="text-sm text-green-700 mb-2 font-medium">Doctoral Degree</div>
-                                <div class="text-4xl font-bold text-green-900 mb-1">$163K</div>
-                                <div class="text-xs text-gray-600 mt-2">Median income (2025, adjusted for inflation)</div>
-                                <div class="text-xs text-gray-500 mt-1">$137K in 2021 dollars</div>
-                                <div class="text-xs text-gray-500 mt-1">62% practitioners, 38% academics</div>
-                            </div>
-                        </div>
-                        <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-4 mb-4">
-                            <p class="text-sm text-yellow-900 mb-2">
-                                <strong>⚠️ Important Note:</strong> The fit score above (${score}%) is based on your interest in learning knowledge and skills, not your actual knowledge and skills. 
-                                Research shows that actual income is predicted by real knowledge and skill fit, not interests. Therefore, the fit-based prediction above should be interpreted very cautiously.
-                            </p>
-                            <p class="text-xs text-yellow-800 mt-2">
-                                <strong>Source:</strong> Society for Industrial and Organizational Psychology (SIOP). (2022). 
-                                <em>SIOP Income and Employment Report 2021</em>. Retrieved from 
-                                <a href="https://www.siop.org/Research-Publications/Items-of-Interest" target="_blank" class="text-blue-600 hover:underline">SIOP website</a>
-                            </p>
-                            <p class="text-xs text-yellow-800 mt-2">
-                                <strong>Inflation Adjustment:</strong> All salary figures from the 2021 SIOP report have been adjusted to 2025 dollars using CPI-U 
-                                (inflation factor: 1.1903, representing 19% cumulative inflation from 2021 to 2025).
-                            </p>
-                        </div>
+                    ${(() => {
+                        // Check if occupation has BLS wage data
+                        const hasWageData = occupation && occupation.wageMedian;
                         
-                        <!-- Career Stage Salary Data -->
-                        <div class="bg-white rounded-lg shadow-sm p-6 mb-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">📈 Salary by Career Stage</h3>
-                            <p class="text-sm text-gray-700 mb-4">
-                                Salaries increase with experience. Here are median salaries by years since earning your degree (2021 data, adjusted to 2025 dollars):
-                            </p>
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <h4 class="font-semibold text-gray-900 mb-3">Master's Degree (Practitioners)</h4>
-                                    <div class="space-y-2 text-sm">
-                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                                            <span class="text-gray-700">&lt; 2 years</span>
-                                            <span class="font-semibold text-gray-900">$77K</span>
+                        if (hasWageData) {
+                            // Display BLS wage data
+                            const formatCurrency = (val) => val ? `$${Math.round(val / 1000)}K` : 'N/A';
+                            return `
+                                <div class="bg-green-50 rounded-lg shadow-sm p-6 mb-6 border-l-4 border-green-500">
+                                    <h2 class="text-xl font-semibold text-gray-900 mb-3">💼 Actual Salary Data from BLS OEWS</h2>
+                                    <p class="text-sm text-gray-700 mb-4">
+                                        Wage data from the U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics (OEWS) for ${occupationTitle}:
+                                    </p>
+                                    <div class="grid md:grid-cols-2 gap-6 mb-4">
+                                        <div class="text-center p-6 bg-white rounded-lg border-2 border-green-200">
+                                            <div class="text-sm text-green-700 mb-2 font-medium">Median Annual Wage</div>
+                                            <div class="text-4xl font-bold text-green-900 mb-1">${formatCurrency(occupation.wageMedian)}</div>
+                                            <div class="text-xs text-gray-600 mt-2">50th percentile</div>
+                                            ${occupation.wageDataYear ? `<div class="text-xs text-gray-500 mt-1">Data year: ${occupation.wageDataYear}</div>` : ''}
                                         </div>
-                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                                            <span class="text-gray-700">2-4 years</span>
-                                            <span class="font-semibold text-gray-900">$105K</span>
-                                        </div>
-                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                                            <span class="text-gray-700">5-9 years</span>
-                                            <span class="font-semibold text-gray-900">$121K</span>
-                                        </div>
-                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                                            <span class="text-gray-700">10-14 years</span>
-                                            <span class="font-semibold text-gray-900">$144K</span>
-                                        </div>
-                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                                            <span class="text-gray-700">15-19 years</span>
-                                            <span class="font-semibold text-gray-900">$183K</span>
+                                        <div class="text-center p-6 bg-white rounded-lg border-2 border-green-200">
+                                            <div class="text-sm text-green-700 mb-2 font-medium">Wage Range</div>
+                                            <div class="text-2xl font-bold text-green-900 mb-1">${formatCurrency(occupation.wageP25)} - ${formatCurrency(occupation.wageP75)}</div>
+                                            <div class="text-xs text-gray-600 mt-2">25th to 75th percentile</div>
+                                            <div class="text-xs text-gray-500 mt-1">10th: ${formatCurrency(occupation.wageP10)} | 90th: ${formatCurrency(occupation.wageP90)}</div>
                                         </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold text-gray-900 mb-3">Doctoral Degree (Practitioners)</h4>
-                                    <div class="space-y-2 text-sm">
-                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                                            <span class="text-gray-700">&lt; 2 years</span>
-                                            <span class="font-semibold text-gray-900">$120K</span>
+                                    ${occupation.wageDataSource ? `
+                                        <div class="bg-blue-50 border border-blue-300 rounded-lg p-3 mb-4">
+                                            <p class="text-xs text-blue-900">
+                                                <strong>Data Source:</strong> ${occupation.wageDataSource}
+                                            </p>
                                         </div>
-                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                                            <span class="text-gray-700">2-4 years</span>
-                                            <span class="font-semibold text-gray-900">$143K</span>
-                                        </div>
-                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                                            <span class="text-gray-700">5-9 years</span>
-                                            <span class="font-semibold text-gray-900">$178K</span>
-                                        </div>
-                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                                            <span class="text-gray-700">10-14 years</span>
-                                            <span class="font-semibold text-gray-900">$185K</span>
-                                        </div>
-                                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                                            <span class="text-gray-700">15-19 years</span>
-                                            <span class="font-semibold text-gray-900">$205K</span>
-                                        </div>
+                                    ` : ''}
+                                    <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-4">
+                                        <p class="text-xs text-yellow-900">
+                                            <strong>Source:</strong> U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics (OEWS) program. 
+                                            ${occupation.wageDataYear ? `Data from ${occupation.wageDataYear}.` : ''} 
+                                            Wages represent annual salaries for full-time workers. 
+                                            <a href="https://www.bls.gov/oes/" target="_blank" class="text-blue-600 hover:underline">View more BLS wage data →</a>
+                                        </p>
                                     </div>
                                 </div>
-                            </div>
-                            <p class="text-xs text-gray-600 mt-4 italic">
-                                Source: SIOP Income and Employment Report 2021, Table 3 (Doctoral) and Table 4 (Master's). 
-                                Adjusted to 2025 dollars using CPI-U. These are median salaries for practitioners only.
-                            </p>
-                            <div class="bg-blue-50 border-l-4 border-blue-400 rounded-lg p-3 mt-4">
-                                <p class="text-xs text-blue-900">
-                                    <strong>Connection to Your Prediction:</strong> The predicted salary shown above represents where you'd likely fall in the overall income distribution. 
-                                    If you graduate with above-average knowledge and skills (reflecting your ${score}% fit), 
-                                    you'd start higher than the median starting salaries shown here and progress faster, ultimately reaching approximately the ${score}th percentile earning level over your career.
-                                </p>
-                            </div>
-                        </div>
+                            `;
+                        } else {
+                            // No wage data available - show generic message
+                            return `
+                                <div class="bg-blue-50 rounded-lg shadow-sm p-6 mb-6 border-l-4 border-blue-500">
+                                    <h2 class="text-xl font-semibold text-gray-900 mb-3">💼 Salary Information</h2>
+                                    <p class="text-sm text-gray-700 mb-4">
+                                        Salary data for ${occupationTitle} is available from the U.S. Bureau of Labor Statistics (BLS) Occupational Employment and Wage Statistics (OEWS) program.
+                                    </p>
+                                    <div class="bg-white rounded-lg p-4 mb-4">
+                                        <p class="text-sm text-gray-700 mb-2">
+                                            <strong>To find salary data for this occupation:</strong>
+                                        </p>
+                                        <ol class="text-sm text-gray-600 list-decimal list-inside space-y-1 ml-2">
+                                            <li>Visit the <a href="https://www.bls.gov/oes/" target="_blank" class="text-blue-600 hover:underline">BLS OEWS website</a></li>
+                                            <li>Search for "${occupationTitle}" using the occupation search</li>
+                                            <li>View median wages, percentiles, and geographic variations</li>
+                                        </ol>
+                                    </div>
+                                    <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-4">
+                                        <p class="text-xs text-yellow-900">
+                                            <strong>Note:</strong> Salary data varies by location, experience level, and employer. 
+                                            The BLS provides national and state-level wage data that can help you understand earning potential for this occupation.
+                                        </p>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    })()}
                     </div>
                     ` : ''}
                 </div>
@@ -1731,53 +2127,15 @@
                         </div>
                     </div>
 
-                    ${fitPercentage >= 70 ? `
-                    <!-- Volunteer for PAL Section - Only shown for 70%+ fit -->
-                    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 mb-6 text-white shadow-lg">
-                        <h2 class="text-2xl font-bold mb-4">Interested in Volunteering for the People Analytics Lab?</h2>
-                        <p class="text-lg mb-4 opacity-95">
-                            If you're interested in gaining hands-on experience with people analytics research, consider volunteering with the People Analytics Lab of the Bayou (PAL) at Nicholls State University.
-                        </p>
-                        <div class="bg-white bg-opacity-20 rounded-lg p-6 mb-4">
-                            <p class="mb-3">
-                                <strong>What you'll gain:</strong>
-                            </p>
-                            <ul class="list-disc list-inside space-y-2 ml-2">
-                                <li>Hands-on experience with real organizational data and research projects</li>
-                                <li>Opportunities to work on cutting-edge people analytics research</li>
-                                <li>Mentorship from Dr. Castille and exposure to academic research methods</li>
-                                <li>Experience that strengthens your resume and graduate school applications</li>
-                                <li>Networking opportunities with researchers and practitioners in the field</li>
-                            </ul>
-                        </div>
-                        <div class="bg-white bg-opacity-20 rounded-lg p-6 mb-4">
-                            <p class="mb-3">
-                                <strong>What we're looking for:</strong>
-                            </p>
-                            <ul class="list-disc list-inside space-y-2 ml-2">
-                                <li>Students interested in people analytics, I-O psychology, or HR research</li>
-                                <li>Strong analytical thinking and attention to detail</li>
-                                <li>Commitment to learning and contributing to research projects</li>
-                                <li>Willingness to work collaboratively on team-based research</li>
-                            </ul>
-                        </div>
-                        <div class="bg-white bg-opacity-20 rounded-lg p-4 mb-6">
-                            <p class="font-semibold mb-2">To express interest:</p>
-                            <p class="mb-2">
-                                Print or save your assessment results as a PDF (use the button below) and share it with Dr. Castille along with a brief message about your interest in volunteering.
-                            </p>
-                            <p>
-                                <strong>Contact:</strong> <a href="mailto:christopher.castille@nicholls.edu" class="underline hover:no-underline">christopher.castille@nicholls.edu</a>
-                            </p>
-                        </div>
-                    </div>
-                    ` : ''}
 
                     <!-- Print/Save PDF Section -->
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-6 border-2 border-blue-200">
                         <h2 class="text-xl font-semibold text-gray-900 mb-4">Save Your Results</h2>
                         <p class="text-gray-700 mb-4">
-                            Print or save your assessment results as a PDF to share with Dr. Castille or keep for your records. The PDF will include all your fit scores, outcome predictions, and detailed feedback.
+                            Print or save your assessment results as a PDF to keep for your records or share with advisors, mentors, or career counselors. The PDF will include all your fit scores, outcome predictions, and detailed feedback.
+                        </p>
+                        <p class="text-sm text-gray-600 mb-4 bg-blue-50 border-l-4 border-blue-500 p-3 rounded">
+                            <strong>💡 Multiple PDFs:</strong> You can generate separate PDFs for each occupation profile you view. The filename will automatically include the occupation name, so you can save PDFs for your selected occupation and any alternatives you explore.
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4">
                             <button 
@@ -1840,10 +2198,24 @@
                     content.classList.add('active');
                 });
                 
+                // Generate dynamic filename based on currently viewed occupation
+                // This allows users to generate separate PDFs for each occupation profile they view
+                const occupationTitle = globalFitResult?.occupation?.title || 'Occupational-Fit';
+                const isViewingAlternative = globalSelectedOccupation && 
+                    globalFitResult.occupation.onet_code !== globalSelectedOccupation.onet_code;
+                
+                const safeFilename = occupationTitle
+                    .replace(/[^a-zA-Z0-9\s-]/g, '') // Remove special characters
+                    .replace(/\s+/g, '-') // Replace spaces with hyphens
+                    .substring(0, 45); // Limit length
+                const timestamp = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+                const profileType = isViewingAlternative ? '-Alternative' : '';
+                const filename = `${safeFilename}${profileType}-Assessment-Results-${timestamp}.pdf`;
+                
                 // Configure PDF options
                 const opt = {
                     margin: [0.5, 0.5, 0.5, 0.5],
-                    filename: 'People-Analytics-Fit-Assessment-Results.pdf',
+                    filename: filename,
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { 
                         scale: 2,
@@ -1937,11 +2309,12 @@
             const overviewData = fitResult.fit_scores
                 .map(fs => ({
                     label: domainLabelMap[fs.domain] || fs.domain,
-                    value: domainFitMap[fs.domain] || 0
+                    value: Math.round(domainFitMap[fs.domain] || 0)
                 }))
+                .filter(item => item.value !== undefined && !isNaN(item.value))
                 .sort((a, b) => {
                     // Sort by domain order for consistent display
-                    const order = ['Basic Interests', 'Knowledge Interest', 'Work Values', 'Skills Interest', 'Personality'];
+                    const order = ['RIASEC Interests', 'Work Values', 'Knowledge Interest', 'Skills Interest', 'Personality'];
                     return (order.indexOf(a.label) || 99) - (order.indexOf(b.label) || 99);
                 });
 
@@ -1960,10 +2333,12 @@
                     }))
                     .sort((a, b) => b.weight - a.weight);
 
-                const outcomeData = domainWeightPairs.map(d => ({
-                    label: d.label,
-                    value: d.value
-                }));
+                const outcomeData = domainWeightPairs
+                    .map(d => ({
+                        label: d.label,
+                        value: Math.round(d.value || 0)
+                    }))
+                    .filter(item => item.value !== undefined && !isNaN(item.value));
 
                 drawRadarChart(outcomeId + '-radar', outcomeData);
             });
@@ -1984,7 +2359,7 @@
             
             const size = 400;
             const center = size / 2;
-            const radius = 110;
+            const radius = 120;
             const numAxes = data.length;
             const angleStep = (2 * Math.PI) / numAxes;
             
@@ -1993,7 +2368,7 @@
             svg.setAttribute('height', size);
             svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
             svg.setAttribute('class', 'radar-chart');
-            svg.setAttribute('style', 'overflow: visible;');
+            svg.setAttribute('style', 'overflow: visible; max-width: 100%; height: auto;');
             
             // Draw grid circles
             for (let i = 1; i <= 5; i++) {
@@ -2026,25 +2401,46 @@
                 
                 // Draw label
                 const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                const labelOffset = 40;
+                const labelOffset = 50;
                 const labelX = center + (radius + labelOffset) * Math.cos(angle);
                 const labelY = center + (radius + labelOffset) * Math.sin(angle);
                 
                 let textAnchor = 'middle';
+                let dy = '0.35em';
                 const degrees = (angle * 180) / Math.PI;
                 if (degrees > -45 && degrees < 45) {
                     textAnchor = 'start';
+                    dy = '0.35em';
                 } else if (degrees > 135 || degrees < -135) {
                     textAnchor = 'end';
+                    dy = '0.35em';
+                } else if (degrees > 45 && degrees < 135) {
+                    textAnchor = 'middle';
+                    dy = '0.1em';
+                } else {
+                    textAnchor = 'middle';
+                    dy = '0.6em';
                 }
                 
                 label.setAttribute('x', labelX);
                 label.setAttribute('y', labelY);
                 label.setAttribute('text-anchor', textAnchor);
                 label.setAttribute('dominant-baseline', 'middle');
+                label.setAttribute('dy', dy);
                 label.setAttribute('class', 'radar-label');
                 label.textContent = item.label;
                 svg.appendChild(label);
+                
+                // Add value label below domain name
+                const valueLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                valueLabel.setAttribute('x', labelX);
+                valueLabel.setAttribute('y', parseFloat(labelY) + 14);
+                valueLabel.setAttribute('text-anchor', textAnchor);
+                valueLabel.setAttribute('dominant-baseline', 'middle');
+                valueLabel.setAttribute('class', 'radar-label');
+                valueLabel.setAttribute('style', 'font-size: 10px; fill: #6b7280; font-weight: 500;');
+                valueLabel.textContent = `${item.value}%`;
+                svg.appendChild(valueLabel);
             });
             
             // Draw filled area
@@ -2068,7 +2464,7 @@
                     const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                     circle.setAttribute('cx', point.x);
                     circle.setAttribute('cy', point.y);
-                    circle.setAttribute('r', 3);
+                    circle.setAttribute('r', 4);
                     circle.setAttribute('class', 'radar-point');
                     circle.setAttribute('title', `${point.label}: ${point.value}%`);
                     svg.appendChild(circle);
@@ -2205,25 +2601,25 @@
         function getInterpretation(pct) {
             if (pct >= 80) return {
                 level: 'Exceptional fit',
-                summary: 'You show exceptional alignment with the People Analyst role.',
+                summary: 'You show exceptional alignment with this occupation.',
                 details: 'Your interests, values, knowledge, skills, and personality characteristics are well-matched to this position. This suggests you would likely find the work engaging, experience strong job satisfaction, and excel in the role.',
                 gradient: 'linear-gradient(135deg, #10b981 0%, #34d399 100%)'
             };
             if (pct >= 65) return {
                 level: 'Strong fit',
-                summary: 'You show strong alignment with the People Analyst role.',
+                summary: 'You show strong alignment with this occupation.',
                 details: 'Your profile demonstrates meaningful compatibility across most domains. With targeted development in specific areas, you are well-positioned to succeed in this field.',
                 gradient: 'linear-gradient(135deg, #2563eb 0%, #3b82f6 100%)'
             };
             if (pct >= 50) return {
                 level: 'Moderate fit',
-                summary: 'You show moderate alignment with the People Analyst role.',
-                details: 'Your profile shows some compatibility, but there are areas where development would be beneficial. Consider whether you\'re genuinely interested in People Analyst work and willing to build the necessary capabilities.',
+                summary: 'You show moderate alignment with this occupation.',
+                details: 'Your profile shows some compatibility, but there are areas where development would be beneficial. Consider whether you\'re genuinely interested in this type of work and willing to build the necessary capabilities.',
                 gradient: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)'
             };
             return {
                 level: 'Limited fit',
-                summary: 'Your profile shows limited alignment with the People Analyst role.',
+                summary: 'Your profile shows limited alignment with this occupation.',
                 details: 'While you have strengths that may be valuable, there are significant gaps in fit. Consider exploring alternative career paths that better match your interests, values, and capabilities.',
                 gradient: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)'
             };
@@ -2244,34 +2640,34 @@
         function getDomainDescription(domain, pct) {
             const descriptions = {
                 'interests_basic': {
-                    high: 'Your interests strongly align with the core work activities of People Analysts.',
-                    moderate: 'Your interests show good alignment with many People Analyst tasks.',
+                    high: 'Your interests strongly align with the core work activities of this occupation.',
+                    moderate: 'Your interests show good alignment with many tasks in this occupation.',
                     low: 'Your interests may lean toward different types of work activities.'
                 },
                 'interests_riasec': {
-                    high: 'Your vocational interests strongly align with People Analyst work (Investigative, Social, Conventional).',
-                    moderate: 'Your vocational interests show good alignment with many People Analyst activities.',
+                    high: 'Your vocational interests strongly align with this type of work.',
+                    moderate: 'Your vocational interests show good alignment with many activities in this occupation.',
                     low: 'Your vocational interests lean toward different types of work.'
                 },
                 'values': {
-                    high: 'What you find meaningful in work closely matches what People Analysts value most.',
-                    moderate: 'Your work values show good compatibility with the People Analyst role.',
-                    low: 'Some of your core work values may not be fully met in a People Analyst position.'
+                    high: 'What you find meaningful in work closely matches what this occupation values most.',
+                    moderate: 'Your work values show good compatibility with this occupation.',
+                    low: 'Some of your core work values may not be fully met in this occupation.'
                 },
                 'knowledge': {
-                    high: 'You have strong interest in learning the knowledge areas that People Analysts need.',
-                    moderate: 'You show good interest in learning relevant knowledge areas for People Analyst work.',
+                    high: 'You have strong interest in learning the knowledge areas that this occupation needs.',
+                    moderate: 'You show good interest in learning relevant knowledge areas for this occupation.',
                     low: 'Your interest in learning HR-specific knowledge areas may be developing.'
                 },
                 'skills': {
-                    high: 'You have strong interest in developing the skills needed for People Analyst work.',
-                    moderate: 'You show good interest in developing relevant skills for People Analyst work.',
-                    low: 'Your interest in developing People Analyst skills may be developing.'
+                    high: 'You have strong interest in developing the skills needed for this occupation.',
+                    moderate: 'You show good interest in developing relevant skills for this occupation.',
+                    low: 'Your interest in developing skills for this occupation may be developing.'
                 },
                 'personality': {
-                    high: 'Your personality traits align well with successful People Analysts.',
-                    moderate: 'Your personality includes traits that will serve you well in People Analyst work.',
-                    low: 'Your personality profile brings unique strengths to People Analyst work.'
+                    high: 'Your personality traits align well with successful professionals in this occupation.',
+                    moderate: 'Your personality includes traits that will serve you well in this occupation.',
+                    low: 'Your personality profile brings unique strengths to this occupation.'
                 }
             };
             const level = pct >= 75 ? 'high' : pct >= 60 ? 'moderate' : 'low';

@@ -1,16 +1,13 @@
-title: Research
-
-# Custom page layout
+---
+title: "Research"
 type: page
 layout: publication/list
-
-# Optional banner image (relative to `assets/media/` folder).
 banner:
-  caption: 'Research from the People Analytics Lab of the Bayou'
+  caption: ''
   image: ''
 ---
 
-My research bridges rigorous psychological science with practical organizational applications. I focus on understanding how individual differences shape workplace behavior, developing better methods for organizational research, and translating scientific insights into actionable HR strategies.
+My research bridges psychological science with practical organizational applications. I focus on understanding how individual differences shape workplace behavior, developing better methods for organizational research, and translating scientific insights into actionable HR strategies.
 
 Below are three interconnected areas that define my scholarly work.
 
@@ -45,7 +42,7 @@ How do individual characteristics—personality traits, values, and abilities—
 <h2 class="research-theme-methods">Organizational Research Methods</h2>
 
 {{< callout >}}
-Rigorous people analytics requires high-quality methods. This research develops and validates better approaches to organizational research, including open science practices that increase transparency and reproducibility, and techniques for understanding and controlling method variance in applied settings.
+High-quality people analytics requires high-quality methods. This research develops and validates better approaches to organizational research, including open science practices that increase transparency and reproducibility, and techniques for understanding and controlling method variance in applied settings.
 {{< /callout >}}
 
 ### Open Science & Replication (Sorted by Year)
@@ -66,6 +63,8 @@ Rigorous people analytics requires high-quality methods. This research develops 
 
 ### Method Variance & Measurement (Sorted by Year)
 
+**Williams, L. J., Culpepper, S. A., & Castille, C. M.** (in press). In defense of the RMSEA-p for latent variable model evaluation: A failed reproducibility study of Lance et al. (2016). *Journal of Management Scientific Reports*.
+
 **Castille, C. M., & Williams, L. J.** (2024). Shedding light on invisible influences: Reviewing HROB scholars' use of unmeasured latent method factors. In *Research in Personnel and Human Resources Management* (Vol. 42, pp. 139-188). Emerald Publishing Limited. https://doi.org/10.1108/s0742-730120240000042007
 
 **Castille, C., & Williams, L. J.** (2022). To partial or not? Re-examining the unmeasured latent method construct (ULMC). *Academy of Management Proceedings*, *2022*(1), 10998. https://doi.org/10.5465/ambpp.2022.10998abstract
@@ -81,7 +80,7 @@ Rigorous people analytics requires high-quality methods. This research develops 
 <h2 class="research-theme-hr">HR Strategy and Tactics</h2>
 
 {{< callout >}}
-Applied people analytics must demonstrate business impact. This research applies rigorous analytical methods to real-world HR challenges, including predictive attrition modeling, compensation strategy, and demonstrating the return on investment of HR programs through utility analysis.
+Applied people analytics must demonstrate business impact. This research applies analytical methods to real-world HR challenges, including predictive attrition modeling, compensation strategy, and demonstrating the return on investment of HR programs through utility analysis.
 {{< /callout >}}
 
 ### Selected Publications (Sorted by Year)
