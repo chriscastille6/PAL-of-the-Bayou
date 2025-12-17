@@ -58,6 +58,27 @@
             display: block;
             animation: fadeIn 0.3s ease-in;
         }
+        @media print {
+            .outcome-content {
+                display: block !important;
+                page-break-after: always;
+                page-break-inside: avoid;
+            }
+            .outcome-content:last-child {
+                page-break-after: auto;
+            }
+            aside, nav, button {
+                display: none !important;
+            }
+            main {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            body {
+                background: white !important;
+            }
+        }
         .nav-item {
             transition: all 0.2s ease;
         }
@@ -118,6 +139,27 @@
         }
         .explanation-toggle:hover {
             color: #1e40af;
+        }
+        /* Color coding for predictor vs outcome tabs */
+        .predictor-tab {
+            border-left: 3px solid #3b82f6; /* Blue for predictors */
+        }
+        .predictor-tab:hover {
+            background-color: #eff6ff; /* Light blue hover */
+        }
+        .predictor-tab.active {
+            background-color: #dbeafe; /* Light blue active */
+            border-left-color: #2563eb;
+        }
+        .outcome-tab {
+            border-left: 3px solid #10b981; /* Green for outcomes */
+        }
+        .outcome-tab:hover {
+            background-color: #f0fdf4; /* Light green hover */
+        }
+        .outcome-tab.active {
+            background-color: #d1fae5; /* Light green active */
+            border-left-color: #059669;
         }
         /* Unique colors for each domain */
         .domain-basic-interests { --color: #3b82f6; --color-light: #dbeafe; } /* Blue */
@@ -246,43 +288,79 @@
                     <div id="sidebar-summary" class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-5 mb-6 border border-blue-100"></div>
 
                     <nav class="space-y-1">
-                        <a href="#" class="nav-item active block px-4 py-3 rounded-lg text-sm font-medium text-gray-700" data-outcome="overview">
+                        <a href="#" class="nav-item active block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 predictor-tab" data-outcome="overview">
                             <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                             </svg>
                             Overview
                         </a>
-                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700" data-outcome="career-satisfaction">
+                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 predictor-tab" data-outcome="occupational-interest">
+                            <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            Occupational Interest
+                        </a>
+                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 predictor-tab" data-outcome="personality">
+                            <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                            Personality
+                        </a>
+                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 predictor-tab" data-outcome="work-values">
+                            <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                            </svg>
+                            Work Values
+                        </a>
+                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 predictor-tab" data-outcome="basic-interests">
+                            <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                            Basic Interests
+                        </a>
+                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 predictor-tab" data-outcome="knowledge-interest">
+                            <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                            Knowledge Interest
+                        </a>
+                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 predictor-tab" data-outcome="skills-interest">
+                            <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                            Skills Interest
+                        </a>
+                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 outcome-tab" data-outcome="career-satisfaction">
                             <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                             Career Satisfaction
                         </a>
-                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700" data-outcome="job-satisfaction">
+                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 outcome-tab" data-outcome="job-satisfaction">
                             <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                             </svg>
                             Job Satisfaction
                         </a>
-                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700" data-outcome="needs-supplies">
+                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 outcome-tab" data-outcome="needs-supplies">
                             <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                             Needs-Supplies Fit
                         </a>
-                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700" data-outcome="demands-abilities">
+                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 outcome-tab" data-outcome="demands-abilities">
                             <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                             </svg>
                             Demands-Abilities Fit
                         </a>
-                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700" data-outcome="income">
+                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 outcome-tab" data-outcome="income">
                             <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                             Income Potential
                         </a>
-                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700" data-outcome="career-prospects">
+                        <a href="#" class="nav-item block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 outcome-tab" data-outcome="career-prospects">
                             <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                             </svg>
@@ -916,6 +994,1093 @@
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        
+        // Generate HTML for Work Values section
+        function generateValuesSection(domainScores, allOccupations, focalOccupation = null) {
+            const valuesScores = domainScores.values || {};
+            const valuesOrder = ['knowledge_utilization', 'variety', 'altruism', 'independence', 'prestige_salary', 'leadership', 'outdoors', 'physical_work'];
+            
+            // Convert scores from 1-5 scale to percentages (0-100%) and calculate percentiles
+            const valuesData = valuesOrder.map(type => {
+                const score = valuesScores[type] || 0;
+                const percentile = scoreToPercentile(score);
+                return {
+                    label: type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+                    type: type,
+                    score: score,
+                    percentage: Math.round(((score - 1) / 4) * 100), // Convert 1-5 to 0-100%
+                    percentile: percentile
+                };
+            });
+            
+            // Values dimension descriptions (natural, flowing style)
+            const valuesDescriptions = {
+                knowledge_utilization: {
+                    description: 'People who value knowledge utilization want to apply what they\'ve learned and use their expertise in their work. They find satisfaction in roles that allow them to build on their knowledge and apply their strongest skills to solve problems. If you score high on this value, you likely seek work where you can continuously use and expand upon what you know.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'You highly value using your knowledge and skills in your work, suggesting you want roles where you can apply what you\'ve learned and continuously build upon your expertise.';
+                        if (score >= 3) return 'You value applying your knowledge and skills in your work, indicating you appreciate opportunities to use what you\'ve learned.';
+                        return 'Using your knowledge and skills is relatively less important to you, suggesting you may value other aspects of work more highly.';
+                    }
+                },
+                variety: {
+                    description: 'People who value variety seek work environments that offer diverse tasks, change, and unpredictability. They thrive when no two days are the same and enjoy adapting to new challenges. If you score high on this value, you likely prefer work that keeps you engaged through constant change and new experiences.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'You highly value variety in your work, suggesting you want roles that offer diverse activities, change, and new experiences that keep you engaged.';
+                        if (score >= 3) return 'You value some variety in your work, indicating you appreciate opportunities for diverse tasks and experiences.';
+                        return 'Variety in work tasks is relatively less important to you, suggesting you may prefer more predictable and structured work environments.';
+                    }
+                },
+                altruism: {
+                    description: 'People who value altruism find meaning in helping others and making a positive impact. They prioritize work that contributes to others\' well-being and allows them to build meaningful relationships. If you score high on this value, you likely seek careers where you can serve others and make a difference in people\'s lives.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'You highly value helping others and making a positive impact, suggesting you want work that allows you to contribute to others\' well-being and build meaningful relationships.';
+                        if (score >= 3) return 'You value helping others in your work, indicating you appreciate opportunities to make a positive impact on people.';
+                        return 'Helping others directly is relatively less important to you, suggesting you may find meaning through other aspects of work.';
+                    }
+                },
+                independence: {
+                    description: 'People who value independence want autonomy and control over their own work. They prefer setting their own schedules, planning their own tasks, and working without constant supervision. If you score high on this value, you likely thrive in roles that give you freedom and flexibility to work in your own way.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'You highly value independence and autonomy in your work, suggesting you want roles where you can set your own schedule, plan your own work, and operate with significant freedom.';
+                        if (score >= 3) return 'You value some independence in your work, indicating you appreciate having control over your schedule and work approach.';
+                        return 'Independence and autonomy are relatively less important to you, suggesting you may be comfortable with more structured work environments and guidance.';
+                    }
+                },
+                prestige_salary: {
+                    description: 'People who value prestige and salary seek high-status careers with strong financial rewards. They want work that is respected by others and provides the opportunity to earn well. If you score high on this value, you likely prioritize careers that offer both recognition and financial success.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'You highly value prestige and salary in your career, suggesting you want work that offers high status, recognition, and strong financial rewards.';
+                        if (score >= 3) return 'You value prestige and salary in your work, indicating you appreciate having a respected career with good earning potential.';
+                        return 'Prestige and salary are relatively less important to you, suggesting you may prioritize other values like meaning, fulfillment, or work-life balance.';
+                    }
+                },
+                leadership: {
+                    description: 'People who value leadership want to supervise, coordinate, and be responsible for others\' work. They enjoy taking charge and influencing organizational direction. If you score high on this value, you likely seek roles where you can lead teams, make decisions, and have responsibility for outcomes.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'You highly value leadership opportunities, suggesting you want roles where you can supervise others, coordinate teams, and take responsibility for guiding work and making decisions.';
+                        if (score >= 3) return 'You value some leadership opportunities, indicating you appreciate having influence and responsibility in your work.';
+                        return 'Leadership and supervising others are relatively less important to you, suggesting you may prefer individual contributor roles or collaborative work without formal leadership responsibilities.';
+                    }
+                },
+                outdoors: {
+                    description: 'People who value working outdoors want to spend time in nature as part of their work. They prefer jobs that take them outside rather than being confined to indoor office spaces. If you score high on this value, you likely seek work that allows you to be in natural environments regularly.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'You highly value working outdoors and being in nature, suggesting you want roles that allow you to spend significant time outside rather than in indoor office settings.';
+                        if (score >= 3) return 'You value some outdoor work opportunities, indicating you appreciate having time in nature as part of your job.';
+                        return 'Working outdoors is relatively less important to you, suggesting you\'re comfortable with indoor work environments and may prefer office-based or controlled-environment work.';
+                    }
+                },
+                physical_work: {
+                    description: 'People who value physical work enjoy tasks that involve physical activity and provide exercise as part of their job. They prefer hands-on work that keeps them active rather than sedentary desk work. If you score high on this value, you likely seek work that involves physical effort and movement.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'You highly value physical work and activity, suggesting you want roles that involve hands-on physical tasks and provide exercise as part of your job rather than sedentary desk work.';
+                        if (score >= 3) return 'You value some physical activity in your work, indicating you appreciate having opportunities for movement and hands-on tasks.';
+                        return 'Physical work and activity are relatively less important to you, suggesting you\'re comfortable with sedentary or desk-based work and may prefer intellectual or administrative tasks.';
+                    }
+                }
+            };
+            
+            let html = `
+                    <!-- Percentile Interpretation Guide -->
+                    <div class="bg-pink-50 border-l-4 border-pink-500 rounded-lg p-4 mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-2">Understanding Your Work Values Scores</h3>
+                        <p class="text-xs text-gray-700 mb-2">
+                            Your work values represent what you find important and meaningful in your career. Percentile scores show how important each value is to you compared to others. 
+                            For example, if you score at the <strong>75th percentile</strong> for Knowledge Utilization, it means this value is more important to you than it is to 75% of people.
+                        </p>
+                        <p class="text-xs text-gray-600">
+                            <strong>Interpretation guide:</strong> 90th+ percentile = Very Important | 75th-89th = Important | 50th-74th = Somewhat Important | 25th-49th = Less Important | Below 25th = Not Important
+                        </p>
+                    </div>
+                    
+                    <!-- Radar Chart -->
+                    <div class="mb-8">
+                        <div class="flex justify-center items-center overflow-x-auto">
+                            <div id="values-radar" style="width: 400px; height: 400px; overflow: visible; min-width: 400px;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Value Descriptions -->
+                    <div class="space-y-6">
+            `;
+            
+            valuesOrder.forEach(type => {
+                const data = valuesData.find(d => d.type === type);
+                const desc = valuesDescriptions[type];
+                const interpretation = desc.interpretation(data.score);
+                const occupations = findValuesOccupations(type, allOccupations, domainScores, focalOccupation, 3);
+                
+                const percentileInterpretation = interpretPercentile(data.percentile);
+                html += `
+                    <div class="border-l-4 border-pink-500 pl-6 py-4 bg-pink-50 rounded-r-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-semibold text-gray-900">${data.label}</h3>
+                            <span class="text-sm font-semibold text-pink-700 bg-pink-100 px-3 py-1 rounded-full">
+                                ${formatOrdinal(data.percentile)} Percentile (${percentileInterpretation})
+                            </span>
+                        </div>
+                        <p class="text-gray-700 mb-3">${desc.description}</p>
+                        <p class="text-gray-800 font-medium mb-4">${interpretation}</p>
+                        
+                        ${occupations.length > 0 ? `
+                        <div class="mt-4">
+                            <p class="text-sm font-medium text-gray-700 mb-3">Example occupations that value ${data.label.toLowerCase()}:</p>
+                            <div class="grid md:grid-cols-2 gap-3">
+                                ${occupations.map(occ => `
+                                    <div class="bg-white rounded-lg p-4 border border-gray-200 hover:border-pink-400 transition-colors">
+                                        <div class="flex items-start justify-between mb-2">
+                                            <h4 class="font-semibold text-gray-900 text-sm">${occ.title}</h4>
+                                            <a 
+                                                href="https://www.onetonline.org/link/summary/${occ.onet_code}" 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                class="text-blue-600 hover:text-blue-800 text-xs font-medium underline ml-2 flex-shrink-0"
+                                            >
+                                                O*NET →
+                                            </a>
+                                        </div>
+                                        <p class="text-xs text-gray-600">${occ.description || 'Learn more about this occupation on O*NET.'}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+            `;
+            
+            return html;
+        }
+
+        // Generate HTML for Basic Interests section
+        function generateBasicInterestsSection(domainScores, allOccupations, focalOccupation = null) {
+            const basicScores = domainScores.interests_basic || {};
+            const basicInterestsOrder = Object.keys(basicScores).sort((a, b) => (basicScores[b] || 0) - (basicScores[a] || 0));
+            
+            const basicData = basicInterestsOrder.map(type => {
+                const score = basicScores[type] || 0;
+                const percentile = scoreToPercentile(score);
+                return {
+                    label: type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+                    type: type,
+                    score: score,
+                    percentage: Math.round(((score - 1) / 4) * 100),
+                    percentile: percentile
+                };
+            });
+
+            let html = `
+                    <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-2">Understanding Your Basic Interest Scores</h3>
+                        <p class="text-xs text-gray-700 mb-2">
+                            Basic interests represent your preferences for specific types of work activities. Percentile scores show how your interest compares to others.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="flex justify-center items-center overflow-x-auto">
+                            <div id="basic-interests-radar" style="width: 500px; height: 500px; overflow: visible; min-width: 500px;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+            `;
+            
+            basicData.slice(0, 10).forEach(data => {
+                const occupations = findBasicInterestsOccupations(data.type, allOccupations, domainScores, focalOccupation, 3);
+                const percentileInterpretation = interpretPercentile(data.percentile);
+                html += `
+                    <div class="border-l-4 border-blue-500 pl-6 py-4 bg-blue-50 rounded-r-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-semibold text-gray-900">${data.label}</h3>
+                            <span class="text-sm font-semibold text-blue-700 bg-blue-100 px-3 py-1 rounded-full">
+                                ${formatOrdinal(data.percentile)} Percentile (${percentileInterpretation})
+                            </span>
+                        </div>
+                        <p class="text-gray-700 mb-3">Your interest in ${data.label.toLowerCase()} activities is ${percentileInterpretation}.</p>
+                        
+                        ${occupations.length > 0 ? `
+                        <div class="mt-4">
+                            <p class="text-sm font-medium text-gray-700 mb-3">Example occupations that align with ${data.label.toLowerCase()} interests:</p>
+                            <div class="grid md:grid-cols-2 gap-3">
+                                ${occupations.map(occ => `
+                                    <div class="bg-white rounded-lg p-4 border border-gray-200 hover:border-blue-400 transition-colors">
+                                        <div class="flex items-start justify-between mb-2">
+                                            <h4 class="font-semibold text-gray-900 text-sm">${occ.title}</h4>
+                                            <a 
+                                                href="https://www.onetonline.org/link/summary/${occ.onet_code}" 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                class="text-blue-600 hover:text-blue-800 text-xs font-medium underline ml-2 flex-shrink-0"
+                                            >
+                                                O*NET →
+                                            </a>
+                                        </div>
+                                        <p class="text-xs text-gray-600">${occ.description || 'Learn more about this occupation on O*NET.'}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            if (basicData.length > 10) {
+                html += `
+                    <div class="border-l-4 border-gray-300 pl-6 py-4 bg-gray-50 rounded-r-lg">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Other Interest Areas</h3>
+                        <div class="grid md:grid-cols-2 gap-2">
+                            ${basicData.slice(10).map(data => {
+                                const percentileInterpretation = interpretPercentile(data.percentile);
+                                return `
+                                    <div class="text-sm">
+                                        <span class="font-medium text-gray-700">${data.label}:</span>
+                                        <span class="text-gray-600 ml-1">${formatOrdinal(data.percentile)} percentile (${percentileInterpretation})</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += `</div>`;
+            return html;
+        }
+
+        // Generate HTML for Knowledge Interest section
+        function generateKnowledgeSection(domainScores, allOccupations, focalOccupation = null) {
+            const knowledgeScores = domainScores.knowledge || {};
+            const knowledgeOrder = Object.keys(knowledgeScores).sort((a, b) => (knowledgeScores[b] || 0) - (knowledgeScores[a] || 0));
+            
+            const knowledgeData = knowledgeOrder.map(type => {
+                const score = knowledgeScores[type] || 0;
+                const percentile = scoreToPercentile(score);
+                return {
+                    label: type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+                    type: type,
+                    score: score,
+                    percentage: Math.round(((score - 1) / 4) * 100),
+                    percentile: percentile
+                };
+            });
+
+            let html = `
+                    <div class="bg-purple-50 border-l-4 border-purple-500 rounded-lg p-4 mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-2">Understanding Your Knowledge Interest Scores</h3>
+                        <p class="text-xs text-gray-700 mb-2">
+                            These scores reflect your <strong>interest in learning</strong> different knowledge areas, not what you currently know. 
+                            It's important to understand that having interest in learning about something doesn't automatically mean you've acquired that knowledge yet.
+                        </p>
+                        <p class="text-xs text-gray-700 mt-2">
+                            <strong>However,</strong> if you do pursue studying and preparing yourself for this career (by taking relevant courses, gaining experience, and developing expertise), 
+                            then your fit predictions shown here are accurate. The assessment assumes you'll follow through on your interests and develop the knowledge needed for this occupation.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="flex justify-center items-center overflow-x-auto">
+                            <div id="knowledge-radar" style="width: 500px; height: 500px; overflow: visible; min-width: 500px;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+            `;
+            
+            knowledgeData.slice(0, 12).forEach(data => {
+                const occupations = findKnowledgeOccupations(data.type, allOccupations, domainScores, focalOccupation, 3);
+                const percentileInterpretation = interpretPercentile(data.percentile);
+                html += `
+                    <div class="border-l-4 border-purple-500 pl-6 py-4 bg-purple-50 rounded-r-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-semibold text-gray-900">${data.label}</h3>
+                            <span class="text-sm font-semibold text-purple-700 bg-purple-100 px-3 py-1 rounded-full">
+                                ${formatOrdinal(data.percentile)} Percentile (${percentileInterpretation})
+                            </span>
+                        </div>
+                        <p class="text-gray-700 mb-3">Your interest in learning about ${data.label.toLowerCase()} is ${percentileInterpretation}.</p>
+                        
+                        ${occupations.length > 0 ? `
+                        <div class="mt-4">
+                            <p class="text-sm font-medium text-gray-700 mb-3">Example occupations that require ${data.label.toLowerCase()} knowledge:</p>
+                            <div class="grid md:grid-cols-2 gap-3">
+                                ${occupations.map(occ => `
+                                    <div class="bg-white rounded-lg p-4 border border-gray-200 hover:border-purple-400 transition-colors">
+                                        <div class="flex items-start justify-between mb-2">
+                                            <h4 class="font-semibold text-gray-900 text-sm">${occ.title}</h4>
+                                            <a 
+                                                href="https://www.onetonline.org/link/summary/${occ.onet_code}" 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                class="text-blue-600 hover:text-blue-800 text-xs font-medium underline ml-2 flex-shrink-0"
+                                            >
+                                                O*NET →
+                                            </a>
+                                        </div>
+                                        <p class="text-xs text-gray-600">${occ.description || 'Learn more about this occupation on O*NET.'}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            if (knowledgeData.length > 12) {
+                html += `
+                    <div class="border-l-4 border-gray-300 pl-6 py-4 bg-gray-50 rounded-r-lg">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Other Knowledge Areas</h3>
+                        <div class="grid md:grid-cols-2 gap-2">
+                            ${knowledgeData.slice(12).map(data => {
+                                const percentileInterpretation = interpretPercentile(data.percentile);
+                                return `
+                                    <div class="text-sm">
+                                        <span class="font-medium text-gray-700">${data.label}:</span>
+                                        <span class="text-gray-600 ml-1">${formatOrdinal(data.percentile)} percentile (${percentileInterpretation})</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += `</div>`;
+            return html;
+        }
+
+        // Generate HTML for Skills Interest section
+        function generateSkillsSection(domainScores, allOccupations, focalOccupation = null) {
+            const skillsScores = domainScores.skills || {};
+            const skillsOrder = Object.keys(skillsScores).sort((a, b) => (skillsScores[b] || 0) - (skillsScores[a] || 0));
+            
+            const skillsData = skillsOrder.map(type => {
+                const score = skillsScores[type] || 0;
+                const percentile = scoreToPercentile(score);
+                return {
+                    label: type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+                    type: type,
+                    score: score,
+                    percentage: Math.round(((score - 1) / 4) * 100),
+                    percentile: percentile
+                };
+            });
+
+            let html = `
+                    <div class="bg-teal-50 border-l-4 border-teal-500 rounded-lg p-4 mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-2">Understanding Your Skills Interest Scores</h3>
+                        <p class="text-xs text-gray-700 mb-2">
+                            These scores reflect your <strong>interest in developing</strong> different skills, not your current skill level. 
+                            It's important to understand that having interest in developing a skill doesn't automatically mean you've acquired that skill yet.
+                        </p>
+                        <p class="text-xs text-gray-700 mt-2">
+                            <strong>However,</strong> if you do pursue studying and preparing yourself for this career (by practicing, taking courses, and developing your abilities), 
+                            then your fit predictions shown here are accurate. The assessment assumes you'll follow through on your interests and develop the skills needed for this occupation.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="flex justify-center items-center overflow-x-auto">
+                            <div id="skills-radar" style="width: 500px; height: 500px; overflow: visible; min-width: 500px;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+            `;
+            
+            skillsData.slice(0, 10).forEach(data => {
+                const occupations = findSkillsOccupations(data.type, allOccupations, domainScores, focalOccupation, 3);
+                const percentileInterpretation = interpretPercentile(data.percentile);
+                html += `
+                    <div class="border-l-4 border-teal-500 pl-6 py-4 bg-teal-50 rounded-r-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-semibold text-gray-900">${data.label}</h3>
+                            <span class="text-sm font-semibold text-teal-700 bg-teal-100 px-3 py-1 rounded-full">
+                                ${formatOrdinal(data.percentile)} Percentile (${percentileInterpretation})
+                            </span>
+                        </div>
+                        <p class="text-gray-700 mb-3">Your interest in developing ${data.label.toLowerCase()} is ${percentileInterpretation}.</p>
+                        
+                        ${occupations.length > 0 ? `
+                        <div class="mt-4">
+                            <p class="text-sm font-medium text-gray-700 mb-3">Example occupations that require ${data.label.toLowerCase()} skills:</p>
+                            <div class="grid md:grid-cols-2 gap-3">
+                                ${occupations.map(occ => `
+                                    <div class="bg-white rounded-lg p-4 border border-gray-200 hover:border-teal-400 transition-colors">
+                                        <div class="flex items-start justify-between mb-2">
+                                            <h4 class="font-semibold text-gray-900 text-sm">${occ.title}</h4>
+                                            <a 
+                                                href="https://www.onetonline.org/link/summary/${occ.onet_code}" 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                class="text-blue-600 hover:text-blue-800 text-xs font-medium underline ml-2 flex-shrink-0"
+                                            >
+                                                O*NET →
+                                            </a>
+                                        </div>
+                                        <p class="text-xs text-gray-600">${occ.description || 'Learn more about this occupation on O*NET.'}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            if (skillsData.length > 10) {
+                html += `
+                    <div class="border-l-4 border-gray-300 pl-6 py-4 bg-gray-50 rounded-r-lg">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Other Skill Areas</h3>
+                        <div class="grid md:grid-cols-2 gap-2">
+                            ${skillsData.slice(10).map(data => {
+                                const percentileInterpretation = interpretPercentile(data.percentile);
+                                return `
+                                    <div class="text-sm">
+                                        <span class="font-medium text-gray-700">${data.label}:</span>
+                                        <span class="text-gray-600 ml-1">${formatOrdinal(data.percentile)} percentile (${percentileInterpretation})</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += `</div>`;
+            return html;
+        }
+        
+        // Helper function to format ordinal numbers (1st, 2nd, 3rd, etc.)
+        function formatOrdinal(num) {
+            const j = num % 10;
+            const k = num % 100;
+            if (j === 1 && k !== 11) {
+                return num + 'st';
+            }
+            if (j === 2 && k !== 12) {
+                return num + 'nd';
+            }
+            if (j === 3 && k !== 13) {
+                return num + 'rd';
+            }
+            return num + 'th';
+        }
+
+        // Helper function to convert 1-5 scale score to percentile
+        // Assumes normal distribution with mean=3, std dev≈1
+        function scoreToPercentile(score) {
+            if (score <= 1) return 2;
+            if (score >= 5) return 98;
+            // Normal distribution approximation: z-score = (score - 3) / 1
+            const z = (score - 3) / 1;
+            // Convert z-score to percentile using cumulative normal distribution approximation
+            // Using simplified formula: percentile ≈ 50 + (z * 34)
+            const percentile = Math.round(50 + (z * 34));
+            return Math.max(1, Math.min(99, percentile));
+        }
+        
+        // Helper function to interpret percentile
+        function interpretPercentile(percentile) {
+            if (percentile >= 90) return 'very high';
+            if (percentile >= 75) return 'high';
+            if (percentile >= 50) return 'above average';
+            if (percentile >= 25) return 'below average';
+            return 'low';
+        }
+        
+        // Helper function to aggregate personality facets into Big Five dimensions
+        function aggregateBigFive(personalityFacets) {
+            const facets = personalityFacets || {};
+            
+            // Helper to average facets
+            const avg = (keys) => {
+                const values = keys.map(k => facets[k]).filter(v => v !== undefined && v !== null);
+                return values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length : 0;
+            };
+            
+            // For emotional stability, reverse score anxiety and emotional_volatility (higher = more stable)
+            const anxietyAvg = avg(['anxiety', 'emotional_volatility']);
+            const emotionalStability = anxietyAvg > 0 ? 6 - anxietyAvg : 0; // Reverse from 1-5 scale
+            
+            return {
+                openness: avg(['intellectual_curiosity', 'creative_imagination']),
+                conscientiousness: avg(['organization', 'productiveness', 'responsibility']),
+                extraversion: avg(['sociability', 'assertiveness', 'energy_level']),
+                agreeableness: avg(['compassion', 'respectfulness', 'trust']),
+                emotional_stability: emotionalStability
+            };
+        }
+        
+        // Helper function to calculate fit score for a single occupation
+        function calculateOccupationFit(domainScores, occupation) {
+            if (!occupation.domain_vectors) return 0;
+            
+            const domainVectors = occupation.domain_vectors;
+            const correlations = [];
+            
+            // Calculate correlation for each domain
+            // Interests - RIASEC
+            if (domainScores.interests_riasec && domainVectors.interests_riasec) {
+                const riasecKeys = Object.keys(domainVectors.interests_riasec);
+                const riasecPerson = riasecKeys.map(key => domainScores.interests_riasec[key] || 0);
+                const riasecOcc = riasecKeys.map(key => domainVectors.interests_riasec[key] || 0);
+                const corr = computeProfileCorrelation(riasecPerson, riasecOcc);
+                if (!isNaN(corr)) correlations.push(corr);
+            }
+            
+            // Interests - Basic
+            if (domainScores.interests_basic && domainVectors.interests_basic) {
+                const basicKeys = Object.keys(domainVectors.interests_basic);
+                const basicPerson = basicKeys.map(key => domainScores.interests_basic[key] || 0);
+                const basicOcc = basicKeys.map(key => domainVectors.interests_basic[key] || 0);
+                const corr = computeProfileCorrelation(basicPerson, basicOcc);
+                if (!isNaN(corr)) correlations.push(corr);
+            }
+            
+            // Values
+            if (domainScores.values && domainVectors.values) {
+                const valueKeys = Object.keys(domainVectors.values);
+                const valuePerson = valueKeys.map(key => domainScores.values[key] || 0);
+                const valueOcc = valueKeys.map(key => domainVectors.values[key] || 0);
+                const corr = computeProfileCorrelation(valuePerson, valueOcc);
+                if (!isNaN(corr)) correlations.push(corr);
+            }
+            
+            // Knowledge
+            if (domainScores.knowledge && domainVectors.knowledge) {
+                const knowledgeKeys = Object.keys(domainVectors.knowledge);
+                const knowledgePerson = knowledgeKeys.map(key => domainScores.knowledge[key] || 0);
+                const knowledgeOcc = knowledgeKeys.map(key => domainVectors.knowledge[key] || 0);
+                const corr = computeProfileCorrelation(knowledgePerson, knowledgeOcc);
+                if (!isNaN(corr)) correlations.push(corr);
+            }
+            
+            // Skills
+            if (domainScores.skills && domainVectors.skills) {
+                const skillKeys = Object.keys(domainVectors.skills);
+                const skillPerson = skillKeys.map(key => domainScores.skills[key] || 0);
+                const skillOcc = skillKeys.map(key => domainVectors.skills[key] || 0);
+                const corr = computeProfileCorrelation(skillPerson, skillOcc);
+                if (!isNaN(corr)) correlations.push(corr);
+            }
+            
+            // Personality
+            if (domainScores.personality && domainVectors.personality) {
+                const personalityKeys = Object.keys(domainVectors.personality);
+                const personalityPerson = personalityKeys.map(key => domainScores.personality[key] || 0);
+                const personalityOcc = personalityKeys.map(key => domainVectors.personality[key] || 0);
+                const corr = computeProfileCorrelation(personalityPerson, personalityOcc);
+                if (!isNaN(corr)) correlations.push(corr);
+            }
+            
+            // Return average correlation as fit score
+            return correlations.length > 0 ? correlations.reduce((a, b) => a + b, 0) / correlations.length : 0;
+        }
+
+        // Helper function to find example occupations for a basic interest type
+        function findBasicInterestsOccupations(interestType, allOccupations, domainScores, focalOccupation, count = 5) {
+            const focalOnetCode = focalOccupation ? focalOccupation.onet_code : null;
+            
+            return allOccupations
+                .filter(occ => {
+                    if (focalOnetCode && occ.onet_code === focalOnetCode) return false;
+                    return occ.domain_vectors && occ.domain_vectors.interests_basic && occ.domain_vectors.interests_basic[interestType] !== undefined;
+                })
+                .map(occ => {
+                    const fitScore = calculateOccupationFit(domainScores, occ);
+                    const dimensionScore = occ.domain_vectors.interests_basic[interestType];
+                    return {
+                        ...occ,
+                        dimensionScore: dimensionScore,
+                        fitScore: fitScore,
+                        combinedScore: (dimensionScore * 0.4) + ((fitScore + 1) / 2 * 100 * 0.6)
+                    };
+                })
+                .sort((a, b) => {
+                    if (Math.abs(a.combinedScore - b.combinedScore) < 0.1) {
+                        return b.fitScore - a.fitScore;
+                    }
+                    return b.combinedScore - a.combinedScore;
+                })
+                .filter(occ => occ.fitScore > -0.5)
+                .slice(0, count);
+        }
+
+        // Helper function to find example occupations for a knowledge area
+        function findKnowledgeOccupations(knowledgeType, allOccupations, domainScores, focalOccupation, count = 5) {
+            const focalOnetCode = focalOccupation ? focalOccupation.onet_code : null;
+            
+            return allOccupations
+                .filter(occ => {
+                    if (focalOnetCode && occ.onet_code === focalOnetCode) return false;
+                    return occ.domain_vectors && occ.domain_vectors.knowledge && occ.domain_vectors.knowledge[knowledgeType] !== undefined;
+                })
+                .map(occ => {
+                    const fitScore = calculateOccupationFit(domainScores, occ);
+                    const dimensionScore = occ.domain_vectors.knowledge[knowledgeType];
+                    return {
+                        ...occ,
+                        dimensionScore: dimensionScore,
+                        fitScore: fitScore,
+                        combinedScore: (dimensionScore * 0.4) + ((fitScore + 1) / 2 * 100 * 0.6)
+                    };
+                })
+                .sort((a, b) => {
+                    if (Math.abs(a.combinedScore - b.combinedScore) < 0.1) {
+                        return b.fitScore - a.fitScore;
+                    }
+                    return b.combinedScore - a.combinedScore;
+                })
+                .filter(occ => occ.fitScore > -0.5)
+                .slice(0, count);
+        }
+
+        // Helper function to find example occupations for a skill type
+        function findSkillsOccupations(skillType, allOccupations, domainScores, focalOccupation, count = 5) {
+            const focalOnetCode = focalOccupation ? focalOccupation.onet_code : null;
+            
+            return allOccupations
+                .filter(occ => {
+                    if (focalOnetCode && occ.onet_code === focalOnetCode) return false;
+                    return occ.domain_vectors && occ.domain_vectors.skills && occ.domain_vectors.skills[skillType] !== undefined;
+                })
+                .map(occ => {
+                    const fitScore = calculateOccupationFit(domainScores, occ);
+                    const dimensionScore = occ.domain_vectors.skills[skillType];
+                    return {
+                        ...occ,
+                        dimensionScore: dimensionScore,
+                        fitScore: fitScore,
+                        combinedScore: (dimensionScore * 0.4) + ((fitScore + 1) / 2 * 100 * 0.6)
+                    };
+                })
+                .sort((a, b) => {
+                    if (Math.abs(a.combinedScore - b.combinedScore) < 0.1) {
+                        return b.fitScore - a.fitScore;
+                    }
+                    return b.combinedScore - a.combinedScore;
+                })
+                .filter(occ => occ.fitScore > -0.5)
+                .slice(0, count);
+        }
+
+        // Helper function to find example occupations for a specific work value
+        function findValuesOccupations(valueType, allOccupations, domainScores, focalOccupation, count = 5) {
+            const focalOnetCode = focalOccupation ? focalOccupation.onet_code : null;
+            
+            return allOccupations
+                .filter(occ => {
+                    if (focalOnetCode && occ.onet_code === focalOnetCode) return false;
+                    return occ.domain_vectors && occ.domain_vectors.values && occ.domain_vectors.values[valueType] !== undefined;
+                })
+                .map(occ => {
+                    const fitScore = calculateOccupationFit(domainScores, occ);
+                    const dimensionScore = occ.domain_vectors.values[valueType];
+                    return {
+                        ...occ,
+                        dimensionScore: dimensionScore,
+                        fitScore: fitScore,
+                        combinedScore: (dimensionScore * 0.4) + ((fitScore + 1) / 2 * 100 * 0.6)
+                    };
+                })
+                .sort((a, b) => {
+                    if (Math.abs(a.combinedScore - b.combinedScore) < 0.1) {
+                        return b.fitScore - a.fitScore;
+                    }
+                    return b.combinedScore - a.combinedScore;
+                })
+                .filter(occ => occ.fitScore > -0.5)
+                .slice(0, count);
+        }
+        
+        // Helper function to find example occupations for a RIASEC dimension
+        function findRIASECOccupations(riasecType, allOccupations, domainScores, focalOccupation, count = 5) {
+            const focalOnetCode = focalOccupation ? focalOccupation.onet_code : null;
+            
+            return allOccupations
+                .filter(occ => {
+                    // Exclude focal occupation
+                    if (focalOnetCode && occ.onet_code === focalOnetCode) return false;
+                    // Must have RIASEC data for this dimension
+                    return occ.domain_vectors && occ.domain_vectors.interests_riasec && occ.domain_vectors.interests_riasec[riasecType] !== undefined;
+                })
+                .map(occ => {
+                    // Calculate overall fit score
+                    const fitScore = calculateOccupationFit(domainScores, occ);
+                    // Get dimension-specific score
+                    const dimensionScore = occ.domain_vectors.interests_riasec[riasecType];
+                    return {
+                        ...occ,
+                        dimensionScore: dimensionScore,
+                        fitScore: fitScore,
+                        // Combined score: prioritize occupations with both high dimension score AND good fit
+                        combinedScore: (dimensionScore * 0.4) + ((fitScore + 1) / 2 * 100 * 0.6) // Normalize fit to 0-100
+                    };
+                })
+                .sort((a, b) => {
+                    // Sort by combined score (dimension + fit), but also ensure good fit
+                    if (Math.abs(a.combinedScore - b.combinedScore) < 0.1) {
+                        return b.fitScore - a.fitScore; // Tie-breaker: better fit
+                    }
+                    return b.combinedScore - a.combinedScore;
+                })
+                .filter(occ => occ.fitScore > -0.3) // Only show occupations with reasonable fit (above -0.3 correlation)
+                .slice(0, count);
+        }
+        
+        // Helper function to find example occupations for a Big Five trait
+        function findBigFiveOccupations(trait, allOccupations, domainScores, focalOccupation, count = 5) {
+            // Map trait to relevant facets
+            const facetMap = {
+                openness: ['intellectual_curiosity', 'creative_imagination'],
+                conscientiousness: ['organization', 'productiveness', 'responsibility'],
+                extraversion: ['sociability', 'assertiveness', 'energy_level'],
+                agreeableness: ['compassion', 'respectfulness', 'trust'],
+                emotional_stability: ['anxiety', 'emotional_volatility'] // Lower is better for these
+            };
+            
+            const relevantFacets = facetMap[trait] || [];
+            const focalOnetCode = focalOccupation ? focalOccupation.onet_code : null;
+            
+            return allOccupations
+                .filter(occ => {
+                    // Exclude focal occupation
+                    if (focalOnetCode && occ.onet_code === focalOnetCode) return false;
+                    if (!occ.domain_vectors || !occ.domain_vectors.personality) return false;
+                    return relevantFacets.some(facet => occ.domain_vectors.personality[facet] !== undefined);
+                })
+                .map(occ => {
+                    // Calculate average of relevant facets
+                    const values = relevantFacets
+                        .map(f => occ.domain_vectors.personality[f])
+                        .filter(v => v !== undefined && v !== null);
+                    
+                    let dimensionScore = values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length : 0;
+                    
+                    // For emotional stability, reverse score (lower anxiety/volatility = higher stability)
+                    if (trait === 'emotional_stability') {
+                        dimensionScore = 6 - dimensionScore; // Reverse from 1-5 scale
+                    }
+                    
+                    // Calculate overall fit score
+                    const fitScore = calculateOccupationFit(domainScores, occ);
+                    
+                    return {
+                        ...occ,
+                        dimensionScore: dimensionScore,
+                        fitScore: fitScore,
+                        // Combined score: prioritize occupations with both high dimension score AND good fit
+                        combinedScore: (dimensionScore * 0.4) + ((fitScore + 1) / 2 * 100 * 0.6) // Normalize fit to 0-100
+                    };
+                })
+                .sort((a, b) => {
+                    // Sort by combined score (dimension + fit), but also ensure good fit
+                    if (Math.abs(a.combinedScore - b.combinedScore) < 0.1) {
+                        return b.fitScore - a.fitScore; // Tie-breaker: better fit
+                    }
+                    return b.combinedScore - a.combinedScore;
+                })
+                .filter(occ => occ.fitScore > -0.5) // Only show occupations with reasonable fit (above -0.5 correlation)
+                .slice(0, count);
+        }
+        
+        // Generate HTML for RIASEC interests section
+        function generateRIASECSection(domainScores, allOccupations, focalOccupation = null) {
+            const riasecScores = domainScores.interests_riasec || {};
+            const riasecOrder = ['realistic', 'investigative', 'artistic', 'social', 'enterprising', 'conventional'];
+            
+            // Convert scores from 1-5 scale to percentages (0-100%) and calculate percentiles
+            const riasecData = riasecOrder.map(type => {
+                const score = riasecScores[type] || 0;
+                const percentile = scoreToPercentile(score);
+                return {
+                    label: type.charAt(0).toUpperCase() + type.slice(1),
+                    type: type,
+                    score: score,
+                    percentage: Math.round(((score - 1) / 4) * 100), // Convert 1-5 to 0-100%
+                    percentile: percentile
+                };
+            });
+            
+            // RIASEC dimension descriptions (natural, flowing style)
+            const riasecDescriptions = {
+                realistic: {
+                    description: 'People with strong realistic interests enjoy working with their hands and seeing tangible results from their efforts. They tend to prefer practical, hands-on work with tools, machines, or physical materials. If you score high in realistic interests, you likely find satisfaction in building, repairing, or operating equipment, and you appreciate work where you can see concrete outcomes.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'Your realistic interests are quite strong, suggesting you enjoy hands-on, practical work where you can see concrete results from your efforts.';
+                        if (score >= 3) return 'Your realistic interests show moderate strength, indicating you appreciate some practical, tangible work activities.';
+                        return 'Your realistic interests are relatively lower, suggesting you may prefer work that involves less hands-on physical activity.';
+                    }
+                },
+                investigative: {
+                    description: 'People with strong investigative interests are drawn to research, analysis, and scientific inquiry. They enjoy exploring ideas, solving complex problems, and understanding how things work. If you score high in investigative interests, you likely thrive in environments that challenge you intellectually and allow you to dig deep into questions and problems.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'Your investigative interests are quite strong, suggesting you enjoy research, analysis, and intellectual challenges that allow you to explore ideas deeply.';
+                        if (score >= 3) return 'Your investigative interests show moderate strength, indicating you appreciate some analytical and research-oriented work activities.';
+                        return 'Your investigative interests are relatively lower, suggesting you may prefer work that involves less research and analysis.';
+                    }
+                },
+                artistic: {
+                    description: 'People with strong artistic interests are drawn to creative expression through art, design, music, or writing. They enjoy using their imagination and creating something new or beautiful. If you score high in artistic interests, you likely find fulfillment in work that allows you to express yourself creatively and bring new ideas or designs to life.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'Your artistic interests are quite strong, suggesting you enjoy creative expression and work that allows you to use your imagination and create something new or beautiful.';
+                        if (score >= 3) return 'Your artistic interests show moderate strength, indicating you appreciate some creative and expressive work activities.';
+                        return 'Your artistic interests are relatively lower, suggesting you may prefer work that involves less creative expression.';
+                    }
+                },
+                social: {
+                    description: 'People with strong social interests are drawn to helping, teaching, and working with others. They find meaning in supporting people, building relationships, and making a positive impact on others\' lives. If you score high in social interests, you likely thrive in environments where you can connect with people and contribute to their growth or well-being.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'Your social interests are quite strong, suggesting you enjoy helping, teaching, and working with people, and you find meaning in supporting others and building relationships.';
+                        if (score >= 3) return 'Your social interests show moderate strength, indicating you appreciate some work that involves interacting with and helping people.';
+                        return 'Your social interests are relatively lower, suggesting you may prefer work that involves less direct interaction with others.';
+                    }
+                },
+                enterprising: {
+                    description: 'People with strong enterprising interests are drawn to leading, persuading, and managing for business success. They enjoy taking initiative, making decisions, and achieving goals through influence and leadership. If you score high in enterprising interests, you likely thrive in environments where you can lead others, drive results, and make strategic decisions.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'Your enterprising interests are quite strong, suggesting you enjoy leading, persuading, and managing others, and you thrive in environments where you can take initiative and drive results.';
+                        if (score >= 3) return 'Your enterprising interests show moderate strength, indicating you appreciate some leadership and business-oriented work activities.';
+                        return 'Your enterprising interests are relatively lower, suggesting you may prefer work that involves less leadership and management responsibility.';
+                    }
+                },
+                conventional: {
+                    description: 'People with strong conventional interests prefer structured tasks, organization, and working with data or numbers. They appreciate clear procedures, systematic work, and maintaining order. If you score high in conventional interests, you likely find satisfaction in work that involves organizing information, following established processes, and ensuring accuracy and consistency.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'Your conventional interests are quite strong, suggesting you enjoy structured, organized work with clear procedures and systematic tasks involving data or numbers.';
+                        if (score >= 3) return 'Your conventional interests show moderate strength, indicating you appreciate some organized and systematic work activities.';
+                        return 'Your conventional interests are relatively lower, suggesting you may prefer work that involves less structure and routine.';
+                    }
+                }
+            };
+            
+            let html = `
+                    <!-- Percentile Interpretation Guide -->
+                    <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-2">Understanding Your Percentile Scores</h3>
+                        <p class="text-xs text-gray-700 mb-2">
+                            Percentile scores show how your interests compare to others. For example, if you score at the <strong>75th percentile</strong> in Investigative interests, 
+                            it means your interest level is higher than 75% of people. Scores above the 50th percentile indicate above-average interest, while scores below indicate below-average interest.
+                        </p>
+                        <p class="text-xs text-gray-600">
+                            <strong>Interpretation guide:</strong> 90th+ percentile = Very High | 75th-89th = High | 50th-74th = Above Average | 25th-49th = Below Average | Below 25th = Low
+                        </p>
+                    </div>
+                    
+                    <!-- Radar Chart -->
+                    <div class="mb-8">
+                        <div class="flex justify-center items-center overflow-x-auto">
+                            <div id="riasec-radar" style="width: 400px; height: 400px; overflow: visible; min-width: 400px;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Dimension Descriptions -->
+                    <div class="space-y-6">
+            `;
+            
+            riasecOrder.forEach(type => {
+                const data = riasecData.find(d => d.type === type);
+                const desc = riasecDescriptions[type];
+                const interpretation = desc.interpretation(data.score);
+                const occupations = findRIASECOccupations(type, allOccupations, domainScores, focalOccupation, 3);
+                
+                const percentileInterpretation = interpretPercentile(data.percentile);
+                html += `
+                    <div class="border-l-4 border-blue-500 pl-6 py-4 bg-blue-50 rounded-r-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-semibold text-gray-900">${data.label} Interests</h3>
+                            <span class="text-sm font-semibold text-blue-700 bg-blue-100 px-3 py-1 rounded-full">
+                                ${formatOrdinal(data.percentile)} Percentile (${percentileInterpretation})
+                            </span>
+                        </div>
+                        <p class="text-gray-700 mb-3">${desc.description}</p>
+                        <p class="text-gray-800 font-medium mb-2">${interpretation}</p>
+                        <p class="text-sm text-gray-600 italic mb-4">
+                            Your score of ${data.score.toFixed(1)} on a 1-5 scale places you at the <strong>${formatOrdinal(data.percentile)} percentile</strong>, 
+                            meaning your interest in ${data.label.toLowerCase()} activities is ${percentileInterpretation} compared to others.
+                        </p>
+                        
+                        ${occupations.length > 0 ? `
+                        <div class="mt-4">
+                            <p class="text-sm font-medium text-gray-700 mb-3">Example occupations that align with ${data.label.toLowerCase()} interests:</p>
+                            <div class="grid md:grid-cols-2 gap-3">
+                                ${occupations.map(occ => `
+                                    <div class="bg-white rounded-lg p-4 border border-gray-200 hover:border-blue-400 transition-colors">
+                                        <div class="flex items-start justify-between mb-2">
+                                            <h4 class="font-semibold text-gray-900 text-sm">${occ.title}</h4>
+                                            <a 
+                                                href="https://www.onetonline.org/link/summary/${occ.onet_code}" 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                class="text-blue-600 hover:text-blue-800 text-xs font-medium underline ml-2 flex-shrink-0"
+                                            >
+                                                O*NET →
+                                            </a>
+                                        </div>
+                                        <p class="text-xs text-gray-600">${occ.description || 'Learn more about this occupation on O*NET.'}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                </div>
+            `;
+            
+            return html;
+        }
+        
+        // Generate HTML for Big Five personality section
+        function generateBigFiveSection(domainScores, allOccupations, focalOccupation = null) {
+            const personalityFacets = domainScores.personality || {};
+            const bigFive = aggregateBigFive(personalityFacets);
+            
+            // Convert scores from 1-5 scale to percentages (0-100%) and calculate percentiles
+            // For emotional stability, we already reversed it in aggregation
+            const bigFiveData = [
+                { label: 'Openness to Experience', trait: 'openness', score: bigFive.openness, percentage: Math.round(((bigFive.openness - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.openness) },
+                { label: 'Conscientiousness', trait: 'conscientiousness', score: bigFive.conscientiousness, percentage: Math.round(((bigFive.conscientiousness - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.conscientiousness) },
+                { label: 'Extraversion', trait: 'extraversion', score: bigFive.extraversion, percentage: Math.round(((bigFive.extraversion - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.extraversion) },
+                { label: 'Agreeableness', trait: 'agreeableness', score: bigFive.agreeableness, percentage: Math.round(((bigFive.agreeableness - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.agreeableness) },
+                { label: 'Emotional Stability', trait: 'emotional_stability', score: bigFive.emotional_stability, percentage: Math.round(((bigFive.emotional_stability - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.emotional_stability) }
+            ];
+            
+            // Big Five trait descriptions (natural, flowing style)
+            const bigFiveDescriptions = {
+                openness: {
+                    description: 'People high in openness to experience tend to be curious, creative, and open to new ideas and experiences. They enjoy exploring abstract concepts, trying new approaches, and adapting to change. In the workplace, high openness often translates to innovation, creative problem-solving, and comfort with ambiguity and new challenges.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'Your high openness to experience suggests you thrive in roles that require creativity, intellectual curiosity, and the ability to adapt to new situations and ideas.';
+                        if (score >= 3) return 'Your moderate openness to experience indicates you appreciate some variety and creative thinking in your work, while also valuing some structure and familiarity.';
+                        return 'Your lower openness to experience suggests you prefer work environments with clear procedures, established methods, and predictable routines.';
+                    }
+                },
+                conscientiousness: {
+                    description: 'People high in conscientiousness tend to be organized, reliable, and persistent in their work. They value responsibility, follow through on commitments, and pay attention to details. In the workplace, high conscientiousness often translates to strong performance, dependability, and the ability to manage complex tasks effectively.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'Your high conscientiousness suggests you are organized, reliable, and persistent, which makes you valuable in roles requiring attention to detail and consistent performance.';
+                        if (score >= 3) return 'Your moderate conscientiousness indicates you can be organized and responsible when needed, while also maintaining some flexibility in your approach.';
+                        return 'Your lower conscientiousness suggests you may prefer work environments that allow for more flexibility and less rigid structure.';
+                    }
+                },
+                extraversion: {
+                    description: 'People high in extraversion tend to be outgoing, energetic, and enjoy interacting with others. They gain energy from social situations and often feel comfortable taking the lead or speaking up in groups. In the workplace, high extraversion often translates to strong communication skills, leadership potential, and comfort with networking and public speaking.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'Your high extraversion suggests you are outgoing and energetic, and you likely thrive in roles that involve frequent interaction with others, leadership opportunities, and dynamic social environments.';
+                        if (score >= 3) return 'Your moderate extraversion indicates you enjoy some social interaction and can be outgoing when needed, while also appreciating time for focused individual work.';
+                        return 'Your lower extraversion suggests you may prefer work environments that allow for more independent work and less frequent social interaction.';
+                    }
+                },
+                agreeableness: {
+                    description: 'People high in agreeableness tend to be compassionate, trusting, and cooperative. They value harmony in relationships and are often described as kind, helpful, and considerate of others\' feelings. In the workplace, high agreeableness often translates to strong teamwork, conflict resolution skills, and the ability to build positive working relationships.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'Your high agreeableness suggests you are compassionate and cooperative, which makes you valuable in roles that require teamwork, helping others, and building positive relationships.';
+                        if (score >= 3) return 'Your moderate agreeableness indicates you can be cooperative and considerate when needed, while also being able to assert your own needs and perspectives.';
+                        return 'Your lower agreeableness suggests you may prefer work environments where you can be more direct and competitive, with less emphasis on harmony and cooperation.';
+                    }
+                },
+                emotional_stability: {
+                    description: 'People high in emotional stability tend to remain calm under pressure, handle stress well, and maintain emotional control in challenging situations. They are less likely to experience anxiety or become overwhelmed by negative emotions. In the workplace, high emotional stability often translates to resilience, effective stress management, and the ability to perform consistently even in demanding or high-pressure situations.',
+                    interpretation: (score) => {
+                        if (score >= 4) return 'Your high emotional stability suggests you handle stress well and remain calm under pressure, which makes you valuable in roles that require resilience and consistent performance in challenging situations.';
+                        if (score >= 3) return 'Your moderate emotional stability indicates you can manage stress reasonably well, though you may benefit from work environments that provide adequate support and manageable demands.';
+                        return 'Your lower emotional stability suggests you may prefer work environments with lower stress levels and more predictable, supportive conditions.';
+                    }
+                }
+            };
+            
+            let html = `
+                    <!-- Percentile Interpretation Guide -->
+                    <div class="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-4 mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-2">Understanding Your Percentile Scores</h3>
+                        <p class="text-xs text-gray-700 mb-2">
+                            Percentile scores show how your personality traits compare to others. For example, if you score at the <strong>80th percentile</strong> in Conscientiousness, 
+                            it means you are more conscientious than 80% of people. Scores above the 50th percentile indicate above-average levels of that trait, while scores below indicate below-average levels.
+                        </p>
+                        <p class="text-xs text-gray-600">
+                            <strong>Interpretation guide:</strong> 90th+ percentile = Very High | 75th-89th = High | 50th-74th = Above Average | 25th-49th = Below Average | Below 25th = Low
+                        </p>
+                    </div>
+                    
+                    <!-- Radar Chart -->
+                    <div class="mb-8">
+                        <div class="flex justify-center items-center overflow-x-auto">
+                            <div id="bigfive-radar" style="width: 400px; height: 400px; overflow: visible; min-width: 400px;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Trait Descriptions -->
+                    <div class="space-y-6">
+            `;
+            
+            bigFiveData.forEach(({ label, trait, score, percentage, percentile }) => {
+                const desc = bigFiveDescriptions[trait];
+                const interpretation = desc.interpretation(score);
+                const occupations = findBigFiveOccupations(trait, allOccupations, domainScores, focalOccupation, 3);
+                const percentileInterpretation = interpretPercentile(percentile);
+                
+                html += `
+                    <div class="border-l-4 border-amber-500 pl-6 py-4 bg-amber-50 rounded-r-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-semibold text-gray-900">${label}</h3>
+                            <span class="text-sm font-semibold text-amber-700 bg-amber-100 px-3 py-1 rounded-full">
+                                ${formatOrdinal(percentile)} Percentile (${percentileInterpretation})
+                            </span>
+                        </div>
+                        <p class="text-gray-700 mb-3">${desc.description}</p>
+                        <p class="text-gray-800 font-medium mb-2">${interpretation}</p>
+                        <p class="text-sm text-gray-600 italic mb-4">
+                            Your score of ${score.toFixed(1)} on a 1-5 scale places you at the <strong>${formatOrdinal(percentile)} percentile</strong>, 
+                            meaning your level of ${label.toLowerCase()} is ${percentileInterpretation} compared to others.
+                        </p>
+                        
+                        ${occupations.length > 0 ? `
+                        <div class="mt-4">
+                            <p class="text-sm font-medium text-gray-700 mb-3">Example occupations that align with ${label.toLowerCase()}:</p>
+                            <div class="grid md:grid-cols-2 gap-3">
+                                ${occupations.map(occ => `
+                                    <div class="bg-white rounded-lg p-4 border border-gray-200 hover:border-amber-400 transition-colors">
+                                        <div class="flex items-start justify-between mb-2">
+                                            <h4 class="font-semibold text-gray-900 text-sm">${occ.title}</h4>
+                                            <a 
+                                                href="https://www.onetonline.org/link/summary/${occ.onet_code}" 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                class="text-blue-600 hover:text-blue-800 text-xs font-medium underline ml-2 flex-shrink-0"
+                                            >
+                                                O*NET →
+                                            </a>
+                                        </div>
+                                        <p class="text-xs text-gray-600">${occ.description || 'Learn more about this occupation on O*NET.'}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                </div>
+            `;
+            
+            return html;
+        }
 
         // Generate HTML for all outcome sections
         function generateResultsHTML(fitResult, outcomeScores, domainFitMap, interpretation) {
@@ -1019,6 +2184,7 @@
                         </div>
                     </div>
 
+
                     <!-- Outcome Comparison -->
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <h2 class="text-xl font-semibold text-gray-900 mb-4">Outcome Comparison</h2>
@@ -1071,6 +2237,72 @@
                                 See the Income section below for actual salary data from I-O Psychology careers.
                             </p>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Occupational Interest Section (RIASEC) -->
+                <div id="occupational-interest" class="outcome-content">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Your Occupational Interest Profile</h1>
+                        <p class="text-gray-600">Your interests across six major vocational interest dimensions</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+                        ${typeof window.exampleDomainScores !== 'undefined' && window.exampleDomainScores ? generateRIASECSection(window.exampleDomainScores, window.allOccupations || embeddedOccupationData.occupations, fitResult.occupation) : ''}
+                    </div>
+                </div>
+
+                <!-- Personality Section (Big Five) -->
+                <div id="personality" class="outcome-content">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Your Personality Profile</h1>
+                        <p class="text-gray-600">Your personality traits across five major dimensions</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+                        ${typeof window.exampleDomainScores !== 'undefined' && window.exampleDomainScores ? generateBigFiveSection(window.exampleDomainScores, window.allOccupations || embeddedOccupationData.occupations, fitResult.occupation) : ''}
+                    </div>
+                </div>
+
+                <!-- Work Values Section -->
+                <div id="work-values" class="outcome-content">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Your Work Values Profile</h1>
+                        <p class="text-gray-600">What you find important and meaningful in your work</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+                        ${typeof window.exampleDomainScores !== 'undefined' && window.exampleDomainScores ? generateValuesSection(window.exampleDomainScores, window.allOccupations || embeddedOccupationData.occupations, fitResult.occupation) : ''}
+                    </div>
+                </div>
+
+                <!-- Basic Interests Section -->
+                <div id="basic-interests" class="outcome-content">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Your Basic Interests Profile</h1>
+                        <p class="text-gray-600">Your interests across specific work activity areas</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+                        ${typeof window.exampleDomainScores !== 'undefined' && window.exampleDomainScores ? generateBasicInterestsSection(window.exampleDomainScores, window.allOccupations || embeddedOccupationData.occupations, fitResult.occupation) : ''}
+                    </div>
+                </div>
+
+                <!-- Knowledge Interest Section -->
+                <div id="knowledge-interest" class="outcome-content">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Your Knowledge Interest Profile</h1>
+                        <p class="text-gray-600">Your interest in learning different knowledge areas</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+                        ${typeof window.exampleDomainScores !== 'undefined' && window.exampleDomainScores ? generateKnowledgeSection(window.exampleDomainScores, window.allOccupations || embeddedOccupationData.occupations, fitResult.occupation) : ''}
+                    </div>
+                </div>
+
+                <!-- Skills Interest Section -->
+                <div id="skills-interest" class="outcome-content">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Your Skills Interest Profile</h1>
+                        <p class="text-gray-600">Your interest in developing different skills</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+                        ${typeof window.exampleDomainScores !== 'undefined' && window.exampleDomainScores ? generateSkillsSection(window.exampleDomainScores, window.allOccupations || embeddedOccupationData.occupations, fitResult.occupation) : ''}
                     </div>
                 </div>
 
@@ -1779,9 +3011,15 @@
                     .outcome-content {
                         display: block !important;
                         page-break-after: always;
+                        page-break-inside: avoid;
                     }
                     .outcome-content:last-child {
                         page-break-after: auto;
+                    }
+                    main {
+                        width: 100% !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
                     }
                     .bg-gradient-to-r, .bg-blue-600, .bg-indigo-600 {
                         background: #2563eb !important;
@@ -1844,6 +3082,94 @@
 
             drawRadarChart('overview-radar', overviewData);
 
+            // RIASEC radar chart
+            if (window.exampleDomainScores && window.exampleDomainScores.interests_riasec) {
+                const riasecScores = window.exampleDomainScores.interests_riasec;
+                const riasecOrder = ['realistic', 'investigative', 'artistic', 'social', 'enterprising', 'conventional'];
+                const riasecData = riasecOrder.map(type => {
+                    const score = riasecScores[type] || 0;
+                    return {
+                        label: type.charAt(0).toUpperCase() + type.slice(1),
+                        value: Math.round(((score - 1) / 4) * 100), // Convert 1-5 to 0-100%
+                        percentile: scoreToPercentile(score)
+                    };
+                });
+                drawRadarChart('riasec-radar', riasecData);
+            }
+
+            // Big Five radar chart
+            if (window.exampleDomainScores && window.exampleDomainScores.personality) {
+                const bigFive = aggregateBigFive(window.exampleDomainScores.personality);
+                const bigFiveData = [
+                    { label: 'Openness', value: Math.round(((bigFive.openness - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.openness) },
+                    { label: 'Conscientiousness', value: Math.round(((bigFive.conscientiousness - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.conscientiousness) },
+                    { label: 'Extraversion', value: Math.round(((bigFive.extraversion - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.extraversion) },
+                    { label: 'Agreeableness', value: Math.round(((bigFive.agreeableness - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.agreeableness) },
+                    { label: 'Emotional Stability', value: Math.round(((bigFive.emotional_stability - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.emotional_stability) }
+                ];
+                drawRadarChart('bigfive-radar', bigFiveData);
+            }
+
+            // Values radar chart
+            if (window.exampleDomainScores && window.exampleDomainScores.values) {
+                const valuesScores = window.exampleDomainScores.values;
+                const valuesOrder = ['knowledge_utilization', 'variety', 'altruism', 'independence', 'prestige_salary', 'leadership', 'outdoors', 'physical_work'];
+                const valuesData = valuesOrder.map(type => {
+                    const score = valuesScores[type] || 0;
+                    return {
+                        label: type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+                        value: Math.round(((score - 1) / 4) * 100),
+                        percentile: scoreToPercentile(score)
+                    };
+                });
+                drawRadarChart('values-radar', valuesData);
+            }
+
+            // Basic Interests radar chart
+            if (window.exampleDomainScores && window.exampleDomainScores.interests_basic) {
+                const basicScores = window.exampleDomainScores.interests_basic;
+                const basicOrder = Object.keys(basicScores).sort((a, b) => (basicScores[b] || 0) - (basicScores[a] || 0)).slice(0, 12);
+                const basicData = basicOrder.map(type => {
+                    const score = basicScores[type] || 0;
+                    return {
+                        label: type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ').substring(0, 15),
+                        value: Math.round(((score - 1) / 4) * 100),
+                        percentile: scoreToPercentile(score)
+                    };
+                });
+                drawRadarChart('basic-interests-radar', basicData);
+            }
+
+            // Knowledge Interest radar chart
+            if (window.exampleDomainScores && window.exampleDomainScores.knowledge) {
+                const knowledgeScores = window.exampleDomainScores.knowledge;
+                const knowledgeOrder = Object.keys(knowledgeScores).sort((a, b) => (knowledgeScores[b] || 0) - (knowledgeScores[a] || 0)).slice(0, 12);
+                const knowledgeData = knowledgeOrder.map(type => {
+                    const score = knowledgeScores[type] || 0;
+                    return {
+                        label: type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ').substring(0, 18),
+                        value: Math.round(((score - 1) / 4) * 100),
+                        percentile: scoreToPercentile(score)
+                    };
+                });
+                drawRadarChart('knowledge-radar', knowledgeData);
+            }
+
+            // Skills Interest radar chart
+            if (window.exampleDomainScores && window.exampleDomainScores.skills) {
+                const skillsScores = window.exampleDomainScores.skills;
+                const skillsOrder = Object.keys(skillsScores).sort((a, b) => (skillsScores[b] || 0) - (skillsScores[a] || 0)).slice(0, 12);
+                const skillsData = skillsOrder.map(type => {
+                    const score = skillsScores[type] || 0;
+                    return {
+                        label: type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ').substring(0, 18),
+                        value: Math.round(((score - 1) / 4) * 100),
+                        percentile: scoreToPercentile(score)
+                    };
+                });
+                drawRadarChart('skills-radar', skillsData);
+            }
+
             // Outcome-specific radar charts
             Object.keys(outcomeWeights).forEach(outcomeId => {
                 const weights = outcomeWeights[outcomeId];
@@ -1899,7 +3225,9 @@
             const points = [];
             data.forEach((item, index) => {
                 const angle = index * angleStep - Math.PI / 2;
-                const value = Math.min((item.value / maxValue) * radius, radius);
+                // Use percentile if available (maps directly: 84th percentile = 84% of radius), otherwise use value percentage
+                const displayValue = item.percentile !== undefined ? item.percentile : item.value;
+                const value = Math.min((displayValue / maxValue) * radius, radius);
                 const x = center + value * Math.cos(angle);
                 const y = center + value * Math.sin(angle);
                 points.push({ x, y, angle, value: item.value, label: item.label });
@@ -1934,6 +3262,19 @@
                 label.setAttribute('class', 'radar-label');
                 label.textContent = item.label;
                 svg.appendChild(label);
+                
+                // Add value label below domain name (percentile if available)
+                const valueLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                valueLabel.setAttribute('x', labelX);
+                valueLabel.setAttribute('y', parseFloat(labelY) + 14);
+                valueLabel.setAttribute('text-anchor', textAnchor);
+                valueLabel.setAttribute('dominant-baseline', 'middle');
+                valueLabel.setAttribute('class', 'radar-label');
+                valueLabel.setAttribute('style', 'font-size: 10px; fill: #6b7280; font-weight: 500;');
+                // Show percentile if available, otherwise show percentage
+                const displayText = item.percentile !== undefined ? `${formatOrdinal(item.percentile)} %ile` : `${item.value}%`;
+                valueLabel.textContent = displayText;
+                svg.appendChild(valueLabel);
             });
             
             // Draw filled area
@@ -1988,6 +3329,81 @@
                     const targetContent = document.getElementById(outcomeId);
                     if (targetContent) {
                         targetContent.classList.add('active');
+                        
+                        // Redraw radar chart for this section if it exists
+                        setTimeout(() => {
+                            if (outcomeId === 'occupational-interest' && window.exampleDomainScores && window.exampleDomainScores.interests_riasec) {
+                                const riasecScores = window.exampleDomainScores.interests_riasec;
+                                const riasecOrder = ['realistic', 'investigative', 'artistic', 'social', 'enterprising', 'conventional'];
+                                const riasecData = riasecOrder.map(type => {
+                                    const score = riasecScores[type] || 0;
+                                    return {
+                                        label: type.charAt(0).toUpperCase() + type.slice(1),
+                                        value: Math.round(((score - 1) / 4) * 100),
+                                        percentile: scoreToPercentile(score)
+                                    };
+                                });
+                                drawRadarChart('riasec-radar', riasecData);
+                            } else if (outcomeId === 'personality' && window.exampleDomainScores && window.exampleDomainScores.personality) {
+                                const bigFive = aggregateBigFive(window.exampleDomainScores.personality);
+                                const bigFiveData = [
+                                    { label: 'Openness', value: Math.round(((bigFive.openness - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.openness) },
+                                    { label: 'Conscientiousness', value: Math.round(((bigFive.conscientiousness - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.conscientiousness) },
+                                    { label: 'Extraversion', value: Math.round(((bigFive.extraversion - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.extraversion) },
+                                    { label: 'Agreeableness', value: Math.round(((bigFive.agreeableness - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.agreeableness) },
+                                    { label: 'Emotional Stability', value: Math.round(((bigFive.emotional_stability - 1) / 4) * 100), percentile: scoreToPercentile(bigFive.emotional_stability) }
+                                ];
+                                drawRadarChart('bigfive-radar', bigFiveData);
+                            } else if (outcomeId === 'work-values' && window.exampleDomainScores && window.exampleDomainScores.values) {
+                                const valuesScores = window.exampleDomainScores.values;
+                                const valuesOrder = ['knowledge_utilization', 'variety', 'altruism', 'independence', 'prestige_salary', 'leadership', 'outdoors', 'physical_work'];
+                                const valuesData = valuesOrder.map(type => {
+                                    const score = valuesScores[type] || 0;
+                                    return {
+                                        label: type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+                                        value: Math.round(((score - 1) / 4) * 100),
+                                        percentile: scoreToPercentile(score)
+                                    };
+                                });
+                                drawRadarChart('values-radar', valuesData);
+                            } else if (outcomeId === 'basic-interests' && window.exampleDomainScores && window.exampleDomainScores.interests_basic) {
+                                const basicScores = window.exampleDomainScores.interests_basic;
+                                const basicOrder = Object.keys(basicScores).sort((a, b) => (basicScores[b] || 0) - (basicScores[a] || 0)).slice(0, 12);
+                                const basicData = basicOrder.map(type => {
+                                    const score = basicScores[type] || 0;
+                                    return {
+                                        label: type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ').substring(0, 15),
+                                        value: Math.round(((score - 1) / 4) * 100),
+                                        percentile: scoreToPercentile(score)
+                                    };
+                                });
+                                drawRadarChart('basic-interests-radar', basicData);
+                            } else if (outcomeId === 'knowledge-interest' && window.exampleDomainScores && window.exampleDomainScores.knowledge) {
+                                const knowledgeScores = window.exampleDomainScores.knowledge;
+                                const knowledgeOrder = Object.keys(knowledgeScores).sort((a, b) => (knowledgeScores[b] || 0) - (knowledgeScores[a] || 0)).slice(0, 12);
+                                const knowledgeData = knowledgeOrder.map(type => {
+                                    const score = knowledgeScores[type] || 0;
+                                    return {
+                                        label: type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ').substring(0, 18),
+                                        value: Math.round(((score - 1) / 4) * 100),
+                                        percentile: scoreToPercentile(score)
+                                    };
+                                });
+                                drawRadarChart('knowledge-radar', knowledgeData);
+                            } else if (outcomeId === 'skills-interest' && window.exampleDomainScores && window.exampleDomainScores.skills) {
+                                const skillsScores = window.exampleDomainScores.skills;
+                                const skillsOrder = Object.keys(skillsScores).sort((a, b) => (skillsScores[b] || 0) - (skillsScores[a] || 0)).slice(0, 12);
+                                const skillsData = skillsOrder.map(type => {
+                                    const score = skillsScores[type] || 0;
+                                    return {
+                                        label: type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ').substring(0, 18),
+                                        value: Math.round(((score - 1) / 4) * 100),
+                                        percentile: scoreToPercentile(score)
+                                    };
+                                });
+                                drawRadarChart('skills-radar', skillsData);
+                            }
+                        }, 50);
                     }
                     
                     // Scroll to top
@@ -2103,6 +3519,115 @@
                     if (welcomeScreen) welcomeScreen.classList.add('hidden');
                     if (resultsScreen) resultsScreen.classList.remove('hidden');
                     
+                    // Create example domain scores with RIASEC and personality data
+                    const exampleDomainScores = {
+                        interests_basic: {
+                            social_science: 4.2,
+                            law_government: 3.8,
+                            management: 4.1,
+                            computers: 3.9,
+                            finance_accounting: 3.5,
+                            office_work: 3.7,
+                            writing: 3.8,
+                            counseling: 3.6,
+                            teaching: 3.4,
+                            customer_service: 3.3,
+                            sales_marketing: 3.2,
+                            medical_science: 2.8,
+                            physical_science: 2.9,
+                            engineering: 2.5,
+                            construction: 2.0,
+                            mechanics: 2.1,
+                            transportation: 2.2,
+                            math: 3.6,
+                            arts: 3.0,
+                            design: 3.1
+                        },
+                        interests_riasec: {
+                            realistic: 2.5,
+                            investigative: 4.2,
+                            artistic: 3.1,
+                            social: 4.0,
+                            enterprising: 3.8,
+                            conventional: 3.9
+                        },
+                        values: {
+                            knowledge_utilization: 4.3,
+                            variety: 3.8,
+                            altruism: 4.0,
+                            independence: 3.9,
+                            prestige_salary: 3.7,
+                            leadership: 4.1,
+                            outdoors: 2.2,
+                            physical_work: 2.0
+                        },
+                        knowledge: {
+                            personnel_hr: 4.4,
+                            psychology: 4.2,
+                            management: 4.1,
+                            mathematics: 3.8,
+                            computers_electronics: 3.9,
+                            english_language: 3.7,
+                            education_training: 3.6,
+                            communications_media: 3.5,
+                            economics_accounting: 3.6,
+                            law_government: 3.4,
+                            sociology_anthropology: 3.8,
+                            customer_service: 3.7,
+                            administration_management: 4.0,
+                            clerical: 3.5,
+                            sales_marketing: 3.3,
+                            biology: 2.8,
+                            chemistry: 2.7,
+                            physics: 2.6,
+                            medicine_dentistry: 2.5,
+                            therapy_counseling: 3.4,
+                            philosophy_theology: 3.2,
+                            foreign_language: 2.9,
+                            history_archeology: 3.1,
+                            geography: 2.8,
+                            food_production: 2.2,
+                            production_processing: 2.1
+                        },
+                        skills: {
+                            writing: 4.0,
+                            complex_problem_solving: 4.2,
+                            social_perceptiveness: 4.1,
+                            active_listening: 4.0,
+                            critical_thinking: 4.1,
+                            reading_comprehension: 3.9,
+                            speaking: 3.8,
+                            judgment_decision_making: 3.9,
+                            systems_analysis: 3.7,
+                            systems_evaluation: 3.6,
+                            coordination: 3.8,
+                            persuasion: 3.5,
+                            negotiation: 3.4,
+                            instructing: 3.6,
+                            service_orientation: 3.7,
+                            time_management: 4.0,
+                            management_of_personnel: 3.8,
+                            learning_strategies: 4.1,
+                            monitoring: 3.9
+                        },
+                        personality: {
+                            compassion: 4.2,
+                            respectfulness: 4.5,
+                            trust: 4.3,
+                            organization: 4.4,
+                            productiveness: 4.3,
+                            responsibility: 4.5,
+                            anxiety: 2.0, // Low anxiety = high stability
+                            emotional_volatility: 1.8, // Low volatility = high stability
+                            sociability: 3.8,
+                            assertiveness: 3.5,
+                            energy_level: 3.9,
+                            intellectual_curiosity: 4.3,
+                            creative_imagination: 3.7,
+                            integrity: 4.6
+                        }
+                    };
+                    
                     // Create example high-fit result data
                     const exampleFitResult = {
                         occupation: embeddedOccupationData.occupations[0],
@@ -2145,25 +3670,79 @@
                         `;
                     }
                     
-                    // Generate results content
-                    const resultsContent = document.getElementById('results-content');
-                    if (resultsContent) {
-                        const resultsHTML = generateResultsHTML(exampleFitResult, outcomeScores, domainFitMap, interpretation);
-                        // Add demo header
-                        resultsContent.innerHTML = `
-                            <div class="bg-yellow-50 border-l-4 border-yellow-400 rounded-lg p-4 mb-6">
-                                <p class="text-sm text-yellow-900">
-                                    <strong>📋 Example Profile:</strong> This is an example of what a student with <strong>87% fit</strong> would see. 
-                                    This demonstrates the assessment output format and what high-fit profiles look like.
-                                </p>
-                            </div>
-                            ${resultsHTML}
-                        `;
+                    // Load full occupations file for example occupations
+                    let allOccupationsForDemo = embeddedOccupationData.occupations;
+                    
+                    // Try to load occupations_all.json asynchronously
+                    fetch('occupations_all.json')
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            }
+                            throw new Error('Response not ok');
+                        })
+                        .then(data => {
+                            allOccupationsForDemo = data.occupations || embeddedOccupationData.occupations;
+                            setTimeout(() => displayResults(), 100);
+                        })
+                        .catch(e => {
+                            console.log('Could not load occupations_all.json, using embedded data');
+                            setTimeout(() => displayResults(), 100);
+                        });
+                    
+                    function displayResults() {
+                        // Generate results content
+                        const resultsContent = document.getElementById('results-content');
+                        console.log('displayResults called, resultsContent:', resultsContent);
                         
-                        // Draw radar charts after content is rendered
-                        setTimeout(function() {
-                            drawAllRadarCharts(exampleFitResult, domainFitMap);
-                        }, 300);
+                        if (resultsContent) {
+                            // Store exampleDomainScores globally for use in generateResultsHTML
+                            window.exampleDomainScores = exampleDomainScores;
+                            window.allOccupations = allOccupationsForDemo;
+                            window.exampleFitResult = exampleFitResult; // Store for reference
+                            window.globalDomainScores = exampleDomainScores; // Also set as globalDomainScores for radar charts
+                            
+                            console.log('Calling generateResultsHTML...');
+                            console.log('exampleFitResult:', exampleFitResult);
+                            console.log('outcomeScores:', outcomeScores);
+                            console.log('domainFitMap:', domainFitMap);
+                            
+                            try {
+                                const resultsHTML = generateResultsHTML(exampleFitResult, outcomeScores, domainFitMap, interpretation);
+                                console.log('generateResultsHTML returned, length:', resultsHTML ? resultsHTML.length : 0);
+                                
+                                // Add demo header
+                                resultsContent.innerHTML = `
+                                    <div class="bg-yellow-50 border-l-4 border-yellow-400 rounded-lg p-4 mb-6">
+                                        <p class="text-sm text-yellow-900">
+                                            <strong>📋 Example Profile:</strong> This is an example of what a student with <strong>87% fit</strong> would see. 
+                                            This demonstrates the assessment output format and what high-fit profiles look like.
+                                        </p>
+                                    </div>
+                                    ${resultsHTML}
+                                `;
+                                
+                                console.log('Content inserted into resultsContent');
+                                
+                                // Draw radar charts after content is rendered
+                                setTimeout(function() {
+                                    console.log('Drawing radar charts...');
+                                    drawAllRadarCharts(exampleFitResult, domainFitMap);
+                                }, 300);
+                            } catch (error) {
+                                console.error('Error in displayResults:', error);
+                                resultsContent.innerHTML = `
+                                    <div class="bg-red-50 border-l-4 border-red-400 rounded-lg p-4">
+                                        <p class="text-sm text-red-900">
+                                            <strong>Error:</strong> ${error.message}
+                                        </p>
+                                        <pre class="text-xs text-red-700 mt-2">${error.stack}</pre>
+                                    </div>
+                                `;
+                            }
+                        } else {
+                            console.error('results-content element not found!');
+                        }
                     }
                     
                     // Initialize navigation
