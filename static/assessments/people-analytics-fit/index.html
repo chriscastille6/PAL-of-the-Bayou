@@ -527,6 +527,85 @@
             }
         }
 
+        // Search occupations by title
+        function searchOccupations(query, occupations, limit = 10) {
+            if (!query || query.length < 2) return [];
+            
+            const lowerQuery = query.toLowerCase();
+            const matches = occupations.filter(occ => {
+                const title = occ.title.toLowerCase();
+                return title.includes(lowerQuery);
+            });
+            
+            // Sort by relevance (exact matches first, then by position of match)
+            matches.sort((a, b) => {
+                const aTitle = a.title.toLowerCase();
+                const bTitle = b.title.toLowerCase();
+                const aIndex = aTitle.indexOf(lowerQuery);
+                const bIndex = bTitle.indexOf(lowerQuery);
+                
+                // Exact match first
+                if (aTitle === lowerQuery && bTitle !== lowerQuery) return -1;
+                if (bTitle === lowerQuery && aTitle !== lowerQuery) return 1;
+                
+                // Then by position (earlier match is better)
+                if (aIndex !== bIndex) return aIndex - bIndex;
+                
+                // Finally alphabetically
+                return aTitle.localeCompare(bTitle);
+            });
+            
+            return matches.slice(0, limit);
+        }
+
+        // Display search results in dropdown
+        function displaySearchResults(results) {
+            const resultsContainer = document.getElementById('search-results');
+            
+            if (!results || results.length === 0) {
+                resultsContainer.innerHTML = '<div class="p-3 text-sm text-gray-500">No occupations found</div>';
+                resultsContainer.classList.remove('hidden');
+                return;
+            }
+            
+            resultsContainer.innerHTML = results.map(occ => `
+                <div 
+                    class="px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                    onclick="selectOccupationFromSearch('${occ.onet_code}')"
+                >
+                    <div class="font-medium text-gray-900">${occ.title}</div>
+                    ${occ.description ? `<div class="text-xs text-gray-500 mt-1 line-clamp-2">${occ.description.substring(0, 100)}${occ.description.length > 100 ? '...' : ''}</div>` : ''}
+                </div>
+            `).join('');
+            
+            resultsContainer.classList.remove('hidden');
+        }
+
+        // Select an occupation from search results
+        function selectOccupationFromSearch(onetCode) {
+            const occupation = allOccupations.find(occ => occ.onet_code === onetCode);
+            if (!occupation) return;
+            
+            selectedOccupation = occupation;
+            occupationProfile = occupation;
+            
+            // Update UI
+            document.getElementById('occupation-search').value = occupation.title;
+            document.getElementById('selected-occupation-title').textContent = occupation.title;
+            document.getElementById('selected-occupation-display').classList.remove('hidden');
+            document.getElementById('search-results').classList.add('hidden');
+            document.getElementById('start-btn').disabled = false;
+        }
+
+        // Clear occupation selection
+        function clearOccupationSelection() {
+            selectedOccupation = null;
+            occupationProfile = null;
+            document.getElementById('occupation-search').value = '';
+            document.getElementById('selected-occupation-display').classList.add('hidden');
+            document.getElementById('start-btn').disabled = true;
+        }
+
         function startAssessment() {
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('assessment-screen').classList.remove('hidden');

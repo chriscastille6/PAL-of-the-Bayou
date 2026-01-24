@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Report: Operations Manager - Occupational Fit Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        .radar-chart {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 100%;
+            height: auto;
+        }
+        .radar-area {
+            fill: rgba(37, 99, 235, 0.3);
+            stroke: #2563eb;
+            stroke-width: 2.5;
+        }
+        .radar-line {
+            stroke: #2563eb;
+            stroke-width: 2.5;
+            fill: none;
+        }
+        .radar-point {
+            fill: #2563eb;
+            stroke: white;
+            stroke-width: 2.5;
+            cursor: pointer;
+        }
+        .radar-point:hover {
+            fill: #1d4ed8;
+            r: 6;
+        }
+        .radar-label {
+            font-size: 12px;
+            fill: #374151;
+            font-weight: 500;
+        }
+        .radar-grid-line {
+            stroke: #e5e7eb;
+            stroke-width: 1;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6 no-print">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Sample Assessment Report</h1>
+            <p class="text-gray-600">This is a demonstration of the full feedback report for an Operations Manager</p>
+            <p class="text-sm text-gray-500 mt-2">Note: This is sample data for demonstration purposes only</p>
+        </div>
+
+        <!-- Overall Fit Score Card -->
+        <div class="bg-white rounded-lg shadow-sm p-8 mb-6" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+            <div class="text-center text-white">
+                <div class="flex items-center justify-center gap-3 mb-2 flex-wrap">
+                    <h2 class="text-2xl font-semibold">General and Operations Managers</h2>
+                    <a 
+                        href="https://www.onetonline.org/link/summary/11-1021.00" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-1 rounded-full text-sm font-medium transition-all"
+                        title="View full profile on O*NET Online"
+                    >
+                        View on O*NET →
+                    </a>
+                </div>
+                <div class="text-6xl font-bold my-4">72%</div>
+                <div class="text-xl mb-1">Overall Fit Score</div>
+                <p class="text-sm opacity-90 mb-4">(Very Good Fit)</p>
+                <p class="mt-6 text-base opacity-95">Plan, direct, or coordinate the operations of public or private sector organizations, overseeing multiple departments or locations. Duties and responsibilities include formulating policies, managing daily operations, and planning the use of materials and human resources.</p>
+                <div class="mt-6 text-left bg-white bg-opacity-20 rounded-lg p-4">
+                    <p class="font-medium mb-2">Very Good Fit: Your profile shows strong alignment with Operations Manager requirements. Your combination of enterprising interests, leadership values, and management knowledge interest suggests you would thrive in this role.</p>
+                    <p class="text-sm">Your high scores in Enterprising interests (85th percentile), Leadership values (82nd percentile), and Management knowledge interest (88th percentile) align well with the core requirements of operations management. You also show strong interest in developing complex problem-solving and persuasion skills, which are essential for this role.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Component Scores -->
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
+            <div class="bg-blue-50 rounded-xl p-6 border-2 border-blue-200">
+                <h3 class="text-lg font-semibold text-blue-900 mb-2">Core Fit (50%)</h3>
+                <div class="text-4xl font-bold text-blue-700 mb-1">75%</div>
+                <p class="text-sm text-blue-800">Interest in Learning Knowledge & Skills</p>
+            </div>
+            <div class="bg-purple-50 rounded-xl p-6 border-2 border-purple-200">
+                <h3 class="text-lg font-semibold text-purple-900 mb-2">Learning Interest (50%)</h3>
+                <div class="text-4xl font-bold text-purple-700 mb-1">69%</div>
+                <p class="text-sm text-purple-800">Interest in Learning Knowledge & Skills</p>
+            </div>
+        </div>
+
+        <!-- Domain Fit Overview -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Domain Fit Overview</h2>
+            <p class="text-sm text-gray-600 mb-4 text-center">Visual representation of your fit across different domains</p>
+            <div class="flex justify-center items-center overflow-x-auto">
+                <div id="overview-radar" style="width: 400px; height: 400px; overflow: visible; min-width: 400px;"></div>
+            </div>
+        </div>
+
+        <!-- Occupational Interest (RIASEC) Section -->
+        <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Your Occupational Interest Profile</h2>
+            <p class="text-gray-600 mb-6">Your interests across six major vocational interest dimensions</p>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-6">
+                <h3 class="text-sm font-semibold text-gray-900 mb-2">Understanding Your Percentile Scores</h3>
+                <p class="text-xs text-gray-700 mb-2">
+                    Percentile scores show how your interests compare to others. For example, if you score at the <strong>75th percentile</strong> in Investigative interests, 
+                    it means your interest level is higher than 75% of people.
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="border-l-4 border-blue-500 pl-6 py-4 bg-blue-50 rounded-r-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-gray-900">Enterprising Interests</h3>
+                        <span class="text-sm font-semibold text-blue-700 bg-blue-100 px-3 py-1 rounded-full">
+                            85th Percentile (high)
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-3">People with strong enterprising interests are drawn to leading, persuading, and managing for business success. They enjoy taking initiative, making decisions, and achieving goals through influence and leadership.</p>
+                    <p class="text-gray-800 font-medium mb-2">Your enterprising interests are quite strong, suggesting you enjoy leading, persuading, and managing others, and you thrive in environments where you can take initiative and drive results.</p>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-6 py-4 bg-blue-50 rounded-r-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-gray-900">Conventional Interests</h3>
+                        <span class="text-sm font-semibold text-blue-700 bg-blue-100 px-3 py-1 rounded-full">
+                            78th Percentile (high)
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-3">People with strong conventional interests prefer structured tasks, organization, and working with data or numbers. They appreciate clear procedures, systematic work, and maintaining order.</p>
+                    <p class="text-gray-800 font-medium mb-2">Your conventional interests are quite strong, suggesting you enjoy structured, organized work with clear procedures and systematic tasks involving data or numbers.</p>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-6 py-4 bg-blue-50 rounded-r-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-gray-900">Social Interests</h3>
+                        <span class="text-sm font-semibold text-blue-700 bg-blue-100 px-3 py-1 rounded-full">
+                            65th Percentile (above average)
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-3">People with strong social interests are drawn to helping, teaching, and working with others. They find meaning in supporting people, building relationships, and making a positive impact on others' lives.</p>
+                    <p class="text-gray-800 font-medium mb-2">Your social interests show moderate strength, indicating you appreciate some work that involves interacting with and helping people.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personality Section -->
+        <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Your Personality Profile</h2>
+            <p class="text-gray-600 mb-6">Your personality traits across five major dimensions</p>
+            
+            <div class="space-y-6">
+                <div class="border-l-4 border-amber-500 pl-6 py-4 bg-amber-50 rounded-r-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-gray-900">Conscientiousness</h3>
+                        <span class="text-sm font-semibold text-amber-700 bg-amber-100 px-3 py-1 rounded-full">
+                            88th Percentile (very high)
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-3">People high in conscientiousness tend to be organized, reliable, and persistent in their work. They value responsibility, follow through on commitments, and pay attention to details.</p>
+                    <p class="text-gray-800 font-medium mb-2">Your high conscientiousness suggests you are organized, reliable, and persistent, which makes you valuable in roles requiring attention to detail and consistent performance.</p>
+                </div>
+
+                <div class="border-l-4 border-amber-500 pl-6 py-4 bg-amber-50 rounded-r-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-gray-900">Extraversion</h3>
+                        <span class="text-sm font-semibold text-amber-700 bg-amber-100 px-3 py-1 rounded-full">
+                            75th Percentile (high)
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-3">People high in extraversion tend to be outgoing, energetic, and enjoy interacting with others. They gain energy from social situations and often feel comfortable taking the lead.</p>
+                    <p class="text-gray-800 font-medium mb-2">Your high extraversion suggests you are outgoing and energetic, and you likely thrive in roles that involve frequent interaction with others, leadership opportunities, and dynamic social environments.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Work Values Section -->
+        <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Your Work Values Profile</h2>
+            <p class="text-gray-600 mb-6">What you find important and meaningful in your work</p>
+            
+            <div class="space-y-6">
+                <div class="border-l-4 border-pink-500 pl-6 py-4 bg-pink-50 rounded-r-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-gray-900">Leadership</h3>
+                        <span class="text-sm font-semibold text-pink-700 bg-pink-100 px-3 py-1 rounded-full">
+                            82nd Percentile (high)
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-3">People who value leadership want to supervise, coordinate, and be responsible for others' work. They enjoy taking charge and influencing organizational direction.</p>
+                    <p class="text-gray-800 font-medium mb-2">You highly value leadership opportunities, suggesting you want roles where you can supervise others, coordinate teams, and take responsibility for guiding work and making decisions.</p>
+                </div>
+
+                <div class="border-l-4 border-pink-500 pl-6 py-4 bg-pink-50 rounded-r-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-gray-900">Knowledge Utilization</h3>
+                        <span class="text-sm font-semibold text-pink-700 bg-pink-100 px-3 py-1 rounded-full">
+                            79th Percentile (high)
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-3">People who value knowledge utilization want to apply what they've learned and use their expertise in their work. They find satisfaction in roles that allow them to build on their knowledge.</p>
+                    <p class="text-gray-800 font-medium mb-2">You highly value using your knowledge and skills in your work, suggesting you want roles where you can apply what you've learned and continuously build upon your expertise.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Knowledge Interest Section -->
+        <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Your Knowledge Interest Profile</h2>
+            <p class="text-gray-600 mb-6">Your interest in learning different knowledge areas</p>
+            
+            <div class="bg-purple-50 border-l-4 border-purple-500 rounded-lg p-4 mb-6">
+                <h3 class="text-sm font-semibold text-gray-900 mb-2">Understanding Your Knowledge Interest Scores</h3>
+                <p class="text-xs text-gray-700 mb-2">
+                    These scores reflect your <strong>interest in learning</strong> different knowledge areas, not what you currently know. 
+                    Higher percentiles indicate stronger motivation to learn about that knowledge area.
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="border-l-4 border-purple-500 pl-6 py-4 bg-purple-50 rounded-r-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-gray-900">Management</h3>
+                        <span class="text-sm font-semibold text-purple-700 bg-purple-100 px-3 py-1 rounded-full">
+                            88th Percentile (very high)
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-3">Your interest in learning about management is very high, suggesting you have strong motivation to develop knowledge in this area.</p>
+                    <div class="mt-4">
+                        <p class="text-sm font-medium text-gray-700 mb-3">Example occupations that require management knowledge:</p>
+                        <div class="grid md:grid-cols-2 gap-3">
+                            <div class="bg-white rounded-lg p-4 border border-gray-200">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h4 class="font-semibold text-gray-900 text-sm">Administrative Services Managers</h4>
+                                    <a href="https://www.onetonline.org/link/summary/11-3012.00" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 text-xs font-medium underline">O*NET →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-l-4 border-purple-500 pl-6 py-4 bg-purple-50 rounded-r-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-gray-900">Customer Service</h3>
+                        <span class="text-sm font-semibold text-purple-700 bg-purple-100 px-3 py-1 rounded-full">
+                            81st Percentile (high)
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-3">Your interest in learning about customer service is high, suggesting you have strong motivation to develop knowledge in this area.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Interest Section -->
+        <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Your Skills Interest Profile</h2>
+            <p class="text-gray-600 mb-6">Your interest in developing different skills</p>
+            
+            <div class="space-y-6">
+                <div class="border-l-4 border-teal-500 pl-6 py-4 bg-teal-50 rounded-r-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-gray-900">Complex Problem Solving</h3>
+                        <span class="text-sm font-semibold text-teal-700 bg-teal-100 px-3 py-1 rounded-full">
+                            85th Percentile (very high)
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-3">Your interest in developing complex problem solving is very high, suggesting you have strong motivation to practice and improve in this skill area.</p>
+                </div>
+
+                <div class="border-l-4 border-teal-500 pl-6 py-4 bg-teal-50 rounded-r-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-gray-900">Persuasion</h3>
+                        <span class="text-sm font-semibold text-teal-700 bg-teal-100 px-3 py-1 rounded-full">
+                            82nd Percentile (high)
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mb-3">Your interest in developing persuasion is high, suggesting you have strong motivation to practice and improve in this skill area.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Career Satisfaction Section -->
+        <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Career Choice Satisfaction</h2>
+            <p class="text-gray-600 mb-6">How satisfied you'll be with your career choice in General and Operations Managers</p>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 rounded-lg p-6 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">Predicted Satisfaction Score</h3>
+                    <span class="text-4xl font-bold text-green-700">78%</span>
+                </div>
+                <p class="text-sm text-gray-700">
+                    Based on your fit profile, you're predicted to experience <strong>high satisfaction</strong> with choosing Operations Manager as your career path. 
+                    Your strong alignment in Enterprising interests, Leadership values, and Management knowledge interest suggests this career would be fulfilling for you.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-900 mb-2">What Contributes to Your Satisfaction Score:</h4>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+                        <li><strong>Basic Interests (52.7%):</strong> 82% fit - Your interests align well with operations management activities</li>
+                        <li><strong>RIASEC Interests (18.3%):</strong> 85% fit - Strong Enterprising and Conventional interests match this role</li>
+                        <li><strong>Work Values (15.2%):</strong> 79% fit - Your Leadership and Knowledge Utilization values align with this career</li>
+                        <li><strong>Personality (13.8%):</strong> 76% fit - Your Conscientiousness and Extraversion support management success</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Income Potential Section -->
+        <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Income Potential</h2>
+            <p class="text-gray-600 mb-6">Your predicted income potential for General and Operations Managers</p>
+            
+            <div class="bg-purple-50 border-l-4 border-purple-500 rounded-lg p-6 mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Predicted Income Based on Your Fit</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="text-center p-6 bg-white rounded-lg border-2 border-purple-200">
+                        <div class="text-4xl font-bold text-purple-900 mb-1">$98K</div>
+                        <div class="text-xs text-gray-600 mt-2">Predicted range: $85K - $112K</div>
+                        <div class="text-xs text-gray-500 mt-1">Based on 72% fit score (72nd percentile)</div>
+                    </div>
+                    <div class="text-center p-6 bg-white rounded-lg border-2 border-purple-200">
+                        <div class="text-2xl font-bold text-purple-900 mb-1">$103,650</div>
+                        <div class="text-sm text-gray-600">BLS Median Wage (2023)</div>
+                        <div class="text-xs text-gray-500 mt-1">National average for this occupation</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p class="text-sm text-blue-900">
+                    <strong>Important:</strong> This prediction assumes you'll develop strong knowledge and skills aligned with Operations Manager requirements. 
+                    Your 72% fit score suggests you have the interest and motivation to develop these competencies, which would place you at approximately the 72nd percentile of earners in this occupation.
+                </p>
+            </div>
+        </div>
+
+        <!-- Better Fit Alternatives -->
+        <div class="bg-white rounded-lg shadow-sm p-8 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Better Fit Alternatives</h2>
+            <p class="text-gray-600 mb-6">Based on your assessment across all 867 occupations, here are occupations where you have a better fit than Operations Manager (72%):</p>
+            
+            <div class="space-y-6">
+                <div class="bg-white rounded-lg shadow-sm p-8 border-2 border-blue-200" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                    <div class="text-center text-white">
+                        <h2 class="text-2xl font-semibold mb-2">Industrial Production Managers</h2>
+                        <div class="text-6xl font-bold my-4">79%</div>
+                        <div class="text-xl mb-1">Overall Fit Score</div>
+                        <p class="text-sm opacity-90 mb-4">(Excellent Fit)</p>
+                        <p class="mt-6 text-base opacity-95">Plan, direct, or coordinate the work activities and resources necessary for manufacturing products in accordance with cost, quality, and quantity specifications.</p>
+                        <div class="mt-4 mb-2">
+                            <div class="text-2xl font-bold">$107K</div>
+                            <div class="text-sm opacity-90">Median Annual Wage</div>
+                        </div>
+                        <div class="mt-6 text-left bg-white bg-opacity-20 rounded-lg p-4">
+                            <p class="font-medium mb-2">Excellent Fit: Your strong interest in management, production processes, and problem-solving aligns perfectly with industrial production management roles.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm p-8 border-2 border-blue-200" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                    <div class="text-center text-white">
+                        <h2 class="text-2xl font-semibold mb-2">Sales Managers</h2>
+                        <div class="text-6xl font-bold my-4">76%</div>
+                        <div class="text-xl mb-1">Overall Fit Score</div>
+                        <p class="text-sm opacity-90 mb-4">(Very Good Fit)</p>
+                        <p class="mt-6 text-base opacity-95">Plan, direct, or coordinate the actual distribution or movement of a product or service to the customer. Coordinate sales distribution by establishing sales territories, quotas, and goals.</p>
+                        <div class="mt-4 mb-2">
+                            <div class="text-2xl font-bold">$130K</div>
+                            <div class="text-sm opacity-90">Median Annual Wage</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mt-6 text-center text-sm text-gray-500">
+            <p>This is a sample report demonstrating the full feedback structure of the Occupational Fit Assessment.</p>
+            <p class="mt-2">Based on Liu et al. (2025) integrative fit assessment framework using O*NET Database 30.0.</p>
+        </div>
+    </div>
+
+    <script>
+        // Simple radar chart for demonstration
+        function drawRadarChart(containerId, data) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const size = 400;
+            const center = size / 2;
+            const radius = 150;
+            const maxValue = 100;
+            
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', size);
+            svg.setAttribute('height', size);
+            svg.setAttribute('class', 'radar-chart');
+            
+            // Draw grid circles
+            for (let i = 1; i <= 5; i++) {
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', center);
+                circle.setAttribute('cy', center);
+                circle.setAttribute('r', (radius * i) / 5);
+                circle.setAttribute('fill', 'none');
+                circle.setAttribute('stroke', '#e5e7eb');
+                circle.setAttribute('stroke-width', 1);
+                svg.appendChild(circle);
+            }
+            
+            // Draw axes
+            const angleStep = (2 * Math.PI) / data.length;
+            data.forEach((item, index) => {
+                const angle = index * angleStep - Math.PI / 2;
+                const x = center + radius * Math.cos(angle);
+                const y = center + radius * Math.sin(angle);
+                
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', center);
+                line.setAttribute('y1', center);
+                line.setAttribute('x2', x);
+                line.setAttribute('y2', y);
+                line.setAttribute('stroke', '#e5e7eb');
+                line.setAttribute('stroke-width', 1);
+                svg.appendChild(line);
+                
+                // Label
+                const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                label.setAttribute('x', center + (radius + 30) * Math.cos(angle));
+                label.setAttribute('y', center + (radius + 30) * Math.sin(angle));
+                label.setAttribute('text-anchor', 'middle');
+                label.setAttribute('dominant-baseline', 'middle');
+                label.setAttribute('class', 'radar-label');
+                label.textContent = item.label;
+                svg.appendChild(label);
+            });
+            
+            // Draw data area
+            const points = data.map((item, index) => {
+                const angle = index * angleStep - Math.PI / 2;
+                const value = Math.min((item.value / maxValue) * radius, radius);
+                return {
+                    x: center + value * Math.cos(angle),
+                    y: center + value * Math.sin(angle)
+                };
+            });
+            
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            let pathData = `M ${points[0].x} ${points[0].y}`;
+            for (let i = 1; i < points.length; i++) {
+                pathData += ` L ${points[i].x} ${points[i].y}`;
+            }
+            pathData += ' Z';
+            path.setAttribute('d', pathData);
+            path.setAttribute('class', 'radar-area');
+            svg.appendChild(path);
+            
+            // Draw data line
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            line.setAttribute('d', pathData);
+            line.setAttribute('class', 'radar-line');
+            svg.appendChild(line);
+            
+            // Draw points
+            points.forEach((point, index) => {
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', point.x);
+                circle.setAttribute('cy', point.y);
+                circle.setAttribute('r', 5);
+                circle.setAttribute('class', 'radar-point');
+                svg.appendChild(circle);
+            });
+            
+            container.appendChild(svg);
+        }
+        
+        // Sample data for overview radar
+        const overviewData = [
+            { label: 'RIASEC', value: 85 },
+            { label: 'Basic Interests', value: 82 },
+            { label: 'Values', value: 79 },
+            { label: 'Knowledge', value: 75 },
+            { label: 'Skills', value: 72 },
+            { label: 'Personality', value: 76 }
+        ];
+        
+        // Draw radar chart when page loads
+        window.addEventListener('load', () => {
+            drawRadarChart('overview-radar', overviewData);
+        });
+    </script>
+</body>
+</html>
