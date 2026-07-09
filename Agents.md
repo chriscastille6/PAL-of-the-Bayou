@@ -15,6 +15,11 @@
 - Use simple & easy-to-understand language. Write in short sentences.
 - Focus on academic content quality and research tool functionality.
 
+# BRANDING & FORMATTING
+- See `BRANDING.md` for the lab's branding and document-formatting conventions.
+- It consolidates the color palette, fonts, logo usage, citation style (APA), figure captions, and callouts.
+- Read it before editing content, styles, or layouts, and keep it in sync when the look changes.
+
 # TECH STACK
 - **Hugo**: Static site generator for the main website
 - **Go**: Hugo's underlying language (go.mod present)
