@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <title>AOL rubrics (Demo) — Transparency portal</title>
+  <!-- aol-rubrics-hub:bundle-20260330 -->
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+  <div class="demo-banner">DRAFT — RUBRIC INDEX FROM REPO; FULL RUBRIC ARTIFACTS MAY LIVE IN DMS / BAYOUPAL PER POLICY</div>
+  <header class="site-header">
+    <h1>AOL rubrics</h1>
+    <p class="tagline">Course-level rubric inventory (draft) + links to methodology and platform plans</p>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="governance.html">Governance</a>
+      <a href="rubrics.html" aria-current="page">Rubrics</a>
+      <a href="calendar.html">Assessment calendar</a>
+      <a href="degree_plans.html">Degree plans</a>
+      <a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a>
+      <a href="agenda.html">Committee agenda</a>
+      <a href="minutes.html">Minutes</a>
+      <a href="profiles.html">Profiles</a>
+      <a href="role-leadership.html">Preview: Leadership / accreditation</a>
+    </nav>
+  </header>
+  <main>
+    <section class="card">
+      <h2>Draft web rubrics (use these first)</h2>
+      <p>
+        <strong>Current work</strong> lives in the shared <strong>5-point competence scale</strong> template with optional
+        <strong>behavioral anchors (BARS)</strong> per criterion. Prefer these pages for committee review, faculty preview, and
+        print-to-PDF. The <strong>graphics &amp; presentation</strong> rubric type is <strong>retired</strong> for AOL (committee vote; <a href="agenda.html#item-10">agenda Item 10</a>) as redundant with the technology rubric; the legacy URL <code>?r=graphics_presentation</code> may still load for history. Legacy Word files are kept for record-keeping — expand the archive at the bottom of this page only when you need the prior masters.
+      </p>
+      <ul class="role-list">
+        <li><a href="rubric_template_demo.html"><strong>Shared rubric template</strong></a> — one page for every rubric type: use the dropdown or open a bookmarked URL with <code>?r=…</code> (for example <code>?r=written_communication</code> or <code>?r=oral_communication</code>). Definitions are in <a href="data/rubric_definitions.json?v=20260330"><code>data/rubric_definitions.json</code></a> (cache-busted query on the demo); each rubric includes draft behavioral anchors (BARS) and facet-level PDF print.</li>
+        <li><a href="../docs/Rubric_Web_Template.md">Rubric web template (Markdown)</a> — how the JSON matches the Word masters and how the committee uses the template in practice.</li>
+      </ul>
+    </section>
+    <section class="card">
+      <h2>Terminology: direct vs. indirect measures</h2>
+      <dl style="margin:0;">
+        <dt><strong>Direct measures</strong></dt>
+        <dd style="margin:0 0 0.75rem 1rem;">Scored evidence of learning — in practice, the <strong>rubrics</strong> faculty use to rate student work on program outcomes.</dd>
+        <dt><strong>Indirect measures</strong></dt>
+        <dd style="margin:0 0 0 1rem;"><strong>Surveys</strong> (senior, alumni, employer, etc.). They inform improvement; they do not replace rubrics or exams.</dd>
+      </dl>
+      <p style="font-size:0.9rem;"><a href="../docs/AOL_Terminology.md">AOL_Terminology.md</a> · <a href="methodology.html">Methodology</a> (same definitions)</p>
+    </section>
+    <section class="card">
+      <h2>Rubric change log</h2>
+      <p>
+        <a href="rubric_change_log.html"><strong>rubric_change_log.html</strong></a> — running log of AOL work and committee/UPIC requests.
+        Source: <code>rubric_change_log.Rmd</code> in this folder. Rebuild from repo root:
+        <code>Rscript -e 'rmarkdown::render("aol_site/rubric_change_log.Rmd")'</code>.
+      </p>
+    </section>
+    <section class="card">
+      <h2>Download rubrics for faculty (PDF &amp; Word)</h2>
+      <p><strong>Preferred order:</strong></p>
+      <ol style="margin-top:0.5rem;padding-left:1.25rem;line-height:1.5;">
+        <li><strong>Web template → PDF (faculty sheet):</strong> Open <a href="rubric_template_demo.html">rubric_template_demo.html</a> (pick rubric; oral: <a href="rubric_template_demo.html?r=oral_communication"><code>?r=oral_communication</code></a>), then <strong>Download PDF (faculty sheet)</strong> — <strong>page 1 (landscape):</strong> scoring matrix (Instructor, Student, Date, Score assigned) and one row per rating line; <strong>following pages (portrait):</strong> full BARS text for each line. Choose <strong>Save as PDF</strong> in the print dialog.</li>
+        <li><strong>College PDF (where published):</strong> <a href="../rubrics/Written_Communication_Assessment_Rubric_5_point_scale.pdf">Written Communication — 5-point scale (PDF)</a> in <code>rubrics/</code> (when serving from repo root).</li>
+        <li><strong>Legacy Word masters:</strong> Only after you expand <strong>“Legacy Word and PDF masters”</strong> at the bottom of this page — prior <code>.doc</code> files; use <strong>Save As → PDF</strong> in Word if required.</li>
+      </ol>
+      <p style="font-size:0.9rem;color:var(--muted);">Production hosting may add one-click exports; Phase 0 uses browser print and repo files.</p>
+    </section>
+
+    <section class="card">
+      <h2>Undergraduate rubrics (from <code>RUBRICS_TABLE.md</code>)</h2>
+      <p>
+        Where rubrics apply by course (from <code>RUBRICS_TABLE.md</code>). Official masters may also live in DMS / Bayoupal — see
+        <a href="../docs/Rubrics_Bayoupal_Focus_Groups_Plan.md">Rubrics_Bayoupal_Focus_Groups_Plan.md</a>.
+      </p>
+      <table class="calendar-table">
+        <thead>
+          <tr><th>Course</th><th>Course name</th><th>Rubric type</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>BSAD 310</td><td>Business Communication</td><td>Communication (Oral &amp; Written)</td></tr>
+          <tr><td>BSAD 490</td><td>Business Strategy Capstone</td><td>Communication (Oral &amp; Written)</td></tr>
+          <tr><td>MNGT 368</td><td>Management and Organizational Behavior</td><td>Critical Thinking</td></tr>
+          <tr><td>BSAD 101</td><td>Business Foundations</td><td>Ethics</td></tr>
+          <tr><td>BSAD 221</td><td>Business Law</td><td>Ethics</td></tr>
+          <tr><td>MNGT 301</td><td>Business Ethics</td><td>Ethics</td></tr>
+          <tr><td>CIS 231</td><td>Information Systems</td><td>Technology</td></tr>
+          <tr><td>FINC 302</td><td>Financial Management</td><td>Technology</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.9rem;color:var(--muted);"><strong>Total:</strong> 8 undergraduate courses (per repo table).</p>
+    </section>
+
+    <section class="card">
+      <h2>Graduate rubrics — MBA &amp; EMBA</h2>
+      <table class="calendar-table">
+        <thead>
+          <tr><th>Course</th><th>Course name</th><th>Rubric type</th><th>Program(s)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>MKTG 501</td><td>Marketing Management</td><td>Communication (Oral &amp; Written)</td><td>MBA, EMBA</td></tr>
+          <tr><td>FINC 515</td><td>Financial Management</td><td>Critical Thinking &amp; Ethics</td><td>MBA, EMBA</td></tr>
+          <tr><td>MNGT 502</td><td>Managing Human Capital</td><td>Ethics / Critical Thinking / Technology</td><td>MBA, EMBA</td></tr>
+          <tr><td>BSAD 525</td><td>Strategic Management</td><td>Knowledge &amp; Integration</td><td>MBA, EMBA</td></tr>
+          <tr><td>CIS 501</td><td>Information Systems</td><td>Technology</td><td>MBA, EMBA</td></tr>
+          <tr><td>BSAD 507</td><td>Executive Leadership</td><td>Collaboration</td><td>EMBA only</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.9rem;color:var(--muted);">Grand total in repo table: <strong>14</strong> courses with AOL rubrics (8 UG; graduate counts overlap MBA/EMBA).</p>
+      <p style="font-size:0.88rem;color:var(--muted);margin-top:0.75rem;">
+        <strong>Instructors (working list):</strong> see <a href="../RUBRICS_TABLE.md#rubric-course-instructors-working-list"><code>RUBRICS_TABLE.md</code> — Rubric course instructors</a>
+        and <a href="data/syllabus_instructors.json"><code>data/syllabus_instructors.json</code></a>.
+        <strong>FINC 515:</strong> Mrs. Theunette Antill teaches this course and uses the same AOL rubric.
+        <strong>MNGT 502:</strong> Chris Castille.
+      </p>
+    </section>
+
+    <section class="card">
+      <details class="legacy-rubrics-details">
+        <summary><strong>Legacy Word and PDF masters in <code>rubrics/</code> (archive — click to expand)</strong></summary>
+        <p style="margin:0.75rem 0 0.5rem;font-size:0.95rem;">
+          These are the <strong>earlier college files</strong> kept for accreditation and history. The <strong>draft web rubrics</strong> at the top of this page
+          are the primary working copies for new BARS and the shared 5-point scale. Expand only when you need the original Word/PDF artifacts.
+          When serving locally from the AOL repo root, downloads resolve under <code>/rubrics/…</code>.
+        </p>
+        <ul class="role-list" style="font-size:0.9rem;margin-top:0.5rem;">
+          <li><a href="../rubrics/Undergrad%20Oral%20Communication%20Rubric.doc">Undergrad Oral Communication Rubric.doc</a></li>
+          <li><a href="../rubrics/Undegrad%20Written%20Communication%20Rubric.doc">Undegrad Written Communication Rubric.doc</a> <em>(spelling as in filename)</em></li>
+          <li><a href="../rubrics/Written_Communication_Assessment_Rubric_5_point_scale.pdf">Written Communication Assessment Rubric — 5 point scale (PDF)</a> — college master sheet; <a href="rubric_template_demo.html?r=written_communication">draft web version</a> mirrors criteria with site-wide Novice→Exceptional scale.</li>
+          <li><a href="../rubrics/Undergraduate%20Ethics%20Rubric.doc">Undergraduate Ethics Rubric.doc</a></li>
+          <li><a href="../rubrics/Undergraduate%20critical%20thinking%20in%20decision%20making%20rubric.doc">Undergraduate critical thinking in decision making rubric.doc</a></li>
+          <li><a href="../rubrics/Undergraduate_technology_rubric_1.doc">Undergraduate_technology_rubric_1.doc</a></li>
+          <li><a href="../rubrics/Graphics%20Presentation%20Rubric.doc">Graphics Presentation Rubric.doc</a> <em>(discontinued — superseded by technology rubric)</em></li>
+          <li><a href="../rubrics/Graduate%20Oral%20Communication%20Rubric.doc">Graduate Oral Communication Rubric.doc</a></li>
+          <li><a href="../rubrics/Graduate%20Written%20Communication%20Rubric.doc">Graduate Written Communication Rubric.doc</a></li>
+          <li><a href="../rubrics/Graduate%20Critical%20Analysis-Ethics%20Rubric.doc">Graduate Critical Analysis-Ethics Rubric.doc</a></li>
+          <li><a href="../rubrics/Graduate_technology_rubric_1.doc">Graduate_technology_rubric_1.doc</a></li>
+          <li><a href="../rubrics/Graduate%20functional%20knowledge%20and%20integration%20rubric.doc">Graduate functional knowledge and integration rubric.doc</a></li>
+          <li><a href="../rubrics/Graduate%20diversity%20rubric.doc">Graduate diversity rubric.doc</a></li>
+          <li><a href="../rubrics/EMBA%20Collaboration%20Rubric.doc">EMBA Collaboration Rubric.doc</a></li>
+        </ul>
+        <p style="font-size:0.88rem;color:var(--muted);margin-top:0.75rem;">Browse folder: <a href="../rubrics/"><code>rubrics/</code></a></p>
+      </details>
+    </section>
+
+    <section class="card">
+      <h2>Source files in this repository</h2>
+      <ul class="role-list">
+        <li><a href="../RUBRICS_TABLE.md"><code>RUBRICS_TABLE.md</code></a> — master table (Markdown)</li>
+        <li><a href="../ORAL_COMMUNICATION_RUBRIC_NOTE.md"><code>ORAL_COMMUNICATION_RUBRIC_NOTE.md</code></a> — oral comm rubric status</li>
+        <li><a href="../docs/Rubrics_Bayoupal_Focus_Groups_Plan.md"><code>docs/Rubrics_Bayoupal_Focus_Groups_Plan.md</code></a> — updates, Bayoupal, focus groups</li>
+        <li><a href="../Deans_Dashboard_Table_5.1.html"><code>Deans_Dashboard_Table_5.1.html</code></a> — leadership demo (includes rubric references in evidence text)</li>
+      </ul>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>Keep in sync with <code>RUBRICS_TABLE.md</code> when courses or rubric types change.</p>
+    <p class="site-footer-strategic" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;">Strategic plan (demo): COB <strong>Goal 2</strong> — <a href="index.html">Home</a> · <a href="calendar.html">Assessment calendar</a> · <a href="agenda.html#announcements">Committee agenda</a></p>
+  </footer>
+</body>
+</html>

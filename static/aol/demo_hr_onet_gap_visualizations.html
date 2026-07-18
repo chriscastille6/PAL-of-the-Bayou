@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HR × O*NET gap — visualization mocks (demo) — AOL</title>
+  <link rel="stylesheet" href="css/site.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body.viz-demo-page main {
+      max-width: 1100px;
+    }
+    .viz-toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      font-size: 0.88rem;
+      margin: 0 0 1rem;
+      padding: 0;
+      list-style: none;
+    }
+    .viz-toc a {
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .demo-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fcd34d;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      vertical-align: middle;
+      margin-right: 0.35rem;
+    }
+    .heatmap-wrap {
+      overflow-x: auto;
+      margin: 1rem 0;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+    }
+    table.heatmap {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    table.heatmap th,
+    table.heatmap td {
+      padding: 0.45rem 0.5rem;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+    table.heatmap th:first-child,
+    table.heatmap td:first-child {
+      text-align: left;
+      font-weight: 600;
+      white-space: nowrap;
+      background: #f8fafc;
+      min-width: 11rem;
+    }
+    table.heatmap thead th {
+      background: #1e3a8a;
+      color: #fff;
+      font-weight: 600;
+    }
+    .hm-cell {
+      color: #0f172a;
+      font-variant-numeric: tabular-nums;
+    }
+    .chart-box {
+      position: relative;
+      height: 320px;
+      margin: 1rem 0;
+    }
+    .chart-box.tall {
+      height: 400px;
+    }
+    .chart-box.scatter-h {
+      height: 380px;
+    }
+    .split-panels {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    @media (min-width: 800px) {
+      .split-panels.linked {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+      }
+    }
+    .evidence-panel {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      min-height: 12rem;
+    }
+    .evidence-panel h4 {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+      color: var(--brand);
+    }
+    .evidence-panel .meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+    .click-rows tbody tr {
+      cursor: pointer;
+    }
+    .click-rows tbody tr:hover {
+      background: #eff6ff;
+    }
+    .click-rows tbody tr.is-selected {
+      background: #dbeafe;
+      outline: 2px solid #3b82f6;
+    }
+    .multiples-grid {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .course-strip {
+      display: grid;
+      grid-template-columns: 8rem 1fr;
+      gap: 0.5rem;
+      align-items: center;
+      font-size: 0.8rem;
+    }
+    .course-strip .name {
+      font-weight: 700;
+      color: #334155;
+    }
+    .strip-bars {
+      display: flex;
+      height: 1.25rem;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+    .strip-seg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+    }
+    .legend-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+      font-size: 0.78rem;
+      margin-top: 0.75rem;
+      color: var(--muted);
+    }
+    .legend-swatch {
+      display: inline-block;
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 2px;
+      margin-right: 0.25rem;
+      vertical-align: middle;
+    }
+    .section-anchor {
+      scroll-margin-top: 1rem;
+    }
+  </style>
+</head>
+<body class="viz-demo-page">
+  <div class="demo-banner">MOCK DATA ONLY — NOT INSTITUTIONAL RESULTS — FOR LAYOUT / UX EXPLORATION</div>
+  <header class="site-header">
+    <h1>HR concentration × O*NET — visualization mocks</h1>
+    <p class="tagline">Synthetic demo patterns: heatmaps, gap ladder, small multiples, linked drill-down, curriculum vs ETS scatter</p>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="governance.html">Governance</a>
+      <a href="rubrics.html">Rubrics</a>
+      <a href="calendar.html">Assessment calendar</a>
+      <a href="degree_plans.html">Degree plans</a>
+      <a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a>
+      <a href="agenda.html">Committee agenda</a>
+      <a href="minutes.html">Minutes</a>
+      <a href="profiles.html">Profiles</a>
+      <a href="role-leadership.html">Preview: Leadership / accreditation</a>
+    </nav>
+  </header>
+  <main>
+    <section class="card">
+      <h2><span class="demo-tag">Mock</span> How to use this page</h2>
+      <p>
+        All numbers, course names, and ETS values are <strong>fabricated</strong> to show <strong>interaction patterns</strong> only.
+        Production views would pull real syllabus embeddings, O*NET releases, and IR-approved ETS aggregates (with small-<em>n</em> suppression).
+      </p>
+      <ul class="viz-toc">
+        <li><a href="#hm-knowledge">1. Knowledge heatmap</a></li>
+        <li><a href="#hm-skills">2. Skills heatmap</a></li>
+        <li><a href="#gap-ladder">3. Gap ladder</a></li>
+        <li><a href="#small-multiples">4. Small multiples (by course)</a></li>
+        <li><a href="#linked">5. Linked table + evidence panel</a></li>
+        <li><a href="#scatter">6. Curriculum emphasis vs ETS (scatter)</a></li>
+        <li><a href="#radar-collapsed">7. Collapsed-domain radar (summary)</a></li>
+      </ul>
+      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:0;">
+        Back to <a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a> ·
+        <a href="governance.html#gap-holistic">Holistic gap judgment</a>
+      </p>
+    </section>
+
+    <!-- 1. Knowledge heatmap -->
+    <section class="card section-anchor" id="hm-knowledge">
+      <h2><span class="demo-tag">Mock</span> 1. Knowledge heatmap (O*NET-style rows)</h2>
+      <p>
+        Columns: mock <strong>level-like scores</strong> (0–100) for HR Manager (11-3121) and HR Specialist (13-1071), a <strong>blended target</strong> (simple mean here),
+        <strong>curriculum emphasis</strong> from syllabus/LO similarity, and <strong>gap</strong> (target − curriculum). Color = curriculum column only (darker = stronger signal).
+      </p>
+      <div class="heatmap-wrap">
+        <table class="heatmap" id="table-knowledge">
+          <thead>
+            <tr>
+              <th scope="col">Knowledge area</th>
+              <th scope="col">HR Mgr</th>
+              <th scope="col">HR Spec</th>
+              <th scope="col">Blended target</th>
+              <th scope="col">Curriculum</th>
+              <th scope="col">Gap</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="source-note" style="margin:0;font-size:0.85rem;color:var(--muted);">
+        Legend: curriculum cells use blue saturation; gap is numeric only (could be diverging red/blue in production).
+      </p>
+    </section>
+
+    <!-- 2. Skills heatmap -->
+    <section class="card section-anchor" id="hm-skills">
+      <h2><span class="demo-tag">Mock</span> 2. Skills heatmap (narrower set)</h2>
+      <p>Same layout, different rows — shows how you can <strong>tab</strong> K vs S vs A instead of one busy graphic.</p>
+      <div class="heatmap-wrap">
+        <table class="heatmap" id="table-skills">
+          <thead>
+            <tr>
+              <th scope="col">Skill</th>
+              <th scope="col">HR Mgr</th>
+              <th scope="col">HR Spec</th>
+              <th scope="col">Blended</th>
+              <th scope="col">Curriculum</th>
+              <th scope="col">Gap</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3. Gap ladder -->
+    <section class="card section-anchor" id="gap-ladder">
+      <h2><span class="demo-tag">Mock</span> 3. Gap ladder (prioritization)</h2>
+      <p>Sorted horizontal bars: <strong>gap</strong> = blended target minus curriculum (same mock as knowledge table). Easier to scan than radar for “what to fix first.”</p>
+      <div class="chart-box tall">
+        <canvas id="chartGapLadder" aria-label="Horizontal bar chart of gap scores by knowledge area"></canvas>
+      </div>
+    </section>
+
+    <!-- 4. Small multiples -->
+    <section class="card section-anchor" id="small-multiples">
+      <h2><span class="demo-tag">Mock</span> 4. Small multiples — emphasis by course</h2>
+      <p>
+        Each row is a fake HR-track course; segments show <strong>share of emphasis</strong> across the same knowledge buckets (must sum to 100% in this mock).
+        Useful for seeing <em>where</em> coverage lives before aggregating to concentration level.
+      </p>
+      <div class="multiples-grid" id="smallMultiplesContainer"></div>
+      <div class="legend-row" id="stripLegend"></div>
+    </section>
+
+    <!-- 5. Linked views -->
+    <section class="card section-anchor" id="linked">
+      <h2><span class="demo-tag">Mock</span> 5. Linked table + drill-down panel</h2>
+      <p>Click a row to show fake LO excerpts and “top O*NET line” text. Production would deep-link to syllabus PDFs and API-backed task IDs.</p>
+      <div class="split-panels linked">
+        <div>
+          <div class="heatmap-wrap">
+            <table class="heatmap click-rows" id="table-linked">
+              <thead>
+                <tr>
+                  <th scope="col">Area</th>
+                  <th scope="col">Target</th>
+                  <th scope="col">Curr.</th>
+                  <th scope="col">Gap</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="evidence-panel" id="evidencePanel" aria-live="polite">
+          <h4>Evidence</h4>
+          <p class="meta">Select a row in the table.</p>
+          <p style="margin:0;color:var(--muted);font-size:0.9rem;">Linked views keep the main chart readable while still supporting committee questions (“which course covers this?”).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Scatter -->
+    <section class="card section-anchor" id="scatter">
+      <h2><span class="demo-tag">Mock</span> 6. Curriculum emphasis vs ETS performance</h2>
+      <p>
+        Each point = one <strong>domain or subcontent slice</strong> (labels invented). <em>X</em> = mock curriculum emphasis; <em>Y</em> = mock mean percent-correct for HR concentrators (<em>n</em> shown in tooltip — fake).
+        Quadrants support narratives like “high coverage, weak exam signal” vs “exam OK, weak occupational mapping.”
+      </p>
+      <div class="chart-box scatter-h">
+        <canvas id="chartScatter" aria-label="Scatter of curriculum emphasis versus ETS performance"></canvas>
+      </div>
+      <p class="source-note" style="margin-top:0.5rem;">Production: tie x-axis to your embedding pipeline; tie y-axis to IR-vetted ETS cuts; suppress or bin small cells.</p>
+    </section>
+
+    <!-- 7. Radar collapsed -->
+    <section class="card section-anchor" id="radar-collapsed">
+      <h2><span class="demo-tag">Mock</span> 7. Collapsed six-domain radar (summary only)</h2>
+      <p>
+        Same underlying mock rolled into <strong>six named buckets</strong> for executive summaries. Use only when the <strong>collapse rule</strong> is documented (not raw O*NET spokes).
+      </p>
+      <div class="chart-box">
+        <canvas id="chartRadar" aria-label="Radar chart of six collapsed domains"></canvas>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>Mock demos — <a href="demo_hr_onet_gap_visualizations.html">HR viz demos</a> · <a href="curriculum_onet_gap_research.html">Research brief</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      function heatColor(val) {
+        var t = Math.max(0, Math.min(100, val)) / 100;
+        var r = Math.round(224 + (30 - 224) * t);
+        var g = Math.round(242 + (64 - 242) * t);
+        var b = Math.round(254 + (175 - 254) * t);
+        return "rgb(" + r + "," + g + "," + b + ")";
+      }
+
+      var knowledgeRows = [
+        { name: "Personnel & human resources", mgr: 88, spec: 92, curr: 78 },
+        { name: "Law, government & jurisprudence", mgr: 72, spec: 85, curr: 62 },
+        { name: "Administration & management", mgr: 90, spec: 68, curr: 81 },
+        { name: "Education & training", mgr: 58, spec: 72, curr: 55 },
+        { name: "Computers & electronics (HRIS)", mgr: 52, spec: 61, curr: 48 },
+        { name: "Psychology", mgr: 48, spec: 55, curr: 38 },
+        { name: "Economics & accounting", mgr: 45, spec: 40, curr: 52 },
+        { name: "Customer & personal service", mgr: 70, spec: 78, curr: 74 }
+      ];
+
+      function enrich(row) {
+        var blend = Math.round((row.mgr + row.spec) / 2);
+        var gap = blend - row.curr;
+        return { name: row.name, mgr: row.mgr, spec: row.spec, blend: blend, curr: row.curr, gap: gap };
+      }
+
+      var kData = knowledgeRows.map(enrich);
+
+      function fillHeatmapTable(tableId, rows) {
+        var tbody = document.querySelector("#" + tableId + " tbody");
+        rows.forEach(function (r) {
+          var tr = document.createElement("tr");
+          tr.innerHTML =
+            "<td>" +
+            r.name +
+            "</td>" +
+            '<td class="hm-cell">' +
+            r.mgr +
+            "</td>" +
+            '<td class="hm-cell">' +
+            r.spec +
+            "</td>" +
+            '<td class="hm-cell">' +
+            r.blend +
+            "</td>" +
+            '<td class="hm-cell" style="background:' +
+            heatColor(r.curr) +
+            '">' +
+            r.curr +
+            "</td>" +
+            '<td class="hm-cell">' +
+            (r.gap > 0 ? "+" : "") +
+            r.gap +
+            "</td>";
+          tbody.appendChild(tr);
+        });
+      }
+
+      fillHeatmapTable("table-knowledge", kData);
+
+      var skillRows = [
+        { name: "Active listening", mgr: 75, spec: 82, curr: 80 },
+        { name: "Speaking", mgr: 78, spec: 76, curr: 72 },
+        { name: "Critical thinking", mgr: 80, spec: 70, curr: 68 },
+        { name: "Reading comprehension", mgr: 72, spec: 78, curr: 75 },
+        { name: "Judgment & decision making", mgr: 85, spec: 68, curr: 58 },
+        { name: "Complex problem solving", mgr: 70, spec: 62, curr: 50 },
+        { name: "Social perceptiveness", mgr: 76, spec: 80, curr: 66 },
+        { name: "Monitoring", mgr: 74, spec: 72, curr: 60 }
+      ].map(enrich);
+      fillHeatmapTable("table-skills", skillRows);
+
+      /* Gap ladder chart */
+      var sorted = kData.slice().sort(function (a, b) {
+        return b.gap - a.gap;
+      });
+      var ctxLadder = document.getElementById("chartGapLadder").getContext("2d");
+      new Chart(ctxLadder, {
+        type: "bar",
+        data: {
+          labels: sorted.map(function (r) {
+            return r.name;
+          }),
+          datasets: [
+            {
+              label: "Gap (target − curriculum)",
+              data: sorted.map(function (r) {
+                return r.gap;
+              }),
+              backgroundColor: sorted.map(function (r) {
+                return r.gap > 12 ? "#dc2626" : r.gap > 6 ? "#ea580c" : "#64748b";
+              }),
+              borderRadius: 4
+            }
+          ]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            title: { display: true, text: "Largest curriculum–occupation gaps first (mock)" }
+          },
+          scales: {
+            x: {
+              title: { display: true, text: "Gap (points on 0–100 mock scale)" },
+              grid: { color: "#e2e8f0" }
+            },
+            y: { grid: { display: false } }
+          }
+        }
+      });
+
+      /* Small multiples — fake course emphasis shares */
+      var buckets = [
+        { key: "PHR", label: "Personnel & HR", color: "#1e3a8a" },
+        { key: "LAW", label: "Law / EEO", color: "#0d9488" },
+        { key: "ADM", label: "Admin / mgmt", color: "#7c3aed" },
+        { key: "HRIS", label: "HRIS / data", color: "#ea580c" },
+        { key: "OTHER", label: "Other", color: "#94a3b8" }
+      ];
+      var courses = [
+        { code: "MNGT 367", shares: [35, 28, 22, 10, 5] },
+        { code: "MNGT 425", shares: [18, 12, 15, 42, 13] },
+        { code: "MNGT 440", shares: [40, 30, 18, 5, 7] },
+        { code: "MNGT 475", shares: [25, 35, 20, 8, 12] }
+      ];
+      var smHost = document.getElementById("smallMultiplesContainer");
+      courses.forEach(function (c) {
+        var row = document.createElement("div");
+        row.className = "course-strip";
+        var bar = document.createElement("div");
+        bar.className = "strip-bars";
+        bar.setAttribute("role", "img");
+        bar.setAttribute("aria-label", c.code + " emphasis mix (mock)");
+        c.shares.forEach(function (pct, i) {
+          var seg = document.createElement("div");
+          seg.className = "strip-seg";
+          seg.style.flex = pct + " 1 0";
+          seg.style.background = buckets[i].color;
+          seg.textContent = pct + "%";
+          bar.appendChild(seg);
+        });
+        row.innerHTML = '<div class="name">' + c.code + "</div>";
+        row.appendChild(bar);
+        smHost.appendChild(row);
+      });
+      var leg = document.getElementById("stripLegend");
+      buckets.forEach(function (b) {
+        var span = document.createElement("span");
+        span.innerHTML =
+          '<span class="legend-swatch" style="background:' + b.color + '"></span>' + b.label;
+        leg.appendChild(span);
+      });
+
+      /* Linked table + evidence */
+      var evidenceByRow = {
+        0: {
+          title: "Personnel & human resources",
+          courses: "MNGT 367, MNGT 440",
+          lo: "“…demonstrate understanding of HR activities: strategic HR, EEO, staffing, talent management, risk management, employee and labor relations.”",
+          onet: "O*NET task (illustrative): Administer compensation, benefits, and performance management systems."
+        },
+        1: {
+          title: "Law, government & jurisprudence",
+          courses: "MNGT 367, MNGT 475",
+          lo: "“…identify laws, policies, and best practices that impact how organizations manage human resources.”",
+          onet: "O*NET task (illustrative): Ensure compliance with legal requirements in HR policies."
+        },
+        2: {
+          title: "Administration & management",
+          courses: "MNGT 370, MNGT 440",
+          lo: "“…plan and coordinate HR initiatives with line management.” (mock paraphrase)",
+          onet: "O*NET task (illustrative): Direct HR activities and align with organizational strategy."
+        },
+        3: {
+          title: "HRIS & data literacy",
+          courses: "MNGT 425",
+          lo: "“…extract and work with large datasets; maintain HRIS, databases, and visualization software.”",
+          onet: "O*NET task (illustrative): Maintain HR information systems and produce reports."
+        }
+      };
+
+      var linkedBody = document.querySelector("#table-linked tbody");
+      var panel = document.getElementById("evidencePanel");
+      kData.slice(0, 6).forEach(function (r, idx) {
+        var tr = document.createElement("tr");
+        tr.dataset.idx = String(idx);
+        tr.innerHTML =
+          "<td>" +
+          r.name +
+          "</td>" +
+          '<td class="hm-cell">' +
+          r.blend +
+          "</td>" +
+          '<td class="hm-cell">' +
+          r.curr +
+          "</td>" +
+          '<td class="hm-cell">' +
+          (r.gap > 0 ? "+" : "") +
+          r.gap +
+          "</td>";
+        linkedBody.appendChild(tr);
+      });
+
+      function showEvidence(idx) {
+        var e = evidenceByRow[idx];
+        if (!e) {
+          panel.innerHTML =
+            "<h4>Evidence</h4><p class=\"meta\">No mock drill-down for this row.</p>";
+          return;
+        }
+        panel.innerHTML =
+          "<h4>" +
+          e.title +
+          "</h4>" +
+          '<p class="meta">Contributing courses (mock): <strong>' +
+          e.courses +
+          "</strong></p>" +
+          "<p><strong>LO excerpt (mock):</strong> " +
+          e.lo +
+          "</p>" +
+          "<p><strong>O*NET hint (mock):</strong> " +
+          e.onet +
+          "</p>";
+      }
+
+      linkedBody.addEventListener("click", function (ev) {
+        var tr = ev.target.closest("tr");
+        if (!tr || !linkedBody.contains(tr)) return;
+        var idx = tr.dataset.idx;
+        linkedBody.querySelectorAll("tr").forEach(function (row) {
+          row.classList.remove("is-selected");
+        });
+        tr.classList.add("is-selected");
+        showEvidence(idx);
+      });
+
+      /* Scatter */
+      var scatterPts = [
+        { label: "OB / HRM subcontent", x: 78, y: 71, n: 42 },
+        { label: "Legal / regulatory framing", x: 62, y: 58, n: 42 },
+        { label: "Data & analytics", x: 48, y: 64, n: 42 },
+        { label: "Staffing & talent", x: 74, y: 69, n: 42 },
+        { label: "Labor relations", x: 52, y: 55, n: 38 },
+        { label: "Strategic HR / workforce planning", x: 58, y: 52, n: 40 }
+      ];
+      var ctxSc = document.getElementById("chartScatter").getContext("2d");
+      new Chart(ctxSc, {
+        type: "scatter",
+        data: {
+          datasets: [
+            {
+              label: "Domains (mock)",
+              data: scatterPts.map(function (p) {
+                return { x: p.x, y: p.y };
+              }),
+              backgroundColor: "rgba(30, 58, 138, 0.75)",
+              borderColor: "#1e3a8a",
+              pointRadius: 10,
+              pointHoverRadius: 12
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function (ctx) {
+                  var p = scatterPts[ctx.dataIndex];
+                  if (!p) return "";
+                  return [
+                    p.label,
+                    "Curriculum emphasis (mock): " + p.x,
+                    "ETS % correct (mock): " + p.y,
+                    "n (mock): " + p.n
+                  ];
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              title: { display: true, text: "Curriculum emphasis (mock 0–100)" },
+              min: 40,
+              max: 90,
+              grid: { color: "#e2e8f0" }
+            },
+            y: {
+              title: { display: true, text: "ETS mean % correct — HR concentrators (mock)" },
+              min: 45,
+              max: 80,
+              grid: { color: "#e2e8f0" }
+            }
+          }
+        }
+      });
+
+      /* Radar collapsed */
+      var radarLabels = ["HR core", "Compliance", "Analytics / HRIS", "Relations", "Strategy", "General mgmt"];
+      var ctxR = document.getElementById("chartRadar").getContext("2d");
+      new Chart(ctxR, {
+        type: "radar",
+        data: {
+          labels: radarLabels,
+          datasets: [
+            {
+              label: "Blended O*NET target (mock)",
+              data: [88, 78, 58, 72, 65, 82],
+              borderColor: "#0d9488",
+              backgroundColor: "rgba(13, 148, 136, 0.2)",
+              borderWidth: 2
+            },
+            {
+              label: "Curriculum profile (mock)",
+              data: [78, 62, 48, 58, 55, 80],
+              borderColor: "#ea580c",
+              backgroundColor: "rgba(234, 88, 12, 0.15)",
+              borderWidth: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "bottom" }
+          },
+          scales: {
+            r: {
+              min: 0,
+              max: 100,
+              ticks: { stepSize: 20, backdropColor: "transparent" },
+              pointLabels: { font: { size: 11 } },
+              grid: { color: "rgba(0,0,0,0.08)" }
+            }
+          }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "description": "Demo mapping: which course node labels (as shown in Mermaid diagrams) are tagged with each tool/skill. Edit to match syllabi; labels must match diagram text (e.g. QBA 283, FINC 302, ACCT 206/306).",
+  "tools": [
+    {
+      "id": "excel",
+      "label": "Excel",
+      "courses": [
+        "QBA 282",
+        "QBA 283",
+        "FINC 302",
+        "ACCT 206/306",
+        "ECON 211",
+        "ECON 212",
+        "BSAD 310",
+        "MNGT 368",
+        "MNGT 425",
+        "BSAD 490"
+      ]
+    },
+    {
+      "id": "powerpoint",
+      "label": "PowerPoint",
+      "courses": [
+        "BSAD 310",
+        "MNGT 368",
+        "MKTG 300"
+      ]
+    },
+    {
+      "id": "sql",
+      "label": "SQL / databases",
+      "courses": [
+        "CIS 231",
+        "CIS 310",
+        "CIS 320",
+        "CIS 330",
+        "CIS 460"
+      ]
+    },
+    {
+      "id": "r_stats",
+      "label": "R / analytics",
+      "courses": [
+        "QBA 283",
+        "MNGT 425",
+        "MNGT 368"
+      ]
+    }
+  ]
+}

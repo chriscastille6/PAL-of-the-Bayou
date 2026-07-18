@@ -1,0 +1,734 @@
+/* AOL transparency demo site — Phase 0 local demonstration */
+:root {
+  --brand: #8B1538;
+  --brand-dark: #5c0e25;
+  --accent: #1E3A8A;
+  --bg: #f5f6fa;
+  --card: #ffffff;
+  --text: #2c3e50;
+  --muted: #6c757d;
+  --banner-bg: #fff3cd;
+  --banner-border: #ffc107;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+}
+
+/* Homepage / policy callouts */
+.ai-disclaimer {
+  border-left: 4px solid #64748b;
+  background: #f8fafc;
+  padding: 1rem 1.25rem 1.1rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+.ai-disclaimer h2 {
+  font-size: 1.05rem;
+  margin: 0 0 0.65rem;
+  color: #334155;
+}
+.ai-disclaimer p { margin: 0 0 0.65rem; }
+.ai-disclaimer p:last-child { margin-bottom: 0; }
+
+.demo-banner {
+  background: var(--banner-bg);
+  border-bottom: 3px solid var(--banner-border);
+  color: #856404;
+  padding: 0.75rem 1.25rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+.site-header {
+  background: var(--card);
+  border-bottom: 1px solid #dee2e6;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.site-header h1 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.35rem;
+  color: var(--brand);
+}
+
+.site-header .tagline {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+nav.main-nav {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+nav.main-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+nav.main-nav a:hover {
+  text-decoration: underline;
+}
+
+nav.main-nav a[aria-current="page"] {
+  color: var(--brand);
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.card h2 {
+  margin-top: 0;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+.card h3 {
+  color: var(--brand);
+  font-size: 1.05rem;
+}
+
+ul.role-list {
+  padding-left: 1.25rem;
+}
+
+ul.role-list li {
+  margin-bottom: 0.5rem;
+}
+
+footer.site-footer {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 0 1.5rem 2rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+pre.mermaid-src {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 0.8rem;
+}
+
+table.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+table.calendar-table th,
+table.calendar-table td {
+  border: 1px solid #dee2e6;
+  padding: 0.5rem 0.65rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+table.calendar-table tbody th[scope="row"] {
+  background: #f8fafc;
+  color: var(--text);
+  font-weight: 600;
+}
+
+table.calendar-table th {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Horizontal scroll for wide tables on narrow viewports */
+.table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* calendar.html — legend + instructor lines */
+.calendar-assessment-legend {
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.calendar-assessment-legend kbd {
+  font-size: 0.85em;
+}
+
+.syllabus-instructor {
+  font-size: 0.82rem;
+  color: #4b5563;
+  margin-top: 0.45rem;
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+.syllabus-instructor strong {
+  font-weight: 600;
+  color: #374151;
+}
+
+/* Shared tab UI (summary + timeline on calendar.html) */
+.calendar-tabs {
+  margin: 0.75rem 0 0;
+}
+
+.calendar-tabs .calendar-tablist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.5rem 0.65rem 0;
+  background: #eef2f6;
+  border-radius: 8px 8px 0 0;
+  border: 1px solid #bdc3c7;
+  border-bottom: none;
+  list-style: none;
+  margin: 0;
+}
+
+.calendar-tabs .calendar-tablist li {
+  margin: 0;
+}
+
+.calendar-tabs .calendar-tablist button {
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid transparent;
+  border-radius: 6px 6px 0 0;
+  background: transparent;
+  color: #1a5276;
+  cursor: pointer;
+  margin-bottom: -1px;
+}
+
+.calendar-tabs .calendar-tablist button:hover {
+  background: rgba(26, 82, 118, 0.08);
+}
+
+.calendar-tabs .calendar-tablist button[aria-selected="true"] {
+  background: #fff;
+  border-color: #bdc3c7;
+  border-bottom-color: #fff;
+  color: #154360;
+}
+
+.calendar-tabs .calendar-tabpanel {
+  border: 1px solid #bdc3c7;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  background: #fff;
+  padding: 0.9rem 0.95rem;
+}
+
+.calendar-tabs .calendar-tabpanel[hidden] {
+  display: none !important;
+}
+
+table.calendar-table th.calendar-term-h,
+table.calendar-table td.calendar-term-c {
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: 3.25rem;
+}
+
+/* Term checkbox cell status (BSBA SP ’26 demo: use .calendar-table-assessment so colors always win) */
+table.calendar-table.calendar-table-assessment td.calendar-term-c.cal-state--grey {
+  background-color: #e2e8f0 !important;
+}
+table.calendar-table.calendar-table-assessment td.calendar-term-c.cal-state--green {
+  background-color: #86efac !important;
+}
+table.calendar-table.calendar-table-assessment td.calendar-term-c.cal-state--red {
+  background-color: #fecaca !important;
+}
+table.calendar-table.calendar-table-assessment td.calendar-term-c.cal-state--yellow {
+  background-color: #fde047 !important;
+}
+
+table.calendar-table.calendar-table-assessment td.calendar-term-c[data-cal-base="grey"] input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.calendar-assessment-color-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.65rem 1.1rem;
+  margin: 0.65rem 0 0;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--muted);
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+.calendar-assessment-color-legend strong {
+  color: #334155;
+}
+.calendar-assessment-color-legend .cal-swatch {
+  display: inline-block;
+  width: 0.95rem;
+  height: 0.95rem;
+  border-radius: 3px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  vertical-align: -0.15em;
+  margin-right: 0.25rem;
+}
+.calendar-assessment-color-legend .cal-swatch--grey {
+  background: #e2e8f0;
+}
+.calendar-assessment-color-legend .cal-swatch--green {
+  background: #86efac;
+}
+.calendar-assessment-color-legend .cal-swatch--red {
+  background: #fecaca;
+}
+.calendar-assessment-color-legend .cal-swatch--yellow {
+  background: #fde047;
+}
+
+.tips-box {
+  border-left: 4px solid var(--brand);
+  padding-left: 1rem;
+  margin: 1rem 0;
+}
+
+.tips-box h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--brand);
+}
+
+/* Gap analysis figure (needs assessment) — HTML/CSS; readable on all browsers */
+.gap-evidence-diagram {
+  margin: 0.75rem 0 0;
+  padding: 1.1rem 1rem 1rem;
+  background: linear-gradient(180deg, #fafbfc 0%, var(--card) 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/*
+ * Always one horizontal strip (inputs | → | judgment | → | outcomes).
+ * Narrow viewports scroll the figure horizontally so Outcomes never stacks under the other cards.
+ * align-items: center — stage (arrows + gap + outcomes) sits vertically centered vs the evidence column.
+ */
+.gap-evidence-lr {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.45rem 0.5rem;
+  width: max-content;
+  max-width: none;
+  min-width: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Judgment + arrows + outcomes: shared height between the two cards only, not the tall inputs column */
+.gap-evidence-stage {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0.45rem 0.5rem;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.gap-evidence-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  flex: 0 1 auto;
+}
+
+.gap-evidence-card {
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.gap-evidence-card h4 {
+  margin: 0 0 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  opacity: 0.92;
+}
+
+/* Uppercase: evidence cards + judgment / outcomes headings */
+.gap-evidence-card--course h4,
+.gap-evidence-card--person h4 {
+  text-transform: uppercase;
+}
+
+.gap-evidence-card ul {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.gap-evidence-card li {
+  margin-bottom: 0.2rem;
+}
+
+.gap-evidence-card li:last-child {
+  margin-bottom: 0;
+}
+
+.gap-evidence-card--person li {
+  margin-bottom: 0.12rem;
+  line-height: 1.38;
+}
+
+.gap-evidence-card--course {
+  background: #e8eef6;
+  border-color: #5a7caf;
+  color: #1a2d45;
+}
+
+.gap-evidence-card--person {
+  background: #e4f2eb;
+  border-color: #5a9e7a;
+  color: #1a3d2e;
+}
+
+.gap-evidence-card--judgment {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 220px;
+  text-align: center;
+  background: #f5ebe3;
+  border-color: #c17f59;
+  border-width: 2px;
+  color: #5c3d2e;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0.45rem 0.65rem;
+  line-height: 1.35;
+}
+
+.gap-evidence-card--judgment h4,
+.gap-evidence-card--outcomes h4 {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.78rem;
+  margin: 0 0 0.22rem;
+  font-weight: 700;
+  opacity: 1;
+}
+
+.gap-evidence-card--judgment p {
+  margin: 0.06rem 0 0;
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.gap-evidence-note {
+  margin: 0.16rem 0 0 !important;
+  font-size: 0.74rem !important;
+  font-weight: 400 !important;
+  font-style: italic;
+  color: #6b5348;
+  line-height: 1.28;
+}
+
+.gap-evidence-card--outcomes {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 220px;
+  background: #ede8f4;
+  border-color: #8b7aad;
+  color: #342a48;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0.45rem 0.65rem;
+  line-height: 1.35;
+}
+
+.gap-evidence-card--outcomes ul {
+  padding-left: 1rem;
+  margin: 0;
+}
+
+.gap-evidence-card--outcomes li {
+  margin-bottom: 0.12rem;
+  line-height: 1.32;
+}
+
+.gap-evidence-card--outcomes li:last-child {
+  margin-bottom: 0;
+}
+
+.gap-evidence-arrow {
+  align-self: center;
+  flex-shrink: 0;
+  font-size: 1.45rem;
+  font-weight: 300;
+  color: #94a3b8;
+  line-height: 1;
+  padding: 0.1rem 0;
+  user-select: none;
+}
+
+.gap-evidence-caption {
+  margin: 0.75rem 0 0;
+  padding-top: 0.65rem;
+  border-top: 1px solid #e8edf3;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+/* Slightly tighter strip on small screens (still one row; scroll to see Outcomes) */
+@media (max-width: 639px) {
+  .gap-evidence-lr {
+    gap: 0.35rem 0.4rem;
+    min-width: 560px;
+  }
+
+  .gap-evidence-card {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.82rem;
+  }
+
+  .gap-evidence-inputs {
+    flex: 0 0 220px;
+    max-width: 220px;
+  }
+
+  .gap-evidence-card--judgment,
+  .gap-evidence-card--outcomes {
+    padding: 0.4rem 0.55rem;
+    flex: 0 0 168px;
+    min-width: 0;
+    max-width: 168px;
+    align-self: stretch;
+  }
+}
+
+@media (min-width: 640px) {
+  .gap-evidence-lr {
+    justify-content: center;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .gap-evidence-inputs {
+    flex: 0 1 280px;
+    min-width: min(200px, 100%);
+    max-width: 280px;
+  }
+
+  .gap-evidence-card--judgment,
+  .gap-evidence-card--outcomes {
+    flex: 0 1 200px;
+    min-width: 0;
+    max-width: 220px;
+    width: auto;
+    align-self: stretch;
+  }
+}
+
+/* Agenda — two cards: announcements + voting */
+.agenda-lede {
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.agenda-announce .agenda-diagram-intro {
+  margin: 1rem 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.agenda-announce .gap-evidence-diagram {
+  margin-bottom: 1.25rem;
+}
+
+.agenda-announce h3 {
+  margin: 1.15rem 0 0.4rem;
+  color: var(--accent);
+  font-size: 1.05rem;
+}
+
+.agenda-voting > h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.35rem;
+  color: #0f172a;
+}
+
+.agenda-part {
+  margin-top: 1.35rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.agenda-part:first-of-type {
+  margin-top: 0.75rem;
+  padding-top: 0;
+  border-top: none;
+}
+
+.agenda-part-title {
+  margin: 0 0 0.45rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: 0.01em;
+}
+
+.agenda-part-note {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0 0 0.85rem;
+}
+
+.agenda-voting h4 {
+  margin: 1.05rem 0 0.4rem;
+  color: var(--accent);
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.agenda-part > h4:first-of-type {
+  margin-top: 0;
+}
+
+.agenda-item-context {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0 0 0.6rem;
+}
+
+.agenda-announce ul,
+.agenda-voting ul {
+  margin: 0.35rem 0 0;
+  padding-left: 1.25rem;
+  line-height: 1.5;
+}
+
+.agenda-voting > p:not(.agenda-lede):not(.agenda-order__meta),
+.agenda-voting .agenda-part > p:not(.agenda-part-note) {
+  margin: 0.35rem 0 0;
+  line-height: 1.5;
+}
+
+.agenda-order__meta {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin: 0 0 0.65rem;
+  line-height: 1.35;
+}
+
+.agenda-tabled-in-voting {
+  margin-top: 1.25rem;
+  padding: 0.85rem 0 0 0.85rem;
+  border-left: 3px solid #94a3b8;
+}
+
+.agenda-tabled-in-voting h3 {
+  margin-top: 0;
+}
+
+.agenda-item-vote {
+  margin: 0.75rem 0 0;
+  padding-top: 0.5rem;
+  border-top: 1px solid #f1f5f9;
+  font-size: 0.92rem;
+  color: #b91c1c;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+/* committee minutes.html */
+.minutes-placeholder-note {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 0.5rem;
+  line-height: 1.45;
+}
+
+.minutes-editable-list li {
+  margin-bottom: 0.35rem;
+  line-height: 1.45;
+}
+
+.minutes-meeting h3 {
+  margin: 1.15rem 0 0.4rem;
+  font-size: 1.05rem;
+  color: var(--accent);
+}
+
+.minutes-meeting h3:first-of-type {
+  margin-top: 0.75rem;
+}
+
+.agenda-rubric-assignments .agenda-rev-note {
+  font-size: 0.88em;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.agenda-rubric-assignments .agenda-rubric-links {
+  font-size: 0.92rem;
+  line-height: 1.45;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .agenda-rubric-assignments .agenda-rubric-links {
+    white-space: normal;
+  }
+}

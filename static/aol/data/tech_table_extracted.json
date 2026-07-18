@@ -1,0 +1,1366 @@
+{
+  "version": 1,
+  "source_pdf": "reference/TechTable.pdf",
+  "extracted_at": "2026-03-27T18:45:45Z",
+  "extractor": "aol_site/scripts/extract_tech_table.py (pdftotext -layout)",
+  "technology_index": [
+    "33.3% Quantitative analysis",
+    "Access",
+    "AI",
+    "ANOVAs",
+    "Big",
+    "Canva",
+    "CCH",
+    "ChatGPT",
+    "CMD Prompt CMD Prompt",
+    "Constant Contact",
+    "Crystal 15-20 Improves data analysis",
+    "Crystal Ball",
+    "Crystal Ball Capital Budgeting Basic",
+    "Data Visualization",
+    "Excel",
+    "Excel 10-15 Basic",
+    "Excel 15-20 Financial Analysis basic",
+    "Excel 15-20 More advanced moderate",
+    "Excel Financial Analysis Basic",
+    "Excel stats",
+    "FDIC",
+    "Generative",
+    "Generative AI",
+    "Google",
+    "Google Apps; Excel; powerpoint",
+    "Google Colab",
+    "Google Docs",
+    "Google Drive",
+    "Google excel",
+    "Google Gemni",
+    "Google Genmi",
+    "Google Sheet",
+    "Google Sheets",
+    "Google Sites",
+    "Google Slides",
+    "HTML",
+    "iClicker",
+    "IDEA",
+    "Instagram",
+    "Instructor uses PPT Oral",
+    "Jon] ChaptGTP (or",
+    "MS Access",
+    "MS Office",
+    "ONET",
+    "Onet Database",
+    "Packback (AI)",
+    "pivot tables",
+    "PivotTables",
+    "Powerpoint",
+    "PowerPoint",
+    "Powerpoint 10%",
+    "PowerPt",
+    "PPT",
+    "ProConnect",
+    "Python",
+    "Quickbooks",
+    "R",
+    "Regression",
+    "Regressions",
+    "Reports",
+    "S & P Capital",
+    "S&P",
+    "S&P Capital IQ",
+    "Simternship",
+    "Spreadsheets",
+    "SPSS",
+    "SQL",
+    "Tableau",
+    "Tableau Models",
+    "TikTok",
+    "Visual Basic",
+    "Visualizing Data",
+    "Weebly",
+    "Wix",
+    "Word",
+    "Word 20%",
+    "Word and Excel",
+    "Word manual",
+    "Word Writing proficiency - Moderate"
+  ],
+  "course_count": 89,
+  "technology_token_count": 79,
+  "courses": [
+    {
+      "course_code": "ACCT 205",
+      "department": "ACCT",
+      "number": "205",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "ACCT     205      U\nACCT     205      U\nACCT     205      U"
+    },
+    {
+      "course_code": "ACCT 206",
+      "department": "ACCT",
+      "number": "206",
+      "level": "U",
+      "technology_raw": "Excel",
+      "technology_tokens": [
+        "Excel"
+      ],
+      "percentage": "5",
+      "proficiency": "Basic",
+      "enhancement_summary": "CVP analysis               Basic",
+      "raw_block": "ACCT     206      U       Excel             5              CVP analysis               Basic\nACCT     206      U       Excel                5              CVP analysis              Basic\nACCT     206      U       Excel             5              CVP analysis              Basic"
+    },
+    {
+      "course_code": "ACCT 306",
+      "department": "ACCT",
+      "number": "306",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "ACCT     306      U\nACCT     306      U\nACCT     306      U"
+    },
+    {
+      "course_code": "ACCT 315",
+      "department": "ACCT",
+      "number": "315",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "ACCT     315      U\nACCT     315      U\nACCT     315      U\ngraphs/table,\nPresentation creation\nand delivery. ChatGPT\nused/encouraged for\nresearch and\nreferencing assistance,\nstudents are required\nto use ChatGPT to\n\u2018figure out\u2019 how to\nmake graphs in Excel\nand export into\nWord/PDF (if they don\u2019t\nalready know)."
+    },
+    {
+      "course_code": "ACCT 321",
+      "department": "ACCT",
+      "number": "321",
+      "level": "U",
+      "technology_raw": "Quickbooks, Google Sheet",
+      "technology_tokens": [
+        "Quickbooks",
+        "Google Sheet"
+      ],
+      "percentage": "30",
+      "proficiency": "Moderate",
+      "enhancement_summary": "Aids in effectively        Moderate",
+      "raw_block": "ACCT     321      U       Quickbooks,       30             Aids in effectively        Moderate\nGoogle Sheet                     analyzing the\naccounting processes\nof a fictitious company."
+    },
+    {
+      "course_code": "ACCT 322",
+      "department": "ACCT",
+      "number": "322",
+      "level": "U",
+      "technology_raw": "Excel",
+      "technology_tokens": [
+        "Excel"
+      ],
+      "percentage": "15",
+      "proficiency": "Basic",
+      "enhancement_summary": "Aids in analysis of TVM    Basic",
+      "raw_block": "ACCT     322      U       Excel             15             Aids in analysis of TVM    Basic\nconcepts."
+    },
+    {
+      "course_code": "ACCT 323",
+      "department": "ACCT",
+      "number": "323",
+      "level": "U",
+      "technology_raw": "Excel, AI",
+      "technology_tokens": [
+        "Excel",
+        "AI"
+      ],
+      "percentage": "15",
+      "proficiency": "Basic",
+      "enhancement_summary": "Excel aids in analysis     Basic",
+      "raw_block": "ACCT     323      U       Excel, AI         15             Excel aids in analysis     Basic\nof TVM concepts.\n(working with leases\nand bond amortization\nschedules). AI is used\nto analyze the\ndifferences between AI\ninformation and the\nofficial Accounting\nStandards (GAAP)."
+    },
+    {
+      "course_code": "ACCT 351",
+      "department": "ACCT",
+      "number": "351",
+      "level": "U",
+      "technology_raw": "Excel, Tableau,",
+      "technology_tokens": [
+        "Excel",
+        "Tableau"
+      ],
+      "percentage": "25",
+      "proficiency": "Basic",
+      "enhancement_summary": "Used to cover basic        Basic",
+      "raw_block": "ACCT     351      U       Excel, Tableau,   25             Used to cover basic        Basic\nPowerBI                          functions, formatting\nand various analytical\nvisualizations."
+    },
+    {
+      "course_code": "ACCT 401",
+      "department": "ACCT",
+      "number": "401",
+      "level": "U",
+      "technology_raw": "Excel",
+      "technology_tokens": [
+        "Excel"
+      ],
+      "percentage": "25",
+      "proficiency": "Basic",
+      "enhancement_summary": "Aids in financial          Basic",
+      "raw_block": "ACCT     401      U       Excel             25             Aids in financial          Basic\nstatement preparation."
+    },
+    {
+      "course_code": "ACCT 403",
+      "department": "ACCT",
+      "number": "403",
+      "level": "U",
+      "technology_raw": "IDEA, AI",
+      "technology_tokens": [
+        "IDEA",
+        "AI"
+      ],
+      "percentage": "30",
+      "proficiency": "Basic",
+      "enhancement_summary": "Exposes students to        Basic",
+      "raw_block": "ACCT     403      U       IDEA, AI          30             Exposes students to        Basic\naudit software. AI is\nused to analyze the"
+    },
+    {
+      "course_code": "ACCT 407",
+      "department": "ACCT",
+      "number": "407",
+      "level": "U",
+      "technology_raw": "ProConnect, CCH",
+      "technology_tokens": [
+        "ProConnect",
+        "CCH"
+      ],
+      "percentage": "20",
+      "proficiency": "Basic",
+      "enhancement_summary": "Aids in tax return         Basic",
+      "raw_block": "ACCT     407      U       ProConnect, CCH   20             Aids in tax return         Basic\nprojects.\nCourse                                   Course\nHigh)"
+    },
+    {
+      "course_code": "ACCT 408",
+      "department": "ACCT",
+      "number": "408",
+      "level": "U",
+      "technology_raw": "ProConnect, CCH",
+      "technology_tokens": [
+        "ProConnect",
+        "CCH"
+      ],
+      "percentage": "20",
+      "proficiency": "Moderate",
+      "enhancement_summary": "Aids in tax return        Moderate",
+      "raw_block": "ACCT     408      U       ProConnect, CCH      20             Aids in tax return        Moderate\nprojects."
+    },
+    {
+      "course_code": "ACCT 409",
+      "department": "ACCT",
+      "number": "409",
+      "level": "U",
+      "technology_raw": "Excel",
+      "technology_tokens": [
+        "Excel"
+      ],
+      "percentage": "10",
+      "proficiency": "Basic",
+      "enhancement_summary": "Aids in tax planning      Basic",
+      "raw_block": "ACCT     409      U       Excel                10             Aids in tax planning      Basic\nprojects"
+    },
+    {
+      "course_code": "ACCT 485",
+      "department": "ACCT",
+      "number": "485",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "ACCT     485      U"
+    },
+    {
+      "course_code": "ACCT 500",
+      "department": "ACCT",
+      "number": "500",
+      "level": "G",
+      "technology_raw": "S&P Capital IQ, Excel",
+      "technology_tokens": [
+        "S&P Capital IQ",
+        "Excel"
+      ],
+      "percentage": "80",
+      "proficiency": "Moderate",
+      "enhancement_summary": "S&P Capital IQ is used    Moderate",
+      "raw_block": "ACCT     500      G       S&P Capital IQ,      80             S&P Capital IQ is used    Moderate\nExcel                               for financial data\nanalysis. Excel is used\nto aid students in\nfinancial data analysis\nand the creation of\ngraphs and tables."
+    },
+    {
+      "course_code": "BSAD 101",
+      "department": "BSAD",
+      "number": "101",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "BSAD     101      U"
+    },
+    {
+      "course_code": "BSAD 221",
+      "department": "BSAD",
+      "number": "221",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "BSAD     221      U"
+    },
+    {
+      "course_code": "BSAD 324",
+      "department": "BSAD",
+      "number": "324",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "BSAD     324      U"
+    },
+    {
+      "course_code": "BSAD 325",
+      "department": "BSAD",
+      "number": "325",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "BSAD     325      U"
+    },
+    {
+      "course_code": "BSAD 425",
+      "department": "BSAD",
+      "number": "425",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "BSAD     425      U"
+    },
+    {
+      "course_code": "BSAD 490",
+      "department": "BSAD",
+      "number": "490",
+      "level": "U",
+      "technology_raw": "Excel, PowerPt, S & P Capital, Excel, PowerPoint, Canva, ChatGPT, S&P Capital IQ.",
+      "technology_tokens": [
+        "Excel",
+        "PowerPt",
+        "S & P Capital",
+        "PowerPoint",
+        "Canva",
+        "ChatGPT",
+        "S&P Capital IQ"
+      ],
+      "percentage": "20",
+      "proficiency": "",
+      "enhancement_summary": "Students are required",
+      "raw_block": "BSAD     490      U       Excel, PowerPt, S    20             Students are required\n& P Capital,                        to download data from\nS & P and convert it\n[Andrew]                            into line and table\nExcel, PowerPoint,                  graphs.\nCanva, ChatGPT,                     Analysis of\nS&P Capital IQ.                     financial/accounting\ninformation (esp.\nratios), creation of\nCourse                                   Course\nHigh)"
+    },
+    {
+      "course_code": "BSAD 501",
+      "department": "BSAD",
+      "number": "501",
+      "level": "G",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "BSAD   501   G\nBSAD   501   G\nBSAD   501   G"
+    },
+    {
+      "course_code": "BSAD 507",
+      "department": "BSAD",
+      "number": "507",
+      "level": "G",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "BSAD   507   G\nBSAD   507   G\nBSAD   507   G"
+    },
+    {
+      "course_code": "BSAD 525",
+      "department": "BSAD",
+      "number": "525",
+      "level": "G",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "BSAD   525   G\nBSAD   525   G\nBSAD   525   G"
+    },
+    {
+      "course_code": "CIS 150",
+      "department": "CIS",
+      "number": "150",
+      "level": "U",
+      "technology_raw": "Visual Basic",
+      "technology_tokens": [
+        "Visual Basic"
+      ],
+      "percentage": "80%",
+      "proficiency": "Basic",
+      "enhancement_summary": "Logical Thinking via        BASIC\u200b",
+      "raw_block": "CIS    150   U   Visual Basic        80%   Logical Thinking via        BASIC\u200b\nComputer\nProgramming\nConstructs\nCIS    150   U   Visual Basic        80%   Logical Thinking via         BASIC\u200b\nComputer\nProgramming\nConstructs\nCIS    150   U   Visual Basic         80%   Logical Thinking via        BASIC\u200b\nComputer\nProgramming\nConstructs"
+    },
+    {
+      "course_code": "CIS 231",
+      "department": "CIS",
+      "number": "231",
+      "level": "U",
+      "technology_raw": "Google Docs, Google Slides, Excel, Google Sheets, Google Drive, MS Access, Tableau, HTML, Google Sites, Google Colab, Google Genmi, Python, R, ChatGPT",
+      "technology_tokens": [
+        "Google Docs",
+        "Google Slides",
+        "Excel",
+        "Google Sheets",
+        "Google Drive",
+        "MS Access",
+        "Tableau",
+        "HTML",
+        "Google Sites",
+        "Google Colab",
+        "Google Genmi",
+        "Python",
+        "R",
+        "ChatGPT"
+      ],
+      "percentage": "50%",
+      "proficiency": "Basic",
+      "enhancement_summary": "The tools are utilized to   Basic to",
+      "raw_block": "CIS    231   U   Google Docs,        50%   The tools are utilized to   Basic to\nGoogle Slides,            provide hands-on            moderate\nExcel, Google             experience to the tech\nSheets, Google            literacy concepts. They\nDrive, MS Access,         also provide students\nTableau, HTML,            with exposure to\nGoogle Sites,             software tools.\nGoogle Colab,\nGoogle Genmi,\nPython, R,\nChatGPT\nCIS    231   U   Google Docs,        50%   The tools are utilized to    Basic to\nGoogle Slides,            provide hands-on             moderate\nExcel, Google             experience to the tech\nSheets, Google            literacy concepts. They\nDrive, MS Access,         also provide students\nTableau, HTML,            with exposure to\nGoogle Sites,             software tools.\nGoogle Colab,\nGoogle Genmi,\nPython, R,\nChatGPT\nCIS    231   U   Google Docs,         50%   The tools are utilized to   Basic to\nGoogle Slides,             provide hands-on            moderate\nExcel, Google              experience to the tech\nSheets, Google             literacy concepts. They\nDrive, MS Access,          also provide students\nTableau, HTML,             with exposure to\nGoogle Sites,              software tools.\nGoogle Colab,\nGoogle Genmi,\nPython, R,\nChatGPT"
+    },
+    {
+      "course_code": "CIS 255",
+      "department": "CIS",
+      "number": "255",
+      "level": "U",
+      "technology_raw": "Visual Basic",
+      "technology_tokens": [
+        "Visual Basic"
+      ],
+      "percentage": "80%",
+      "proficiency": "Moderate",
+      "enhancement_summary": "Logical Thinking via        Moderate",
+      "raw_block": "CIS    255   U   Visual Basic        80%   Logical Thinking via        Moderate\nComputer\nProgramming\nConstructs"
+    },
+    {
+      "course_code": "CIS 310",
+      "department": "CIS",
+      "number": "310",
+      "level": "U",
+      "technology_raw": "Word / PowerPoint",
+      "technology_tokens": [
+        "Word",
+        "PowerPoint"
+      ],
+      "percentage": "10%",
+      "proficiency": "Basic",
+      "enhancement_summary": "Reports and                 Basic",
+      "raw_block": "CIS    310   U   Word / PowerPoint   10%   Reports and                 Basic\nPresentations"
+    },
+    {
+      "course_code": "CIS 315",
+      "department": "CIS",
+      "number": "315",
+      "level": "U",
+      "technology_raw": "Word manual, CMD Prompt CMD Prompt, and",
+      "technology_tokens": [
+        "Word manual",
+        "CMD Prompt CMD Prompt"
+      ],
+      "percentage": "10%",
+      "proficiency": "Moderate",
+      "enhancement_summary": "Word to create a user\u2019s     Moderate",
+      "raw_block": "CIS    315   U   Word                10%   Word to create a user\u2019s     Moderate\nmanual, CMD Prompt\nCMD Prompt, and     85%   and Putty are software\nPutty                     for Network Switch and\nIP configurations."
+    },
+    {
+      "course_code": "CIS 320",
+      "department": "CIS",
+      "number": "320",
+      "level": "U",
+      "technology_raw": "SQL",
+      "technology_tokens": [
+        "SQL"
+      ],
+      "percentage": "50%",
+      "proficiency": "Basic",
+      "enhancement_summary": "Understanding & Using       Basic",
+      "raw_block": "CIS    320   U   SQL                 50%   Understanding & Using       Basic\nData via Database\nProgramming"
+    },
+    {
+      "course_code": "CIS 330",
+      "department": "CIS",
+      "number": "330",
+      "level": "U",
+      "technology_raw": "SQL",
+      "technology_tokens": [
+        "SQL"
+      ],
+      "percentage": "50%",
+      "proficiency": "Moderate",
+      "enhancement_summary": "Understanding & Using       Moderate",
+      "raw_block": "CIS    330   U   SQL                 50%   Understanding & Using       Moderate\nData via Database\nProgramming"
+    },
+    {
+      "course_code": "CIS 340",
+      "department": "CIS",
+      "number": "340",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "CIS    340   U"
+    },
+    {
+      "course_code": "CIS 355",
+      "department": "CIS",
+      "number": "355",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "CIS    355   U"
+    },
+    {
+      "course_code": "CIS 370",
+      "department": "CIS",
+      "number": "370",
+      "level": "U",
+      "technology_raw": "Excel, Tableau, R",
+      "technology_tokens": [
+        "Excel",
+        "Tableau",
+        "R"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "CIS    370   U   Excel, Tableau, R"
+    },
+    {
+      "course_code": "CIS 400",
+      "department": "CIS",
+      "number": "400",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "CIS    400   U"
+    },
+    {
+      "course_code": "CIS 425",
+      "department": "CIS",
+      "number": "425",
+      "level": "U",
+      "technology_raw": "Excel, R, Powerpoint, Word, ONET, ChatGPT, Tableau Models, Simulating Return on Improved Staffing and Training, Visualizing Data, Regression",
+      "technology_tokens": [
+        "Excel",
+        "R",
+        "Powerpoint",
+        "Word",
+        "ONET",
+        "ChatGPT",
+        "Tableau Models",
+        "Visualizing Data",
+        "Regression"
+      ],
+      "percentage": "60%",
+      "proficiency": "Basic",
+      "enhancement_summary": "Reports (Word,               Basic",
+      "raw_block": "CIS    425   U   Excel, R,           60%   Reports (Word,               Basic\nPowerpoint, Word,         Powerpoint), Writing\nONET, ChatGPT,            Job Descriptions,\nTableau                   Creating Competency\nModels, Simulating\nReturn on Improved\nPerformance via\nStaffing and Training,\nVisualizing Data,\nRegression"
+    },
+    {
+      "course_code": "CIS 455",
+      "department": "CIS",
+      "number": "455",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "CIS    455   U"
+    },
+    {
+      "course_code": "CIS 460",
+      "department": "CIS",
+      "number": "460",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "CIS    460   U"
+    },
+    {
+      "course_code": "CIS 470",
+      "department": "CIS",
+      "number": "470",
+      "level": "U",
+      "technology_raw": "Google Sheets, Excel, Python, R, Google Docs, Google Drive, Google Slides, Tableau, Google Colab, ChatGPT, Google Gemni",
+      "technology_tokens": [
+        "Google Sheets",
+        "Excel",
+        "Python",
+        "R",
+        "Google Docs",
+        "Google Drive",
+        "Google Slides",
+        "Tableau",
+        "Google Colab",
+        "ChatGPT",
+        "Google Gemni"
+      ],
+      "percentage": "80%",
+      "proficiency": "Moderate",
+      "enhancement_summary": "Software tools are           Moderate to",
+      "raw_block": "CIS    470   U   Google Sheets,      80%   Software tools are           Moderate to\nExcel, Python, R,         utilized to facilitate all   advanced.\nGoogle Docs,              aspects of data\nGoogle Drive,             analytics.\nGoogle Slides,\nTableau, Google\nColab, ChatGPT,\nGoogle Gemni"
+    },
+    {
+      "course_code": "CIS 485",
+      "department": "CIS",
+      "number": "485",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "CIS    485   U"
+    },
+    {
+      "course_code": "CIS 490",
+      "department": "CIS",
+      "number": "490",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "CIS    490   U"
+    },
+    {
+      "course_code": "CIS 501",
+      "department": "CIS",
+      "number": "501",
+      "level": "G",
+      "technology_raw": "Spreadsheets, PivotTables, Data Visualization,",
+      "technology_tokens": [
+        "Spreadsheets",
+        "PivotTables",
+        "Data Visualization"
+      ],
+      "percentage": "50%",
+      "proficiency": "Basic",
+      "enhancement_summary": "Understanding & Using       Basic",
+      "raw_block": "CIS    501   G   Spreadsheets,        50%   Understanding & Using       Basic\nPivotTables, Data          Data to Help Make &\nVisualization,             Evaluate Managerial\nSimulations                Decisions"
+    },
+    {
+      "course_code": "ECON 211",
+      "department": "ECON",
+      "number": "211",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "ECON   211   U"
+    },
+    {
+      "course_code": "ECON 212",
+      "department": "ECON",
+      "number": "212",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "ECON   212   U"
+    },
+    {
+      "course_code": "ECON 317",
+      "department": "ECON",
+      "number": "317",
+      "level": "U",
+      "technology_raw": "[Jon] ChaptGTP (or",
+      "technology_tokens": [
+        "Jon] ChaptGTP (or"
+      ],
+      "percentage": "20%",
+      "proficiency": "Basic",
+      "enhancement_summary": "Spent time to help          Basic",
+      "raw_block": "ECON   317   U   [Jon] ChaptGTP (or   20%   Spent time to help          Basic\nsimilar)                   students understand uses\nand shortcomings of GTP\nin research and writing"
+    },
+    {
+      "course_code": "ECON 325",
+      "department": "ECON",
+      "number": "325",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "ECON   325   U"
+    },
+    {
+      "course_code": "ECON 330",
+      "department": "ECON",
+      "number": "330",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "ECON   330   U"
+    },
+    {
+      "course_code": "ECON 435",
+      "department": "ECON",
+      "number": "435",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "ECON   435   U"
+    },
+    {
+      "course_code": "ECON 500",
+      "department": "ECON",
+      "number": "500",
+      "level": "G",
+      "technology_raw": "Excel, PPT, Word, report writing and",
+      "technology_tokens": [
+        "Excel",
+        "PPT",
+        "Word"
+      ],
+      "percentage": "30",
+      "proficiency": "Moderate",
+      "enhancement_summary": "Improves economic           Moderate",
+      "raw_block": "ECON   500   G   Excel, PPT, Word,    30    Improves economic           Moderate\nCrystal                    analysis, forecasting,\nreport writing and\npresentations."
+    },
+    {
+      "course_code": "FINC 302",
+      "department": "FINC",
+      "number": "302",
+      "level": "U",
+      "technology_raw": "Excel",
+      "technology_tokens": [
+        "Excel"
+      ],
+      "percentage": "5",
+      "proficiency": "Basic",
+      "enhancement_summary": "Basic TVM functions       Basic",
+      "raw_block": "FINC   302   U   Excel                  5       Basic TVM functions       Basic"
+    },
+    {
+      "course_code": "FINC 310",
+      "department": "FINC",
+      "number": "310",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "FINC   310   U"
+    },
+    {
+      "course_code": "FINC 328",
+      "department": "FINC",
+      "number": "328",
+      "level": "U",
+      "technology_raw": "Word, Excel",
+      "technology_tokens": [
+        "Word",
+        "Excel"
+      ],
+      "percentage": "25",
+      "proficiency": "Basic",
+      "enhancement_summary": "Enables students to       Basic",
+      "raw_block": "FINC   328   U   Word, Excel            25      Enables students to       Basic\neffectively analyze and\nsummarize various risk\nassessment scenarios."
+    },
+    {
+      "course_code": "FINC 341",
+      "department": "FINC",
+      "number": "341",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "FINC   341   U"
+    },
+    {
+      "course_code": "FINC 356",
+      "department": "FINC",
+      "number": "356",
+      "level": "U",
+      "technology_raw": "Excel, Crystal 15-20 Improves data analysis, Basic",
+      "technology_tokens": [
+        "Excel",
+        "Crystal 15-20 Improves data analysis"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "FINC   356   U   Excel, Crystal         15-20   Improves data analysis,   Basic\nand organization.\nAllows for analysis of\nnumerous outcomes."
+    },
+    {
+      "course_code": "FINC 403",
+      "department": "FINC",
+      "number": "403",
+      "level": "U",
+      "technology_raw": "Excel 15-20 Financial Analysis basic",
+      "technology_tokens": [
+        "Excel 15-20 Financial Analysis basic"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "FINC   403   U   Excel                  15-20   Financial Analysis        basic\nmodels"
+    },
+    {
+      "course_code": "FINC 405",
+      "department": "FINC",
+      "number": "405",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "FINC   405   U"
+    },
+    {
+      "course_code": "FINC 410",
+      "department": "FINC",
+      "number": "410",
+      "level": "U",
+      "technology_raw": "Excel, FDIC",
+      "technology_tokens": [
+        "Excel",
+        "FDIC"
+      ],
+      "percentage": "30",
+      "proficiency": "Basic",
+      "enhancement_summary": "Basic",
+      "raw_block": "FINC   410   U   Excel, FDIC            30                                Basic\ndatabase"
+    },
+    {
+      "course_code": "FINC 441",
+      "department": "FINC",
+      "number": "441",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "FINC   441   U"
+    },
+    {
+      "course_code": "FINC 450",
+      "department": "FINC",
+      "number": "450",
+      "level": "U",
+      "technology_raw": "Excel 10-15 Basic",
+      "technology_tokens": [
+        "Excel 10-15 Basic"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "FINC   450   U   Excel                  10-15                             Basic"
+    },
+    {
+      "course_code": "FINC 456",
+      "department": "FINC",
+      "number": "456",
+      "level": "U",
+      "technology_raw": "Excel 15-20 More advanced moderate",
+      "technology_tokens": [
+        "Excel 15-20 More advanced moderate"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "FINC   456   U   Excel                  15-20   More advanced             moderate\nmodeling"
+    },
+    {
+      "course_code": "FINC 460",
+      "department": "FINC",
+      "number": "460",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "FINC   460   U"
+    },
+    {
+      "course_code": "FINC 470",
+      "department": "FINC",
+      "number": "470",
+      "level": "U",
+      "technology_raw": "Excel, Crystal Ball, Word",
+      "technology_tokens": [
+        "Excel",
+        "Crystal Ball",
+        "Word"
+      ],
+      "percentage": "25",
+      "proficiency": "Basic",
+      "enhancement_summary": "Enables students to       Basic",
+      "raw_block": "FINC   470   U   Excel, Crystal Ball,   25      Enables students to       Basic\nWord                           effectively analyze and\nsummarize various\nfinancial planning\nscenarios."
+    },
+    {
+      "course_code": "FINC 515",
+      "department": "FINC",
+      "number": "515",
+      "level": "G",
+      "technology_raw": "Excel Financial Analysis Basic",
+      "technology_tokens": [
+        "Excel Financial Analysis Basic"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "FINC   515   G   Excel                          Financial Analysis        Basic"
+    },
+    {
+      "course_code": "FINC 520",
+      "department": "FINC",
+      "number": "520",
+      "level": "G",
+      "technology_raw": "Excel, Crystal Ball Capital Budgeting Basic",
+      "technology_tokens": [
+        "Excel",
+        "Crystal Ball Capital Budgeting Basic"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "FINC   520   G   Excel, Crystal Ball            Capital Budgeting         Basic\nRisk Analysis\nOther decision support\nmodels"
+    },
+    {
+      "course_code": "MKTG 300",
+      "department": "MKTG",
+      "number": "300",
+      "level": "U",
+      "technology_raw": "iClicker, Google",
+      "technology_tokens": [
+        "iClicker",
+        "Google"
+      ],
+      "percentage": "15%",
+      "proficiency": "Basic",
+      "enhancement_summary": "Enables students to       Basic",
+      "raw_block": "MKTG   300   U   iClicker, Google       15%     Enables students to       Basic\nApps                           gauge competence\nlevel with content"
+    },
+    {
+      "course_code": "MKTG 320",
+      "department": "MKTG",
+      "number": "320",
+      "level": "U",
+      "technology_raw": "Word, Generative",
+      "technology_tokens": [
+        "Word",
+        "Generative"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "MKTG   320   U   Word, Generative\nAI"
+    },
+    {
+      "course_code": "MKTG 350",
+      "department": "MKTG",
+      "number": "350",
+      "level": "U",
+      "technology_raw": "iClicker, Word 20%",
+      "technology_tokens": [
+        "iClicker",
+        "Word 20%"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "MKTG   350   U   iClicker, Word        20%"
+    },
+    {
+      "course_code": "MKTG 360",
+      "department": "MKTG",
+      "number": "360",
+      "level": "U",
+      "technology_raw": "Instructor uses PPT Oral",
+      "technology_tokens": [
+        "Instructor uses PPT Oral"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "MKTG   360   U   Instructor uses PPT                                      Oral\nand class                                                communicatio\ndiscussions.                                             n skills in\nclass\ndiscussions.\nModerate\nMKTG   360   U   Instructor uses PPT                                      Oral\nand class                                                communicatio\ndiscussions.                                             n skills in\nclass\ndiscussions.\nModerate\nMKTG   360   U   Instructor uses PPT                                     Oral\nand class                                               communicatio\ndiscussions.                                            n skills in\nclass\ndiscussions.\nModerate\nMKTG   360   U   Instructor uses PPT                                     Oral\nand class                                               communicatio\ndiscussions.                                            n skills in\nclass\ndiscussions.\nModerate"
+    },
+    {
+      "course_code": "MKTG 420",
+      "department": "MKTG",
+      "number": "420",
+      "level": "U",
+      "technology_raw": "Generative AI,",
+      "technology_tokens": [
+        "Generative AI"
+      ],
+      "percentage": "25%",
+      "proficiency": "Moderate",
+      "enhancement_summary": "Expose students to          Moderate",
+      "raw_block": "MKTG   420   U   Generative AI,        25%    Expose students to          Moderate\nCRM                          challenges and benefits\nof CRM software\nMKTG   420   U   Generative AI,        25%     Expose students to         Moderate\nCRM                           challenges and benefits\nof CRM software\nMKTG   420   U   Generative AI,        25%    Expose students to         Moderate\nCRM                          challenges and benefits\nof CRM software\nMKTG   420   U   Generative AI,        25%    Expose students to         Moderate\nCRM                          challenges and benefits\nof CRM software"
+    },
+    {
+      "course_code": "MKTG 430",
+      "department": "MKTG",
+      "number": "430",
+      "level": "U",
+      "technology_raw": "Word/PowerPoint, Weebly/Wix, Instagram, Constant Contact, Simternship,",
+      "technology_tokens": [
+        "Word",
+        "PowerPoint",
+        "Weebly",
+        "Wix",
+        "Instagram",
+        "Constant Contact",
+        "Simternship"
+      ],
+      "percentage": "100%",
+      "proficiency": "Basic",
+      "enhancement_summary": "Reports/project             Basic",
+      "raw_block": "MKTG   430   U   Word/PowerPoint,      100%   Reports/project             Basic\nWeebly/Wix,                  presentations, website\nInstagram,                   creation, social media\nConstant Contact,            marketing, email\nStukent Digital              marketing, digital ad\nMarketing                    campaigns, creating\nSimternship,                 display ads\nCanva\nMKTG   430   U   Word/PowerPoint,      100%    Reports/project            Basic\nWeebly/Wix,                   presentations, website\nInstagram,                    creation, social media\nConstant Contact,             marketing, email\nStukent Digital               marketing, digital ad\nMarketing                     campaigns, creating\nSimternship,                  display ads\nCanva\nMKTG   430   U   Word/PowerPoint,      100%   Reports/project            Basic\nWeebly/Wix,                  presentations, website\nInstagram,                   creation, social media\nConstant Contact,            marketing, email\nStukent Digital              marketing, digital ad\nMarketing                    campaigns, creating\nSimternship,                 display ads\nCanva\nMKTG   430   U   Word/PowerPoint,      100%   Reports/project            Basic\nWeebly/Wix,                  presentations, website\nInstagram,                   creation, social media\nConstant Contact,            marketing, email\nStukent Digital              marketing, digital ad\nMarketing                    campaigns, creating\nSimternship,                 display ads\nCanva"
+    },
+    {
+      "course_code": "MKTG 435",
+      "department": "MKTG",
+      "number": "435",
+      "level": "U",
+      "technology_raw": "Word Writing proficiency - Moderate",
+      "technology_tokens": [
+        "Word Writing proficiency - Moderate"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "MKTG   435   U   Word                         Writing proficiency -       Moderate\nsummarizing guest           level of\nspeaker lectures;           written\ngained knowledge and        communicati\nexperiences during field    on\ntrips.\nMKTG   435   U   Word                          Writing proficiency -      Moderate\nsummarizing guest          level of\nspeaker lectures;          written\ngained knowledge and       communicati\nexperiences during field   on\ntrips.\nMKTG   435   U   Word                         Writing proficiency -      Moderate\nsummarizing guest          level of\nspeaker lectures;          written\ngained knowledge and       communicati\nexperiences during field   on\ntrips.\nMKTG   435   U   Word                         Writing proficiency -      Moderate\nsummarizing guest          level of\nspeaker lectures;          written\ngained knowledge and       communicati\nexperiences during field   on\ntrips."
+    },
+    {
+      "course_code": "MKTG 450",
+      "department": "MKTG",
+      "number": "450",
+      "level": "U",
+      "technology_raw": "Word/PowerPoint, Instagram, TikTok, project, creating ads",
+      "technology_tokens": [
+        "Word",
+        "PowerPoint",
+        "Instagram",
+        "TikTok"
+      ],
+      "percentage": "50%",
+      "proficiency": "Basic",
+      "enhancement_summary": "Reports/project             Basic",
+      "raw_block": "MKTG   450   U   Word/PowerPoint,      50%    Reports/project             Basic\nInstagram, TikTok,           presentations,\nCanva                        advertising campaign\nproject, creating ads\nMKTG   450   U   Word/PowerPoint,      50%     Reports/project            Basic\nInstagram, TikTok,            presentations,\nCanva                         advertising campaign\nproject, creating ads\nPresentation\ndevelopment\n- moderate\nMKTG   450   U   Word/PowerPoint,      50%    Reports/project            Basic\nInstagram, TikTok,           presentations,\nCanva                        advertising campaign\nproject, creating ads\nSimulations                  (managing a bike\nmarketing                    business)\nsimulation\nMKTG   450   U   Word/PowerPoint,      50%    Reports/project            Basic\nInstagram, TikTok,           presentations,\nCanva                        advertising campaign\nproject, creating ads"
+    },
+    {
+      "course_code": "MKTG 460",
+      "department": "MKTG",
+      "number": "460",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "MKTG   460   U"
+    },
+    {
+      "course_code": "MKTG 470",
+      "department": "MKTG",
+      "number": "470",
+      "level": "U",
+      "technology_raw": "Word and Excel",
+      "technology_tokens": [
+        "Word and Excel"
+      ],
+      "percentage": "20%",
+      "proficiency": "Moderate",
+      "enhancement_summary": "Writing proficiency,        moderate",
+      "raw_block": "MKTG   470   U   Word and Excel        20%    Writing proficiency,        moderate\nflowcharting processes"
+    },
+    {
+      "course_code": "MKTG 475",
+      "department": "MKTG",
+      "number": "475",
+      "level": "U",
+      "technology_raw": "Google Apps; Excel; powerpoint",
+      "technology_tokens": [
+        "Google Apps; Excel; powerpoint"
+      ],
+      "percentage": "40%",
+      "proficiency": "",
+      "enhancement_summary": "Writing/oral proficiency;   Communicati",
+      "raw_block": "MKTG   475   U   Google Apps;          40%    Writing/oral proficiency;   Communicati\nExcel; powerpoint            critical thinking;          on - High\ndevelopment                  quantitative analysis       Excel - basic\nPresentation\ndevelopment\n- moderate"
+    },
+    {
+      "course_code": "MKTG 481",
+      "department": "MKTG",
+      "number": "481",
+      "level": "U",
+      "technology_raw": "Google Apps; Excel; powerpoint",
+      "technology_tokens": [
+        "Google Apps; Excel; powerpoint"
+      ],
+      "percentage": "40%",
+      "proficiency": "",
+      "enhancement_summary": "Writing/oral proficiency;   Communicati",
+      "raw_block": "MKTG   481   U   Google Apps;          40%    Writing/oral proficiency;   Communicati\nExcel; powerpoint            critical thinking;          on - High\ndevelopment                  quantitative analysis       Excel - basic"
+    },
+    {
+      "course_code": "MKTG 485",
+      "department": "MKTG",
+      "number": "485",
+      "level": "U",
+      "technology_raw": "SPSS, Excel, 33.3% Quantitative analysis, Moderate",
+      "technology_tokens": [
+        "SPSS",
+        "Excel",
+        "33.3% Quantitative analysis"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "MKTG   485   U   SPSS, Excel,          33.3%   Quantitative analysis,     Moderate\nPowerpoint, Word              Critical thinking, data\npresentation / written\nproficiency,"
+    },
+    {
+      "course_code": "MKTG 486",
+      "department": "MKTG",
+      "number": "486",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "MKTG   486   U"
+    },
+    {
+      "course_code": "MKTG 490",
+      "department": "MKTG",
+      "number": "490",
+      "level": "U",
+      "technology_raw": "Word/PowerPoint,",
+      "technology_tokens": [
+        "Word",
+        "PowerPoint"
+      ],
+      "percentage": "10%",
+      "proficiency": "Basic",
+      "enhancement_summary": "Reports/presentations,     Basic",
+      "raw_block": "MKTG   490   U   Word/PowerPoint,      10%     Reports/presentations,     Basic\nCesim marketing               competing in simulation\nsimulation                    (managing cell phone\nbrand)"
+    },
+    {
+      "course_code": "MKTG 501",
+      "department": "MKTG",
+      "number": "501",
+      "level": "G",
+      "technology_raw": "Word/PowerPoint, Reports/presentations,",
+      "technology_tokens": [
+        "Word",
+        "PowerPoint",
+        "Reports"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "MKTG   501   G   Word/PowerPoint,              Reports/presentations,\nCanva,                        designing ads,\nMarketplace                   competing in simulation"
+    },
+    {
+      "course_code": "MNGT 301",
+      "department": "MNGT",
+      "number": "301",
+      "level": "U",
+      "technology_raw": "Excel, Word, Powerpoint, S&P, Excel, S&P Capital IQ, Packback (AI), ChatGPT.",
+      "technology_tokens": [
+        "Excel",
+        "Word",
+        "Powerpoint",
+        "S&P",
+        "S&P Capital IQ",
+        "Packback (AI)",
+        "ChatGPT"
+      ],
+      "percentage": "35%",
+      "proficiency": "Basic",
+      "enhancement_summary": "Helps students analyze     Basic",
+      "raw_block": "MNGT   301   U   Excel, Word,          35%    Helps students analyze     Basic\nPowerpoint, S&P              company financials\n[Andrew] Excel,\nS&P Capital IQ,              Analyze financial\nPackback (AI                 performance (ratios on\nforum and                    S&P). Format\nreferencing/resear           according to APA\nch assistance).              (Packback). Upload\nChatGPT.                     10-K to ChatGPT and\nquery data from the\ndocument."
+    },
+    {
+      "course_code": "MNGT 330",
+      "department": "MNGT",
+      "number": "330",
+      "level": "U",
+      "technology_raw": "Powerpoint 10%",
+      "technology_tokens": [
+        "Powerpoint 10%"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "MNGT   330   U   Powerpoint            10%"
+    },
+    {
+      "course_code": "MNGT 367",
+      "department": "MNGT",
+      "number": "367",
+      "level": "U",
+      "technology_raw": "Word, Powerpoint, Excel, Onet Database, Big",
+      "technology_tokens": [
+        "Word",
+        "Powerpoint",
+        "Excel",
+        "Onet Database",
+        "Big"
+      ],
+      "percentage": "40%",
+      "proficiency": "Moderate",
+      "enhancement_summary": "Helps students with        Moderate",
+      "raw_block": "MNGT   367   U   Word, Powerpoint,     40%    Helps students with        Moderate\nExcel, Onet                  virtual mock interviews,\nDatabase, Big                creating job\nInterview Virtual            descriptions, writing\nSoftware- AI                 policies, and\nenabled                      procedures and\npresenting this\ninformation."
+    },
+    {
+      "course_code": "MNGT 368",
+      "department": "MNGT",
+      "number": "368",
+      "level": "U",
+      "technology_raw": "Excel, Word, Powerpoint",
+      "technology_tokens": [
+        "Excel",
+        "Word",
+        "Powerpoint"
+      ],
+      "percentage": "70%",
+      "proficiency": "Moderate",
+      "enhancement_summary": "Used for analysis in       Moderate",
+      "raw_block": "MNGT   368   U   Excel, Word,          70%    Used for analysis in       Moderate\nPowerpoint                   decision models for OM"
+    },
+    {
+      "course_code": "MNGT 370",
+      "department": "MNGT",
+      "number": "370",
+      "level": "U",
+      "technology_raw": "MS Office, Google",
+      "technology_tokens": [
+        "MS Office",
+        "Google"
+      ],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "MNGT   370   U   MS Office, Google\nSuite"
+    },
+    {
+      "course_code": "MNGT 420",
+      "department": "MNGT",
+      "number": "420",
+      "level": "U",
+      "technology_raw": "",
+      "technology_tokens": [],
+      "percentage": "",
+      "proficiency": "",
+      "enhancement_summary": "",
+      "raw_block": "MNGT   420   U"
+    },
+    {
+      "course_code": "OIS 200",
+      "department": "OIS",
+      "number": "200",
+      "level": "U",
+      "technology_raw": "Excel, Access, and Word",
+      "technology_tokens": [
+        "Excel",
+        "Access"
+      ],
+      "percentage": "100%",
+      "proficiency": "Basic",
+      "enhancement_summary": "It\u2019s a course in Microsoft   Basic/Moderat",
+      "raw_block": "OIS   200   U   Excel, Access, and   100%   It\u2019s a course in Microsoft   Basic/Moderat\nWord                        Office which is completely   e, depending\ntechnology driven            on the Office\ncomponent"
+    },
+    {
+      "course_code": "QBA 282",
+      "department": "QBA",
+      "number": "282",
+      "level": "U",
+      "technology_raw": "Excel, Google excel, they also learn Google Drive for Group",
+      "technology_tokens": [
+        "Excel",
+        "Google excel"
+      ],
+      "percentage": "50",
+      "proficiency": "",
+      "enhancement_summary": "Students learn how to",
+      "raw_block": "QBA   282   U   Excel, Google        50     Students learn how to\nDrive                       do descriptive stats\nformulaically and using\nexcel, they also learn\nGoogle Drive for Group\nwork"
+    },
+    {
+      "course_code": "QBA 283",
+      "department": "QBA",
+      "number": "283",
+      "level": "U",
+      "technology_raw": "Excel stats, pivot tables, ANOVAs, Regressions,",
+      "technology_tokens": [
+        "Excel stats",
+        "pivot tables",
+        "ANOVAs",
+        "Regressions"
+      ],
+      "percentage": "20%",
+      "proficiency": "Moderate",
+      "enhancement_summary": "Students work on a           Moderate",
+      "raw_block": "QBA   283   U   Excel                20%    Students work on a           Moderate\ndata analysis project\nwhere they clean data\nand then run basic and\nadvanced analyses\nsuch as descriptive\nstats, pivot tables,\nANOVAs, Regressions,\nand Correlations."
+    }
+  ]
+}

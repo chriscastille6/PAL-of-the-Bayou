@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- aol-role-leadership:table51-cycle-v1 — if live site lacks this, docroot was not updated or CDN/browser is serving an old copy -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <title>Preview: Leadership / accreditation — AOL Demo</title>
+  <link rel="stylesheet" href="css/site.css" />
+  <style>
+    /* Match Deans_Dashboard_Table_5.1.html “formal” report look */
+    .table-5-1-wrap {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    .table-5-1-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .table-5-1-caption {
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #2c3e50;
+      background: #f8f9fa;
+      border-bottom: 1px solid #bdc3c7;
+      line-height: 1.35;
+    }
+    .table-5-1-caption span {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #7f8c8d;
+      margin-top: 0.35rem;
+    }
+    table.table-5-1-report {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: #2c3e50;
+    }
+    table.table-5-1-report th {
+      background: #1a5276;
+      color: #fff;
+      text-align: left;
+      padding: 12px 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      border-bottom: 1px solid #154360;
+    }
+    table.table-5-1-report td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #bdc3c7;
+      vertical-align: top;
+    }
+    table.table-5-1-report tbody tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+    table.table-5-1-report tbody tr:hover {
+      background: #e8f4fc;
+    }
+    table.table-5-1-report td:first-child {
+      font-weight: 600;
+      color: #1a5276;
+    }
+    /* Tabs — three program tables, same 7-column design */
+    .table-5-1-tabs {
+      margin: 0.75rem 0 0;
+    }
+    .table-5-1-tablist {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      padding: 0.5rem 0.65rem 0;
+      background: #eef2f6;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid #bdc3c7;
+      border-bottom: none;
+      list-style: none;
+      margin: 0;
+    }
+    .table-5-1-tablist li { margin: 0; }
+    .table-5-1-tablist button {
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.5rem 0.85rem;
+      border: 1px solid transparent;
+      border-radius: 6px 6px 0 0;
+      background: transparent;
+      color: #1a5276;
+      cursor: pointer;
+      margin-bottom: -1px;
+    }
+    .table-5-1-tablist button:hover {
+      background: rgba(26, 82, 118, 0.08);
+    }
+    .table-5-1-tablist button[aria-selected="true"] {
+      background: #fff;
+      border-color: #bdc3c7;
+      border-bottom-color: #fff;
+      color: #154360;
+    }
+    .table-5-1-tabpanel[hidden] {
+      display: none !important;
+    }
+    .table-5-1-wrap.is-tabbed {
+      border-radius: 0 8px 8px 8px;
+      margin-top: 0;
+    }
+    table.table-5-1-report {
+      min-width: 1100px;
+    }
+    .table-5-1-report td.t51-objectives p {
+      margin: 0 0 0.65rem;
+      font-weight: 400;
+      color: #2c3e50;
+    }
+    .table-5-1-report td.t51-objectives p:last-child {
+      margin-bottom: 0;
+    }
+    /* Table 5.1 — accreditation cycle toggle (expected results + captions) */
+    .table-5-1-cycle-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 1rem;
+      margin: 0.5rem 0 0.75rem;
+      padding: 0.65rem 0.85rem;
+      background: #f4f6f8;
+      border: 1px solid #bdc3c7;
+      border-radius: 8px;
+      font-size: 0.88rem;
+    }
+    .table-5-1-cycle-label {
+      font-weight: 600;
+      color: #1a5276;
+    }
+    .table-5-1-cycle-radios {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 1.25rem;
+    }
+    .table-5-1-cycle-opt {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+    .table-5-1-cycle-opt input {
+      accent-color: #1a5276;
+    }
+    .table-5-1-section[data-cycle="2025-2030"] .t51-cap-old,
+    .table-5-1-section[data-cycle="2025-2030"] .t51-sub-old,
+    .table-5-1-section[data-cycle="2025-2030"] .t51-exp-old,
+    .table-5-1-section[data-cycle="2025-2030"] .t51-when-old,
+    .table-5-1-section[data-cycle="2025-2030"] .t51-actual-old,
+    .table-5-1-section[data-cycle="2025-2030"] .t51-closing-old,
+    .table-5-1-section[data-cycle="2025-2030"] .t51-future-old {
+      display: none !important;
+    }
+    .table-5-1-section[data-cycle="2020-2024"] .t51-cap-new,
+    .table-5-1-section[data-cycle="2020-2024"] .t51-sub-new,
+    .table-5-1-section[data-cycle="2020-2024"] .t51-exp-new,
+    .table-5-1-section[data-cycle="2020-2024"] .t51-when-new,
+    .table-5-1-section[data-cycle="2020-2024"] .t51-actual-new,
+    .table-5-1-section[data-cycle="2020-2024"] .t51-closing-new,
+    .table-5-1-section[data-cycle="2020-2024"] .t51-future-new {
+      display: none !important;
+    }
+    .t51-target-90 {
+      color: #c0392b;
+      font-weight: 700;
+    }
+    .table-5-1-caption .t51-cap-old,
+    .table-5-1-caption .t51-cap-new,
+    .table-5-1-caption .t51-sub-old,
+    .table-5-1-caption .t51-sub-new {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-banner">DRAFT — SIMULATED ROLE: DEAN / ASSOCIATE DEAN</div>
+  <header class="site-header">
+    <h1>Leadership &amp; accreditation view (simulated)</h1>
+    <p class="tagline">Closing the loop, Table&nbsp;5.1 alignment, semester narrative — aggregate and policy-safe.</p>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="governance.html">Governance</a>
+      <a href="rubrics.html">Rubrics</a>
+      <a href="calendar.html">Assessment calendar</a>
+      <a href="degree_plans.html">Degree plans</a>
+      <a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a>
+      <a href="agenda.html">Committee agenda</a>
+      <a href="minutes.html">Minutes</a>
+      <a href="profiles.html">Profiles</a>
+      <a href="role-leadership.html" aria-current="page">Preview: Leadership / accreditation</a>
+    </nav>
+  </header>
+  <main>
+    <section class="card">
+      <h2>Closing the loop (T1 → T2 → T3)</h2>
+      <p><strong>T1 Measure:</strong> Baseline ETS / indirect evidence identifies gaps (program level).</p>
+      <p><strong>T2 Intervene:</strong> Curriculum, assignments, or pedagogy changes with owners and dates.</p>
+      <p><strong>T3 Measure again:</strong> Follow-up cycle compares to T1; document results for the record.</p>
+      <p>Canonical framework: <a href="../docs/Closing_the_Loop_Framework.md">docs/Closing_the_Loop_Framework.md</a></p>
+    </section>
+    <section class="card">
+      <h2>Ratification to extend accreditation</h2>
+      <p>
+        <a href="reference/Ratification_to_Extend_Accreditation_Report.pdf" target="_blank" rel="noopener"><strong>Ratification to Extend Accreditation Report</strong> (PDF)</a>
+        — opens in a new tab. Copy on this site: <code>aol_site/reference/Ratification_to_Extend_Accreditation_Report.pdf</code>; source in repo: <code>docs/Ratification to Extend Accreditation Report.pdf</code>.
+      </p>
+    </section>
+    <section class="card">
+      <h2>Table 5.1 alignment (design exemplar)</h2>
+      <p>
+        AACSB Table&nbsp;5.1–style documentation ties <strong>learning goals</strong> to <strong>direct and indirect measures</strong>, <strong>results</strong>, and <strong>closing-the-loop actions</strong>.
+        The exemplar below uses a <strong>BSBA</strong> starting point adapted from publicly documented Nicholls State University Table&nbsp;5-1 material to show the <em>shape</em> we intend to build toward. Over time, AOL will <strong>replace rows</strong> with your own programs and gap-driven content—not a static copy of any peer institution.
+      </p>
+      <p class="tips-box" style="margin: 0.75rem 0 1rem;">
+        <strong>Source PDF (exemplar):</strong>
+        <a href="reference/TABLE_5.1_AOL_Nicholls_State_University.pdf" target="_blank" rel="noopener">Open Nicholls State University — Table 5.1 (PDF)</a>
+        — same document used to shape the default rows; opens in a new tab.
+        <span style="display:block;margin-top:0.35rem;font-size:0.88rem;color:var(--muted);">In-repo copy used with permission (AOL chair).</span>
+      </p>
+      <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0.5rem;">
+        <strong>Seven columns</strong> (Nicholls-style grid): learning goal → objectives → when/where → expected results → actual results → closing the loop → future assessment. Use the <strong>cycle control</strong> (below) to switch between the archived <strong>2020–2024</strong> exemplar narrative (85% targets) and the <strong>2025–2030</strong> COB working view (<strong style="color:#c0392b;">90%</strong> targets plus planned vehicles/actions from the <a href="calendar.html">assessment calendar</a>, <a href="rubrics.html">rubrics inventory</a>, and <a href="governance.html">governance / strategic crosswalk</a>). Use the <strong>tabs</strong> for BSBA, MBA, and EMBA. Columns 1–2 stay Nicholls-exemplar wording for layout until official college text is pasted. Goal 3 expected results (ETS vs. national norm) are the same in both views.
+      </p>
+      <div class="table-5-1-section" id="table-5-1-section" data-cycle="2020-2024">
+      <div class="table-5-1-cycle-toolbar">
+        <span class="table-5-1-cycle-label" id="t51-cycle-label">Accreditation cycle (table view)</span>
+        <div class="table-5-1-cycle-radios" role="radiogroup" aria-labelledby="t51-cycle-label">
+          <label class="table-5-1-cycle-opt"><input type="radio" name="t51-accred-cycle" value="2020-2024" checked /> 2020–2024 (completed cycle, 85% rubric targets)</label>
+          <label class="table-5-1-cycle-opt"><input type="radio" name="t51-accred-cycle" value="2025-2030" /> 2025–2030 (COB vehicles + actions + <span class="t51-target-90">90%</span> targets)</label>
+        </div>
+      </div>
+      <div class="table-5-1-tabs">
+        <ul class="table-5-1-tablist" role="tablist" aria-label="Table 5.1 by program: BSBA, MBA, EMBA">
+          <li role="presentation"><button type="button" role="tab" id="tab-bsba" aria-selected="true" aria-controls="panel-bsba" tabindex="0">BSBA</button></li>
+          <li role="presentation"><button type="button" role="tab" id="tab-mba" aria-selected="false" aria-controls="panel-mba" tabindex="-1">MBA</button></li>
+          <li role="presentation"><button type="button" role="tab" id="tab-emba" aria-selected="false" aria-controls="panel-emba" tabindex="-1">EMBA</button></li>
+        </ul>
+      </div>
+      <div class="table-5-1-wrap is-tabbed" id="panel-bsba" role="tabpanel" aria-labelledby="tab-bsba">
+        <div class="table-5-1-caption">
+          <span class="t51-cap-old">Table 5.1 – BSBA: Assessment Plan and Results (2020–2024 accreditation cycle)</span>
+          <span class="t51-cap-new">Table 5.1 – BSBA: Assessment Plan and Results (2025–2030 accreditation cycle)</span>
+          <span class="t51-sub-old">Learning goals and objectives match the Nicholls exemplar PDF verbatim; scroll horizontally on narrow screens.</span>
+          <span class="t51-sub-new">2025–2030: columns 3–7 follow the <strong>Al Danos CBA</strong> AOL schedule (site calendar + repo rubric inventory). Columns 1–2 keep exemplar wording until official goals are pasted.</span>
+        </div>
+        <div class="table-5-1-scroll">
+          <table class="table-5-1-report">
+            <thead>
+              <tr>
+                <th scope="col">Learning goal</th>
+                <th scope="col">Objectives (Obj.)</th>
+                <th scope="col">When / where</th>
+                <th scope="col">Expected results</th>
+                <th scope="col">Actual results</th>
+                <th scope="col">Closing the loop</th>
+                <th scope="col">Future assessment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1) Students will be effective written and oral communicators with the ability to use appropriate technologies to enhance their communication.</td>
+                <td class="t51-objectives">
+                  <p>1) Students will make effective business presentations by articulating their ideas and thoughts clearly and concisely in grammatically correct English using presentation software.</p>
+                  <p>2) Students will write business reports and other business-related communications that include effective content presented clearly and concisely in grammatically correct English using appropriate technology.</p>
+                </td>
+                <td><span class="t51-when-old">Spring 2019, 2022, 2024: ENGL 310. Spring 2022, 2023: BSAD 490. Fall 2022/23: BSAD 490. Direct measures: oral communication, presentation graphics, and written communication rubrics.</span><span class="t51-when-new"><strong>BSAD 310</strong> — writing each term; oral presentation in <strong>even years</strong> per AOL rotation. <strong>BSAD 490</strong> — capstone oral/written communications with external stakeholders where used. From <strong>Spring ’27</strong>, <strong>SPCH 201</strong> — communications rubrics (oral + written) per committee schedule (<em>pending confirmation</em>). See <a href="calendar.html">assessment calendar</a>.</span></td>
+                <td><span class="t51-exp-old">85% of students will meet or exceed expectations on oral comm. and presentation graphics rubrics. 85% of students will meet or exceed expectations on written comm. rubric.</span><span class="t51-exp-new"><strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on oral comm. and presentation graphics rubrics. <strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on written comm. rubric.</span></td>
+                <td><span class="t51-actual-old">Spring 2019/22/24 Oral — 85%/82%/85%; Presentation — 85%/81%/86%; written 85%/80%/84%. Fall 2022/23 BSAD 490: Oral — 100%; Presentation — 100%. Indirect measures (senior, alumni, employer surveys) dropped below expected results for communication on occasion.</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">ENGL 310 vs. BSAD 310 alignment: AOL Committee Chair and former BSAD 310 instructor met with ENGL 310 instructor. AOL committee recommended students take BSAD 310 instead of ENGL 310. CBA received approval to reinstate BSAD 310 in Fall 25; goal assessed in BSAD 310 and 490 with external stakeholders on BSAD 490. Content portion of performance criteria improved after individual review with each student.</span><span class="t51-closing-new">AOL coordinates sampling and reviewer assignments; findings flow to UPIC per strategic plan Obj. 2.3. Continue BSAD 310 + BSAD 490 pairing; clarify SPCH 201 scope once the committee votes.</span></td>
+                <td><span class="t51-future-old">Assess goal exclusively in BSAD 310 and 490; CBA seeking funding to reinstate BSAD 310; continue external stakeholder use on BSAD 490.</span><span class="t51-future-new">Maintain published SP/FL rotation; add SPCH 201 in Spring ’27 when approved; keep indirect survey cadence aligned with senior/employer instruments.</span></td>
+              </tr>
+              <tr>
+                <td>2) Students will be able to apply critical thinking in making sound business decisions.</td>
+                <td class="t51-objectives">
+                  <p>1) Students will identify alternative viewpoints in decision making.</p>
+                  <p>2) Students will make valid evaluation of information during decision making.</p>
+                  <p>3) Students will properly utilize quantitative and/or qualitative methods to support their decisions.</p>
+                  <p>4) Students will make sound business decisions.</p>
+                </td>
+                <td><span class="t51-when-old">Spring 2020/22/24 — critical thinking decision making rubric (course assessments as documented in PDF).</span><span class="t51-when-new"><strong>MNGT 368</strong> — critical-thinking rubric on embedded exam questions; spring/fall offerings tracked on the <a href="calendar.html">assessment calendar</a> (SP ’25–’30 / FL anchors).</span></td>
+                <td><span class="t51-exp-old">85% of students will meet or exceed expectations on critical thinking decision making rubric.</span><span class="t51-exp-new"><strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on critical thinking decision making rubric.</span></td>
+                <td><span class="t51-actual-old">1) 86%/83%/85%. 2) 85%/82%/84%. 3) 84%/79%/83%. 4) 87%/80%/84%.</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">Instructor implemented a multi-faceted approach designed to build, assess, and refine critical thinking skills.</span><span class="t51-closing-new">Faculty continue multi-faceted scaffolding; AOL flags sustained gaps to UPIC for core-course adjustments.</span></td>
+                <td><span class="t51-future-old">Instructor to continue with multifaceted approach.</span><span class="t51-future-new">Keep MNGT 368 vehicle; refresh rubric BARS with assigned reviewers from the committee roster.</span></td>
+              </tr>
+              <tr>
+                <td>3) Students will be able to demonstrate competency in the core business disciplines.</td>
+                <td class="t51-objectives">
+                  <p>1) Students will demonstrate a basic knowledge of accounting principles.</p>
+                  <p>2) Students will demonstrate a basic knowledge of micro and macro economic principles.</p>
+                  <p>3) Students will demonstrate a working knowledge of management theory and concepts.</p>
+                  <p>4) Students will demonstrate a working knowledge of quantitative business analysis techniques.</p>
+                  <p>5) Students will demonstrate a working knowledge of finance principles.</p>
+                  <p>6) Students will demonstrate a basic knowledge of marketing concepts.</p>
+                  <p>7) Students will have a basic knowledge of international issues related to business.</p>
+                  <p>8) Students will have a basic knowledge of the legal and social environment of business.</p>
+                  <p>9) Students will have a basic knowledge of information systems.</p>
+                </td>
+                <td><span class="t51-when-old">Online ETS exam each semester (per PDF).</span><span class="t51-when-new"><strong>BSAD 490</strong> — ETS Major Field Test each term students complete the capstone; administer indirect measures <strong>before</strong> ETS when college policy is in effect.</span></td>
+                <td>Students will meet or exceed national average.</td>
+                <td><span class="t51-actual-old">See ETS files for results. Outcomes described as a “moving target” given semester-to-semester variability; NSU online sample sizes affected consistency until enrollment grew.</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">AOL committee identifies areas below national average; results to department heads and faculty; standard questions on final exams in core courses; students informed of ETS importance; exam scheduled earlier in semester per student feedback.</span><span class="t51-closing-new">AOL distributes ETS summaries to departments; reinforces minimum expectations communicated to students; maintains core final-exam alignment questions tied to weak domains.</span></td>
+                <td><span class="t51-future-old">Continue monitoring and continuous improvement; from Spring 2025 students required to attain a minimum percentile on the ETS exam.</span><span class="t51-future-new">Sustain ETS in BSAD 490; enforce minimum percentile policy adopted Spring 2025+; expand five-year trend views for accreditation documentation.</span></td>
+              </tr>
+              <tr>
+                <td>4) Students will demonstrate awareness of ethical issues in business.</td>
+                <td class="t51-objectives">
+                  <p>1) Students will demonstrate understanding of key concepts in business ethics.</p>
+                  <p>2) Students will recognize ethical dilemmas in business situations.</p>
+                  <p>3) Students will identify the impact of potential solutions on stakeholders.</p>
+                </td>
+                <td><span class="t51-when-old">Spring 2012, 23 — BSAD 101, 221; Fall 2020, 22 — MNGT 301.</span><span class="t51-when-new"><strong>BSAD 101</strong> (objectives 1–2), <strong>BSAD 221</strong>, <strong>MNGT 301</strong> — ethical awareness rubrics per <a href="rubrics.html">rubrics inventory</a>; committee may consolidate 101 vs 221 exposure.</span></td>
+                <td><span class="t51-exp-old">85% of students will meet or exceed expectations on ethical awareness rubric (each objective).</span><span class="t51-exp-new"><strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on ethical awareness rubric (each objective).</span></td>
+                <td><span class="t51-actual-old">85% of students will meet or exceed expectations on ethical awareness rubric (each objective). Students meeting or exceeding expectations in face-to-face and online courses.</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">No changes at this time.</span><span class="t51-closing-new">UPIC/AOL discuss streamlining ethics vehicles; document any scope change in committee minutes before altering Table 5.1 mapping.</span></td>
+                <td><span class="t51-future-old">No changes at this time.</span><span class="t51-future-new">Maintain three-course map unless committee votes to narrow; update inventory + calendar together.</span></td>
+              </tr>
+              <tr>
+                <td>5) Students will be proficient in utilizing standard office software to analyze business information.</td>
+                <td class="t51-objectives">
+                  <p>1) Students will be proficient in designing spreadsheet.</p>
+                  <p>2) Students will be able to effectively prepare basic charts to graphically display data.</p>
+                  <p>3) Students will be proficient in designing basic queries using database management system software.</p>
+                </td>
+                <td><span class="t51-when-old">Spring 2020/22/24 — CIS 231, FINC 302.</span><span class="t51-when-new"><strong>CIS 231</strong> and <strong>FINC 302</strong> — technology rubric assignments each spring cycle; syllabi document required software/AI disclosures per college policy track.</span></td>
+                <td><span class="t51-exp-old">85% of students will meet or exceed expectations on the technology rubric.</span><span class="t51-exp-new"><strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on the technology rubric.</span></td>
+                <td><span class="t51-actual-old">Students meeting or exceeding expectations for all objectives in face-to-face and online courses.</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">Undergraduate Program Instruction Committee effort to make courses more data-driven; faculty surveyed; COB purchased additional industry-aligned software; CIS 231 instructor emphasizes assessing gaps and adapting methods.</span><span class="t51-closing-new">UPIC-led data-driven refresh of assignments; AOL captures instructor “best practice” notes for CIS 231 / FINC 302 leads.</span></td>
+                <td><span class="t51-future-old">AOL committee continues to assess direct and indirect (survey) outcomes regarding the Technology goal; instructors continue “best practices” approach.</span><span class="t51-future-new">Keep dual-course technology map; align with purchased software bundles and syllabus transparency expectations.</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="table-5-1-wrap is-tabbed" id="panel-mba" role="tabpanel" aria-labelledby="tab-mba" hidden>
+        <div class="table-5-1-caption">
+          <span class="t51-cap-old">Table 5.1 – MBA: Assessment Plan and Results (2020–2024 accreditation cycle)</span>
+          <span class="t51-cap-new">Table 5.1 – MBA: Assessment Plan and Results (2025–2030 accreditation cycle)</span>
+          <span class="t51-sub-old">Verbatim learning goals and objectives from the Nicholls exemplar PDF; narrative columns summarize that document.</span>
+          <span class="t51-sub-new">2025–2030: Evening MBA vehicles per COB calendar and <a href="rubrics.html">rubrics inventory</a>; columns 3–7 are forward-working.</span>
+        </div>
+        <div class="table-5-1-scroll">
+          <table class="table-5-1-report">
+            <thead>
+              <tr>
+                <th scope="col">Learning goal</th>
+                <th scope="col">Objectives (Obj.)</th>
+                <th scope="col">When / where</th>
+                <th scope="col">Expected results</th>
+                <th scope="col">Actual results</th>
+                <th scope="col">Closing the loop</th>
+                <th scope="col">Future assessment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1) Students will be able to communicate audience-appropriate, complex business issues both orally and in writing.</td>
+                <td class="t51-objectives">
+                  <p>1) Students will make effective business presentations by articulating their ideas and thoughts clearly and concisely at a level appropriate for the intended audience.</p>
+                  <p>2) Students will write business reports and other business-related communications that include effective content presented clearly and concisely at a level appropriate for the intended audience.</p>
+                </td>
+                <td><span class="t51-when-old">Fall 2020/22 — MKTG 501.</span><span class="t51-when-new"><strong>MKTG 501</strong> — graduate communications rubrics; oral strand follows even-year rotation; spring/fall sections per <a href="calendar.html">calendar</a>.</span></td>
+                <td><span class="t51-exp-old">85% of students will meet or exceed expectations on oral communications and presentation graphics rubrics. 85% of students will meet or exceed expectations on written communications rubric.</span><span class="t51-exp-new"><strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on oral communications and presentation graphics rubrics. <strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on written communications rubric.</span></td>
+                <td><span class="t51-actual-old">Oral comm.: nearly 100% met or exceeded expectations; responsiveness not a performance criterion for online (pre-recorded presentations). Written communication: nearly 100% met expectations except content (50%/55%); students needed to include examples.</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">Instructor provided additional clarification regarding content expectations.</span><span class="t51-closing-new">Allen continues clarifying deliverable expectations; AOL tracks template feedback from assigned reviewer.</span></td>
+                <td><span class="t51-future-old">Instructor continues to assess pedagogical changes previously implemented.</span><span class="t51-future-new">Hold MKTG 501 as the Evening MBA communications anchor; refresh rubric BARS with committee cadence.</span></td>
+              </tr>
+              <tr>
+                <td>2) Students will demonstrate the ability to critically analyze business situations and recommend an ethical course of action.</td>
+                <td class="t51-objectives">
+                  <p>1) Students will be able to select and appropriately use quantitative and/or qualitative tools to evaluate business problems.</p>
+                  <p>2) Students will analyze complex business situations and make decisions about courses of action appropriate for the organizations involved in those situations.</p>
+                  <p>3) Students will demonstrate sensitivity to ethical issues when making business related decisions.</p>
+                </td>
+                <td><span class="t51-when-old">FINC 515 (Fall 2020/22); BSAD 507 (Fall 2020/22) for Objective 3.</span><span class="t51-when-new"><strong>FINC 515</strong> and <strong>MNGT 502</strong> — case analyses covering quantitative/qualitative tools, integrative decisions, and ethical sensitivity (per <a href="rubrics.html">rubrics inventory</a>).</span></td>
+                <td><span class="t51-exp-old">85% of students will meet or exceed expectations on critical thinking decision making rubric (Goals 2 direct measures).</span><span class="t51-exp-new"><strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on critical thinking decision making rubric (Goals 2 direct measures).</span></td>
+                <td><span class="t51-actual-old">70%/75% met or exceeded expectations for Objectives 1 and 2 (below target). Objective 3: 100% exceeded expectations.</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">Instructor continues to emphasize linkage of analysis to appropriate business story and solutions.</span><span class="t51-closing-new">Faculty emphasize storyline + solution quality; Antill/Castille coordinate dual-course artifacts for AOL sampling.</span></td>
+                <td><span class="t51-future-old">Instructor continues to assess pedagogical changes previously implemented.</span><span class="t51-future-new">Maintain FINC 515 successor coverage on the same rubric set; document instructor-of-record updates in committee minutes.</span></td>
+              </tr>
+              <tr>
+                <td>3) Students will have a working knowledge of all functional areas in business and apply them in an analytical and integrative manner.</td>
+                <td class="t51-objectives">
+                  <p>1) Students will demonstrate knowledge of all functional areas of business.</p>
+                  <p>2) Students will integrate different functional areas of business in analyzing business situations.</p>
+                </td>
+                <td><span class="t51-when-old">BSAD 525 — Fall 2019/21/23.</span><span class="t51-when-new"><strong>BSAD 525</strong> — embedded integration exam item; fall cohorts per <a href="calendar.html">calendar</a>.</span></td>
+                <td><span class="t51-exp-old">At least 85% of students met or exceeded expectations in traditional and online formats.</span><span class="t51-exp-new">At least <strong class="t51-target-90">90%</strong> of students will meet or exceed expectations in traditional and online formats.</span></td>
+                <td><span class="t51-actual-old">All students met or exceeded expectations.</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">No changes at this time.</span><span class="t51-closing-new">Johnston refreshes embedded items with AOL when domain gaps appear in ETS crosswalks.</span></td>
+                <td><span class="t51-future-old">No changes at this time.</span><span class="t51-future-new">Keep BSAD 525 as the knowledge/integration anchor for Evening MBA.</span></td>
+              </tr>
+              <tr>
+                <td>4) Students will recognize diversity among stakeholders and will apply this knowledge in the analysis of business programs.</td>
+                <td class="t51-objectives">
+                  <p>1) Students will be able to identify real or perceived diversity among stakeholders.</p>
+                  <p>2) Students consider the variety of viewpoints from diverse stakeholders.</p>
+                </td>
+                <td><span class="t51-when-old">MNGT 502 — Spring 2020/22/24.</span><span class="t51-when-new"><strong>MNGT 502</strong> — diversity-focused embedded assessment prompts (same course also maps ethics/technology per inventory).</span></td>
+                <td><span class="t51-exp-old">85% of students will meet or exceed expectations.</span><span class="t51-exp-new"><strong class="t51-target-90">90%</strong> of students will meet or exceed expectations.</span></td>
+                <td><span class="t51-actual-old">100% of students met or exceeded expectations.</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">No changes at this time.</span><span class="t51-closing-new">Castille aligns prompts with Managing Human Capital redesigns while preserving diversity evidence.</span></td>
+                <td><span class="t51-future-old">No changes at this time.</span><span class="t51-future-new">Single diversity vehicle unless GPIC adds another mapped course.</span></td>
+              </tr>
+              <tr>
+                <td>5) Students will be able to demonstrate competency in computer technology through the use of appropriate software.</td>
+                <td class="t51-objectives">
+                  <p>1) Students will be able to utilize computer software to prepare comprehensive business reports.</p>
+                  <p>2) Students will be able to use current business technology in order to successfully analyze data for the purpose of making effective business decisions.</p>
+                </td>
+                <td><span class="t51-when-old">CIS 501, FINC 520 — Fall 2019/21/23.</span><span class="t51-when-new"><strong>CIS 501</strong> — primary technology rubric artifacts; <strong>MNGT 502</strong> — supplemental technology evidence where the rubric is mapped (per <a href="rubrics.html">rubrics inventory</a>).</span></td>
+                <td><span class="t51-exp-old">85% of students will meet or exceed expectations on the technology rubric.</span><span class="t51-exp-new"><strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on the technology rubric.</span></td>
+                <td><span class="t51-actual-old">At least 85% of students met or exceeded expectations.</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">No changes at this time.</span><span class="t51-closing-new">Fanguy/Castille align assignment timing so AOL can sample without over-burdening students.</span></td>
+                <td><span class="t51-future-old">No changes at this time.</span><span class="t51-future-new">Keep dual touchpoints until GPIC approves a slimmer technology map.</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="table-5-1-wrap is-tabbed" id="panel-emba" role="tabpanel" aria-labelledby="tab-emba" hidden>
+        <div class="table-5-1-caption">
+          <span class="t51-cap-old">Table 5.1 – EMBA: Assessment Plan and Results (2020–2024 accreditation cycle)</span>
+          <span class="t51-cap-new">Table 5.1 – EMBA: Assessment Plan and Results (2025–2030 accreditation cycle)</span>
+          <span class="t51-sub-old">Verbatim learning goals and objectives from the Nicholls exemplar PDF; narrative columns summarize that document.</span>
+          <span class="t51-sub-new">2025–2030: EMBA vehicles per COB calendar; collaboration via <strong>BSAD 507</strong> per rubric inventory (confirm late-program course with program office if calendar shows a different catalog number).</span>
+        </div>
+        <div class="table-5-1-scroll">
+          <table class="table-5-1-report">
+        <thead>
+          <tr>
+                <th scope="col">Learning goal</th>
+                <th scope="col">Objectives (Obj.)</th>
+                <th scope="col">When / where</th>
+                <th scope="col">Expected results</th>
+                <th scope="col">Actual results</th>
+                <th scope="col">Closing the loop</th>
+                <th scope="col">Future assessment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+                <td>1) Students will be able to communicate audience-appropriate, complex business issues both orally and in writing.</td>
+                <td class="t51-objectives">
+                  <p>1) Students will make effective business presentations by articulating their ideas and thoughts clearly and concisely at a level appropriate for the intended audience.</p>
+                  <p>2) Students will write business reports and other business-related communications that include effective content presented clearly and concisely at a level appropriate for the intended audience.</p>
+                </td>
+                <td><span class="t51-when-old">MKTG 501 (each EMBA cohort).</span><span class="t51-when-new"><strong>MKTG 501</strong> — each EMBA cohort; communications rubrics aligned with Evening MBA rotation.</span></td>
+                <td><span class="t51-exp-old">85% of students will meet or exceed expectations on oral communications rubric. 85% of students will meet or exceed expectations on written communications rubric.</span><span class="t51-exp-new"><strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on oral communications rubric. <strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on written communications rubric.</span></td>
+                <td><span class="t51-actual-old">At least 85% met expectations; students fell below expectations in the content area in some years.</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">Instructor will place more emphasis on what specific content is expected in the future.</span><span class="t51-closing-new">Continue content scaffolding; AOL mirrors reviewer feedback from Evening MBA communications lead.</span></td>
+                <td><span class="t51-future-old">Instructor continues to assess pedagogical changes previously implemented.</span><span class="t51-future-new">Keep MKTG 501 as the EMBA communications anchor.</span></td>
+              </tr>
+              <tr>
+                <td>2) Students will demonstrate the ability to critically analyze business situations and recommend an ethical course of action.</td>
+                <td class="t51-objectives">
+                  <p>1) Students will be able to select and appropriately use quantitative and/or qualitative tools to evaluate business problems.</p>
+                  <p>2) Students will analyze complex business situations and make decisions about courses of action appropriate for the organizations involved in those situations.</p>
+                  <p>3) Students will demonstrate sensitivity to ethical issues when making business related decisions.</p>
+                </td>
+                <td><span class="t51-when-old">FINC 515; BSAD 507 (each EMBA cohort).</span><span class="t51-when-new"><strong>FINC 515</strong> &amp; <strong>MNGT 502</strong> — case analyses (tools, integrative decisions, ethical sensitivity) each EMBA cohort.</span></td>
+                <td><span class="t51-exp-old">85% of students will meet or exceed expectations on critical analysis/ethics rubric.</span><span class="t51-exp-new"><strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on critical analysis/ethics rubric.</span></td>
+                <td><span class="t51-actual-old">Obj. 1 and 2: 82% met or exceeded expectations. Obj. 3: at least 85% met or exceeded expectations.</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">Instructor continues to emphasize linkage of the analysis to the appropriate business story and solution.</span><span class="t51-closing-new">Same linkage emphasis as Evening MBA; coordinate evidence pulls across both courses.</span></td>
+                <td><span class="t51-future-old">Instructor continues to assess pedagogical changes previously implemented.</span><span class="t51-future-new">Maintain dual-course sampling; update successor instructor for FINC 515 when roster changes.</span></td>
+              </tr>
+              <tr>
+                <td>3) Students will have a working knowledge of all functional areas in business and apply them in an analytical and integrative manner.</td>
+                <td class="t51-objectives">
+                  <p>1) Students will demonstrate knowledge of all functional areas of business.</p>
+                  <p>2) Students will integrate different functional areas of business in analyzing business situations.</p>
+                </td>
+                <td><span class="t51-when-old">BSAD 525 (each EMBA cohort).</span><span class="t51-when-new"><strong>BSAD 525</strong> — embedded integration item each EMBA cohort (same vehicle as Evening MBA).</span></td>
+                <td><span class="t51-exp-old">85% of students will meet or exceed expectations on knowledge of functional areas rubric.</span><span class="t51-exp-new"><strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on knowledge of functional areas rubric.</span></td>
+                <td><span class="t51-actual-old">Overall &gt;85% target met; one cohort below target in marketing (report detail and simulation data use).</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">Instructor believes marketing case to be an anomaly.</span><span class="t51-closing-new">Johnston/AOL distinguish one-off cohort issues from structural curriculum gaps.</span></td>
+                <td><span class="t51-future-old">No changes at this time.</span><span class="t51-future-new">Retain BSAD 525 integration anchor for EMBA.</span></td>
+              </tr>
+              <tr>
+                <td>4) Students will use appropriate collaboration skills and behaviors to accomplish group goals.</td>
+                <td class="t51-objectives">
+                  <p>1) Students willingly and consistently work toward group goals.</p>
+                  <p>2) Students exhibit sensitivity to others.</p>
+                  <p>3) Students contribute knowledge, opinion, and skills to the group.</p>
+                  <p>4) Students value the knowledge, opinions and skills of others.</p>
+                  <p>5) Students facilitate needed group change.</p>
+                </td>
+                <td><span class="t51-when-old">Students surveyed in last course of program.</span><span class="t51-when-new"><strong>BSAD 507</strong> — Executive Leadership collaboration rubric (EMBA-only vehicle per <a href="rubrics.html">rubrics inventory</a>). If the live calendar lists a different late-program course, reconcile with the program office.</span></td>
+                <td><span class="t51-exp-old">85% of students will meet or exceed expectations on collaboration rubric.</span><span class="t51-exp-new"><strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on collaboration rubric.</span></td>
+                <td><span class="t51-actual-old">One cohort had group challenges; group disbanded and members reassigned. &gt;85% meeting or exceeding expectations still met.</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">Anomaly noted; no changes at this time.</span><span class="t51-closing-new">Peters/AOL document remediation when cohort dynamics disrupt teams.</span></td>
+                <td><span class="t51-future-old">No changes at this time.</span><span class="t51-future-new">Keep BSAD 507 as collaboration anchor unless GPIC approves a substitute mapped course.</span></td>
+          </tr>
+          <tr>
+                <td>5) Students will be able to demonstrate competency in computer technology through the use of appropriate software.</td>
+                <td class="t51-objectives">
+                  <p>1) Students will be able to utilize computer software to prepare comprehensive business reports.</p>
+                  <p>2) Students will be able to use current business technology in order to successfully analyze data for the purpose of making effective business decisions.</p>
+                </td>
+                <td><span class="t51-when-old">CIS 501, FINC 520 (each EMBA cohort).</span><span class="t51-when-new"><strong>CIS 501</strong> — primary technology artifacts; <strong>MNGT 502</strong> — supplemental technology evidence where mapped (per inventory).</span></td>
+                <td><span class="t51-exp-old">85% of students will meet or exceed expectations on technology rubric.</span><span class="t51-exp-new"><strong class="t51-target-90">90%</strong> of students will meet or exceed expectations on technology rubric.</span></td>
+                <td><span class="t51-actual-old">CIS 501: 85% met or exceeded. FINC 520: gradual improvement; 85% met or exceeded.</span><span class="t51-actual-new"><em>TBD</em></span></td>
+                <td><span class="t51-closing-old">No changes at this time.</span><span class="t51-closing-new">Fanguy/Castille coordinate EMBA technology evidence the same way as Evening MBA.</span></td>
+                <td><span class="t51-future-old">No changes at this time.</span><span class="t51-future-new">Maintain dual touchpoints until technology map is simplified.</span></td>
+          </tr>
+        </tbody>
+      </table>
+        </div>
+      </div>
+      </div>
+      <script>
+        (function () {
+          var section = document.getElementById('table-5-1-section');
+          var cycleKey = 'aol_table51_cycle';
+          var radios = document.querySelectorAll('input[name="t51-accred-cycle"]');
+          function applyCycle(val) {
+            if (!section || (val !== '2020-2024' && val !== '2025-2030')) return;
+            section.setAttribute('data-cycle', val);
+            Array.prototype.forEach.call(radios, function (r) {
+              r.checked = r.value === val;
+            });
+            try {
+              localStorage.setItem(cycleKey, val);
+            } catch (e) { /* ignore */ }
+          }
+          try {
+            var saved = localStorage.getItem(cycleKey);
+            if (saved === '2025-2030' || saved === '2020-2024') {
+              applyCycle(saved);
+            }
+          } catch (e) { /* ignore */ }
+          Array.prototype.forEach.call(radios, function (r) {
+            r.addEventListener('change', function () {
+              if (r.checked) applyCycle(r.value);
+            });
+          });
+
+          var tabs = Array.prototype.slice.call(document.querySelectorAll('.table-5-1-tablist [role="tab"]'));
+          var panels = {
+            'tab-bsba': document.getElementById('panel-bsba'),
+            'tab-mba': document.getElementById('panel-mba'),
+            'tab-emba': document.getElementById('panel-emba')
+          };
+          function showTab(id) {
+            tabs.forEach(function (btn) {
+              var on = btn.id === id;
+              btn.setAttribute('aria-selected', on ? 'true' : 'false');
+              btn.tabIndex = on ? 0 : -1;
+              panels[btn.id].hidden = !on;
+            });
+          }
+          tabs.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              showTab(btn.id);
+            });
+            btn.addEventListener('keydown', function (e) {
+              var i = tabs.indexOf(btn);
+              if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                var next = e.key === 'ArrowRight' ? (i + 1) % tabs.length : (i - 1 + tabs.length) % tabs.length;
+                tabs[next].focus();
+                showTab(tabs[next].id);
+              }
+            });
+          });
+        })();
+      </script>
+      <p style="font-size:0.9rem;color:var(--muted);">Data model for future automation: <a href="../docs/AOL_Phase2_Data_Model.md">docs/AOL_Phase2_Data_Model.md</a>.</p>
+      <p style="font-size:0.9rem;">Strategic alignment reference: <a href="../AOL_Activities_Strategic_Plan_Alignment.md">AOL_Activities_Strategic_Plan_Alignment.md</a></p>
+    </section>
+    <section class="card">
+      <h2>Semester report structure</h2>
+      <p>Committee-facing narrative: <a href="../docs/Semester_Report_README_Template.md">Semester_Report_README_Template.md</a></p>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>Phase 0 demo — not production SSO or data.</p>
+    <p class="site-footer-strategic" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;"><a href="index.html">Home</a> · <a href="agenda.html#announcements">Committee agenda</a> · Strategic plan (Goal 2) refs on <a href="index.html">Home</a></p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Governance — AOL, UPIC &amp; GPIC (Demo)</title>
+  <link rel="stylesheet" href="css/site.css?v=gapfig5" />
+  <style>
+    .mermaid-wrap {
+      overflow-x: auto;
+      background: var(--card);
+      padding: 1rem 1rem 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #dee2e6;
+      margin: 0.75rem 0 1.25rem;
+    }
+    .mermaid-wrap .mermaid { min-height: 200px; }
+    .diagram-caption { font-size: 0.85rem; color: var(--muted); margin-top: 0.25rem; }
+    table.tiers { width: 100%; border-collapse: collapse; font-size: 0.95rem; table-layout: fixed; }
+    table.tiers th:first-child,
+    table.tiers td:first-child { width: 28%; min-width: 14rem; }
+    table.tiers th, table.tiers td { border: 1px solid #dee2e6; padding: 0.65rem 0.75rem; vertical-align: top; text-align: left; }
+    table.tiers th { background: #f1f3f5; }
+    table.tiers tr:nth-child(even) td { background: #fafbfc; }
+    .callout { background: #f8f9fa; border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 0.75rem 0; border-radius: 0 6px 6px 0; }
+    ol.governance-flow { margin: 0.75rem 0 1rem; padding-left: 1.5rem; max-width: 52rem; line-height: 1.55; }
+    ol.governance-flow li { margin-bottom: 0.5rem; }
+    ol.governance-flow li strong:first-child { color: var(--accent); }
+    .rec-tabs { margin: 0.75rem 0 0; }
+    .rec-tablist {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      padding: 0.5rem 0.65rem 0;
+      background: #eef2f6;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid #bdc3c7;
+      border-bottom: none;
+      list-style: none;
+      margin: 0;
+    }
+    .rec-tablist li { margin: 0; }
+    .rec-tablist button {
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.5rem 0.85rem;
+      border: 1px solid transparent;
+      border-radius: 6px 6px 0 0;
+      background: transparent;
+      color: #1a5276;
+      cursor: pointer;
+      margin-bottom: -1px;
+    }
+    .rec-tablist button:hover { background: rgba(26, 82, 118, 0.08); }
+    .rec-tablist button[aria-selected="true"] {
+      background: #fff;
+      border-color: #bdc3c7;
+      border-bottom-color: #fff;
+      color: #154360;
+    }
+    .rec-panel {
+      border: 1px solid #bdc3c7;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      background: #fff;
+      padding: 0.95rem 1rem;
+    }
+    .rec-panel[hidden] { display: none !important; }
+    .rec-list { list-style: none; margin: 0; padding: 0; }
+    .rec-list li {
+      border: 1px solid #dee2e6;
+      border-left: 4px solid #6c8ebf;
+      border-radius: 6px;
+      padding: 0.65rem 0.75rem;
+      margin-bottom: 0.65rem;
+      background: #fafbfc;
+    }
+    .rec-list li:last-child { margin-bottom: 0; }
+    .rec-ts {
+      display: inline-block;
+      font-size: 0.76rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #5f6b76;
+      margin-bottom: 0.22rem;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-banner">DRAFT — FOR DEMONSTRATION ONLY</div>
+  <header class="site-header">
+    <h1>How AOL, UPIC &amp; GPIC work together</h1>
+    <p class="tagline">Gap analysis, decisions A/B/C, recommended flow (<code>docs/diagrams/</code>)</p>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="governance.html" aria-current="page">Governance</a>
+      <a href="rubrics.html">Rubrics</a>
+      <a href="calendar.html">Assessment calendar</a>
+      <a href="degree_plans.html">Degree plans</a>
+      <a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a>
+      <a href="agenda.html">Committee agenda</a>
+      <a href="minutes.html">Minutes</a>
+      <a href="profiles.html">Profiles</a>
+      <a href="role-leadership.html">Preview: Leadership / accreditation</a>
+    </nav>
+  </header>
+  <main>
+    <section class="card" id="gap-holistic">
+      <h2>1. Gap analysis (Figure 1) — holistic judgment</h2>
+      <p>
+        The diagram shows <strong>two evidence streams</strong> that feed <strong>gap judgment</strong>:
+        <strong>course + occupational</strong> (learning objectives from syllabi, O*NET tasks and KSAOs, focal occupations,
+        Louisiana labor context when used) and <strong>person-level</strong> evidence: <strong>direct measures</strong> (learning goals / rubrics, ETS),
+        <strong>indirect measures</strong> (surveys, stakeholder meetings), and <strong>optional</strong> voluntary fit tools.
+      </p>
+      <p>
+        <strong>Other sources of evidence</strong> inform the same judgment but are not drawn as separate boxes:
+        peer-reviewed and professional <strong>literature</strong>; <strong>practitioner / field</strong> input when PICs invite
+        alumni, employers, or advisory partners; <strong>organizational context</strong> (resources, staffing, policy constraints);
+        and <strong>stakeholder</strong> perspectives (students, accreditors, community partners as relevant).
+        Committees pursue a <strong>holistic assessment</strong>: there is <strong>no single metric</strong> that perfectly
+        quantifies whether a gap is <strong>worth acting upon</strong> — judgment, trade-offs, and governance matter.
+      </p>
+      <div class="callout">
+        <strong>Strategic plan (Goal 2):</strong> Holistic gap judgment and evidence streams underpin how AOL documents improvement aligned with the <em>COB Strategic Plan (2026AY–2031AY)</em>, especially Goal 2 — committee references include Objective <strong>2.2 (bullet 2)</strong>, <strong>2.3 (bullet 1)</strong>, and <strong>2.4 (all)</strong>. See <a href="agenda.html#announcements">Committee agenda</a> for the standing cross-reference.
+      </div>
+      <figure class="gap-evidence-diagram" aria-label="Course and occupational evidence and person-level direct and indirect measures feed gap judgment, then outcomes">
+        <div class="gap-evidence-lr">
+          <div class="gap-evidence-inputs">
+            <div class="gap-evidence-card gap-evidence-card--course">
+              <h4>Course + occupational</h4>
+              <ul>
+                <li>Syllabus LOs</li>
+                <li>O*NET / focal occupations</li>
+                <li>LA labor context</li>
+              </ul>
+            </div>
+            <div class="gap-evidence-card gap-evidence-card--person">
+              <h4>Person-level</h4>
+              <ul>
+                <li><strong>Direct measures:</strong> Learning goals / rubrics; ETS</li>
+                <li><strong>Indirect measures:</strong> Surveys; stakeholder meetings</li>
+                <li><strong>Optional fit tools</strong> (voluntary)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="gap-evidence-stage">
+            <span class="gap-evidence-arrow" aria-hidden="true">→</span>
+            <div class="gap-evidence-card gap-evidence-card--judgment">
+              <h4>Gap judgment</h4>
+              <p>Worth acting upon?</p>
+              <p class="gap-evidence-note">No single perfect metric — holistic judgment.</p>
+            </div>
+            <span class="gap-evidence-arrow" aria-hidden="true">→</span>
+            <div class="gap-evidence-card gap-evidence-card--outcomes">
+              <h4>Outcomes</h4>
+              <ul>
+                <li>UPIC / GPIC</li>
+                <li>Admin</li>
+                <li>Faculty</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <figcaption class="gap-evidence-caption">Source: <code>docs/diagrams/figure_gap_holistic_inputs.mmd</code></figcaption>
+      </figure>
+    </section>
+
+    <section class="card" id="decisions-abc">
+      <h2>2. Decisions A, B, and C — evidence and ownership</h2>
+      <p>
+        <strong>AOL, UPIC, and GPIC</strong> together supply the <strong>primary evidence packages</strong> for
+        <strong>Decision A</strong> (core revision) and <strong>Decision B</strong> (program revision). Each decision type implies a
+        <strong>revision</strong> at that scope — core, program, or course. Those are the governance-heavy moves where committees need defensible bundles.
+      </p>
+      <div class="callout">
+        <strong>Decision C</strong> (course revision / instructor) is likely to happen <strong>organically</strong> — good teaching and continuous improvement should not be blocked by committee process.
+        <strong>AOL will offer suggestions</strong> instructors can use on their own (trends, gaps, cohort signals); it does not “own” or gate C.
+      </div>
+      <table class="tiers">
+        <thead>
+          <tr>
+            <th>Decision</th>
+            <th>Type of change</th>
+            <th>Evidence / bar (conceptual)</th>
+            <th>Who leads (typical)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>A — Core revision</strong></td>
+            <td>Replacing or adding <strong>core</strong> courses (largest footprint).</td>
+            <td><strong>Highest</strong> bar: e.g. course materially outdated; workforce skillset misaligned; course <strong>cannot</strong> be made current in place.</td>
+            <td>PICs + <strong>Admin</strong> as policy requires.</td>
+          </tr>
+          <tr>
+            <td><strong>B — Program revision</strong></td>
+            <td>Required/elective structure within a program (e.g. management, marketing).</td>
+            <td>Strong program rationale; <strong>AOL / UPIC / GPIC evidence informs</strong> — not “AOL-only.”</td>
+            <td><strong>Departments</strong> / program committees.</td>
+          </tr>
+          <tr>
+            <td><strong>C — Course revision</strong></td>
+            <td>Syllabus, assessments, pedagogy in a section or course.</td>
+            <td>Signals for instructors; <strong>optional</strong> AOL suggestions — <strong>do not obstruct</strong> organic improvement.</td>
+            <td><strong>Instructor</strong> / chair; AOL <strong>suggests</strong>, does not mandate.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card" id="sequence">
+      <h2>3. Recommended flow — evidence to PICs, practitioners, Admin</h2>
+      <div class="mermaid-wrap">
+        <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    participant AOL as AOL Committee
+    participant PIC as UPIC / GPIC
+    participant EXT as Alumni · employers · community
+    participant ADM as Admin / department heads
+    participant FAC as Faculty
+
+    AOL->>AOL: Prioritize analytic gaps (methodology)
+    AOL->>PIC: Forward gaps and suggestions, A and B focus, optional tips for C
+    AOL->>FAC: Share faculty-facing reports and findings
+    FAC-->>AOL: Feedback on findings and implementation feasibility
+    PIC->>EXT: Invite practitioner input
+    EXT-->>PIC: Field relevance feedback
+    PIC->>PIC: Decide curriculum / learning goals
+    PIC->>ADM: Forward recommendations
+    ADM->>ADM: Sign off / approve (policy gate)
+    ADM->>FAC: Implementation expectations and approved changes
+    FAC-->>AOL: Syllabi and outcomes to next cycle
+        </pre>
+      </div>
+      <p class="diagram-caption">Source: <code>docs/diagrams/figure_sequence_aol_to_council.mmd</code> — align wording with committee memo as needed.</p>
+      <p>
+        <strong>Timing (recommended order).</strong> The numbered steps below explain the sequence above in plain language. Edit this list in
+        <code>governance.html</code> as your committee refines roles; keep the diagram and list aligned.
+      </p>
+      <ol class="governance-flow">
+        <li><strong>AOL</strong> prioritizes analytic gaps using the agreed methodology (evidence packages).</li>
+        <li><strong>AOL → UPIC/GPIC:</strong> Forwards gaps and suggestions, with emphasis on Decisions A and B, optional tips for C.</li>
+        <li><strong>AOL → faculty:</strong> Shares faculty-facing reports and findings for review.</li>
+        <li><strong>Faculty → AOL:</strong> Returns feedback on findings and implementation feasibility.</li>
+        <li><strong>PICs → practitioners:</strong> Invite practitioner input (alumni, employers, community) when useful.</li>
+        <li><strong>Practitioners → PICs:</strong> Field relevance feedback returns to the program committees.</li>
+        <li><strong>PICs:</strong> Decide curriculum and learning goals (committee judgment).</li>
+        <li><strong>PICs → Admin:</strong> Forward recommendations that require institutional sign-off.</li>
+        <li><strong>Admin:</strong> Sign off / approve where policy requires (gate).</li>
+        <li><strong>Admin / department heads → faculty:</strong> Communicate implementation expectations.</li>
+        <li><strong>Faculty → AOL (next cycle):</strong> Syllabi and outcomes feed the next assessment cycle.</li>
+      </ol>
+    </section>
+    <section class="card" id="recommendation-tabs">
+      <h2>4. Recommendation tracker — UPIC and GPIC tabs</h2>
+      <p>
+        <strong>Tentative (draft):</strong> Proposed, timestamped recommendations from this AOL website cycle.
+        Use these as committee-ready prompts for deliberation; items may change before ratification.
+      </p>
+      <div class="rec-tabs">
+        <ul class="rec-tablist" role="tablist" aria-label="Recommendation tabs for UPIC and GPIC">
+          <li role="presentation"><button type="button" role="tab" id="tab-upic" aria-selected="true" aria-controls="panel-upic" tabindex="0">UPIC recommendations</button></li>
+          <li role="presentation"><button type="button" role="tab" id="tab-gpic" aria-selected="false" aria-controls="panel-gpic" tabindex="-1">GPIC recommendations</button></li>
+        </ul>
+      </div>
+      <div class="rec-panel" id="panel-upic" role="tabpanel" aria-labelledby="tab-upic">
+        <ul class="rec-list">
+          <li>
+            <span class="rec-ts">2026-03-25</span><br />
+            Adopt a recurring AOL calendar checkpoint each semester for direct-evidence collection status by program/goal through the ~2029-30 visit cycle.
+          </li>
+          <li>
+            <span class="rec-ts">2026-03-25</span><br />
+            Use the degree-plan Mermaid prerequisite maps as a standing aid for <strong>curriculum-change conversations</strong> (prereqs, sequencing, impacts) — especially when <strong>UPIC</strong> considers undergraduate revisions — before formal program-level proposals.
+          </li>
+        </ul>
+      </div>
+      <div class="rec-panel" id="panel-gpic" role="tabpanel" aria-labelledby="tab-gpic" hidden>
+        <ul class="rec-list">
+          <li>
+            <span class="rec-ts">2026-03-25</span><br />
+            Pilot an open and transparent reporting mode (role-aware but visible) so faculty can see what adjacent programs are improving.
+          </li>
+          <li>
+            <span class="rec-ts">2026-03-25</span><br />
+            Keep Table 5.1 language aligned to source artifacts (verbatim goals/objectives where required) and preserve an audit trail from PDF source to web table.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Canonical memo &amp; PDF</h2>
+      <p>
+        Align <code>docs/AOL_Committee_Memo.md</code> and Service memo PDFs when you adopt this language institutionally.
+        Regenerate PNGs with <code>npx @mermaid-js/mermaid-cli</code> per <code>letter_templates/aol_memo_figures/README.md</code>.
+      </p>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>Demo only — not official institutional policy page.</p>
+    <p class="site-footer-strategic" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;">Strategic plan (demo): COB <strong>Goal 2</strong> — <a href="index.html">Home</a> · <a href="methodology.html">Methodology</a> · <a href="agenda.html#announcements">Committee agenda</a></p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: "neutral",
+      securityLevel: "loose",
+      themeVariables: {
+        fontFamily: "system-ui, Segoe UI, sans-serif",
+        fontSize: "18px"
+      },
+      sequence: { useMaxWidth: true }
+    });
+    (function () {
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.rec-tablist [role="tab"]'));
+      var panels = {
+        'tab-upic': document.getElementById('panel-upic'),
+        'tab-gpic': document.getElementById('panel-gpic')
+      };
+      function showTab(id) {
+        tabs.forEach(function (btn) {
+          var on = btn.id === id;
+          btn.setAttribute('aria-selected', on ? 'true' : 'false');
+          btn.tabIndex = on ? 0 : -1;
+          panels[btn.id].hidden = !on;
+        });
+      }
+      tabs.forEach(function (btn) {
+        btn.addEventListener('click', function () { showTab(btn.id); });
+        btn.addEventListener('keydown', function (e) {
+          var i = tabs.indexOf(btn);
+          if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            var next = e.key === 'ArrowRight' ? (i + 1) % tabs.length : (i - 1 + tabs.length) % tabs.length;
+            tabs[next].focus();
+            showTab(tabs[next].id);
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

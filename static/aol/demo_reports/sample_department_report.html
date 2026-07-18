@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Department rollup — Sample (Demo)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #2c3e50; }
+    .banner { background: #fff3cd; border: 2px solid #ffc107; padding: 0.75rem; margin-bottom: 1.5rem; font-weight: 700; text-align: center; }
+    h1 { color: #1E3A8A; }
+    .small-wins { background: #e8f4fc; border-left: 4px solid #3498db; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 1rem; }
+    th, td { border: 1px solid #dee2e6; padding: 0.5rem; text-align: left; }
+    th { background: #3498db; color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="banner">SYNTHETIC DEMO — AGGREGATE / DEPARTMENT VIEW — NO INDIVIDUAL FACULTY RANKING</div>
+  <h1>Department assessment rollup (illustrative)</h1>
+  <p><strong>Department:</strong> Sample Department (prefix XXX)</p>
+  <p>Production uses <code>ets_statistics_analysis/create_department_head_report.py</code> with <code>department_head_report_config.json</code> for real mappings and ETS CSV domains.</p>
+  <div class="small-wins">
+    <h2>Small wins — collaboration cues</h2>
+    <p>Resource-grounded actions that connect faculty without exposing individuals:</p>
+    <ul>
+      <li>Two sections map strongly to the same subcontent gap — consider a shared rubric or lab activity (aggregate cue only).</li>
+      <li>Strength in <em>cross-functional</em> student outcomes — highlight in department meeting as a reusable case (illustrative).</li>
+    </ul>
+  </div>
+  <h2>Illustrative domain summary (fake numbers)</h2>
+  <table>
+    <thead>
+      <tr><th>ETS domain (example)</th><th>Cohort vs national (illustrative)</th><th>Note</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Management</td><td>At or above benchmark</td><td>Dept-wide aggregate</td></tr>
+      <tr><td>Marketing</td><td>Mixed</td><td>See committee Cut 1 / Cut 2</td></tr>
+    </tbody>
+  </table>
+  <p><a href="../index.html">← Back to demo portal</a></p>
+</body>
+</html>

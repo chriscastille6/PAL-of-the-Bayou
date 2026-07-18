@@ -1,0 +1,698 @@
+/* Shared rubric template (oral + others) — Psychological Assessments ASSESSMENT_STYLE_GUIDE (Likert buttons) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.oral-rubric-page {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 3rem;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+.oral-rubric-page .card-rubric {
+  background: #fff;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.oral-rubric-page h1 { color: #111827; font-size: 1.35rem; margin-top: 0; }
+.oral-rubric-page h2 { color: #1e3a8a; font-size: 1.05rem; margin: 0 0 0.75rem; }
+.oral-rubric-page .item-num {
+  width: 2rem; height: 2rem; border-radius: 9999px;
+  background: #dbeafe; color: #1d4ed8;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 0.875rem; margin-right: 0.5rem;
+}
+.oral-rubric-page .item-head { display: flex; align-items: center; margin-bottom: 0.5rem; }
+.oral-rubric-page .criterion-list { margin: 0 0 0.75rem 1.25rem; padding: 0; color: #374151; font-size: 0.9rem; }
+.oral-rubric-page .criterion-list li { margin-bottom: 0.25rem; }
+
+.likert-scale {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.likert-option {
+  flex: 1;
+  min-width: 72px;
+  text-align: center;
+}
+.likert-option input[type="radio"] { display: none; }
+.likert-option label {
+  display: block;
+  padding: 0.75rem 0.4rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fff;
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+.likert-option input[type="radio"]:checked + label {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+  font-weight: 600;
+}
+.likert-option label:hover { border-color: #93c5fd; }
+.likert-option .text-xs { font-size: 0.7rem; }
+.likert-option .text-gray-600 { color: #4b5563; }
+.likert-option .font-semibold { font-weight: 600; }
+
+.scale-help {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #f3f4f6;
+  border-radius: 0.375rem;
+  font-size: 0.8rem;
+  color: #374151;
+}
+.scale-help summary { cursor: pointer; font-weight: 600; color: #1d4ed8; }
+.scale-target-note {
+  font-size: 0.75rem;
+  color: #1b4332;
+  background: #e8f5e9;
+  border: 1px solid #a5d6a7;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  margin: 0.5rem 0 0.5rem;
+  line-height: 1.4;
+}
+.scale-illustrative-note {
+  font-size: 0.78rem;
+  color: #4b5563;
+  margin: 0.5rem 0 0.65rem;
+  line-height: 1.45;
+}
+.scale-help table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; font-size: 0.75rem; }
+.scale-help th, .scale-help td { border: 1px solid #e5e7eb; padding: 0.35rem 0.5rem; text-align: left; vertical-align: top; }
+.scale-help tr.scale-row-target {
+  background: #e8f5e9;
+}
+.scale-help tr.scale-row-target td {
+  border-color: #c8e6c9;
+}
+
+/* Per-criterion behavioral anchors (BARS) — same 5 labels; criterion-specific behaviors */
+.bars-help {
+  margin: 0.75rem 0 1rem;
+  padding: 0.75rem;
+  background: #fafafa;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  font-size: 0.8rem;
+  color: #374151;
+}
+.bars-help summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #0f766e;
+}
+.bars-note {
+  font-size: 0.72rem;
+  color: #4b5563;
+  margin: 0.5rem 0 0.5rem;
+  line-height: 1.45;
+}
+.bars-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.35rem;
+  font-size: 0.72rem;
+}
+.bars-table th,
+.bars-table td {
+  border: 1px solid #e5e7eb;
+  padding: 0.35rem 0.45rem;
+  text-align: left;
+  vertical-align: top;
+}
+.bars-table thead th {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+.bars-table tr.scale-row-target {
+  background: #e8f5e9;
+}
+.bars-table tr.scale-row-target td {
+  border-color: #c8e6c9;
+}
+
+/* Unbundled facets: one BARS dropdown + one likert per bullet (oral communication when unbundle_bullets) */
+.unbundle-facet-note {
+  font-size: 0.8rem;
+  color: #4b5563;
+  margin: 0.5rem 0 1rem;
+  padding: 0.5rem 0.75rem;
+  background: #f0f9ff;
+  border-left: 3px solid #0ea5e9;
+  line-height: 1.45;
+}
+.criterion-facet {
+  margin: 1rem 0;
+  padding: 0.65rem 0 0.65rem 0.85rem;
+  border-left: 3px solid #0f766e;
+}
+.facet-heading {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 0.5rem;
+  line-height: 1.35;
+}
+.facet-heading .facet-num {
+  display: inline-block;
+  min-width: 1.5rem;
+  font-variant-numeric: tabular-nums;
+  color: #0f766e;
+}
+.bars-interim-note {
+  font-size: 0.72rem;
+  color: #92400e;
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: 0.25rem;
+  padding: 0.4rem 0.5rem;
+  margin: 0.5rem 0 0.25rem;
+  line-height: 1.4;
+}
+
+.warn-ferpa {
+  background: #fef3c7;
+  border: 2px solid #f59e0b;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.875rem;
+  color: #78350f;
+}
+.warn-pii {
+  background: #fee2e2;
+  border: 1px solid #f87171;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin: 0.75rem 0;
+  font-size: 0.8rem;
+  color: #7f1d1d;
+}
+
+textarea.global-feedback {
+  width: 100%;
+  min-height: 6rem;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.criterion-comment-wrap {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f3f4f6;
+}
+.criterion-comment-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.35rem;
+}
+.criterion-comment-label .text-muted {
+  font-weight: 400;
+  color: #6b7280;
+}
+textarea.criterion-comment {
+  width: 100%;
+  min-height: 4rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  resize: vertical;
+}
+textarea.criterion-comment:focus {
+  outline: 2px solid #93c5fd;
+  outline-offset: 1px;
+  border-color: #2563eb;
+}
+.btn-primary {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 0.65rem 1.25rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary:hover { background: #1d4ed8; }
+.btn-secondary {
+  background: #e5e7eb;
+  color: #374151;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+.btn-secondary:hover { background: #d1d5db; }
+
+.role-pick { display: flex; gap: 1rem; flex-wrap: wrap; margin: 0.5rem 0 1rem; }
+.role-pick label { cursor: pointer; }
+
+.pii-flag { background: #fff7ed; border: 1px solid #fdba74; padding: 0.5rem; border-radius: 0.25rem; font-size: 0.8rem; margin-top: 0.5rem; display: none; }
+.pii-flag.visible { display: block; }
+
+/* Faculty: save rubric as PDF via browser print dialog */
+.print-rubric-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+.print-rubric-toolbar--pdf {
+  align-items: flex-start;
+}
+.print-rubric-toolbar-inner {
+  flex: 1;
+  min-width: min(100%, 28rem);
+}
+.print-rubric-hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  color: #374151;
+  line-height: 1.45;
+  max-width: 40rem;
+}
+.print-rubric-toolbar--pdf .btn-primary {
+  margin-top: 0;
+}
+
+@media print {
+  .demo-banner,
+  .no-print,
+  .site-header,
+  .site-footer {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+  .oral-rubric-page {
+    max-width: 100%;
+    padding: 0.25rem;
+  }
+  .card-rubric {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-shadow: none !important;
+  }
+  .likert-scale,
+  .bars-help,
+  .scale-help {
+    break-inside: avoid;
+  }
+  /* Show radio buttons on paper/PDF so raters can mark a level */
+  .likert-option {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .likert-option input[type="radio"] {
+    display: block !important;
+    flex-shrink: 0;
+    width: 0.9rem;
+    height: 0.9rem;
+    margin: 0;
+    accent-color: #2563eb;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .likert-option label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0.5rem 0.35rem;
+    flex: 1;
+  }
+}
+
+/* --- Faculty PDF pack (print-only): Nicholls branding + page 1 landscape matrix + BARS --- */
+/* Aligns with site.css: --brand #8B1538, --accent #1E3A8A */
+.rubric-print-only {
+  --rubric-brand: #8b1538;
+  --rubric-brand-dark: #6a102b;
+  --rubric-accent: #1e3a8a;
+  --rubric-accent-deep: #152f6f;
+  --rubric-accent-muted: #e8ecf4;
+  --rubric-accent-border: #c5d0e8;
+}
+
+.rubric-print-brand {
+  margin: 0 0 0.45rem;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.rubric-print-brand-row--primary {
+  background: var(--rubric-brand);
+  color: #fff;
+  padding: 0.42rem 0.75rem;
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+}
+
+.rubric-print-brand-row--accent {
+  background: var(--rubric-accent);
+  color: #fff;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.rubric-print-brand--compact {
+  background: linear-gradient(
+    90deg,
+    var(--rubric-brand) 0%,
+    var(--rubric-brand) 38%,
+    var(--rubric-accent) 38%,
+    var(--rubric-accent) 100%
+  );
+  color: #fff;
+  padding: 0.32rem 0.65rem;
+  margin-bottom: 0.45rem;
+  border-radius: 3px;
+  font-size: 0.62rem;
+  line-height: 1.35;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.rubric-print-brand-compact-inner strong {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+@media screen {
+  .rubric-print-only {
+    display: none !important;
+  }
+}
+
+@media print {
+  .rubric-screen-only {
+    display: none !important;
+  }
+  .rubric-print-only {
+    display: block !important;
+  }
+}
+
+@page {
+  size: portrait;
+  margin: 0.45in;
+}
+
+@page rubric-summary {
+  size: landscape;
+  margin: 0.35in;
+}
+
+.rubric-print-summary {
+  page: rubric-summary;
+  page-break-after: always;
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  color: #111;
+}
+
+.rubric-print-summary-hd {
+  margin-bottom: 0.35rem;
+}
+
+.rubric-print-summary .rubric-print-title,
+.rubric-print-descriptors .rubric-print-title {
+  font-size: 1rem;
+  margin: 0 0 0.2rem;
+  font-weight: 700;
+  color: var(--rubric-accent);
+}
+
+.rubric-print-sub {
+  font-size: 0.65rem;
+  color: #374151;
+  margin: 0 0 0.35rem;
+}
+
+.rubric-print-sub code {
+  color: var(--rubric-brand-dark);
+  background: var(--rubric-accent-muted);
+  padding: 0.05rem 0.25rem;
+  border-radius: 2px;
+  font-size: 0.9em;
+}
+
+.rubric-print-meta {
+  margin-bottom: 0.35rem;
+}
+
+.rubric-print-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 1rem;
+  font-size: 0.7rem;
+}
+
+.rubric-print-meta-item {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+.rubric-print-meta-label {
+  font-weight: 700;
+  flex-shrink: 0;
+  color: var(--rubric-accent);
+}
+
+.rubric-print-meta-line {
+  flex: 1;
+  border-bottom: 1px solid var(--rubric-accent);
+  min-height: 1em;
+}
+
+.rubric-print-meta-note {
+  font-size: 0.58rem;
+  color: #4b5563;
+  margin: 0.25rem 0 0;
+  font-style: italic;
+}
+
+.rubric-print-scale-legend {
+  font-size: 0.62rem;
+  margin: 0.25rem 0 0.35rem;
+  padding: 0.25rem 0.4rem;
+  background: var(--rubric-accent-muted);
+  border-left: 4px solid var(--rubric-brand);
+  border-radius: 0 3px 3px 0;
+}
+
+.rubric-print-scale-legend strong {
+  color: var(--rubric-brand-dark);
+}
+
+.rubric-print-matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.62rem;
+  table-layout: fixed;
+}
+
+.rubric-print-matrix--compact {
+  font-size: 0.52rem;
+}
+
+.rubric-print-matrix th,
+.rubric-print-matrix td {
+  border: 1px solid var(--rubric-accent-border);
+  padding: 0.12rem 0.2rem;
+  vertical-align: top;
+  text-align: left;
+}
+
+.rubric-print-matrix thead tr:first-child th {
+  background: var(--rubric-accent);
+  color: #fff;
+  border-color: var(--rubric-accent-deep);
+  font-weight: 700;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.rubric-print-matrix thead tr:nth-child(2) th {
+  background: var(--rubric-accent-muted);
+  color: var(--rubric-accent);
+  border-color: var(--rubric-accent-border);
+  font-weight: 700;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.rubric-print-m-h-rating {
+  text-align: center;
+}
+
+.rubric-print-m-lhead {
+  text-align: center;
+  font-weight: 600;
+  width: 8%;
+}
+
+.rubric-print-m-lsub {
+  font-weight: 400;
+  font-size: 0.85em;
+  display: block;
+  line-height: 1.15;
+}
+
+.rubric-print-m-idx {
+  width: 2.2rem;
+  text-align: center;
+}
+
+.rubric-print-m-crit {
+  width: 38%;
+}
+
+.rubric-print-m-rate {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.rubric-print-m-cell {
+  display: inline-block;
+  width: 0.65rem;
+  height: 0.65rem;
+  border: 1px solid var(--rubric-accent);
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+.rubric-print-matrix--compact .rubric-print-m-cell {
+  width: 0.55rem;
+  height: 0.55rem;
+}
+
+.rubric-print-summary-foot {
+  font-size: 0.55rem;
+  color: #4b5563;
+  margin: 0.35rem 0 0;
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--rubric-accent-border);
+}
+
+.rubric-print-descriptors {
+  page: auto;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: #111;
+}
+
+.rubric-print-desc-cover {
+  margin-bottom: 0.5rem;
+  page-break-after: avoid;
+}
+
+.rubric-print-desc-cover .rubric-print-title {
+  font-size: 1.05rem;
+  color: var(--rubric-accent);
+}
+
+.rubric-print-desc-cover p {
+  font-size: 0.72rem;
+  margin: 0.2rem 0 0;
+  color: #374151;
+}
+
+.rubric-print-desc-block {
+  margin-bottom: 0.65rem;
+}
+
+.rubric-print-desc-h2 {
+  font-size: 0.78rem;
+  margin: 0 0 0.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+  page-break-after: avoid;
+  color: var(--rubric-accent-deep);
+  border-left: 4px solid var(--rubric-brand);
+  padding-left: 0.4rem;
+}
+
+.rubric-print-bars {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.62rem;
+}
+
+.rubric-print-bars th,
+.rubric-print-bars td {
+  border: 1px solid #9ca3af;
+  padding: 0.2rem 0.3rem;
+  vertical-align: top;
+  text-align: left;
+}
+
+.rubric-print-bars thead th {
+  background: var(--rubric-accent);
+  color: #fff;
+  border-color: var(--rubric-accent-deep);
+  font-weight: 600;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.rubric-print-bars thead {
+  display: table-header-group;
+}
+
+.rubric-print-bars tr.rubric-print-bars-target {
+  background: #e8f5e9;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.rubric-print-bars td:first-child {
+  width: 1.5rem;
+  text-align: center;
+}
+
+.rubric-print-bars td:nth-child(2) {
+  width: 14%;
+  white-space: nowrap;
+}

@@ -1,0 +1,17 @@
+{
+  "semester": "Spring 2026 (illustrative)",
+  "tips_for_faculty": [
+    {
+      "title": "Connect your LOs to evidence",
+      "body": "Review which ETS subcontent areas your mapped learning objectives support strongest. Small syllabus or rubric tweaks aligned to a growth area can be logged as a closing-the-loop action for next cycle."
+    },
+    {
+      "title": "Use aggregate framing in conversations",
+      "body": "When discussing results with colleagues, keep student performance at program or cohort level unless IR has approved narrower sharing. The full site will enforce role-based views automatically."
+    },
+    {
+      "title": "Document interventions (T2)",
+      "body": "When you change an assignment or unit to address a measured gap, note what was measured (T1), what you changed (T2), and plan the follow-up measure (T3). This feeds Table 5.1 style rollups for the college."
+    }
+  ]
+}

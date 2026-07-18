@@ -1,0 +1,91 @@
+---
+title: "AOL rubric change log"
+subtitle: "Running log — AOL-led updates and committee / UPIC requests"
+author: "Assessment of Learning (working draft)"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+**Location:** This file lives in **`aol_site/`** with the transparency portal. **Rendered HTML:** [`rubric_change_log.html`](rubric_change_log.html) (open via the same local server as other demo pages).
+
+**How to update:** Edit this `.Rmd` (append new entries under *Change log*). Rebuild the HTML from the repo root:
+
+```bash
+Rscript -e 'rmarkdown::render("aol_site/rubric_change_log.Rmd")'
+```
+
+**Record retention:** Prior **Word** masters and PDFs remain in [`../rubrics/`](../rubrics/) (do not delete; add new filenames when superseding). **Web** 5-point drafts remain under `aol_site/` (e.g. `rubric_template_demo.html`, `data/rubric_definitions.json`) — preserve history via git and/or dated copies as needed.
+
+---
+
+## Stable decisions (committee alignment)
+
+These are **current working assumptions** until superseded by a dated entry below.
+
+| Topic | Decision |
+|-------|------------|
+| Scale length | **5-point** competence scale (retained). |
+| Program goal | **≥90%** of students at **Proficient (3) or higher** per criterion (i.e. the actionable threshold is between **2** and **3**). |
+| Legacy artifacts | Keep **existing Word rubrics** and **current web 5-point drafts** for record-keeping; new versions add **new files** or clearly versioned names — do not overwrite history without archiving. |
+
+---
+
+## Change log (newest first)
+
+### 2026-03-25 — BARS expanded to all web rubric types
+
+| Field | Detail |
+|-------|--------|
+| **Change** | **`dimensions[].anchors`** (five behavioral sentences per criterion) added for **written_communication**, **ethics**, **critical_thinking**, **technology**, **graphics_presentation**, **collaboration**, **functional_integration**, and **diversity** in `aol_site/data/rubric_definitions.json` (oral already had anchors). |
+| **Status** | Draft for SME/UPIC review; regenerate embed after edits: `python3 aol_site/scripts/sync_rubric_definitions_embed.py`. |
+
+### 2026-03-25 — Program goal threshold: Proficient (3)
+
+| Field | Detail |
+|-------|--------|
+| **Decision** | **≥90%** of students at **Proficient (3) or higher** per criterion (green highlight and help text on web rubrics point to level **3**). |
+| **Rationale** | Aligns the stated goal with **behaviorally anchored** expectations: the actionable standard is **competent/independent** work on standard tasks, not only foundational performance. |
+| **Files** | `aol_site/js/rubric_template.js` (goal copy + highlight row), `oral_communication_rubric_demo.html`, this log, `docs/Rubric_Web_Template.md`. |
+
+### 2025-03-25 — Behaviorally anchored rating scale (UPIC request)
+
+| Field | Detail |
+|-------|--------|
+| **Requested by** | **Dr. J Robert Field** (UPIC) |
+| **Request** | Define a **behaviorally anchored rating scale** that links each of the **five Likert / competence levels** to **specific behavioral criteria** relevant to **each outcome**, so a rater can **defend** the score assigned to a student. |
+| **Committee context** | Committee **affirms** the **5-point** scale and the **90% goal** at **≥3 (Proficient)**; work needed on **per-outcome behavioral anchors**, not on replacing the scale. |
+| **Owner / implementation** | *Assign:* primary rubric **owner** (e.g. AOL lead + outcome sponsor) and **UPIC** liaison for sign-off. |
+| **Status** | **Open** — design / documentation in progress. |
+| **Artifacts to produce** | Updated rubric text (Word/PDF as required), web mirror as needed, SME review notes. |
+| **Links** | [`rubrics.html`](rubrics.html) · [`rubric_template_demo.html`](rubric_template_demo.html) · repo [`../rubrics/`](../rubrics/) |
+
+---
+
+## Entry template (copy below the line for the next event)
+
+```
+### YYYY-MM-DD — Short title
+
+| Field | Detail |
+|-------|--------|
+| **Requested by** | Name, role (e.g. UPIC, GPIC, department) |
+| **Request** | What should change and why |
+| **Owner** | Who implements / approves |
+| **Status** | Open / In review / Approved / Superseded |
+| **Rubric(s) affected** | e.g. Oral UG, Written, Ethics, … |
+| **Links** | PR, issue, or file paths |
+```
+
+---
+
+Last rendered: `r format(Sys.time(), "%Y-%m-%d %H:%M %Z")`

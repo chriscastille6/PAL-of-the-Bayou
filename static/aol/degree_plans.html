@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- aol-degree-plans-ui:tech-family-dropdown-v3 — if live site lacks this comment, docroot was not updated -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <title>Degree plan maps (Demo) — AOL</title>
+  <link rel="stylesheet" href="css/site.css" />
+  <style>
+    .degree-plan-toolbar { margin: 0.75rem 0 1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+    .degree-plan-toolbar label { font-weight: 600; font-size: 0.92rem; }
+    .degree-plan-toolbar select {
+      font: inherit;
+      font-size: 0.92rem;
+      padding: 0.4rem 0.65rem;
+      border-radius: 6px;
+      border: 1px solid #ced4da;
+      min-width: 16rem;
+      max-width: 100%;
+    }
+    .mermaid-degree-wrap {
+      overflow-x: auto;
+      overflow-y: hidden;
+      background: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1rem;
+      min-height: 280px;
+    }
+    .mermaid-degree-wrap .diagram-loading { color: var(--muted); font-size: 0.9rem; padding: 2rem; text-align: center; }
+    .mermaid-degree-wrap svg { max-width: none; }
+    table.degree-plan-pdf-index { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 0.5rem; }
+    table.degree-plan-pdf-index th,
+    table.degree-plan-pdf-index td { border: 1px solid #dee2e6; padding: 0.4rem 0.55rem; text-align: left; vertical-align: top; }
+    table.degree-plan-pdf-index th { background: #f1f3f5; }
+    table.degree-plan-pdf-index tr:nth-child(even) td { background: #fafbfc; }
+    table.degree-plan-pdf-index code { font-size: 0.85em; }
+    details.degree-pdf-details { margin-top: 0.5rem; }
+    details.degree-pdf-details summary { cursor: pointer; font-weight: 600; color: var(--accent, #1a5276); }
+    /* Tool / skill highlight (Mermaid course nodes) */
+    .degree-tool-strip {
+      margin: 0.75rem 0 0;
+      padding: 0.65rem 0.85rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.88rem;
+    }
+    .degree-tool-strip h3 {
+      margin: 0 0 0.45rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .degree-tool-strip p {
+      margin: 0 0 0.5rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+    .degree-tool-select-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 0.75rem;
+      margin-top: 0.25rem;
+    }
+    .degree-tool-select-row label[for="toolFamilySelect"] {
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+    .degree-tool-select-row select#toolFamilySelect {
+      font: inherit;
+      font-size: 0.88rem;
+      padding: 0.45rem 0.65rem;
+      border-radius: 6px;
+      border: 1px solid #ced4da;
+      min-width: min(100%, 22rem);
+      max-width: 100%;
+      flex: 1 1 16rem;
+      background: #fff;
+    }
+    .degree-tool-clear {
+      font: inherit;
+      font-size: 0.82rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      border: 1px solid #ced4da;
+      background: #fff;
+      cursor: pointer;
+    }
+    .degree-tool-clear:hover { background: #f1f5f9; }
+    .degree-tool-load-error {
+      margin: 0.35rem 0 0.5rem;
+      padding: 0.5rem 0.65rem;
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: #7f1d1d;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 6px;
+    }
+    .mermaid-degree-wrap svg g.node.aol-tool-dim { opacity: 0.28; transition: opacity 0.2s ease; }
+    .mermaid-degree-wrap svg g.node.aol-tool-hit rect,
+    .mermaid-degree-wrap svg g.node.aol-tool-hit polygon,
+    .mermaid-degree-wrap svg g.node.aol-tool-hit circle,
+    .mermaid-degree-wrap svg g.node.aol-tool-hit ellipse {
+      fill: #fef9c3 !important;
+      stroke: #ca8a04 !important;
+      stroke-width: 2px !important;
+    }
+    .mermaid-degree-wrap svg g.node.aol-tool-hit text {
+      fill: #422006 !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-banner">DRAFT — FOR DEMONSTRATION ONLY — Diagrams sync from Advising app; PDFs are supplemental</div>
+  <header class="site-header">
+    <h1>Degree plan maps</h1>
+    <p class="tagline">Curriculum mapping: technology-by-course table (PDF) + prerequisite flowcharts (UPIC-friendly) + diagram tool highlights + catalog PDFs</p>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="governance.html">Governance</a>
+      <a href="rubrics.html">Rubrics</a>
+      <a href="calendar.html">Assessment calendar</a>
+      <a href="degree_plans.html" aria-current="page">Degree plans</a>
+      <a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a>
+      <a href="agenda.html">Committee agenda</a>
+      <a href="minutes.html">Minutes</a>
+      <a href="profiles.html">Profiles</a>
+      <a href="role-leadership.html">Preview: Leadership / accreditation</a>
+    </nav>
+  </header>
+  <main>
+    <section class="card" id="curriculum-mapping">
+      <h2>Curriculum mapping — technology by course</h2>
+      <p style="font-size:0.92rem;line-height:1.5;">
+        The <strong>Tech Table</strong> lists how each course uses specific technologies (tools named, approximate role in the course, proficiency target, and related notes).
+        Use it alongside the <a href="#prerequisite-diagrams">prerequisite diagrams</a> below; the <strong>Highlight courses by technology family</strong> control maps the extract into consolidated tool groups (see <code>data/tech_family_map.json</code>).
+      </p>
+      <p style="margin:0.75rem 0 0;font-size:1rem;">
+        <strong><a href="reference/TechTable.pdf" target="_blank" rel="noopener">Download / view TechTable.pdf</a></strong>
+        <span style="font-size:0.85rem;color:var(--muted);display:block;margin-top:0.35rem;">Static copy in <code>aol_site/reference/TechTable.pdf</code> (update the file in the repo when the master table changes).</span>
+      </p>
+    </section>
+
+    <section class="card" id="prerequisite-diagrams">
+      <h2>Prerequisite diagrams (Mermaid)</h2>
+      <p>
+        <strong>Why this is here:</strong> These diagrams help <strong>steer conversations about changing curricula</strong> — prerequisites, sequencing, and knock-on effects — before anything is finalized. That visibility is <strong>especially useful for UPIC</strong> when undergraduate programs explore revisions. They complement (they do not replace) official degree requirements.
+      </p>
+      <p>
+        These <strong>left-to-right flowcharts</strong> match the <strong>Academic Advising</strong> tool:
+        each <strong>box</strong> is a course; each <strong>arrow</strong> means “must complete before.”
+        Source: <code>Advising/templates/prerequisite_diagram.html</code> (sibling repo under <code>GitHub/Advising</code>).
+        Regenerated into <code>aol_site/js/degree_plan_prerequisite_diagrams.js</code> for this static demo.
+      </p>
+      <p style="font-size:0.88rem;color:var(--muted);margin:0.6rem 0 0;line-height:1.45;">
+        <strong>Accounting (ACCT)</strong> Mermaid edges match the <a href="https://www.nicholls.edu/business/accounting/" target="_blank" rel="noopener">department&rsquo;s published descriptions</a>:
+        <strong>ACCT 323 &rarr; 401</strong>, <strong>ACCT 322 &rarr; 403</strong>, <strong>ACCT 205 &rarr; 407</strong> (catalog also requires 54 earned hours for 407, not drawn).
+        Select <strong>Accounting</strong> above or open <a href="degree_plans.html?plan=acct">this page with <code>?plan=acct</code></a> to view that diagram.
+      </p>
+      <div class="degree-tool-strip" id="toolFilterBarWrap" hidden>
+        <h3>Highlight courses by technology family</h3>
+        <p>
+          Choose a <strong>technology family</strong> (not proficiency or workload text) to highlight matching courses on the diagram. Raw PDF tokens are grouped in <code>data/tech_family_map.json</code>; regenerate the extract with <code>python3 aol_site/scripts/extract_tech_table.py</code> after updating <code>reference/TechTable.pdf</code>.
+        </p>
+        <p id="toolFilterLoadError" class="degree-tool-load-error" role="alert" hidden></p>
+        <div class="degree-tool-select-row">
+          <label for="toolFamilySelect">Technology family</label>
+          <select id="toolFamilySelect" aria-label="Highlight diagram by technology family"></select>
+          <button type="button" class="degree-tool-clear" id="toolFilterClear" hidden>Clear highlight</button>
+        </div>
+      </div>
+      <div class="degree-plan-toolbar">
+        <label for="planSelect">Program / concentration</label>
+        <select id="planSelect" aria-label="Select degree plan diagram">
+          <option value="cis" selected>CIS — Computer Information Systems</option>
+          <option value="mngh">MNGH — Management (HR concentration)</option>
+          <option value="mngt">MNGT — Management</option>
+          <option value="mngm">MNGM — Management (Maritime)</option>
+          <option value="mktg">MKTG — Marketing</option>
+          <option value="mkts">MKTS — Marketing (Professional Sales)</option>
+          <option value="mkta">MKTA — Marketing (Advertising)</option>
+          <option value="acct">Accounting</option>
+          <option value="finc">Finance</option>
+          <option value="bsad">BSAD — Pre-law / electives path (sample)</option>
+        </select>
+      </div>
+      <div class="mermaid-degree-wrap" id="diagramHost">
+        <div class="diagram-loading" id="diagramLoading">Loading diagram…</div>
+      </div>
+      <h3 style="margin-top:1rem;font-size:1rem;">How to read</h3>
+      <ul style="margin:0.35rem 0 0;padding-left:1.25rem;line-height:1.5;font-size:0.9rem;color:var(--muted);">
+        <li><strong>Foundation</strong> → Gen Ed / Pre-Business → Business Core → concentration → <strong>BSAD 490</strong> (capstone)</li>
+        <li><strong>BSAD 490</strong> typically requires FINC 302, MKTG 300, MNGT 301, MNGT 368, QBA 283, and 90 hours (confirm in catalog)</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Official PDF degree plans (supplemental)</h2>
+      <p style="font-size:0.92rem;color:var(--muted);">
+        Static copies from <code>Advising/Degree Plans/</code> — use for catalog-style checks; not a substitute for the registrar.
+      </p>
+      <details class="degree-pdf-details">
+        <summary>Show PDF list</summary>
+        <table class="degree-plan-pdf-index">
+          <thead><tr><th>Description</th><th>File</th></tr></thead>
+          <tbody>
+            <tr><td>BSBA catalog</td><td><a href="reference/degree_plans/BABS-2026-2027-catalog.pdf" target="_blank" rel="noopener"><code>BABS-2026-2027-catalog.pdf</code></a></td></tr>
+            <tr><td>BAPL catalog</td><td><a href="reference/degree_plans/BAPL-2026-2027-catalog.pdf" target="_blank" rel="noopener"><code>BAPL-2026-2027-catalog.pdf</code></a></td></tr>
+            <tr><td>CISY catalog</td><td><a href="reference/degree_plans/CISY-2026-2027-catalog.pdf" target="_blank" rel="noopener"><code>CISY-2026-2027-catalog.pdf</code></a></td></tr>
+            <tr><td>Accounting</td><td><a href="reference/degree_plans/Degree-Plan-Accounting.2025-2026.pdf" target="_blank" rel="noopener"><code>Degree-Plan-Accounting.2025-2026.pdf</code></a></td></tr>
+            <tr><td>Finance</td><td><a href="reference/degree_plans/Degree-Plan-Finance.2025-2026-1.pdf" target="_blank" rel="noopener"><code>Degree-Plan-Finance.2025-2026-1.pdf</code></a></td></tr>
+            <tr><td>Marketing / MNGH / MKTS / MKTA / etc.</td><td><a href="reference/degree_plans/" target="_blank" rel="noopener"><code>reference/degree_plans/</code></a> (folder)</td></tr>
+          </tbody>
+        </table>
+      </details>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>Mermaid: <code>js/degree_plan_prerequisite_diagrams.js</code> · Highlights: <code>js/degree_plan_tool_highlight.js</code> + <code>data/tech_table_extracted.json</code> + <code>data/tech_family_map.json</code> · Tech table PDF: <code>reference/TechTable.pdf</code> · Degree-plan PDFs: <code>reference/degree_plans/</code></p>
+    <p class="site-footer-strategic" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;">Strategic plan (demo): COB <strong>Goal 2</strong> — <a href="index.html">Home</a> · <a href="agenda.html#announcements">Committee agenda</a></p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script src="js/degree_plan_prerequisite_diagrams.js?v=20260328acct"></script>
+  <script src="js/degree_plan_tool_highlight.js?v=20260328c"></script>
+  <script>
+    (function () {
+      var host = document.getElementById('diagramHost');
+      var loading = document.getElementById('diagramLoading');
+      var select = document.getElementById('planSelect');
+      var toolFamilySelect = document.getElementById('toolFamilySelect');
+      var toolWrap = document.getElementById('toolFilterBarWrap');
+      var toolClear = document.getElementById('toolFilterClear');
+      var toolLoadErr = document.getElementById('toolFilterLoadError');
+      var hl = window.AOLDegreePlanToolHighlight;
+      var toolConfig = { tools: [] };
+      var CACHE_TAG = '20260328c';
+      var TECH_EXTRACT_URL = new URL('data/tech_table_extracted.json?v=' + CACHE_TAG, window.location.href).href;
+      var TECH_FAMILY_MAP_URL = new URL('data/tech_family_map.json?v=' + CACHE_TAG, window.location.href).href;
+
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'neutral',
+        flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
+        themeVariables: { fontFamily: 'system-ui, Segoe UI, sans-serif', fontSize: '13px' }
+      });
+
+      function activeToolIds() {
+        if (!toolFamilySelect || !toolFamilySelect.value) return [];
+        return [toolFamilySelect.value];
+      }
+
+      function applyHighlightsToSvg() {
+        var svg = host.querySelector('svg');
+        if (!svg || !hl) return;
+        hl.apply(svg, toolConfig, activeToolIds());
+        if (toolClear) toolClear.hidden = activeToolIds().length === 0;
+      }
+
+      function buildFamilySelect(cfg, options) {
+        options = options || {};
+        if (!toolFamilySelect || !toolWrap) return;
+        toolFamilySelect.innerHTML = '';
+        var optNone = document.createElement('option');
+        optNone.value = '';
+        optNone.textContent = 'No highlight';
+        toolFamilySelect.appendChild(optNone);
+
+        var prevGroup = null;
+        var og = null;
+        (cfg.tools || []).forEach(function (t) {
+          var g = t.group || 'Other';
+          if (g !== prevGroup) {
+            og = document.createElement('optgroup');
+            og.label = g;
+            toolFamilySelect.appendChild(og);
+            prevGroup = g;
+          }
+          var o = document.createElement('option');
+          o.value = t.id;
+          o.textContent = (t.label || t.id) + ' (' + (t.courses ? t.courses.length : 0) + ' courses)';
+          o.title = t.courses && t.courses.length ? t.courses.join(', ') : '';
+          og.appendChild(o);
+        });
+
+        toolFamilySelect.onchange = applyHighlightsToSvg;
+
+        var n = (cfg.tools || []).length;
+        var showStrip = n > 0 || options.loadFailed;
+        toolWrap.hidden = !showStrip;
+      }
+
+      if (toolClear) {
+        toolClear.addEventListener('click', function () {
+          if (toolFamilySelect) toolFamilySelect.value = '';
+          applyHighlightsToSvg();
+        });
+      }
+
+      async function render(key) {
+        var diagrams = window.AOL_DEGREE_PLAN_DIAGRAMS;
+        if (!diagrams || !diagrams[key]) {
+          host.innerHTML = '<p class="diagram-loading">No diagram for <code>' + key + '</code>.</p>';
+          return;
+        }
+        if (loading) loading.textContent = 'Rendering…';
+        try {
+          var id = 'aol-deg-' + key + '-' + Date.now();
+          var out = await mermaid.render(id, diagrams[key]);
+          host.innerHTML = out.svg;
+          if (out.bindFunctions) out.bindFunctions(host);
+          applyHighlightsToSvg();
+        } catch (e) {
+          console.error(e);
+          host.innerHTML = '<p class="diagram-loading" style="color:#b02a37;">Could not render diagram: ' + (e.message || String(e)) + '</p>';
+        }
+      }
+
+      select.addEventListener('change', function () {
+        render(select.value);
+      });
+
+      async function boot() {
+        var loadFailed = false;
+        if (toolLoadErr) {
+          toolLoadErr.hidden = true;
+          toolLoadErr.textContent = '';
+        }
+        if (hl && hl.loadTechHighlightConsolidated) {
+          try {
+            toolConfig = await hl.loadTechHighlightConsolidated(TECH_EXTRACT_URL, TECH_FAMILY_MAP_URL);
+          } catch (e) {
+            loadFailed = true;
+            toolConfig = { tools: [] };
+            if (toolLoadErr) {
+              toolLoadErr.hidden = false;
+              toolLoadErr.textContent =
+                'Could not load the Tech Table extract or family map. Try a hard refresh (Cmd+Shift+R / Ctrl+Shift+R). ' +
+                'Expected: data/tech_table_extracted.json and data/tech_family_map.json next to this page. ' +
+                '(' + (e && e.message ? e.message : String(e)) + ')';
+            }
+          }
+        }
+        buildFamilySelect(toolConfig, { loadFailed: loadFailed });
+        var qp = new URLSearchParams(window.location.search);
+        var planParam = qp.get('plan');
+        if (planParam && select.querySelector('option[value="' + planParam + '"]')) {
+          select.value = planParam;
+        }
+        await render(select.value);
+      }
+      boot();
+    })();
+  </script>
+</body>
+</html>

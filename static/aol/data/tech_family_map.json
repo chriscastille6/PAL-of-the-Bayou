@@ -1,0 +1,222 @@
+{
+  "version": 2,
+  "groupOrder": [
+    "Microsoft Office",
+    "Google Workspace",
+    "Data, statistics, and code",
+    "Industry & career data",
+    "AI, classroom, marketing, and simulations",
+    "Unmapped or miscellaneous"
+  ],
+  "description": "Maps raw TechTable tokens to technology families for diagram highlighting. First matching family wins. Prefer named products over vague phrases; statistical methods (ANOVA, regression as a skill) are ignored — not technology.",
+  "ignoreTokenPatterns": [
+    "(?i)^[\\d.]+%\\s+quantitative",
+    "(?i)^reports?$",
+    "(?i)^big$",
+    "(?i)^ANOVAs?$",
+    "(?i)^Regressions?$",
+    "(?i)^Regression$",
+    "(?i)^Data\\s+Visualization$",
+    "(?i)^Visualizing\\s+Data$"
+  ],
+  "families": [
+    {
+      "id": "s_and_p_capital",
+      "group": "Industry & career data",
+      "label": "S&P Capital IQ / market data (S&P, FDIC, etc.)",
+      "patterns": [
+        "(?i)S\\s*&\\s*P",
+        "(?i)S & P",
+        "(?i)Capital\\s+IQ",
+        "(?i)\\bFDIC\\b"
+      ]
+    },
+    {
+      "id": "onet_labor_data",
+      "group": "Industry & career data",
+      "label": "O*NET / labor market databases",
+      "patterns": [
+        "(?i)ONET",
+        "(?i)Onet"
+      ]
+    },
+    {
+      "id": "google_sheets",
+      "group": "Google Workspace",
+      "label": "Google Sheets",
+      "patterns": [
+        "(?i)Google\\s*Sheets?",
+        "(?i)Google\\s+excel\\b"
+      ]
+    },
+    {
+      "id": "google_docs",
+      "group": "Google Workspace",
+      "label": "Google Docs",
+      "patterns": [
+        "(?i)Google\\s+Docs\\b"
+      ]
+    },
+    {
+      "id": "google_slides",
+      "group": "Google Workspace",
+      "label": "Google Slides",
+      "patterns": [
+        "(?i)Google\\s+Slides\\b"
+      ]
+    },
+    {
+      "id": "microsoft_excel",
+      "group": "Microsoft Office",
+      "label": "Microsoft Excel",
+      "patterns": [
+        "(?i)\\bExcel\\b",
+        "(?i)PivotTable",
+        "(?i)pivot\\s*tables?",
+        "(?i)Excel\\s+stats",
+        "(?i)\\bSpreadsheet"
+      ]
+    },
+    {
+      "id": "microsoft_word",
+      "group": "Microsoft Office",
+      "label": "Microsoft Word",
+      "patterns": [
+        "(?i)\\bWord\\b"
+      ]
+    },
+    {
+      "id": "microsoft_powerpoint",
+      "group": "Microsoft Office",
+      "label": "Microsoft PowerPoint",
+      "patterns": [
+        "(?i)Power\\s*Point",
+        "(?i)PowerPt\\b",
+        "(?i)\\bPPT\\b",
+        "(?i)\\bpowerpoint\\b"
+      ]
+    },
+    {
+      "id": "microsoft_office_suite",
+      "group": "Microsoft Office",
+      "label": "Microsoft Office (suite-level)",
+      "patterns": [
+        "(?i)MS\\s+Office"
+      ]
+    },
+    {
+      "id": "google_workspace_other",
+      "group": "Google Workspace",
+      "label": "Google Drive / Sites / Apps (other Google)",
+      "patterns": [
+        "(?i)Google\\s+Drive",
+        "(?i)Google\\s+Sites",
+        "(?i)Google\\s+Apps",
+        "(?i)^Google$"
+      ]
+    },
+    {
+      "id": "sql_and_databases",
+      "group": "Data, statistics, and code",
+      "label": "SQL / databases (incl. MS Access)",
+      "patterns": [
+        "(?i)\\bSQL\\b",
+        "(?i)MS\\s+Access",
+        "(?i)^Access$"
+      ]
+    },
+    {
+      "id": "r_spss_stats",
+      "group": "Data, statistics, and code",
+      "label": "R or SPSS",
+      "patterns": [
+        "(?i)^R$",
+        "(?i)\\bSPSS\\b",
+        "(?i)\\bRStudio\\b"
+      ]
+    },
+    {
+      "id": "python_and_notebooks",
+      "group": "Data, statistics, and code",
+      "label": "Python (incl. Colab / notebooks)",
+      "patterns": [
+        "(?i)\\bPython\\b",
+        "(?i)Colab",
+        "(?i)Jupyter"
+      ]
+    },
+    {
+      "id": "tableau_and_bi",
+      "group": "Data, statistics, and code",
+      "label": "Tableau / Crystal Ball",
+      "patterns": [
+        "(?i)\\bTableau\\b",
+        "(?i)Crystal\\s*Ball"
+      ]
+    },
+    {
+      "id": "web_and_automation",
+      "group": "Data, statistics, and code",
+      "label": "HTML, Visual Basic, CLI, site builders",
+      "patterns": [
+        "(?i)\\bHTML\\b",
+        "(?i)Visual\\s+Basic",
+        "(?i)CMD\\s+Prompt",
+        "(?i)Weebly",
+        "(?i)\\bWix\\b"
+      ]
+    },
+    {
+      "id": "generative_ai",
+      "group": "AI, classroom, marketing, and simulations",
+      "label": "Generative AI tools (ChatGPT, Packback, Gemini, etc.)",
+      "patterns": [
+        "(?i)ChatGPT",
+        "(?i)ChaptGTP",
+        "(?i)Generative",
+        "(?i)Packback",
+        "(?i)Genmi",
+        "(?i)Gemni",
+        "(?i)^AI$"
+      ]
+    },
+    {
+      "id": "marketing_social_creative",
+      "group": "AI, classroom, marketing, and simulations",
+      "label": "Marketing / social / creative tools",
+      "patterns": [
+        "(?i)Instagram",
+        "(?i)TikTok",
+        "(?i)\\bCanva\\b",
+        "(?i)Constant\\s+Contact"
+      ]
+    },
+    {
+      "id": "accounting_tax_software",
+      "group": "Industry & career data",
+      "label": "Accounting / tax software (QuickBooks, CCH, ProConnect)",
+      "patterns": [
+        "(?i)Quickbooks",
+        "(?i)\\bCCH\\b",
+        "(?i)ProConnect"
+      ]
+    },
+    {
+      "id": "simulations",
+      "group": "AI, classroom, marketing, and simulations",
+      "label": "Course simulations (e.g. Simternship)",
+      "patterns": [
+        "(?i)Simternship"
+      ]
+    },
+    {
+      "id": "classroom_response",
+      "group": "AI, classroom, marketing, and simulations",
+      "label": "Classroom / polling (iClicker, etc.)",
+      "patterns": [
+        "(?i)iClicker",
+        "(?i)\\bIDEA\\b"
+      ]
+    }
+  ]
+}

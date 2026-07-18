@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How K / S / A “coverage” from syllabi works (explainer) — AOL</title>
+  <link rel="stylesheet" href="css/site.css" />
+  <style>
+    .mermaid-wrap {
+      background: #fff;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1rem 1rem 0.5rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+    .mermaid-wrap .mermaid {
+      min-height: 200px;
+    }
+    .diagram-caption {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 0.5rem 0 0;
+    }
+    .explainer-list {
+      margin: 0.5rem 0 0;
+      padding-left: 1.25rem;
+      line-height: 1.55;
+    }
+    .explainer-list li {
+      margin-bottom: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-banner">EXPLAINER — METHODOLOGY SCHEMATIC — NOT LIVE DATA</div>
+  <header class="site-header">
+    <h1>How syllabus-based K / S / A coverage is computed</h1>
+    <p class="tagline">Mermaid view of inputs, similarity, roll-up, and the policy choices that turn scores into “percent covered”</p>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="governance.html">Governance</a>
+      <a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a>
+      <a href="demo_hr_onet_gap_visualizations.html">HR viz demos</a>
+      <a href="ksao_coverage_from_syllabi_explainer.html" aria-current="page">K/S/A coverage flow</a>
+      <a href="minutes.html">Minutes</a>
+    </nav>
+  </header>
+  <main>
+    <section class="card">
+      <h2>What this diagram shows</h2>
+      <p>
+        The repository’s Syllabus-to-O*NET–style path gives <strong>similarities</strong> (e.g. cosine between embedded learning-objective text and O*NET <strong>task</strong> lines).
+        A <strong>percentage of Knowledge, Skills, or Abilities “covered”</strong> is <strong>not</strong> a single built-in field: it is a
+        <strong>derived metric</strong> after you fix (1) how tasks link to K/S/A, (2) a similarity cutoff, and (3) what counts as the denominator
+        (full O*NET lists vs occupation-important subsets — e.g. <strong>HR Specialist</strong> 13-1071.00 once your committee approves that target).
+      </p>
+      <ul class="explainer-list">
+        <li><strong>Repo touchpoints:</strong> <code>semantic_similarity_mapper.py</code>, <code>compare_lo_onet_mapping_methods.py</code>, <code>docs/Syllabus_Occupation_KSAO_Stack.md</code>, optional <code>occupation_ksao_layer.py</code> (O*NET Web Services reference profile).</li>
+        <li><strong>Separate path:</strong> <code>lo_task_ksao_mapper.py</code> counts inferred K/S/A per LO from linked tasks; that is a <em>count</em>, not automatically “% of 33 knowledges.”</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>1. End-to-end data flow</h2>
+      <p>From concentration syllabi to committee-facing percentages (conceptual).</p>
+      <div class="mermaid-wrap">
+        <pre class="mermaid">
+flowchart TD
+  subgraph inputs [Inputs]
+    SYL[HR concentration syllabi]
+    LO[Learning objectives extracted]
+    ONETT[O*NET task statement corpus]
+    ONETX[Optional task to K S A crosswalk tables]
+    REF[Optional target SOC reference e.g. 13-1071 HR Specialist]
+  end
+
+  SYL --> LO
+  LO --> SEG[Optional sentence split and boilerplate filter]
+  SEG --> EMB[Embed LO text SBERT style]
+  ONETT --> EMBT[Embed task lines]
+  EMB --> SIM[Cosine similarity each LO span vs each task]
+  EMBT --> SIM
+  SIM --> POOL[Pool or top k tasks per LO]
+  POOL --> ROLL[Per task aggregate max or mean similarity across LOs]
+  ROLL --> LINK[Map tasks to Knowledge Skill Ability elements]
+  ONETX --> LINK
+  LINK --> ELEM[Per K S A element take max similarity over linked tasks]
+  subgraph policy [Policy layer you define]
+    TAU[Cutoff tau on similarity]
+    DEN[Denominator full taxonomy vs SOC important subset from REF]
+  end
+  REF --> DEN
+  ELEM --> TAU
+  TAU --> COUNT[Count elements at or above tau]
+  DEN --> PCT[Percent K percent S percent A]
+  COUNT --> PCT
+  PCT --> OUT[Tables charts gap narrative for governance]
+        </pre>
+      </div>
+      <p class="diagram-caption">
+        Implementation detail: the “task → K/S/A” step may use official O*NET relational files or occupation-level endpoints; the diagram is logic, not a single script name.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>2. Numerator and denominator</h2>
+      <p>Why two committees can get different “%K” from the same syllabi: they chose different rules.</p>
+      <div class="mermaid-wrap">
+        <pre class="mermaid">
+flowchart LR
+  subgraph N [Numerator]
+    A[For each K S A element]
+    B[Strength equals max similarity across concentration LOs and linked tasks]
+    C[Met if strength is at least tau]
+    A --> B --> C
+  end
+  subgraph D [Denominator]
+    E[Option A: all elements in category]
+    F[Option B: elements occupation rates important for approved SOC]
+    E --- G[Pick one and document]
+    F --- G
+  end
+  C --> R[Divide met count by denominator count]
+  G --> R
+  R --> H[Report with footnote on tau SOC and task pool]
+        </pre>
+      </div>
+      <p class="diagram-caption">
+        <strong>HR Specialist approval</strong> means committing to use 13-1071.00 (alone or blended) when defining Option B and when interpreting gaps.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>3. Where ETS fits (parallel track)</h2>
+      <p>Exam performance does not replace the similarity pipeline; it answers a different question.</p>
+      <div class="mermaid-wrap">
+        <pre class="mermaid">
+flowchart TD
+  subgraph text [Curriculum text track]
+    T1[Syllabus LO emphasis]
+    T2[O*NET alignment and percent K S A]
+    T1 --> T2
+  end
+  subgraph exam [Direct standardized evidence]
+    E1[ETS subscores by domain]
+    E2[Aggregate for concentrators IR rules]
+    E1 --> E2
+  end
+  T2 --> JUD[Holistic gap judgment]
+  E2 --> JUD
+  JUD --> PIC[UPIC GPIC curriculum decisions]
+        </pre>
+      </div>
+      <p class="diagram-caption">Same framing as <a href="governance.html#gap-holistic">Governance — holistic gap judgment</a>.</p>
+    </section>
+
+    <section class="card">
+      <h2>Related pages</h2>
+      <ul class="explainer-list">
+        <li><a href="demo_hr_onet_gap_visualizations.html">HR × O*NET visualization mocks</a> (UI only; fake numbers)</li>
+        <li><a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a></li>
+        <li><a href="../docs/Syllabus_Occupation_KSAO_Stack.md"><code>docs/Syllabus_Occupation_KSAO_Stack.md</code></a></li>
+      </ul>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>Explainer only — <a href="index.html">Home</a></p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: "neutral",
+      securityLevel: "loose",
+      themeVariables: {
+        fontFamily: "system-ui, Segoe UI, sans-serif",
+        fontSize: "15px"
+      },
+      flowchart: { useMaxWidth: true, htmlLabels: true }
+    });
+  </script>
+</body>
+</html>

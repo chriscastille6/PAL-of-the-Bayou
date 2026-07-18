@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oral communication rubric (demo UI)</title>
+  <link rel="stylesheet" href="css/site.css" />
+  <link rel="stylesheet" href="css/oral_rubric.css" />
+</head>
+<body>
+  <div class="demo-banner">DEMO UI ONLY — NO DATA IS SAVED — INTERNAL SERVER APP WILL USE SSO + HASHED IDS + STORAGE</div>
+  <div class="oral-rubric-page">
+    <div class="no-print print-rubric-toolbar print-rubric-toolbar--pdf">
+      <div class="print-rubric-toolbar-inner">
+        <button type="button" class="btn-primary" onclick="printRubricForPdf()">Download PDF (written ratings)</button>
+        <p class="print-rubric-hint">
+          Opens your browser’s print dialog — choose <strong>Save as PDF</strong>. The competence scale expands first so the PDF includes full level descriptions for offline grading.
+        </p>
+      </div>
+    </div>
+    <p class="no-print" style="margin:0 0 1rem;"><a href="rubrics.html">← Rubrics</a> · <a href="index.html">Home</a> · <a href="agenda.html">Committee agenda</a> · <a href="minutes.html">Minutes</a> · <a href="../docs/Oral_Communication_Rubric_Electronic_Spec.md">Full spec (Markdown)</a> · <a href="rubric_template_demo.html?r=oral_communication"><strong>BARS version</strong></a> (per-criterion behavioral anchors from JSON)</p>
+
+    <div class="warn-ferpa">
+      <strong>FERPA &amp; transparency.</strong> Qualitative comments may be shared with the <strong>student</strong>, <strong>AOL/program</strong>, and a <strong>Canvas</strong> copy. Do not include names or identifying details about <em>other</em> students or third parties. Production tool will use <strong>salted pseudonyms</strong> for analytics exports; instructor UI still identifies the student being rated (legitimate educational access).
+    </div>
+
+    <div class="card-rubric">
+      <h1>Oral communication — rubric (5-point competence)</h1>
+      <p style="color:#6b7280;font-size:0.9rem;margin-top:0;">Short labels on buttons; open <strong>Competence scale (1–5)</strong> below for full definitions. See <code>docs/Oral_Communication_Rubric_Electronic_Spec.md</code> for pairing (self-report vs instructor), Canvas backup, and issues.</p>
+
+      <div class="role-pick no-print">
+        <span><strong>Mode (demo):</strong></span>
+        <label><input type="radio" name="role" value="student" checked /> Student self-report</label>
+        <label><input type="radio" name="role" value="instructor" /> Instructor course rating</label>
+      </div>
+
+      <details class="scale-help">
+        <summary>Competence scale (1–5) — full descriptions</summary>
+        <p class="scale-illustrative-note">The <strong>Novice → Exceptional</strong> labels describe <strong>general competence</strong> on one shared scale across criteria. On this demo they are shown <strong>for illustrative purposes</strong> (layout, review, print-to-PDF); official wording and any program-specific rules remain in the approved rubric masters.</p>
+        <p class="scale-target-note"><strong>Program goal:</strong> At least <strong>90%</strong> of students should meet each criterion at the <strong>Proficient</strong> level (3) or higher.</p>
+        <table>
+          <thead><tr><th>#</th><th>Label</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Novice</td><td>Not competent. Lacks basic knowledge or skills. Requires constant supervision and significant guidance for simple tasks.</td></tr>
+            <tr><td>2</td><td>Learner</td><td>Little competence. Foundational knowledge; lacks practical experience. Routine tasks need frequent assistance.</td></tr>
+            <tr class="scale-row-target"><td>3</td><td>Proficient</td><td>Competent. Works independently on standard tasks; solves common problems; meets expected requirements.</td></tr>
+            <tr><td>4</td><td>Advanced</td><td>Highly competent. Handles complex, non-routine situations; often a resource for others.</td></tr>
+            <tr><td>5</td><td>Exceptional</td><td>Expert/mastery. Recognized authority amongst peers; innovates, optimizes, mentors others.</td></tr>
+          </tbody>
+        </table>
+      </details>
+    </div>
+
+    <!-- Items: name attributes oral-1 .. oral-5 for demo -->
+    <div class="card-rubric">
+      <h2 style="display:flex;align-items:center;"><span class="item-num">1</span> Content</h2>
+      <ul class="criterion-list">
+        <li>Main purpose of the assignment is clearly addressed.</li>
+        <li>Major topics / points are covered.</li>
+        <li>Supporting material is specific, accurate, and relevant.</li>
+      </ul>
+      <div class="likert-scale" role="radiogroup" aria-label="Content rating">
+        <div class="likert-option"><input type="radio" id="c1-1" name="oral-1" value="1" /><label for="c1-1"><div class="font-semibold">1</div><div class="text-xs text-gray-600">Novice</div></label></div>
+        <div class="likert-option"><input type="radio" id="c1-2" name="oral-1" value="2" /><label for="c1-2"><div class="font-semibold">2</div><div class="text-xs text-gray-600">Learner</div></label></div>
+        <div class="likert-option"><input type="radio" id="c1-3" name="oral-1" value="3" /><label for="c1-3"><div class="font-semibold">3</div><div class="text-xs text-gray-600">Proficient</div></label></div>
+        <div class="likert-option"><input type="radio" id="c1-4" name="oral-1" value="4" /><label for="c1-4"><div class="font-semibold">4</div><div class="text-xs text-gray-600">Advanced</div></label></div>
+        <div class="likert-option"><input type="radio" id="c1-5" name="oral-1" value="5" /><label for="c1-5"><div class="font-semibold">5</div><div class="text-xs text-gray-600">Exceptional</div></label></div>
+      </div>
+      <div class="criterion-comment-wrap">
+        <label class="criterion-comment-label" for="oral-comment-1">Comment for this criterion <span class="text-muted">(optional)</span></label>
+        <textarea class="criterion-comment" id="oral-comment-1" name="oral-comment-1" rows="3" placeholder="Brief notes for Content — avoid identifying others." aria-label="Comment for Content"></textarea>
+      </div>
+    </div>
+
+    <div class="card-rubric">
+      <h2 style="display:flex;align-items:center;"><span class="item-num">2</span> Organization</h2>
+      <ul class="criterion-list">
+        <li>Clear opening / introduction.</li>
+        <li>Ideas flow logically with effective transitions.</li>
+        <li>Clear closing / conclusion.</li>
+      </ul>
+      <div class="likert-scale" role="radiogroup" aria-label="Organization rating">
+        <div class="likert-option"><input type="radio" id="c2-1" name="oral-2" value="1" /><label for="c2-1"><div class="font-semibold">1</div><div class="text-xs text-gray-600">Novice</div></label></div>
+        <div class="likert-option"><input type="radio" id="c2-2" name="oral-2" value="2" /><label for="c2-2"><div class="font-semibold">2</div><div class="text-xs text-gray-600">Learner</div></label></div>
+        <div class="likert-option"><input type="radio" id="c2-3" name="oral-2" value="3" /><label for="c2-3"><div class="font-semibold">3</div><div class="text-xs text-gray-600">Proficient</div></label></div>
+        <div class="likert-option"><input type="radio" id="c2-4" name="oral-2" value="4" /><label for="c2-4"><div class="font-semibold">4</div><div class="text-xs text-gray-600">Advanced</div></label></div>
+        <div class="likert-option"><input type="radio" id="c2-5" name="oral-2" value="5" /><label for="c2-5"><div class="font-semibold">5</div><div class="text-xs text-gray-600">Exceptional</div></label></div>
+      </div>
+      <div class="criterion-comment-wrap">
+        <label class="criterion-comment-label" for="oral-comment-2">Comment for this criterion <span class="text-muted">(optional)</span></label>
+        <textarea class="criterion-comment" id="oral-comment-2" name="oral-comment-2" rows="3" placeholder="Brief notes for Organization — avoid identifying others." aria-label="Comment for Organization"></textarea>
+      </div>
+    </div>
+
+    <div class="card-rubric">
+      <h2 style="display:flex;align-items:center;"><span class="item-num">3</span> Delivery</h2>
+      <ul class="criterion-list">
+        <li>Clear, understandable speech; appropriate pace.</li>
+        <li>Effective vocal variety; minimal distracting filler.</li>
+        <li>Listeners can follow without undue effort.</li>
+      </ul>
+      <div class="likert-scale" role="radiogroup" aria-label="Delivery rating">
+        <div class="likert-option"><input type="radio" id="c3-1" name="oral-3" value="1" /><label for="c3-1"><div class="font-semibold">1</div><div class="text-xs text-gray-600">Novice</div></label></div>
+        <div class="likert-option"><input type="radio" id="c3-2" name="oral-3" value="2" /><label for="c3-2"><div class="font-semibold">2</div><div class="text-xs text-gray-600">Learner</div></label></div>
+        <div class="likert-option"><input type="radio" id="c3-3" name="oral-3" value="3" /><label for="c3-3"><div class="font-semibold">3</div><div class="text-xs text-gray-600">Proficient</div></label></div>
+        <div class="likert-option"><input type="radio" id="c3-4" name="oral-3" value="4" /><label for="c3-4"><div class="font-semibold">4</div><div class="text-xs text-gray-600">Advanced</div></label></div>
+        <div class="likert-option"><input type="radio" id="c3-5" name="oral-3" value="5" /><label for="c3-5"><div class="font-semibold">5</div><div class="text-xs text-gray-600">Exceptional</div></label></div>
+      </div>
+      <div class="criterion-comment-wrap">
+        <label class="criterion-comment-label" for="oral-comment-3">Comment for this criterion <span class="text-muted">(optional)</span></label>
+        <textarea class="criterion-comment" id="oral-comment-3" name="oral-comment-3" rows="3" placeholder="Brief notes for Delivery — avoid identifying others." aria-label="Comment for Delivery"></textarea>
+      </div>
+    </div>
+
+    <div class="card-rubric">
+      <h2 style="display:flex;align-items:center;"><span class="item-num">4</span> Tone &amp; professionalism</h2>
+      <ul class="criterion-list">
+        <li>Audience-centered; purpose is clear.</li>
+        <li>Language is positive and appropriate.</li>
+        <li>Free from biased or irrelevant references.</li>
+      </ul>
+      <div class="likert-scale" role="radiogroup" aria-label="Tone rating">
+        <div class="likert-option"><input type="radio" id="c4-1" name="oral-4" value="1" /><label for="c4-1"><div class="font-semibold">1</div><div class="text-xs text-gray-600">Novice</div></label></div>
+        <div class="likert-option"><input type="radio" id="c4-2" name="oral-4" value="2" /><label for="c4-2"><div class="font-semibold">2</div><div class="text-xs text-gray-600">Learner</div></label></div>
+        <div class="likert-option"><input type="radio" id="c4-3" name="oral-4" value="3" /><label for="c4-3"><div class="font-semibold">3</div><div class="text-xs text-gray-600">Proficient</div></label></div>
+        <div class="likert-option"><input type="radio" id="c4-4" name="oral-4" value="4" /><label for="c4-4"><div class="font-semibold">4</div><div class="text-xs text-gray-600">Advanced</div></label></div>
+        <div class="likert-option"><input type="radio" id="c4-5" name="oral-4" value="5" /><label for="c4-5"><div class="font-semibold">5</div><div class="text-xs text-gray-600">Exceptional</div></label></div>
+      </div>
+      <div class="criterion-comment-wrap">
+        <label class="criterion-comment-label" for="oral-comment-4">Comment for this criterion <span class="text-muted">(optional)</span></label>
+        <textarea class="criterion-comment" id="oral-comment-4" name="oral-comment-4" rows="3" placeholder="Brief notes for Tone &amp; professionalism — avoid identifying others." aria-label="Comment for Tone and professionalism"></textarea>
+      </div>
+    </div>
+
+    <div class="card-rubric">
+      <h2 style="display:flex;align-items:center;"><span class="item-num">5</span> Language &amp; mechanics</h2>
+      <ul class="criterion-list">
+        <li>Grammar, usage, and pronunciation support clarity (spoken Standard English where appropriate).</li>
+        <li>Free of distracting errors.</li>
+      </ul>
+      <div class="likert-scale" role="radiogroup" aria-label="Language rating">
+        <div class="likert-option"><input type="radio" id="c5-1" name="oral-5" value="1" /><label for="c5-1"><div class="font-semibold">1</div><div class="text-xs text-gray-600">Novice</div></label></div>
+        <div class="likert-option"><input type="radio" id="c5-2" name="oral-5" value="2" /><label for="c5-2"><div class="font-semibold">2</div><div class="text-xs text-gray-600">Learner</div></label></div>
+        <div class="likert-option"><input type="radio" id="c5-3" name="oral-5" value="3" /><label for="c5-3"><div class="font-semibold">3</div><div class="text-xs text-gray-600">Proficient</div></label></div>
+        <div class="likert-option"><input type="radio" id="c5-4" name="oral-5" value="4" /><label for="c5-4"><div class="font-semibold">4</div><div class="text-xs text-gray-600">Advanced</div></label></div>
+        <div class="likert-option"><input type="radio" id="c5-5" name="oral-5" value="5" /><label for="c5-5"><div class="font-semibold">5</div><div class="text-xs text-gray-600">Exceptional</div></label></div>
+      </div>
+      <div class="criterion-comment-wrap">
+        <label class="criterion-comment-label" for="oral-comment-5">Comment for this criterion <span class="text-muted">(optional)</span></label>
+        <textarea class="criterion-comment" id="oral-comment-5" name="oral-comment-5" rows="3" placeholder="Brief notes for Language &amp; mechanics — avoid identifying others." aria-label="Comment for Language and mechanics"></textarea>
+      </div>
+    </div>
+
+    <div class="card-rubric">
+      <h2>Global qualitative feedback</h2>
+      <p style="font-size:0.875rem;color:#4b5563;">Overall summary (optional). Per-criterion comments are above. Production: stored with submission; visible per your transparency rules (student, AOL, Canvas copy).</p>
+      <textarea class="global-feedback" id="globalComment" placeholder="Strengths, growth areas, next steps — avoid names of other students or sensitive identifiers."></textarea>
+      <button type="button" class="btn-secondary no-print" id="piiCheck">Check for common PII patterns (demo)</button>
+      <div class="pii-flag" id="piiFlag" role="status"></div>
+      <div class="warn-pii">
+        <label><input type="checkbox" id="attest" /> I confirm this comment does not name or identify other students or unrelated third parties.</label>
+      </div>
+    </div>
+
+    <div class="card-rubric no-print">
+      <p style="font-size:0.85rem;color:#6b7280;">Production workflow: student submits here + Canvas; instructor rates same student (pairable via pseudonym + course/term), saves here + Canvas backup. Artifact (video/slides) stored on institutional storage — link from record.</p>
+      <button type="button" class="btn-primary" id="fakeSubmit" disabled title="Demo only">Submit (disabled — demo)</button>
+    </div>
+
+    <div class="card-rubric no-print">
+      <h2>Reference (written comm layout — 3 pt)</h2>
+      <p style="font-size:0.85rem;">College written rubric screenshot (adapt oral dimensions and 5-pt scale as above).</p>
+      <img src="assets/reference_written_comm_rubric.png" alt="Written communication rubric reference" style="max-width:100%;height:auto;border:1px solid #e5e7eb;border-radius:0.375rem;" />
+    </div>
+  </div>
+
+  <script src="js/rubric_print_helper.js"></script>
+  <script>
+    (function () {
+      var flag = document.getElementById("piiFlag");
+      document.getElementById("piiCheck").addEventListener("click", function () {
+        var chunks = [];
+        document.querySelectorAll("textarea.criterion-comment").forEach(function (el) {
+          chunks.push(el.value || "");
+        });
+        var globalTa = document.getElementById("globalComment");
+        if (globalTa) chunks.push(globalTa.value || "");
+        var t = chunks.join("\n");
+        var issues = [];
+        if (/\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b/.test(t)) issues.push("Possible phone number");
+        if (/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i.test(t)) issues.push("Email-like pattern");
+        if (/\bSSN\b|social security/i.test(t)) issues.push("Possible SSN reference");
+        flag.className = "pii-flag visible";
+        flag.textContent = issues.length
+          ? "Flag (criterion comments + global): " + issues.join("; ") + " — review before submit."
+          : "No common patterns flagged in criterion or global comments — still review manually.";
+      });
+    })();
+  </script>
+</body>
+</html>

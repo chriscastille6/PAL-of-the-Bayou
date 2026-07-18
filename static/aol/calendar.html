@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assessment calendar (Demo) — AOL</title>
+  <link rel="stylesheet" href="css/site.css?v=calcolors3" />
+</head>
+<body>
+  <div class="demo-banner">DRAFT — FOR DEMONSTRATION ONLY — Provisional dates and courses</div>
+  <header class="site-header">
+    <h1>How we assess student learning (calendar)</h1>
+    <p class="tagline">Public-style slice; no small-<em>n</em> results on this page</p>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="governance.html">Governance</a>
+      <a href="rubrics.html">Rubrics</a>
+      <a href="calendar.html" aria-current="page">Assessment calendar</a>
+      <a href="degree_plans.html">Degree plans</a>
+      <a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a>
+      <a href="agenda.html">Committee agenda</a>
+      <a href="minutes.html">Minutes</a>
+      <a href="profiles.html">Profiles</a>
+      <a href="role-leadership.html">Preview: Leadership / accreditation</a>
+    </nav>
+  </header>
+  <main>
+    <section class="card" id="direct-evidence-calendars">
+      <h2>Direct evidence — term checkboxes</h2>
+      <p class="calendar-assessment-legend" style="font-size:0.92rem;color:var(--muted);">
+        <strong>Quick reference:</strong> The pre-2026 summary tables below are a static guide from the archived Learning Goal Assessment Timeline. For term-by-term tracking with checkboxes and localStorage, use <a href="#program-timelines">Program learning goal assessment timelines</a>.
+      </p>
+      <p class="calendar-assessment-legend">
+        <strong>Checked</strong> = direct evidence was <strong>collected</strong> in that term (rubrics, embedded exam items, ETS, etc. as applicable).
+        Term columns: <strong>SP ’25</strong> (Spring 2025) and <strong>SP ’26</strong> (Spring 2026) beside <strong>Spring</strong>. The rightmost checkbox column is labeled <strong>FL ’26</strong> as an <strong>anchor term</strong> for fall evidence on file (adjust the label in source if your evidence term differs).
+        Unchecked = not yet in for that term (unless the cell is greyed as not-in-scope for that period — see color key below).
+      </p>
+      <p class="calendar-assessment-legend" style="font-size:0.88rem;color:var(--muted);">
+        Defaults below reflect the latest assessed terms shared by the AOL lead; edit if your records differ.
+        Checkboxes save in <strong>this browser only</strong> (localStorage). Your toggles override after you interact.
+      </p>
+      <div class="calendar-assessment-color-legend" aria-label="Assessment status color key for term cells">
+        <strong>Term cell colors (demo):</strong>
+        <span><span class="cal-swatch cal-swatch--grey" aria-hidden="true"></span>Not assessed this period / out of scope</span>
+        <span><span class="cal-swatch cal-swatch--green" aria-hidden="true"></span>Assessed this period; evidence in</span>
+        <span><span class="cal-swatch cal-swatch--red" aria-hidden="true"></span>Must assess this period; not yet in</span>
+        <span><span class="cal-swatch cal-swatch--yellow" aria-hidden="true"></span>Assessed; data still pending committee</span>
+        <span style="flex-basis:100%;margin-top:0.15rem;">On the BSBA timeline, <strong>SP ’26</strong> uses committee defaults (e.g. BSAD 310 and BSAD 490 rows red; others grey). <strong>Grey</strong> cells use a <strong>disabled</strong> checkbox (not in scope for that term). <strong>Red</strong> cells are clickable; checking marks evidence collected and turns the cell <strong>green</strong>.</span>
+      </div>
+      <div class="calendar-frequency-callout" style="margin:0.85rem 0 0;padding:0.75rem 0.95rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;border-left:4px solid var(--accent);">
+        <p style="margin:0;font-size:0.92rem;line-height:1.5;"><strong>How often is each goal assessed?</strong> The tables below follow the college <strong>Learning Goal Assessment Timeline</strong> (Effective Spring 2014), transcribed from the <strong>scanned timeline PDF</strong> on file with the committee. In practice:</p>
+        <ul style="margin:0.45rem 0 0;padding-left:1.2rem;font-size:0.88rem;line-height:1.5;color:#334155;">
+          <li>Each goal is assessed through <strong>specific courses</strong>; Spring and Fall columns show <strong>which terms</strong> use that vehicle for direct evidence when the course is offered.</li>
+          <li>If the same assessment appears under both Spring and Fall, faculty collect evidence <strong>each term the course runs</strong> (unless your department documents a different rotation).</li>
+          <li>Where the timeline specifies <strong>“even years only”</strong> for <strong>oral communication</strong>, only those administrations count for the oral portion; written work in the same course may still run every term—see the course rows below.</li>
+          <li><strong>ETS</strong> and embedded items follow the usual offering of the listed course (e.g. capstone term).</li>
+        </ul>
+        <p style="margin:0.5rem 0 0;font-size:0.82rem;color:var(--muted);">Verify against the registrar schedule and official AOL records if anything conflicts.</p>
+      </div>
+      <p style="font-weight:700;margin:0.85rem 0 0.45rem;">Approved pre-2026 — Spring and Fall assessment summary</p>
+      <p class="calendar-assessment-legend" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;">
+        The <strong>pre-2026</strong> label matches the timeline document on file. Any <strong>post-2026</strong> changes to vehicles or terms follow committee approval and updated documentation.
+      </p>
+      <div class="calendar-tabs" id="calendar-summary-tabs">
+        <ul class="calendar-tablist" role="tablist" aria-label="Program tabs for pre-2026 assessment summary">
+          <li role="presentation"><button type="button" role="tab" id="sum-tab-bsba" aria-selected="true" aria-controls="sum-panel-bsba" tabindex="0">BSBA</button></li>
+          <li role="presentation"><button type="button" role="tab" id="sum-tab-mba" aria-selected="false" aria-controls="sum-panel-mba" tabindex="-1">Evening MBA</button></li>
+          <li role="presentation"><button type="button" role="tab" id="sum-tab-emba" aria-selected="false" aria-controls="sum-panel-emba" tabindex="-1">EMBA</button></li>
+        </ul>
+      <div class="calendar-tabpanel" id="sum-panel-bsba" role="tabpanel" aria-labelledby="sum-tab-bsba">
+        <div class="table-scroll">
+        <table class="calendar-table" aria-label="BSBA pre-2026 spring and fall assessment summary by learning goal">
+          <thead>
+            <tr>
+              <th style="width:3%;">#</th>
+              <th style="width:20%;">Learning goal</th>
+              <th>Spring</th>
+              <th>Fall</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <th scope="row">Effective oral and written communication using technology</th>
+              <td><strong>BSAD 310</strong> — Writing assignment and oral presentation using PowerPoint<div class="syllabus-instructor"><strong>Instructors:</strong> Stacey Nichols</div></td>
+              <td><strong>BSAD 310</strong> — Writing assignment and oral presentation using PowerPoint<div class="syllabus-instructor"><strong>Instructors:</strong> Stacey Nichols</div></td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <th scope="row">Critical thinking in decision making</th>
+              <td><strong>MNGT 368</strong> — Embedded exam questions<div class="syllabus-instructor"><strong>Instructors:</strong> Xun Li</div></td>
+              <td><strong>MNGT 368</strong> — Embedded exam questions<div class="syllabus-instructor"><strong>Instructors:</strong> Xun Li</div></td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <th scope="row">Competency in core business disciplines</th>
+              <td><strong>BSAD 490</strong> — ETS Major Field Test<div class="syllabus-instructor"><strong>Instructors:</strong> Andrew Johnston, Chadwick</div></td>
+              <td><strong>BSAD 490</strong> — ETS Major Field Test<div class="syllabus-instructor"><strong>Instructors:</strong> Andrew Johnston, Chadwick</div></td>
+            </tr>
+            <tr>
+              <th scope="row">4</th>
+              <th scope="row">Ethical awareness</th>
+              <td><strong>BSAD 101</strong> — Quiz; <strong>BSAD 221</strong> — Ethical dilemma; <strong>MNGT 301</strong> — Ethical dilemma exercise<div class="syllabus-instructor"><strong>Instructors:</strong> BSAD 101 — Stacey Nichols, T. Evans; BSAD 221 — Gene Gouaux; MNGT 301 — Jim Koontz, Joshua E. Cogswell, Melanie M. Boudreaux</div></td>
+              <td><strong>BSAD 101</strong> — Quiz; <strong>BSAD 221</strong> — Ethical dilemma; <strong>MNGT 301</strong> — Ethical dilemma exercise<div class="syllabus-instructor"><strong>Instructors:</strong> BSAD 101 — Stacey Nichols, T. Evans; BSAD 221 — Gene Gouaux; MNGT 301 — Jim Koontz, Joshua E. Cogswell, Melanie M. Boudreaux</div></td>
+            </tr>
+            <tr>
+              <th scope="row">5</th>
+              <th scope="row">Technology</th>
+              <td><strong>CIS 231</strong>; <strong>FINC 302</strong> — Separate assignments<div class="syllabus-instructor"><strong>Instructors:</strong> CIS 231 — En Mao, Terry Evans; FINC 302 — Noel Ritchey, Tuan Le, Shari Lawrence</div></td>
+              <td><strong>CIS 231</strong>; <strong>FINC 302</strong> — Separate assignments<div class="syllabus-instructor"><strong>Instructors:</strong> CIS 231 — En Mao, Terry Evans; FINC 302 — Noel Ritchey, Tuan Le, Shari Lawrence</div></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+      <div class="calendar-tabpanel" id="sum-panel-mba" role="tabpanel" aria-labelledby="sum-tab-mba" hidden>
+        <div class="table-scroll">
+        <table class="calendar-table" aria-label="Evening MBA pre-2026 spring and fall assessment summary by learning goal">
+          <thead>
+            <tr>
+              <th style="width:3%;">#</th>
+              <th style="width:20%;">Learning goal</th>
+              <th>Spring</th>
+              <th>Fall</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <th scope="row">Effective oral and written communication</th>
+              <td><strong>MKTG 501</strong> — Writing assignment and oral presentation<div class="syllabus-instructor"><strong>Instructors:</strong> Juliann Allen</div></td>
+              <td><strong>MKTG 501</strong> — Writing assignment and oral presentation<div class="syllabus-instructor"><strong>Instructors:</strong> Juliann Allen</div></td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <th scope="row">Critical analysis resulting in ethical recommendation</th>
+              <td><strong>FINC 515</strong> — Case analyses<div class="syllabus-instructor"><strong>Instructors:</strong> Mrs. Theunette Antill</div></td>
+              <td><strong>FINC 515</strong> — Case analyses<div class="syllabus-instructor"><strong>Instructors:</strong> Mrs. Theunette Antill</div></td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <th scope="row">Knowledge and integration of functional areas of business</th>
+              <td><strong>BSAD 525</strong> — Embedded exam question<div class="syllabus-instructor"><strong>Instructors:</strong> Andrew Johnston</div></td>
+              <td><strong>BSAD 525</strong> — Embedded exam question<div class="syllabus-instructor"><strong>Instructors:</strong> Andrew Johnston</div></td>
+            </tr>
+            <tr>
+              <th scope="row">4</th>
+              <th scope="row">Recognize and consider diversity</th>
+              <td><strong>MNGT 502</strong> — Embedded exam question<div class="syllabus-instructor"><strong>Instructors:</strong> Chris Castille</div></td>
+              <td><strong>MNGT 502</strong> — Embedded exam question<div class="syllabus-instructor"><strong>Instructors:</strong> Chris Castille</div></td>
+            </tr>
+            <tr>
+              <th scope="row">5</th>
+              <th scope="row">Technology</th>
+              <td><strong>CIS 501</strong> — Separate assignments<div class="syllabus-instructor"><strong>Instructors:</strong> Ronnie Fanguy</div></td>
+              <td><strong>CIS 501</strong> — Separate assignments<div class="syllabus-instructor"><strong>Instructors:</strong> Ronnie Fanguy</div></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+      <div class="calendar-tabpanel" id="sum-panel-emba" role="tabpanel" aria-labelledby="sum-tab-emba" hidden>
+        <div class="table-scroll">
+        <table class="calendar-table" aria-label="EMBA pre-2026 spring and fall assessment summary by learning goal">
+          <thead>
+            <tr>
+              <th style="width:3%;">#</th>
+              <th style="width:20%;">Learning goal</th>
+              <th>Spring</th>
+              <th>Fall</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <th scope="row">Effective oral and written communication</th>
+              <td><strong>MKTG 501</strong> — Writing assignment and oral presentation<div class="syllabus-instructor"><strong>Instructors:</strong> Juliann Allen</div></td>
+              <td><strong>MKTG 501</strong> — Writing assignment and oral presentation<div class="syllabus-instructor"><strong>Instructors:</strong> Juliann Allen</div></td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <th scope="row">Critical analysis resulting in ethical recommendation</th>
+              <td><strong>FINC 515</strong> and <strong>MNGT 502</strong> — Case analyses<div class="syllabus-instructor"><strong>Instructors:</strong> FINC 515 — Mrs. Theunette Antill; MNGT 502 — Chris Castille</div></td>
+              <td><strong>FINC 515</strong> and <strong>MNGT 502</strong> — Case analyses<div class="syllabus-instructor"><strong>Instructors:</strong> FINC 515 — Mrs. Theunette Antill; MNGT 502 — Chris Castille</div></td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <th scope="row">Knowledge and integration of functional areas of business</th>
+              <td><strong>BSAD 525</strong> — Embedded exam question<div class="syllabus-instructor"><strong>Instructors:</strong> Andrew Johnston</div></td>
+              <td><strong>BSAD 525</strong> — Embedded exam question<div class="syllabus-instructor"><strong>Instructors:</strong> Andrew Johnston</div></td>
+            </tr>
+            <tr>
+              <th scope="row">4</th>
+              <th scope="row">Effective collaboration</th>
+              <td><strong>BSAD 520</strong> — Student assessment of one another<div class="syllabus-instructor"><strong>Instructors:</strong> none listed in current syllabus metadata</div></td>
+              <td><strong>BSAD 520</strong> — Student assessment of one another<div class="syllabus-instructor"><strong>Instructors:</strong> none listed in current syllabus metadata</div></td>
+            </tr>
+            <tr>
+              <th scope="row">5</th>
+              <th scope="row">Technology</th>
+              <td><strong>CIS 501</strong> — Separate assignments<div class="syllabus-instructor"><strong>Instructors:</strong> Ronnie Fanguy</div></td>
+              <td><strong>CIS 501</strong> — Separate assignments<div class="syllabus-instructor"><strong>Instructors:</strong> Ronnie Fanguy</div></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+      </div>
+      <p class="calendar-assessment-legend" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;">
+        The summary table is a quick guide. The detailed BSBA, MBA, and EMBA timelines below are the source of record for what was assessed and when.
+      </p>
+    </section>
+    <section class="card" id="program-timelines">
+      <h2>Program learning goal assessment timelines</h2>
+      <p class="calendar-assessment-legend" style="font-size:0.92rem;color:var(--muted);">
+        <strong>Detailed timelines:</strong> Same Spring 2014 timeline as above, with <strong>term checkboxes</strong> for SP ’25, SP ’26, and fall evidence (column <strong>FL ’26</strong> as a labeled anchor). Defaults match the latest terms shared by the AOL lead; toggles persist in <strong>this browser only</strong> (localStorage). Color key: see <a href="#direct-evidence-calendars">Direct evidence</a> above.
+      </p>
+      <p style="font-size:0.88rem;color:var(--muted);margin:0.4rem 0 0;"><strong>Scheduled change:</strong> Starting <strong>Spring ’27</strong>, <strong>SPCH 201</strong> is slated to be assessed with the <strong>communications rubrics</strong> (oral and written, pending committee confirmation). Owner on the committee: <strong>Andrea (Andie) Chaisson</strong>.</p>
+      <p style="font-size:0.9rem;color:var(--muted);">Effective Spring 2014. Source: scanned Learning Goal Assessment Timeline document.</p>
+      <p style="font-size:0.88rem;color:var(--muted);">
+        <strong>Instructor names</strong> (where shown) come from syllabi. Aggregated list: <a href="data/syllabus_instructors.json"><code>data/syllabus_instructors.json</code></a> (served with this site). Full pipeline metadata lives at <code>ets_statistics_analysis/syllabi_metadata.json</code> in the AOL repository (not bundled in an <code>aol_site/</code>-only static deploy).
+        Multiple names mean multiple instructors or sections on file; a few are inferred from syllabus filenames when <code>faculty_name</code> was blank (e.g. T. Evans, Chadwick).
+      </p>
+      <p><button type="button" id="calendarClearChecks" style="font-size:0.85rem;padding:0.45rem 0.85rem;border-radius:6px;border:1px solid #ced4da;background:#f8f9fa;cursor:pointer;">Clear saved checks (this browser)</button></p>
+      <div class="calendar-tabs" id="calendar-timeline-tabs">
+        <ul class="calendar-tablist" role="tablist" aria-label="Program timeline tabs">
+          <li role="presentation"><button type="button" role="tab" id="time-tab-bsba" aria-selected="true" aria-controls="time-panel-bsba" tabindex="0">BSBA</button></li>
+          <li role="presentation"><button type="button" role="tab" id="time-tab-mba" aria-selected="false" aria-controls="time-panel-mba" tabindex="-1">Evening MBA</button></li>
+          <li role="presentation"><button type="button" role="tab" id="time-tab-emba" aria-selected="false" aria-controls="time-panel-emba" tabindex="-1">EMBA</button></li>
+        </ul>
+      <div class="calendar-tabpanel" id="time-panel-bsba" role="tabpanel" aria-labelledby="time-tab-bsba">
+        <div class="table-scroll">
+        <table class="calendar-table calendar-table-assessment">
+        <thead>
+          <tr>
+            <th style="width:3%;">#</th>
+            <th style="width:20%;">Learning goal</th>
+            <th style="width:22%;">Spring</th>
+            <th class="calendar-term-h" scope="col"><abbr title="Spring 2025">SP ’25</abbr></th>
+            <th class="calendar-term-h" scope="col"><abbr title="Spring 2026">SP ’26</abbr></th>
+            <th style="width:22%;">Fall</th>
+            <th class="calendar-term-h" scope="col"><abbr title="Fall term anchor for evidence on file (e.g. FL ’26 — relabel in source if your term differs)">FL ’26</abbr></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <th scope="row">Effective oral and written communication using technology</th>
+            <td><strong>BSAD 310</strong> — Writing assignment and oral presentation using PowerPoint (even years only for oral communication)
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Stacey Nichols</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="bsba-1-sp25" aria-label="BSBA goal 1: evidence collected Spring 2025" /></td>
+            <td class="calendar-term-c cal-state--red" data-cal-base="red"><input type="checkbox" id="bsba-1-sp26" aria-label="BSBA goal 1: Spring 2026 — check when evidence collected (turns green)" /></td>
+            <td><strong>BSAD 310</strong> — Writing assignment and oral presentation using PowerPoint (even years only for oral communication)
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Stacey Nichols</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="bsba-1-fall" aria-label="BSBA goal 1: direct evidence collected in fall term (most recent on file)" /></td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <th scope="row">Critical thinking in decision making</th>
+            <td><strong>MNGT 368</strong> — Embedded exam questions
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Xun Li</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="bsba-2-sp25" aria-label="BSBA goal 2: evidence collected Spring 2025" /></td>
+            <td class="calendar-term-c cal-state--grey" data-cal-base="grey"><input type="checkbox" id="bsba-2-sp26" disabled aria-label="BSBA goal 2: Spring 2026 — not in scope for assessment this term (checkbox disabled)" /></td>
+            <td><strong>MNGT 368</strong> — Embedded exam questions
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Xun Li</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="bsba-2-fall" aria-label="BSBA goal 2 (MNGT 368): direct evidence collected in fall term (most recent on file)" checked /></td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <th scope="row">Competency in core business disciplines</th>
+            <td><strong>BSAD 490</strong> — ETS Major Field Test
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Andrew Johnston, Chadwick</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="bsba-3-sp25" aria-label="BSBA goal 3: evidence collected Spring 2025" checked /></td>
+            <td class="calendar-term-c cal-state--red" data-cal-base="red"><input type="checkbox" id="bsba-3-sp26" aria-label="BSBA goal 3: Spring 2026 — check when evidence collected (turns green)" /></td>
+            <td><strong>BSAD 490</strong> — ETS Major Field Test
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Andrew Johnston, Chadwick</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="bsba-3-fall" aria-label="BSBA goal 3: direct evidence collected in fall term (most recent on file)" checked /></td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <th scope="row">Ethical awareness</th>
+            <td><strong>BSAD 101</strong> — Quiz; <strong>BSAD 221</strong> — Ethical dilemma; <strong>MNGT 301</strong> — Ethical dilemma exercise
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> BSAD 101 — Stacey Nichols, T. Evans; BSAD 221 — Gene Gouaux; MNGT 301 — Jim Koontz, Joshua E. Cogswell, Melanie M. Boudreaux</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="bsba-4-sp25" aria-label="BSBA goal 4: evidence collected Spring 2025" checked /></td>
+            <td class="calendar-term-c cal-state--grey" data-cal-base="grey"><input type="checkbox" id="bsba-4-sp26" disabled aria-label="BSBA goal 4: Spring 2026 — not in scope for assessment this term (checkbox disabled)" /></td>
+            <td><strong>BSAD 101</strong> — Quiz; <strong>BSAD 221</strong> — Ethical dilemma; <strong>MNGT 301</strong> — Ethical dilemma exercise
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> BSAD 101 — Stacey Nichols, T. Evans; BSAD 221 — Gene Gouaux; MNGT 301 — Jim Koontz, Joshua E. Cogswell, Melanie M. Boudreaux</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="bsba-4-fall" aria-label="BSBA goal 4: direct evidence collected in fall term (most recent on file)" checked /></td>
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <th scope="row">Technology</th>
+            <td><strong>CIS 231</strong>; <strong>FINC 302</strong> — Separate assignments
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> CIS 231 — En Mao, Terry Evans; FINC 302 — Noel Ritchey, Tuan Le, Shari Lawrence</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="bsba-5-sp25" aria-label="BSBA goal 5: evidence collected Spring 2025" checked /></td>
+            <td class="calendar-term-c cal-state--grey" data-cal-base="grey"><input type="checkbox" id="bsba-5-sp26" disabled aria-label="BSBA goal 5: Spring 2026 — not in scope for assessment this term (checkbox disabled)" /></td>
+            <td><strong>CIS 231</strong>; <strong>FINC 302</strong> — Separate assignments
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> CIS 231 — En Mao, Terry Evans; FINC 302 — Noel Ritchey, Tuan Le, Shari Lawrence</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="bsba-5-fall" aria-label="BSBA goal 5: direct evidence collected in fall term (most recent on file)" /></td>
+          </tr>
+        </tbody>
+        </table>
+        </div>
+        <p style="font-size:0.85rem;color:var(--muted);">Goal 2 (MNGT 368): demo defaults check FL ’26 (green when checked). Goal 3 (BSAD 490): SP ’25 and FL ’26 checked in the demo (green). <strong>SP ’26</strong> uses red/green/disabled-grey rules above. Goal 1 (BSAD 310): SP ’26 red until evidence in. Goal 4: SP ’25 / fall per baseline. Evening MBA / EMBA: same <strong>SP ’25</strong> and <strong>FL ’26</strong> green/grey coloring.</p>
+      </div>
+      <div class="calendar-tabpanel" id="time-panel-mba" role="tabpanel" aria-labelledby="time-tab-mba" hidden>
+        <div class="table-scroll">
+        <table class="calendar-table calendar-table-assessment">
+        <thead>
+          <tr>
+            <th style="width:3%;">#</th>
+            <th style="width:20%;">Learning goal</th>
+            <th style="width:22%;">Spring</th>
+            <th class="calendar-term-h" scope="col"><abbr title="Spring 2025">SP ’25</abbr></th>
+            <th class="calendar-term-h" scope="col"><abbr title="Spring 2026">SP ’26</abbr></th>
+            <th style="width:22%;">Fall</th>
+            <th class="calendar-term-h" scope="col"><abbr title="Fall term anchor for evidence on file (e.g. FL ’26 — relabel in source if your term differs)">FL ’26</abbr></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <th scope="row">Effective oral and written communication</th>
+            <td><strong>MKTG 501</strong> — Writing assignment and oral presentation (even years only for oral communication)
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Juliann Allen</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="mba-1-sp25" aria-label="Evening MBA goal 1: evidence collected Spring 2025" /></td>
+            <td class="calendar-term-c"><input type="checkbox" id="mba-1-sp26" aria-label="Evening MBA goal 1: evidence collected Spring 2026" /></td>
+            <td><strong>MKTG 501</strong> — Writing assignment and oral presentation (even years only for oral communication)
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Juliann Allen</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="mba-1-fall" aria-label="Evening MBA goal 1: direct evidence collected in fall term (most recent on file)" checked /></td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <th scope="row">Critical analysis resulting in ethical recommendation</th>
+            <td><strong>FINC 515</strong> — Case analyses
+              <div class="syllabus-instructor"><strong>Instructors (working):</strong> Mrs. Theunette Antill (same AOL rubric).</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="mba-2-sp25" aria-label="Evening MBA goal 2: evidence collected Spring 2025" /></td>
+            <td class="calendar-term-c"><input type="checkbox" id="mba-2-sp26" aria-label="Evening MBA goal 2: evidence collected Spring 2026" /></td>
+            <td><strong>FINC 515</strong> — Case analyses
+              <div class="syllabus-instructor"><strong>Instructors (working):</strong> Mrs. Theunette Antill (same AOL rubric).</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="mba-2-fall" aria-label="Evening MBA goal 2: direct evidence collected in fall term (most recent on file)" checked /></td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <th scope="row">Knowledge and integration of functional areas of business</th>
+            <td><strong>BSAD 525</strong> — Embedded exam question
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Andrew Johnston</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="mba-3-sp25" aria-label="Evening MBA goal 3: evidence collected Spring 2025" checked /></td>
+            <td class="calendar-term-c"><input type="checkbox" id="mba-3-sp26" aria-label="Evening MBA goal 3: evidence collected Spring 2026" /></td>
+            <td><strong>BSAD 525</strong> — Embedded exam question
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Andrew Johnston</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="mba-3-fall" aria-label="Evening MBA goal 3: direct evidence collected in fall term (most recent on file)" /></td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <th scope="row">Recognize and consider diversity</th>
+            <td><strong>MNGT 502</strong> — Embedded exam question
+              <div class="syllabus-instructor"><strong>Instructors (working):</strong> Chris Castille</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="mba-4-sp25" aria-label="Evening MBA goal 4: evidence collected Spring 2025" checked /></td>
+            <td class="calendar-term-c"><input type="checkbox" id="mba-4-sp26" aria-label="Evening MBA goal 4: evidence collected Spring 2026" /></td>
+            <td><strong>MNGT 502</strong> — Embedded exam question
+              <div class="syllabus-instructor"><strong>Instructors (working):</strong> Chris Castille</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="mba-4-fall" aria-label="Evening MBA goal 4: direct evidence collected in fall term (most recent on file)" checked /></td>
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <th scope="row">Technology</th>
+            <td><strong>CIS 501</strong> — Separate assignments
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Ronnie Fanguy</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="mba-5-sp25" aria-label="Evening MBA goal 5: evidence collected Spring 2025" /></td>
+            <td class="calendar-term-c"><input type="checkbox" id="mba-5-sp26" aria-label="Evening MBA goal 5: evidence collected Spring 2026" /></td>
+            <td><strong>CIS 501</strong> — Separate assignments
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Ronnie Fanguy</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="mba-5-fall" aria-label="Evening MBA goal 5: direct evidence collected in fall term (most recent on file)" checked /></td>
+          </tr>
+        </tbody>
+        </table>
+        </div>
+      </div>
+      <div class="calendar-tabpanel" id="time-panel-emba" role="tabpanel" aria-labelledby="time-tab-emba" hidden>
+        <div class="table-scroll">
+        <table class="calendar-table calendar-table-assessment">
+        <thead>
+          <tr>
+            <th style="width:3%;">#</th>
+            <th style="width:20%;">Learning goal</th>
+            <th style="width:22%;">Spring</th>
+            <th class="calendar-term-h" scope="col"><abbr title="Spring 2025">SP ’25</abbr></th>
+            <th class="calendar-term-h" scope="col"><abbr title="Spring 2026">SP ’26</abbr></th>
+            <th style="width:22%;">Fall</th>
+            <th class="calendar-term-h" scope="col"><abbr title="Fall term anchor for evidence on file (e.g. FL ’26 — relabel in source if your term differs)">FL ’26</abbr></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <th scope="row">Effective oral and written communication</th>
+            <td><strong>MKTG 501</strong> — Writing assignment and oral presentation
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Juliann Allen</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="emba-1-sp25" aria-label="EMBA goal 1: evidence collected Spring 2025" /></td>
+            <td class="calendar-term-c"><input type="checkbox" id="emba-1-sp26" aria-label="EMBA goal 1: evidence collected Spring 2026" /></td>
+            <td><strong>MKTG 501</strong> — Writing assignment and oral presentation
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Juliann Allen</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="emba-1-fall" aria-label="EMBA goal 1: direct evidence collected in fall term (most recent on file)" /></td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <th scope="row">Critical analysis resulting in ethical recommendation</th>
+            <td><strong>FINC 515</strong> &amp; <strong>MNGT 502</strong> — Case analyses
+              <div class="syllabus-instructor"><strong>Instructors (working):</strong> FINC 515 — Mrs. Theunette Antill; MNGT 502 — Chris Castille.</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="emba-2-sp25" aria-label="EMBA goal 2: evidence collected Spring 2025" /></td>
+            <td class="calendar-term-c"><input type="checkbox" id="emba-2-sp26" aria-label="EMBA goal 2: evidence collected Spring 2026" /></td>
+            <td><strong>FINC 515</strong> &amp; <strong>MNGT 502</strong> — Case analyses
+              <div class="syllabus-instructor"><strong>Instructors (working):</strong> FINC 515 — Mrs. Theunette Antill; MNGT 502 — Chris Castille.</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="emba-2-fall" aria-label="EMBA goal 2: direct evidence collected in fall term (most recent on file)" /></td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <th scope="row">Knowledge and integration of functional areas of business</th>
+            <td><strong>BSAD 525</strong> — Embedded exam question
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Andrew Johnston</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="emba-3-sp25" aria-label="EMBA goal 3: evidence collected Spring 2025" /></td>
+            <td class="calendar-term-c"><input type="checkbox" id="emba-3-sp26" aria-label="EMBA goal 3: evidence collected Spring 2026" /></td>
+            <td><strong>BSAD 525</strong> — Embedded exam question
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Andrew Johnston</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="emba-3-fall" aria-label="EMBA goal 3: direct evidence collected in fall term (most recent on file)" /></td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <th scope="row">Effective collaboration</th>
+            <td><strong>BSAD 520</strong> — Student assessment of one another (last course in EMBA program)
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> <em>None in repo syllabi metadata for BSAD 520.</em></div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="emba-4-sp25" aria-label="EMBA goal 4: evidence collected Spring 2025" /></td>
+            <td class="calendar-term-c"><input type="checkbox" id="emba-4-sp26" aria-label="EMBA goal 4: evidence collected Spring 2026" /></td>
+            <td><strong>BSAD 520</strong> — Student assessment of one another (last course in EMBA program)
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> <em>None in repo syllabi metadata for BSAD 520.</em></div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="emba-4-fall" aria-label="EMBA goal 4: direct evidence collected in fall term (most recent on file)" /></td>
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <th scope="row">Technology</th>
+            <td><strong>CIS 501</strong> — Separate assignments
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Ronnie Fanguy</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="emba-5-sp25" aria-label="EMBA goal 5: evidence collected Spring 2025" /></td>
+            <td class="calendar-term-c"><input type="checkbox" id="emba-5-sp26" aria-label="EMBA goal 5: evidence collected Spring 2026" /></td>
+            <td><strong>CIS 501</strong> — Separate assignments
+              <div class="syllabus-instructor"><strong>Instructors (syllabi on file):</strong> Ronnie Fanguy</div></td>
+            <td class="calendar-term-c" data-cal-toggle="green-grey"><input type="checkbox" id="emba-5-fall" aria-label="EMBA goal 5: direct evidence collected in fall term (most recent on file)" /></td>
+          </tr>
+        </tbody>
+        </table>
+        </div>
+        <p style="font-size:0.85rem;color:var(--muted);">EMBA: add term checks when you have the assessed list (BSBA and Evening MBA defaults are set above).</p>
+      </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Indirect measures and other assessments</h2>
+      <div class="table-scroll">
+      <table class="calendar-table">
+        <thead>
+          <tr>
+            <th style="width:30%;">Assessment</th>
+            <th style="width:30%;">What is measured</th>
+            <th style="width:20%;">Typical timing</th>
+            <th style="width:20%;">Owner / notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Senior / exit survey</th>
+            <td>Indirect: perceptions, confidence, quality tied to learning goals; 90% threshold on top three helpfulness levels</td>
+            <td>After exam window</td>
+            <td>AOL / IR</td>
+          </tr>
+          <tr>
+            <th scope="row">Alumni survey</th>
+            <td>Indirect: post-graduation perceptions of goal attainment</td>
+            <td>Annual or periodic</td>
+            <td>AOL / IR</td>
+          </tr>
+          <tr>
+            <th scope="row">Employer survey</th>
+            <td>Indirect: workplace relevance, goal attainment from employer perspective</td>
+            <td>Annual or periodic</td>
+            <td>AOL / IR</td>
+          </tr>
+          <tr>
+            <th scope="row">Stakeholder feedback</th>
+            <td>Advisory board minutes, exit interviews, internship employer feedback</td>
+            <td>Ongoing / ad hoc</td>
+            <td>GPIC / UPIC; forwarded to AOL</td>
+          </tr>
+          <tr>
+            <th scope="row">Department head reports (ETS trends)</th>
+            <td>Direct: ETS program-level performance over time (aggregates)</td>
+            <td><strong>Fall</strong> (each academic year)</td>
+            <td><strong>AOL Chair</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <p style="font-size:0.9rem;color:var(--muted);">Extracted from scanned Learning Goal Assessment Timeline (Effective Spring 2014). Verify course numbers and Spring/Fall splits against official records.</p>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>Assessment calendar aligned with the AOL transparency portal spec (assessment calendar section). Technical reference: <code>docs/AOL_Website_Specification.md</code> §9.</p>
+    <p class="site-footer-strategic" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;">Strategic plan (demo): COB <strong>Goal 2</strong> — <a href="index.html">Home</a> · <a href="agenda.html#announcements">Committee agenda</a></p>
+  </footer>
+  <script>
+    (function () {
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('#calendar-summary-tabs .calendar-tablist [role="tab"]'));
+      if (!tabs.length) return;
+      var panels = {
+        'sum-tab-bsba': document.getElementById('sum-panel-bsba'),
+        'sum-tab-mba': document.getElementById('sum-panel-mba'),
+        'sum-tab-emba': document.getElementById('sum-panel-emba')
+      };
+      function showTab(id) {
+        tabs.forEach(function (btn) {
+          var on = btn.id === id;
+          btn.setAttribute('aria-selected', on ? 'true' : 'false');
+          btn.tabIndex = on ? 0 : -1;
+          panels[btn.id].hidden = !on;
+        });
+      }
+      tabs.forEach(function (btn) {
+        btn.addEventListener('click', function () { showTab(btn.id); });
+        btn.addEventListener('keydown', function (e) {
+          var i = tabs.indexOf(btn);
+          if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            var next = e.key === 'ArrowRight' ? (i + 1) % tabs.length : (i - 1 + tabs.length) % tabs.length;
+            tabs[next].focus();
+            showTab(tabs[next].id);
+          }
+        });
+      });
+    })();
+
+    (function () {
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('#calendar-timeline-tabs .calendar-tablist [role="tab"]'));
+      if (!tabs.length) return;
+      var panels = {
+        'time-tab-bsba': document.getElementById('time-panel-bsba'),
+        'time-tab-mba': document.getElementById('time-panel-mba'),
+        'time-tab-emba': document.getElementById('time-panel-emba')
+      };
+      function showTab(id) {
+        tabs.forEach(function (btn) {
+          var on = btn.id === id;
+          btn.setAttribute('aria-selected', on ? 'true' : 'false');
+          btn.tabIndex = on ? 0 : -1;
+          panels[btn.id].hidden = !on;
+        });
+      }
+      tabs.forEach(function (btn) {
+        btn.addEventListener('click', function () { showTab(btn.id); });
+        btn.addEventListener('keydown', function (e) {
+          var i = tabs.indexOf(btn);
+          if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            var next = e.key === 'ArrowRight' ? (i + 1) % tabs.length : (i - 1 + tabs.length) % tabs.length;
+            tabs[next].focus();
+            showTab(tabs[next].id);
+          }
+        });
+      });
+    })();
+
+    (function () {
+      var KEY = "aol-calendar-assessment-checks-v8";
+      var LEGACY_KEYS = ["aol-calendar-assessment-checks-v1", "aol-calendar-assessment-checks-v2", "aol-calendar-assessment-checks-v3", "aol-calendar-assessment-checks-v4", "aol-calendar-assessment-checks-v5", "aol-calendar-assessment-checks-v6", "aol-calendar-assessment-checks-v7"];
+      var inputs = document.querySelectorAll("table.calendar-table-assessment input[type=checkbox]");
+
+      function syncCalendarCellColors() {
+        document.querySelectorAll("td.calendar-term-c[data-cal-base]").forEach(function (cell) {
+          var input = cell.querySelector('input[type="checkbox"]');
+          if (!input) return;
+          var base = cell.getAttribute("data-cal-base");
+          if (!base) return;
+          cell.classList.remove("cal-state--grey", "cal-state--red", "cal-state--green", "cal-state--yellow");
+          if (cell.getAttribute("data-cal-pending") === "true") {
+            input.disabled = false;
+            cell.classList.add("cal-state--yellow");
+            return;
+          }
+          if (base === "grey") {
+            input.disabled = true;
+            input.checked = false;
+            cell.classList.add("cal-state--grey");
+            return;
+          }
+          input.disabled = false;
+          if (input.checked) {
+            cell.classList.add("cal-state--green");
+          } else {
+            cell.classList.add("cal-state--" + base);
+          }
+        });
+        /* SP ’25 + FL ’26: checked = green, unchecked = grey (all remain clickable) */
+        document.querySelectorAll('td.calendar-term-c[data-cal-toggle="green-grey"]').forEach(function (cell) {
+          var input = cell.querySelector('input[type="checkbox"]');
+          if (!input) return;
+          cell.classList.remove("cal-state--grey", "cal-state--red", "cal-state--green", "cal-state--yellow");
+          input.disabled = false;
+          if (input.checked) {
+            cell.classList.add("cal-state--green");
+          } else {
+            cell.classList.add("cal-state--grey");
+          }
+        });
+      }
+
+      function load() {
+        try {
+          var raw = localStorage.getItem(KEY);
+          if (!raw || raw === "{}") {
+            var v7 = localStorage.getItem("aol-calendar-assessment-checks-v7");
+            if (v7) {
+              localStorage.setItem(KEY, v7);
+              raw = v7;
+            } else {
+              var v6 = localStorage.getItem("aol-calendar-assessment-checks-v6");
+              if (v6) {
+                localStorage.setItem(KEY, v6);
+                raw = v6;
+              } else {
+                var v5 = localStorage.getItem("aol-calendar-assessment-checks-v5");
+                if (v5) {
+                  localStorage.setItem(KEY, v5);
+                  raw = v5;
+                }
+              }
+            }
+          }
+          var o = JSON.parse(raw || "{}");
+          inputs.forEach(function (el) {
+            if (Object.prototype.hasOwnProperty.call(o, el.id)) {
+              el.checked = o[el.id];
+            }
+          });
+        } catch (e) {}
+        syncCalendarCellColors();
+      }
+
+      function save() {
+        var o = {};
+        inputs.forEach(function (el) {
+          o[el.id] = el.disabled ? false : el.checked;
+        });
+        try {
+          localStorage.setItem(KEY, JSON.stringify(o));
+        } catch (e) {}
+        syncCalendarCellColors();
+      }
+
+      inputs.forEach(function (el) {
+        el.addEventListener("change", save);
+      });
+      load();
+      window.addEventListener("load", syncCalendarCellColors);
+
+      var clearBtn = document.getElementById("calendarClearChecks");
+      if (clearBtn) {
+        clearBtn.addEventListener("click", function () {
+          try {
+            localStorage.removeItem(KEY);
+            LEGACY_KEYS.forEach(function (k) {
+              localStorage.removeItem(k);
+            });
+          } catch (e) {}
+          window.location.reload();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

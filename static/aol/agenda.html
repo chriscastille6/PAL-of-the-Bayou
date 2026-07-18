@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AOL committee agenda — Transparency portal (Demo)</title>
+  <link rel="stylesheet" href="css/site.css?v=gapfig6" />
+</head>
+<body>
+  <div class="demo-banner">DRAFT — FOR DEMONSTRATION ONLY — Confirm dates and links against official committee comms</div>
+  <header class="site-header">
+    <h1>AOL committee agenda</h1>
+    <p class="tagline">Announcements (discussion) and committee business (votes, decisions, deferred items) on this page. Deeper methodology: <a href="methodology.html">Methodology</a>, <a href="governance.html">Governance</a>.</p>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="governance.html">Governance</a>
+      <a href="rubrics.html">Rubrics</a>
+      <a href="calendar.html">Assessment calendar</a>
+      <a href="degree_plans.html">Degree plans</a>
+      <a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a>
+      <a href="agenda.html" aria-current="page">Committee agenda</a>
+      <a href="minutes.html">Minutes</a>
+      <a href="profiles.html">Profiles</a>
+      <a href="role-leadership.html">Preview: Leadership / accreditation</a>
+    </nav>
+  </header>
+  <main>
+    <section class="card">
+      <h2>Planned committee meeting</h2>
+      <p style="font-size:0.92rem;margin:0 0 0.85rem;line-height:1.5;">
+        <strong>PDF for records:</strong>
+        <a href="reference/AOL_committee_agenda_Spring_2026-03-30.pdf">AOL committee agenda — Spring 2026 (PDF)</a>
+        — static snapshot of this page for filing; the live HTML agenda will update for future terms (e.g. Fall). Regenerate with <code>aol_site/scripts/render_agenda_pdf.sh</code> after edits.
+        <strong>Discussion &amp; follow-up:</strong> <a href="minutes.html">Committee minutes &amp; record</a> (feedback, improvement items; edit <code>aol_site/minutes.html</code>).
+      </p>
+      <p>
+        <strong>When:</strong> Monday, March 30, 2026, 10:15 a.m. Central Time<br />
+        <strong>Where:</strong> Powell Hall 208
+      </p>
+      <p>
+        <strong>Who attended:</strong> Chris Castille <em>(voting member)</em>; Andrea Chaisson <em>(voting member)</em>; En Mao <em>(not voting; not a committee member; invited guest)</em>; Shari Lawrence <em>(co-chair / outgoing chair; voting member)</em>; Tony Xu <em>(voting member)</em>.<br />
+        <strong>Absent:</strong> Adrien Maught <em>(voting member)</em>; Terry Evans <em>(voting member)</em>.
+      </p>
+      <p style="font-size:0.88rem;color:var(--muted);">
+        Source: <code>docs/aol_meeting_config.json</code> — keep in sync with official announcements and letterhead memos.
+      </p>
+    </section>
+
+    <section class="card agenda-announce" id="announcements">
+      <h2>Announcements</h2>
+      <p class="agenda-lede">Discussion only; no vote.</p>
+
+      <h3>Item 1 — AOL website vision</h3>
+      <ul>
+        <li>Future site: SSO; roles (GPIC, UPIC, department heads, faculty); data storage; methodology docs; faculty profiles; two-report structure; five-year trends; accreditor access.</li>
+        <li><strong>Transparency:</strong> Design may allow <strong>college-wide visibility</strong> into what programs are working on (e.g. management and marketing streams visible to peers, not only narrow roles). Ken indicated openness to peers seeing that work.</li>
+        <li>Full spec (repo): <code>docs/AOL_Website_Specification.md</code></li>
+      </ul>
+
+      <h3>Item 2 — Curriculum map, degree plans, faculty interests</h3>
+      <ul>
+        <li><strong>Visual degree plans:</strong> Mermaid prerequisite diagrams on <a href="degree_plans.html">Degree plans</a> — to <strong>guide conversations about curriculum changes</strong> (sequencing, impacts); especially useful for <strong>UPIC</strong>. Supplemental PDFs under <code>aol_site/reference/degree_plans/</code>. Not a substitute for the registrar or catalog.</li>
+        <li><strong>Visualizing the gap (shared — committee):</strong> <a href="nlp_curriculum_gap_visualization.html"><strong>NLP / LLM curriculum alignment &amp; gap visualization</strong></a> — Putka et al. validation chart, syllabi→O*NET workflow, <strong>radar mock</strong> (target occupation, degree plan, aggregate student performance), and strategic-response doughnut. <em>Illustrative only</em>; not Nicholls course data. See also <a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a> and <a href="demo_hr_onet_gap_visualizations.html">HR gap viz mocks</a>.</li>
+        <li><strong>Optional fit tool (demo):</strong> <a href="https://bayoupal.nicholls.edu/platform/whole-person-fit-sample.html" target="_blank" rel="noopener">Whole-person fit — sample report</a> (People Analytics Lab; self-reflection / exploration, not selection).</li>
+      </ul>
+
+      <figure class="agenda-profile-gap-figure" style="margin:1rem 0 1.25rem;padding:0.75rem 1rem;background:#fff;border:1px solid #e2e8f0;border-radius:8px;border-left:4px solid var(--accent);max-width:100%;">
+        <figcaption style="font-size:0.88rem;font-weight:600;color:var(--accent);margin-bottom:0.5rem;">Profile vs. criterion — radar gap (illustrative)</figcaption>
+        <p style="font-size:0.82rem;color:var(--muted);margin:0 0 0.65rem;line-height:1.45;">Same idea as in committee discussion: <strong>gap</strong> is where profiles sit relative to a <strong>criterion / target domain</strong>. Three layers—<strong>target</strong> (O*NET HR Manager mock), <strong>degree plan</strong> (NLP-estimated “on paper”), and <strong>aggregate student performance</strong> (illustrative)—show <strong>gaps on paper</strong> vs. <strong>performance gaps</strong>. Measurement error and multi-measure evidence still apply. <strong>Not individual student data.</strong></p>
+        <div class="agenda-radar-chart-wrap" style="position:relative;height:min(440px,78vw);max-width:40rem;margin:0 auto;">
+          <canvas id="agendaGapRadar" width="400" height="420" aria-label="Radar chart: target occupation, curriculum profile, and aggregate student performance, hypothetical HR domain"></canvas>
+        </div>
+        <p style="font-size:0.75rem;color:var(--muted);margin:0.5rem 0 0;">Same chart mock as <a href="nlp_curriculum_gap_visualization.html#visualizing-gap">NLP curriculum alignment page — Visualizing the Gap</a>. See also <code>docs/common_concerns_addressed_slide_content.md</code> (measurement error / gap identification).</p>
+      </figure>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        (function () {
+          var wrapLabel = function (label, maxLength) {
+            maxLength = maxLength || 16;
+            if (label.length <= maxLength) return label;
+            var words = label.split(" ");
+            var lines = [];
+            var currentLine = "";
+            words.forEach(function (word) {
+              if ((currentLine + word).length > maxLength) {
+                if (currentLine.trim() !== "") lines.push(currentLine.trim());
+                currentLine = word + " ";
+              } else {
+                currentLine += word + " ";
+              }
+            });
+            if (currentLine.trim() !== "") lines.push(currentLine.trim());
+            return lines;
+          };
+          var sharedTooltipConfig = {
+            callbacks: {
+              title: function (tooltipItems) {
+                var item = tooltipItems[0];
+                var label = item.chart.data.labels[item.dataIndex];
+                return Array.isArray(label) ? label.join(" ") : label;
+              }
+            }
+          };
+          var radarLabels = [
+            "Personnel & HR",
+            "Admin & Management",
+            "Communication",
+            "Data Analytics",
+            "Psychology",
+            "Labor Law Compliance"
+          ].map(function (l) { return wrapLabel(l); });
+          var el = document.getElementById("agendaGapRadar");
+          if (!el || typeof Chart === "undefined") return;
+          new Chart(el.getContext("2d"), {
+            type: "radar",
+            data: {
+              labels: radarLabels,
+              datasets: [
+                {
+                  label: "Target (O*NET HR Manager)",
+                  data: [95, 85, 90, 75, 75, 85],
+                  backgroundColor: "rgba(13, 148, 136, 0.2)",
+                  borderColor: "#0D9488",
+                  pointBackgroundColor: "#0D9488",
+                  borderWidth: 2
+                },
+                {
+                  label: "Current Degree Plan (NLP Est.)",
+                  data: [85, 70, 95, 60, 45, 65],
+                  backgroundColor: "rgba(234, 88, 12, 0.2)",
+                  borderColor: "#EA580C",
+                  pointBackgroundColor: "#EA580C",
+                  borderWidth: 2
+                },
+                {
+                  label: "Student performance (aggregate — illustrative)",
+                  data: [72, 63, 78, 52, 52, 58],
+                  backgroundColor: "rgba(79, 70, 229, 0.18)",
+                  borderColor: "#4F46E5",
+                  pointBackgroundColor: "#4F46E5",
+                  borderWidth: 2
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                tooltip: sharedTooltipConfig,
+                legend: { position: "bottom" }
+              },
+              scales: {
+                r: {
+                  angleLines: { color: "rgba(0, 0, 0, 0.1)" },
+                  grid: { color: "rgba(0, 0, 0, 0.1)" },
+                  pointLabels: { font: { size: 11 } },
+                  ticks: { backdropColor: "transparent", stepSize: 20 }
+                }
+              }
+            }
+          });
+        })();
+      </script>
+
+      <p class="agenda-diagram-intro">Course + occupational inputs and person-level inputs feed <strong>gap judgment</strong>, then outcomes. Same diagram as <a href="governance.html#gap-holistic">Governance</a> (<code>docs/diagrams/figure_gap_holistic_inputs.mmd</code>).</p>
+      <figure class="gap-evidence-diagram" aria-label="Course and occupational evidence and person-level direct and indirect measures feed gap judgment, then outcomes">
+        <div class="gap-evidence-lr">
+          <div class="gap-evidence-inputs">
+            <div class="gap-evidence-card gap-evidence-card--course">
+              <h4>Course + occupational</h4>
+              <ul>
+                <li>Syllabus LOs</li>
+                <li>O*NET / focal occupations</li>
+                <li>LA labor context</li>
+              </ul>
+            </div>
+            <div class="gap-evidence-card gap-evidence-card--person">
+              <h4>Person-level</h4>
+              <ul>
+                <li><strong>Direct measures:</strong> Learning goals / rubrics; ETS</li>
+                <li><strong>Indirect measures:</strong> Surveys; stakeholder meetings</li>
+                <li><strong><a href="https://bayoupal.nicholls.edu/platform/whole-person-fit-sample.html" target="_blank" rel="noopener">Optional fit tools</a></strong> (sample)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="gap-evidence-stage">
+            <span class="gap-evidence-arrow" aria-hidden="true">→</span>
+            <div class="gap-evidence-card gap-evidence-card--judgment">
+              <h4>Gap judgment</h4>
+              <p>Worth acting upon?</p>
+              <p class="gap-evidence-note">No single perfect metric — holistic judgment.</p>
+            </div>
+            <span class="gap-evidence-arrow" aria-hidden="true">→</span>
+            <div class="gap-evidence-card gap-evidence-card--outcomes">
+              <h4>Outcomes</h4>
+              <ul>
+                <li>UPIC / GPIC</li>
+                <li>Admin</li>
+                <li>Faculty</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <figcaption class="gap-evidence-caption">Source: <code>docs/diagrams/figure_gap_holistic_inputs.mmd</code></figcaption>
+      </figure>
+
+      <h3>Item 3 — Assessment calendar and accreditation runway (visit ~2030)</h3>
+      <ul>
+        <li><strong>Timeline:</strong> <strong>3-year review</strong> — Spring 2028. <strong>Full report</strong> due — Spring 2031. (Confirm dates with the dean’s office and official accreditation correspondence.)</li>
+        <li>Keep a clear view of <strong>what is assessed</strong> (by program learning goal and vehicle) and <strong>when</strong> evidence is collected through the cycle that includes the <strong>~2029–30</strong> peer review visit (exact timing per SACSCOC/AACSB and dean’s office).</li>
+        <li><a href="calendar.html">Assessment calendar</a> (demo): how often, Spring/Fall, learning-goal timelines, term checkboxes, and <strong>status colors</strong> for SP ’26 (BSBA) — draft; no small-<em>n</em> results on that page.</li>
+        <li><strong>Schedule update — SPCH 201 (Spring ’27):</strong> Committee owner: <strong>Andrea (Andie) Chaisson</strong>. For moving forward, resolve this explicitly:
+          <ul style="margin:0.4rem 0 0.25rem;padding-left:1.2rem;">
+            <li><strong>Decision question:</strong> Should the assessment calendar and rubrics inventory list <strong>both</strong> the <strong>oral</strong> and <strong>written</strong> communications rubrics for SPCH 201, or <strong>one</strong> rubric until the committee decides?</li>
+            <li><strong>Why it matters:</strong> It drives whether we show one course–rubric row or two, duplicate template links, or a single “communications (TBD)” line — and keeps the agenda, calendar, and rubrics hub from contradicting each other.</li>
+            <li><strong>Recommended working default (until decided):</strong> List <strong>both</strong> rubrics as the working plan (oral + written) with a short “confirm scope” note on the demo site; <strong>Andie</strong> can reconcile if the committee narrows to one mode.</li>
+          </ul>
+        </li>
+        <li><strong>Strategic plan (Goal 2) — AOL link:</strong> Committee will reference <strong>COB Strategic Plan (2026AY–2031AY)</strong> Goal 2, especially <strong>Objective 2.2 (bullet 2)</strong>, <strong>Objective 2.3 (bullet 1)</strong>, and <strong>Objective 2.4 (all)</strong>. Paste verbatim language from the official PDF into the repo or meeting minutes; this agenda lists the references only until the exact wording is on file.</li>
+        <li>Supports closing-the-loop documentation (<code>docs/Closing_the_Loop_Framework.md</code>); not a substitute for official accreditation files or IR.</li>
+      </ul>
+    </section>
+
+    <section class="card agenda-voting" id="voting">
+      <h2>Committee business</h2>
+      <p class="agenda-lede"><strong>Announcements</strong> are Items 1–3 above. Below is formal business in order: <strong>votes and discussion</strong> (Items 4–8), then <strong>decisions and record</strong> (Items 9–11), then items <strong>deferred</strong> (T1–T2) that were not on the floor this meeting. <a href="rubrics.html">Rubrics</a> hub supports Item 5.</p>
+
+      <div class="agenda-part" id="part-motions">
+        <h3 class="agenda-part-title">Votes and discussion (Items 4–8)</h3>
+        <p class="agenda-part-note"><strong>Item 4</strong> — vote. <strong>Item 5</strong> — discussion before Items 6–8. <strong>Items 6–8</strong> — motions (simple majority unless noted).</p>
+
+      <h4>Item 4 (Motion) — BSAD 101: assess oral &amp; written communication (UPIC input)</h4>
+      <ul>
+        <li><strong>From UPIC (En Mao) — BSAD 101 and communication baseline:</strong> &ldquo;In regard to BSAD 101, if we don&rsquo;t measure in BSAD 101, the baseline is moved up to the 200 level. Since communication skill was identified as the most critical skill from the core review, could AoL discuss whether BSAD 101 could be added to the communication assessment schedule for the next 5 years (on the every-other-year rotation)?&rdquo; <strong>We (AOL)</strong> will vote on whether to assess <strong>oral and written communication</strong> in <strong>BSAD 101</strong>.</li>
+      </ul>
+      <p class="agenda-item-vote">Vote unanimously to reject En Mao&rsquo;s proposal.</p>
+
+      <h4>Item 5 (Discussion) — Rubrics: reviewer assignments and communications rubric</h4>
+      <p>Before Item 6, confirm <strong>who reviews which rubrics</strong> in the next cycle. Inventory and templates: <a href="rubrics.html">Rubrics</a>. Course–rubric rows align with the <a href="calendar.html#direct-evidence-calendars">direct evidence</a> tables on the assessment calendar (same vehicles and programs). <strong>Draft</strong> assignments below — chair confirms and edits.</p>
+      <p><strong>Communications rubric (oral &amp; written):</strong> Treat the <strong>updated communications rubric</strong> as a <strong>committee discussion</strong> this meeting. A formal <strong>vote may wait</strong> until a follow-up meeting if needed, or until <strong>fall</strong> to finalize — whichever better secures faculty involvement. <strong>Stacey Nichols</strong> and <strong>J Field</strong> will continue refining the <strong>BARS</strong>; allowing more time for that work is acceptable if the goal is broader faculty engagement.</p>
+
+      <div class="table-scroll">
+        <table class="calendar-table agenda-rubric-assignments" aria-label="Draft rubric reviewer assignments by rubric type">
+          <thead>
+            <tr>
+              <th scope="col" style="width:3%;">#</th>
+              <th scope="col" style="width:18%;">Rubric type</th>
+              <th scope="col" style="width:24%;">Web rubric (share for feedback)</th>
+              <th scope="col" style="width:24%;">Assigned reviewer (draft)</th>
+              <th scope="col">Courses / programs (see rubrics inventory)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <th scope="row">Communication (oral &amp; written)</th>
+              <td class="agenda-rubric-links"><a href="rubric_template_demo.html?r=oral_communication">Oral communication</a> · <a href="rubric_template_demo.html?r=written_communication">Written communication</a></td>
+              <td>Ken Chadwick <span class="agenda-rev-note">(oral &amp; written via BSAD 490)</span>; Stacey Nichols <span class="agenda-rev-note">(UG)</span>; Juliann Allen <span class="agenda-rev-note">(MBA/EMBA)</span></td>
+              <td>BSAD 310, BSAD 490; MKTG 501</td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <th scope="row">Critical thinking</th>
+              <td class="agenda-rubric-links"><a href="rubric_template_demo.html?r=critical_thinking">Critical thinking</a></td>
+              <td>Xun Li <span class="agenda-rev-note">(MNGT 368)</span>; Theunette Antill <span class="agenda-rev-note">(FINC 515 successor)</span>; Chris Castille <span class="agenda-rev-note">(MNGT 502)</span></td>
+              <td>MNGT 368; FINC 515; MNGT 502</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <th scope="row">Ethics</th>
+              <td class="agenda-rubric-links"><a href="rubric_template_demo.html?r=ethics">Ethics</a></td>
+              <td><span class="agenda-rev-note">TBD</span> <span class="agenda-rev-note">(coordinate w/ BSAD 101, 221, MNGT 301 leads)</span></td>
+              <td>BSAD 101, BSAD 221, MNGT 301; MNGT 502</td>
+            </tr>
+            <tr>
+              <th scope="row">4</th>
+              <th scope="row">Technology</th>
+              <td class="agenda-rubric-links"><a href="rubric_template_demo.html?r=technology">Technology</a></td>
+              <td>En Mao &amp; Terry Evans <span class="agenda-rev-note">(CIS 231)</span>; Noel Ritchey / Tuan Le / Shari Lawrence <span class="agenda-rev-note">(UG)</span>; Ronnie Fanguy <span class="agenda-rev-note">(grad)</span></td>
+              <td>CIS 231, FINC 302; CIS 501; MNGT 502</td>
+            </tr>
+            <tr>
+              <th scope="row">5</th>
+              <th scope="row">Knowledge &amp; integration</th>
+              <td class="agenda-rubric-links"><a href="rubric_template_demo.html?r=functional_integration">Knowledge &amp; integration</a></td>
+              <td>Andrew Johnston</td>
+              <td>BSAD 525</td>
+            </tr>
+            <tr>
+              <th scope="row">6</th>
+              <th scope="row">Collaboration</th>
+              <td class="agenda-rubric-links"><a href="rubric_template_demo.html?r=collaboration">Collaboration</a></td>
+              <td>Raymond A. Peters</td>
+              <td>BSAD 507 (EMBA)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.82rem;color:var(--muted);margin:0.65rem 0 0;line-height:1.45;">Each <strong>Web rubric</strong> link opens the shared 5-point template (<code>rubric_template_demo.html</code>) with draft BARS — forward that URL for feedback. Names follow <code>RUBRICS_TABLE.md</code>; resolve conflicts with department chairs. <strong>MNGT 502</strong> spans multiple rubric types — align reviewers so each type is covered once.</p>
+      <p class="agenda-item-vote">Vote unanimously to accept rubrics and focal instructors. Vote unanimously to send rubrics to focal instructors for feedback.</p>
+
+      <h4>Item 6 (Motion) — Learning Goal 5 wording (undergraduate)</h4>
+      <ul>
+        <li><strong>Current (x):</strong> Students will be proficient in utilizing standard office software to analyze business information.</li>
+        <li><strong>Proposed (y):</strong> Students will be proficient in using standard office software and related tools (such as artificial intelligence).</li>
+        <li>Discuss scope, assessment implications, and wording; then vote to adopt y in place of x. <strong>Decision:</strong> simple majority of voting members present.</li>
+      </ul>
+      <p class="agenda-item-vote">Vote unanimously to accept the proposed wording change.</p>
+
+      <h4>Item 7 (Motion) — Indirect survey before ETS</h4>
+      <ul>
+        <li><strong>Policy:</strong> Students complete the indirect-measures <strong>survey while waiting</strong>, then take the ETS exam (reduces missing-not-at-random nonresponse; students told why to arrive early).</li>
+        <li>Rationale: survey responses for all exam takers.</li>
+      </ul>
+      <p class="agenda-item-vote">Vote unanimously to make students take the indirect-measure survey while waiting to take the ETS exam.</p>
+
+      <h4>Item 8 (Motion) — Syllabus: technology stack and AI</h4>
+      <ul>
+        <li>List <strong>main software/platforms</strong> for graded work (e.g. PowerPoint, Excel, Canvas, discipline tools). State <strong>AI tools</strong> allowed or encouraged (and restrictions if required).</li>
+        <li>Example: <strong>MNGT 425 — HR Analytics</strong>; tools: R, Excel, Google Slides, PowerPoint, Google Docs, Google Sheets.</li>
+        <li>Lists: good-faith, updated when the syllabus changes; supports accreditation visibility without a separate faculty survey.</li>
+        <li><strong>Not in this motion:</strong> the legacy AOL puzzle-piece / insert — see <strong><a href="#item-11">Item 11</a></strong>.</li>
+      </ul>
+      <p class="agenda-item-vote">Vote to require faculty to put a technology stack into the syllabus.</p>
+
+      </div>
+
+      <div class="agenda-part" id="part-decisions">
+        <h3 class="agenda-part-title">Decisions and record (Items 9–11)</h3>
+        <p class="agenda-part-note">These items were previously listed as <strong>T3–T5</strong> (tabled placeholders). They were added to the agenda; the committee took the votes or recorded actions below. Minutes may still reference <strong>T3–T5</strong> for cross-reference.</p>
+
+      <h4 id="item-9">Item 9 — O*NET for ongoing AOL maintenance</h4>
+      <p class="agenda-item-context">The <strong>full T3 motion</strong> (O*NET plus optional external evidence) remains <strong>tabled</strong> for a future vote. This meeting the committee recorded the following.</p>
+      <ul>
+        <li><strong>Vote taken:</strong> Unanimous approval to adopt <a href="https://www.onetonline.org/" target="_blank" rel="noopener">O*NET</a> for ongoing AOL maintenance.</li>
+        <li><strong>Not voted this meeting:</strong> The broader motion also includes room for outside evidence (e.g. the <a href="https://www.oecd.org/content/dam/oecd/en/publications/reports/2024/04/artificial-intelligence-and-the-changing-demand-for-skills-in-the-labour-market_861a23ea/88684e36-en.pdf" target="_blank" rel="noopener">OECD report on AI and skills in the labour market</a>). Faculty discussed external evidence as <strong>helpful</strong> for context; no formal vote on that portion yet.</li>
+        <li><strong>Next steps:</strong> Chair will include O*NET adoption and discussion of external evidence in committee reports. A <strong>future meeting</strong> may vote on the <strong>full</strong> T3 motion when ready.</li>
+      </ul>
+      <p class="agenda-item-vote">Vote unanimously to allow use of O*NET for clarifying curriculum gaps.</p>
+
+      <h4 id="item-10">Item 10 (Motion) — Discontinue graphics &amp; presentation rubric for AOL</h4>
+      <p class="agenda-item-context">Former <strong>T5</strong> (tabled proposal to retire this rubric type). <strong>Outcome:</strong> motion approved; graphics presentation rubrics are <strong>discontinued</strong> for AOL.</p>
+      <ul>
+        <li>The graphics presentation rubrics are <strong>redundant with the technology rubrics</strong>; they are <strong>discontinued for AOL going forward</strong>.</li>
+        <li>The web template <strong>no longer lists this type</strong> in the main picker; legacy Word files remain in <code>rubrics/</code> for the record.</li>
+        <li><strong>Archival closeout (if needed):</strong> Chris Castille; Ann-Marie Castille.</li>
+      </ul>
+      <p class="agenda-item-vote">Vote unanimously to discontinue the graphics and presentation rubric.</p>
+
+      <h4 id="item-11">Item 11 (Motion) — Retain legacy AOL puzzle-piece / insert in syllabi</h4>
+      <p class="agenda-item-context">Former <strong>T4</strong> (tabled proposal to retire the puzzle-piece). <strong>Outcome:</strong> motion approved; the puzzle-piece remains an approved syllabus element.</p>
+      <ul>
+        <li>The legacy AOL <strong>puzzle-piece / insert</strong> remains an approved syllabus element; faculty may continue to maintain it as they do today.</li>
+        <li><strong>Item 8</strong> (technology stack / AI syllabus language) is unchanged; it does not require dropping the puzzle-piece.</li>
+      </ul>
+      <p class="agenda-item-vote">Vote unanimously to retain the puzzle-piece.</p>
+
+      </div>
+
+      <div class="agenda-tabled-in-voting" aria-labelledby="tabled-heading">
+        <h3 id="tabled-heading">Deferred — not on the floor this meeting</h3>
+        <p class="agenda-order__meta">No action on T1–T2 below. (Former T3–T5 are addressed in Items 9–11.)</p>
+        <ul>
+          <li><strong>T1:</strong> Candid feedback on the <strong>demo / transparency site</strong> (navigation, clarity, usefulness, gaps for your role). Design critique — not a performance review.</li>
+          <li><strong>T2:</strong> Student development and assessments — exploratory / volunteer for now; ties to focus-group themes (fit, supports); <em>no discussion</em> this meeting.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Legacy: Google Doc (reference only)</h2>
+      <p style="font-size:0.9rem;color:var(--muted);">
+        Older working copy; keep for history or old bookmarks.
+      </p>
+      <p>
+        <a href="https://docs.google.com/document/d/1iMSZqrilGKBK5oc2lohEBsq6Q-zLWYn1RJk3q3S6IZA/edit?tab=t.0" target="_blank" rel="noopener">Open AOL agenda — Google Doc (legacy)</a>
+      </p>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>Config: <code>docs/aol_meeting_config.json</code></p>
+    <p class="site-footer-strategic" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;">Strategic plan (demo): COB <strong>Goal 2</strong> objective references — <a href="index.html">Home</a> · <a href="methodology.html">Methodology</a> · <a href="governance.html">Governance</a></p>
+  </footer>
+</body>
+</html>

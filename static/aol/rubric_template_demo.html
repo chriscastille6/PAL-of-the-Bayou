@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <title>AOL rubric template (demo)</title>
+  <!-- aol-rubric-template:bundle-20260330-facets-pdf-nicholls -->
+  <link rel="stylesheet" href="css/site.css" />
+  <link rel="stylesheet" href="css/oral_rubric.css" />
+</head>
+<body>
+  <div class="demo-banner">SHARED TEMPLATE — SAME 5-POINT COMPETENCE SCALE — DRAFT CRITERIA; RECONCILE WITH <code>rubrics/*.doc</code></div>
+  <div class="oral-rubric-page">
+    <div class="no-print print-rubric-toolbar print-rubric-toolbar--pdf">
+      <div class="print-rubric-toolbar-inner">
+        <button type="button" class="btn-primary" onclick="printRubricForPdf()">Download PDF (faculty sheet)</button>
+        <p class="print-rubric-hint">
+          Opens print — choose <strong>Save as PDF</strong>. <strong>Page 1 (landscape):</strong> scoring matrix with Instructor / Student / Date / Score assigned.
+          <strong>Following pages (portrait):</strong> full behavioral anchors (BARS) for each rating line. The on-screen demo below is hidden from this PDF.
+        </p>
+      </div>
+    </div>
+    <p class="no-print" style="margin:0 0 1rem;">
+      <a href="rubrics.html">← Rubrics</a> ·
+      <a href="index.html">Home</a> ·
+      <a href="agenda.html">Committee agenda</a> ·
+      <a href="minutes.html">Minutes</a> ·
+      <a href="../docs/Rubric_Web_Template.md">Template doc</a> ·
+      <a href="oral_communication_rubric_demo.html">Standalone oral demo</a>
+    </p>
+
+    <div class="warn-ferpa no-print">
+      <strong>FERPA &amp; transparency.</strong> Same rules as the oral spec: qualitative comments may be visible to student, AOL, and Canvas copies. Production uses SSO, salted pseudonyms for analytics, and institutional storage for artifacts.
+    </div>
+
+    <div class="card-rubric no-print" style="margin-bottom:1rem;">
+      <h2 style="margin-top:0;">Choose rubric (same 5-point system)</h2>
+      <p style="font-size:0.9rem;color:#4b5563;">All use <strong>Novice → Exceptional</strong> with identical scale definitions. Criterion rows differ by rubric type (creative draft — align with Word masters).</p>
+      <label for="rubricPick" class="sr-only">Rubric</label>
+      <select id="rubricPick" style="max-width:100%;padding:0.5rem;font-size:1rem;border-radius:0.375rem;border:1px solid #d1d5db;">
+        <option value="oral_communication">Oral communication</option>
+        <option value="written_communication">Written communication</option>
+        <option value="ethics">Ethics</option>
+        <option value="critical_thinking">Critical thinking</option>
+        <option value="technology">Technology</option>
+        <option value="collaboration">Collaboration (EMBA-style)</option>
+        <option value="functional_integration">Functional knowledge &amp; integration (grad)</option>
+        <option value="diversity">Diversity (graduate)</option>
+      </select>
+      <p style="font-size:0.8rem;color:#6b7280;margin-top:0.5rem;">Shareable URL: <code id="urlHint"></code></p>
+    </div>
+
+    <div class="rubric-screen-only">
+      <div id="rubricRoot"></div>
+    </div>
+    <div id="rubricPrintPack" class="rubric-print-only" aria-hidden="true"></div>
+  </div>
+
+  <script src="js/rubric_print_helper.js"></script>
+  <!-- Embedded definitions: enables file:// and fetch failure fallback; ?v= busts CDN/browser cache after deploy -->
+  <script src="js/rubric_definitions_data.js?v=20260330"></script>
+  <script src="js/rubric_template.js?v=20260330"></script>
+  <script>
+    (function () {
+      var pick = document.getElementById("rubricPick");
+      var hint = document.getElementById("urlHint");
+      var printOpts = { printPackId: "rubricPrintPack" };
+
+      function updateUrlHint() {
+        hint.textContent =
+          window.location.pathname.split("/").pop() + "?r=" + encodeURIComponent(pick.value);
+      }
+
+      function loadRubric() {
+        var want = pick.value;
+        history.replaceState(null, "", "?r=" + encodeURIComponent(want));
+        updateUrlHint();
+        RubricTemplate.init("rubricRoot", "data/rubric_definitions.json?v=20260330", printOpts);
+      }
+
+      var params = new URLSearchParams(window.location.search);
+      var r = params.get("r");
+      if (r && pick.querySelector('option[value="' + r + '"]')) pick.value = r;
+
+      pick.addEventListener("change", loadRubric);
+      updateUrlHint();
+      RubricTemplate.init("rubricRoot", "data/rubric_definitions.json?v=20260330", printOpts);
+    })();
+  </script>
+</body>
+</html>

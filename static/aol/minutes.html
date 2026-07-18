@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Committee minutes &amp; record — AOL (Demo)</title>
+  <link rel="stylesheet" href="css/site.css?v=gapfig6" />
+</head>
+<body>
+  <div class="demo-banner">DRAFT — FOR DEMONSTRATION ONLY — Confirm against official committee minutes on file</div>
+  <header class="site-header">
+    <h1>Committee minutes &amp; record</h1>
+    <p class="tagline">Discussion notes, feedback, and improvement items alongside formal votes. Transparency copy for the demo site.</p>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="governance.html">Governance</a>
+      <a href="rubrics.html">Rubrics</a>
+      <a href="calendar.html">Assessment calendar</a>
+      <a href="degree_plans.html">Degree plans</a>
+      <a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a>
+      <a href="agenda.html">Committee agenda</a>
+      <a href="minutes.html" aria-current="page">Minutes</a>
+      <a href="profiles.html">Profiles</a>
+      <a href="role-leadership.html">Preview: Leadership / accreditation</a>
+    </nav>
+  </header>
+  <main>
+    <section class="card">
+      <h2>What this page is for</h2>
+      <p>
+        There is <strong>no separate “minutes tab”</strong> in the original demo — only the <a href="agenda.html">agenda</a> (with vote lines) and repo docs.
+        This page is a <strong>working place</strong> to capture <strong>discussion</strong>, <strong>candid feedback</strong>, and <strong>suggestions for improvement</strong> with a source trail, so follow-up actions are easier to find than in email alone.
+      </p>
+      <ul>
+        <li><strong>Formal votes</strong> stay on the <a href="agenda.html#voting">agenda</a> (red italic lines under each item) and in the <a href="reference/AOL_committee_agenda_Spring_2026-03-30.pdf">Spring 2026 agenda PDF</a>.</li>
+        <li><strong>Rubric / template changes over time:</strong> <a href="rubric_change_log.html">Rubric change log</a> (knit from <code>rubric_change_log.Rmd</code>).</li>
+        <li><strong>Authoritative Q&amp;A / governance:</strong> <a href="../docs/AOL_Framework_Decisions.md"><code>docs/AOL_Framework_Decisions.md</code></a> — if official college minutes or letterhead PDFs conflict with this demo, the official record wins.</li>
+      </ul>
+    </section>
+
+    <section class="card minutes-meeting" id="spring-2026-03-30">
+      <h2>Spring 2026 — March 30 meeting</h2>
+      <p class="agenda-order__meta" style="margin-top:0;">
+        <strong>When / where / attendance:</strong> see <a href="agenda.html">Planned committee meeting</a> on the agenda (Powell Hall 208).
+      </p>
+
+      <h3>5-point scale &amp; BARS — suggestion for improvement (Dr. J Robert Field, UPIC)</h3>
+      <p>
+        This is the standing record that used to live with the minutes-style notes on the site: <strong>Dr. J Robert Field</strong> (UPIC) requested a <strong>behaviorally anchored rating scale</strong> — each of the <strong>five</strong> competence levels should map to <strong>specific behavioral criteria</strong> for <strong>each outcome</strong>, so a rater can <strong>defend</strong> the score assigned to a student.
+        The committee <strong>affirms</strong> the <strong>5-point</strong> scale and the <strong>90% goal at ≥ Proficient (3)</strong>; the improvement work is <strong>per-outcome BARS</strong> (anchors), not replacing the scale length.
+        Full table-style entry (request, context, status, artifacts): <a href="rubric_change_log.html#behaviorally-anchored-rating-scale-upic-request"><strong>Rubric change log</strong> — 2025-03-25, UPIC request</a>
+        (<code>aol_site/rubric_change_log.Rmd</code>).
+        <strong>Spring 2026 cadence:</strong> <a href="agenda.html#part-motions">Agenda Item 5</a> — <strong>Stacey Nichols</strong> and <strong>J Field</strong> continue refining communications rubric <strong>BARS</strong>; web drafts: <a href="rubric_template_demo.html">shared 5-point template</a> + <a href="rubrics.html">Rubrics</a> hub.
+      </p>
+
+      <h3>Discussion highlights &amp; feedback</h3>
+      <p class="minutes-placeholder-note">
+        <em>Add other meeting themes below (or paste from official minutes).</em> Examples: site UX, curriculum visuals, O*NET discussion.
+      </p>
+      <ul class="minutes-editable-list">
+        <li><em>Example: Degree-plan feedback led to catalog-aligned ACCT prerequisites on <a href="degree_plans.html?plan=acct">Degree plans · Accounting</a>.</em></li>
+        <li><em>Candid feedback on the transparency site: agenda <a href="agenda.html#tabled-heading">T1</a> when collected.</em></li>
+      </ul>
+
+      <h3>Suggestions for improvement &amp; follow-up</h3>
+      <p class="minutes-placeholder-note">
+        Additional action items beyond the BARS work above; name an owner or <strong>AOL</strong> when unassigned.
+      </p>
+      <ul class="minutes-editable-list">
+        <li><strong>BARS / UPIC:</strong> Complete SME review and anchors per rubric type; regenerate JSON embed after edits (<code>python3 aol_site/scripts/sync_rubric_definitions_embed.py</code>) — see <a href="rubric_change_log.html">change log</a>.</li>
+        <li><em>Sync sibling <code>Advising</code> prerequisite template after ACCT diagram fixes so <code>sync_degree_plan_diagrams_from_advising.py</code> does not revert Accounting.</em></li>
+        <li><em>Fall agenda: replace Spring-specific blocks; regenerate PDF via <code>aol_site/scripts/render_agenda_pdf.sh</code>.</em></li>
+      </ul>
+
+      <h3>Quick links</h3>
+      <ul>
+        <li><a href="agenda.html#voting">Committee business</a> (Items 4–11)</li>
+        <li><a href="rubric_change_log.html#behaviorally-anchored-rating-scale-upic-request">Rubric change log — Dr. Field / BARS (UPIC)</a></li>
+        <li><a href="governance.html#gap-holistic">Gap judgment figure</a> (governance)</li>
+        <li><a href="../docs/agenda_sections_to_append.md"><code>docs/agenda_sections_to_append.md</code></a> — long-form draft sections for memos</li>
+      </ul>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>Edit <code>aol_site/minutes.html</code> to update this record. Official minutes remain the college’s version of record when distributed.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Faculty &amp; leadership profiles (Demo) — AOL</title>
+  <link rel="stylesheet" href="css/site.css" />
+  <style>
+    .profile-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1rem; }
+    .profile-card {
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1.25rem;
+      background: var(--card, #fff);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .profile-card h3 { margin: 0 0 0.35rem; font-size: 1.15rem; color: var(--accent, #1a5276); }
+    .profile-card p { margin: 0 0 0.75rem; font-size: 0.92rem; line-height: 1.5; color: var(--muted, #6c757d); }
+    .profile-card a.profile-cta {
+      display: inline-block;
+      margin-top: 0.25rem;
+      padding: 0.45rem 0.9rem;
+      background: var(--accent, #1a5276);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .profile-card a.profile-cta:hover { filter: brightness(1.08); }
+  </style>
+</head>
+<body>
+  <div class="demo-banner">DRAFT — FOR DEMONSTRATION ONLY — Full pages are copies of pipeline HTML in <code>ets_statistics_analysis/</code></div>
+  <header class="site-header">
+    <h1>Profiles</h1>
+    <p class="tagline">AOL chair &amp; department head — assessment-aligned views (demo)</p>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="governance.html">Governance</a>
+      <a href="rubrics.html">Rubrics</a>
+      <a href="calendar.html">Assessment calendar</a>
+      <a href="degree_plans.html">Degree plans</a>
+      <a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a>
+      <a href="agenda.html">Committee agenda</a>
+      <a href="minutes.html">Minutes</a>
+      <a href="profiles.html" aria-current="page">Profiles</a>
+      <a href="role-leadership.html">Preview: Leadership / accreditation</a>
+    </nav>
+  </header>
+  <main>
+    <section class="card">
+      <h2>Who these are</h2>
+      <p>
+        These pages are <strong>static copies</strong> of HTML generated under <code>ets_statistics_analysis/</code>
+        (faculty impact profile and department-head-style report). They are included on the transparency demo for
+        <strong>navigation and discussion</strong> — refresh the copies if you regenerate reports from the pipeline.
+      </p>
+    </section>
+    <section class="card">
+      <h2>Open a profile</h2>
+      <div class="profile-cards">
+        <article class="profile-card">
+          <h3>Dr. Christopher M. Castille</h3>
+          <p>AOL Committee Chair — faculty impact profile (ETS alignment, courses, learning objectives).</p>
+          <p style="font-size:0.85rem;margin-bottom:0;"><strong>Source:</strong> <code>ets_statistics_analysis/faculty_reports/Chris_Castille_Impact_Profile.html</code></p>
+          <a class="profile-cta" href="profiles/christopher_castille.html">View profile</a>
+        </article>
+        <article class="profile-card">
+          <h3>Dr. Ken Chadwick</h3>
+          <p>Department head view — Management (MNGT) &amp; Marketing (MKTG) department assessment profile.</p>
+          <p style="font-size:0.85rem;margin-bottom:0;"><strong>Source:</strong> <code>ets_statistics_analysis/department_reports/Ken_Chadwick_report.html</code></p>
+          <a class="profile-cta" href="profiles/ken_chadwick.html">View profile</a>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>Sync: copy HTML from <code>ets_statistics_analysis/…</code> into <code>aol_site/profiles/</code> after pipeline runs.</p>
+    <p class="site-footer-strategic" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;">Strategic plan (demo): COB <strong>Goal 2</strong> — <a href="index.html">Home</a> · <a href="agenda.html#announcements">Committee agenda</a></p>
+  </footer>
+</body>
+</html>

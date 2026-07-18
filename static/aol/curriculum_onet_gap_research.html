@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Curriculum, O*NET &amp; NLP (research brief) — AOL</title>
+  <link rel="stylesheet" href="css/site.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body.nlp-brief-page main {
+      max-width: 1100px;
+    }
+    .nlp-brief-intro {
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: var(--text);
+    }
+    .nlp-brief-grid {
+      display: grid;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+    @media (min-width: 900px) {
+      .nlp-brief-grid--2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .nlp-brief-card {
+      border-top: 4px solid var(--accent);
+      padding-top: 0.5rem;
+    }
+    .nlp-brief-card.teal { border-top-color: #0d9488; }
+    .nlp-brief-card.orange { border-top-color: #ea580c; }
+    .nlp-brief-card.purple { border-top-color: #7c3aed; }
+    .nlp-brief-card h2 {
+      font-size: 1.15rem;
+      margin-top: 0;
+    }
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      max-height: 400px;
+      margin-top: 1rem;
+    }
+    @media (min-width: 768px) {
+      .chart-wrap { height: 380px; }
+    }
+    .chart-wrap--radar-triple {
+      height: 360px;
+      max-height: 460px;
+    }
+    @media (min-width: 768px) {
+      .chart-wrap--radar-triple { height: 430px; }
+    }
+    .source-note {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.75rem;
+      line-height: 1.5;
+    }
+    .workflow-steps {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding: 0 0.25rem;
+    }
+    .workflow-step {
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      text-align: center;
+      background: #f8fafc;
+    }
+    .workflow-step strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    .workflow-step span {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .workflow-step.blue { border-color: #93c5fd; background: #eff6ff; }
+    .workflow-step.teal { border-color: #5eead4; background: #f0fdfa; }
+    .workflow-step.orange { border-color: #fdba74; background: #fff7ed; }
+    .workflow-step.purple { border-color: #c4b5fd; background: #f5f3ff; }
+    .workflow-arrow {
+      text-align: center;
+      font-size: 1.5rem;
+      color: #94a3b8;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .illustration-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #b45309;
+      background: #fef3c7;
+      border: 1px solid #fcd34d;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body class="nlp-brief-page">
+  <div class="demo-banner">DRAFT — FOR DEMONSTRATION ONLY</div>
+  <header class="site-header">
+    <h1>Curriculum alignment, O*NET, and NLP / LLM methods</h1>
+    <p class="tagline">Research brief supporting syllabus-to-occupation gap evidence (demo; confirm numbers in primary sources)</p>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="governance.html">Governance</a>
+      <a href="rubrics.html">Rubrics</a>
+      <a href="calendar.html">Assessment calendar</a>
+      <a href="degree_plans.html">Degree plans</a>
+      <a href="curriculum_onet_gap_research.html" aria-current="page">O*NET / NLP brief</a>
+      <a href="agenda.html">Committee agenda</a>
+      <a href="minutes.html">Minutes</a>
+      <a href="profiles.html">Profiles</a>
+      <a href="role-leadership.html">Preview: Leadership / accreditation</a>
+    </nav>
+  </header>
+  <main>
+    <section class="card">
+      <h2>Purpose</h2>
+      <p class="nlp-brief-intro">
+        This page summarizes a <strong>feasible analytic path</strong> for AOL: treat degree-plan and syllabus text like occupational text,
+        extract or score <strong>KSAO-relevant signals</strong> with NLP or LLM-supported workflows, and benchmark results against
+        <strong>O*NET</strong> (and chosen focal occupations) as one stream in <a href="governance.html#gap-holistic">holistic gap judgment</a>.
+        It complements the repo’s <a href="../docs/Labor_Market_ONET_Integration_Plan.md">labor-market / O*NET plan</a> and the
+        <a href="methodology.html">methodology page</a> (syllabus-to-O*NET via embeddings).
+      </p>
+      <p class="source-note">
+        <strong>Grounding:</strong> Bar-chart values below are taken from Putka et al., <em>Journal of Business and Psychology</em>
+        (<a href="https://doi.org/10.1007/s10869-022-09824-0">DOI 10.1007/s10869-022-09824-0</a>).
+        Radar and doughnut figures are <strong>illustrative only</strong> (not Nicholls data).
+      </p>
+      <p style="margin-top:1rem;margin-bottom:0;">
+        <strong>Shared “visualizing the gap” demo:</strong> <a href="nlp_curriculum_gap_visualization.html">NLP / LLM curriculum alignment — Putka chart, workflow, radar gap, strategic doughnut</a> (Tailwind + Chart.js; committee agenda).
+        <strong>UI exploration:</strong> <a href="demo_hr_onet_gap_visualizations.html">HR × O*NET gap visualization mocks</a> — heatmaps, gap ladder, small multiples, linked drill-down, curriculum vs ETS scatter, collapsed radar (all synthetic).
+        <strong>Pipeline logic:</strong> <a href="ksao_coverage_from_syllabi_explainer.html">Mermaid explainer — syllabus to %K / %S / %A coverage</a>.
+      </p>
+    </section>
+
+    <div class="nlp-brief-grid nlp-brief-grid--2">
+      <section class="card nlp-brief-card">
+        <h2>Empirical foundation: NLP vs. SME KSAO ratings</h2>
+        <p>
+          Putka and colleagues evaluated whether NLP models could estimate job-analysis-style <strong>KSAO and interest</strong> ratings from job text,
+          compared to human subject-matter expert (SME) ratings. Cross-validated correlations between model-based and SME ratings were substantial
+          across knowledges, skills, abilities, and interests (see chart).
+        </p>
+        <div class="chart-wrap">
+          <canvas id="accuracyChart" aria-label="Bar chart of correlations with SME ratings"></canvas>
+        </div>
+        <p class="source-note">
+          Values shown: Knowledges <strong>0.74</strong>, Skills <strong>0.80</strong>, Abilities <strong>0.75</strong>, Interests <strong>0.84</strong>
+          as reported in the article above; cite the paper directly for committee or external use.
+        </p>
+      </section>
+
+      <section class="card nlp-brief-card teal">
+        <h2>Proposed workflow: syllabi to occupational alignment</h2>
+        <p>
+          By substituting job descriptions with <strong>syllabi, learning objectives, and assignment descriptions</strong>, similar NLP or
+          LLM-assisted pipelines can produce a <strong>curriculum-side profile</strong> for comparison to O*NET occupation or task–KSAO profiles.
+          That yields structured <strong>gap hypotheses</strong> for UPIC/GPIC judgment—not a single automatic “truth.”
+        </p>
+        <div class="workflow-steps">
+          <div class="workflow-step blue">
+            <strong>1. Curriculum text input</strong>
+            <span>HR/Marketing syllabi, learning objectives, assignments</span>
+          </div>
+          <div class="workflow-arrow" aria-hidden="true">↓</div>
+          <div class="workflow-step teal">
+            <strong>2. NLP / LLM processing</strong>
+            <span>Embeddings, classification, or structured extraction; optional network views</span>
+          </div>
+          <div class="workflow-arrow" aria-hidden="true">↓</div>
+          <div class="workflow-step orange">
+            <strong>3. Extracted KSAO-style profile</strong>
+            <span>Weights or coverage scores for taught knowledges and skills</span>
+          </div>
+          <div class="workflow-arrow" aria-hidden="true">↓</div>
+          <div class="workflow-step purple">
+            <strong>4. AOL output</strong>
+            <span>Gap analysis vs. O*NET target occupation(s); feeds governance and closing the loop</span>
+          </div>
+        </div>
+        <p class="source-note" style="margin-top: 1rem;">
+          Repo pointers: <a href="../docs/Needs_Assessment_Methodology.md#syllabus-to-onet-methodology">Needs_Assessment_Methodology.md</a> ·
+          <a href="../docs/Syllabus_Occupation_KSAO_Stack.md">Syllabus_Occupation_KSAO_Stack.md</a> ·
+          <a href="../ets_statistics_analysis/SYLLABUS_TO_ONET_INTEGRATION.md"><code>SYLLABUS_TO_ONET_INTEGRATION.md</code></a>
+        </p>
+      </section>
+    </div>
+
+    <div class="nlp-brief-grid nlp-brief-grid--2">
+      <section class="card nlp-brief-card orange">
+        <span class="illustration-badge">Illustration</span>
+        <h2>Gap visualization (hypothetical HR example)</h2>
+        <p>
+          A radar chart can compare a <strong>curriculum-derived profile</strong> and an <strong>aggregate student-performance profile</strong> to a <strong>target occupation</strong> profile (e.g. from O*NET-linked aggregates), surfacing <strong>gaps on paper</strong> vs. <strong>performance gaps</strong>.
+          The series below are <strong>fabricated</strong> for layout demo—replace with real pipeline output before any decision use.
+        </p>
+        <div class="chart-wrap chart-wrap--radar-triple">
+          <canvas id="radarChart" aria-label="Radar chart: hypothetical target occupation, curriculum profile, and aggregate student performance"></canvas>
+        </div>
+      </section>
+
+      <section class="card nlp-brief-card purple">
+        <span class="illustration-badge">Illustration</span>
+        <h2>Strategic responses (example mix)</h2>
+        <p>
+          Gap findings typically feed <strong>curriculum and experience design</strong> (syllabus updates, electives, experiential learning, partnerships).
+          Slice sizes in the chart are <strong>placeholders</strong> only.
+        </p>
+        <div class="chart-wrap">
+          <canvas id="actionChart" aria-label="Doughnut chart of example strategic response categories"></canvas>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <p>Demo only — aligns with <a href="governance.html">Governance</a> gap evidence streams and <a href="methodology.html">Methodology</a>.</p>
+    <p class="site-footer-strategic" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;">Strategic plan (demo): COB <strong>Goal 2</strong> — <a href="index.html">Home</a> · <a href="agenda.html#announcements">Committee agenda</a></p>
+  </footer>
+  <script>
+    (function () {
+      function wrapLabel(label, maxLength) {
+        maxLength = maxLength || 16;
+        if (label.length <= maxLength) return label;
+        var words = label.split(" ");
+        var lines = [];
+        var currentLine = "";
+        words.forEach(function (word) {
+          if ((currentLine + word).length > maxLength) {
+            if (currentLine.trim() !== "") lines.push(currentLine.trim());
+            currentLine = word + " ";
+          } else {
+            currentLine += word + " ";
+          }
+        });
+        if (currentLine.trim() !== "") lines.push(currentLine.trim());
+        return lines;
+      }
+
+      var sharedTooltip = {
+        callbacks: {
+          title: function (tooltipItems) {
+            var item = tooltipItems[0];
+            var label = item.chart.data.labels[item.dataIndex];
+            return Array.isArray(label) ? label.join(" ") : label;
+          }
+        }
+      };
+
+      var accCtx = document.getElementById("accuracyChart").getContext("2d");
+      var accuracyLabels = ["Knowledges", "Skills", "Abilities", "Interests"].map(function (l) {
+        return wrapLabel(l);
+      });
+      new Chart(accCtx, {
+        type: "bar",
+        data: {
+          labels: accuracyLabels,
+          datasets: [
+            {
+              label: "Correlation with SME ratings (Putka et al.)",
+              data: [0.74, 0.8, 0.75, 0.84],
+              backgroundColor: ["#1E3A8A", "#0D9488", "#EA580C", "#7C3AED"],
+              borderWidth: 0,
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "top" },
+            tooltip: sharedTooltip
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 1.0,
+              title: { display: true, text: "Cross-validated correlation (r)" }
+            }
+          }
+        }
+      });
+
+      var radarCtx = document.getElementById("radarChart").getContext("2d");
+      var radarLabels = [
+        "Personnel & HR",
+        "Admin & Management",
+        "Communication",
+        "Data Analytics",
+        "Psychology",
+        "Labor Law Compliance"
+      ].map(function (l) {
+        return wrapLabel(l);
+      });
+      new Chart(radarCtx, {
+        type: "radar",
+        data: {
+          labels: radarLabels,
+          datasets: [
+            {
+              label: "Target (O*NET HR Manager — demo)",
+              data: [95, 85, 90, 75, 75, 85],
+              backgroundColor: "rgba(13, 148, 136, 0.2)",
+              borderColor: "#0D9488",
+              pointBackgroundColor: "#0D9488",
+              borderWidth: 2
+            },
+            {
+              label: "Current degree plan (NLP est. — demo)",
+              data: [85, 70, 95, 60, 45, 65],
+              backgroundColor: "rgba(234, 88, 12, 0.2)",
+              borderColor: "#EA580C",
+              pointBackgroundColor: "#EA580C",
+              borderWidth: 2
+            },
+            {
+              label: "Student performance (aggregate — demo)",
+              data: [72, 63, 78, 52, 52, 58],
+              backgroundColor: "rgba(79, 70, 229, 0.18)",
+              borderColor: "#4F46E5",
+              pointBackgroundColor: "#4F46E5",
+              borderWidth: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: sharedTooltip,
+            legend: { position: "bottom" }
+          },
+          scales: {
+            r: {
+              angleLines: { color: "rgba(0, 0, 0, 0.1)" },
+              grid: { color: "rgba(0, 0, 0, 0.1)" },
+              pointLabels: { font: { size: 11 } },
+              ticks: { backdropColor: "transparent", stepSize: 20 }
+            }
+          }
+        }
+      });
+
+      var actionCtx = document.getElementById("actionChart").getContext("2d");
+      var actionLabels = [
+        "Update core course syllabi",
+        "Introduce new electives",
+        "Add experiential learning",
+        "Form industry partnerships"
+      ].map(function (l) {
+        return wrapLabel(l);
+      });
+      new Chart(actionCtx, {
+        type: "doughnut",
+        data: {
+          labels: actionLabels,
+          datasets: [
+            {
+              data: [45, 25, 20, 10],
+              backgroundColor: ["#1E3A8A", "#0D9488", "#EA580C", "#7C3AED"],
+              borderWidth: 2,
+              borderColor: "#ffffff"
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "65%",
+          plugins: {
+            legend: { position: "right" },
+            tooltip: sharedTooltip
+          }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

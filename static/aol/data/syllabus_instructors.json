@@ -1,0 +1,25 @@
+{
+  "_meta": {
+    "source": "ets_statistics_analysis/syllabi_metadata.json",
+    "note": "Faculty from faculty_name where set; additional names inferred from syllabus filenames when faculty_name was null (e.g. Evans, Chadwick). Multiple names = multiple instructors/sections on file.",
+    "staffing_notes": {
+      "FINC_515": "Mrs. Theunette Antill teaches this course and uses the FINC 515 AOL rubric.",
+      "MNGT_502": "Chris Castille — Managing Human Capital (correct catalog number; do not use BSAD 502)."
+    }
+  },
+  "BSAD 310": ["Stacey Nichols"],
+  "BSAD 490": ["Andrew Johnston", "Chadwick"],
+  "MNGT 368": ["Xun Li"],
+  "BSAD 101": ["Stacey Nichols", "T. Evans"],
+  "BSAD 221": ["Gene Gouaux"],
+  "MNGT 301": ["Jim Koontz", "Joshua E. Cogswell", "Melanie M. Boudreaux"],
+  "CIS 231": ["En Mao", "Terry Evans"],
+  "FINC 302": ["Noel Ritchey", "Tuan Le", "Shari Lawrence"],
+  "MKTG 501": ["Juliann Allen"],
+  "FINC 515": null,
+  "BSAD 507": ["Raymond A. Peters"],
+  "BSAD 525": ["Andrew Johnston"],
+  "CIS 501": ["Ronnie Fanguy"],
+  "MNGT 502": ["Chris Castille"],
+  "BSAD 520": null
+}

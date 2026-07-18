@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Methodology (Demo) — AOL</title>
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+  <div class="demo-banner">DRAFT — FOR DEMONSTRATION ONLY</div>
+  <header class="site-header">
+    <h1>Methodology (summary)</h1>
+    <p class="tagline">Excerpted for the demo; canonical text lives in <code>docs/</code></p>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="methodology.html" aria-current="page">Methodology</a>
+      <a href="governance.html">Governance</a>
+      <a href="rubrics.html">Rubrics</a>
+      <a href="calendar.html">Assessment calendar</a>
+      <a href="degree_plans.html">Degree plans</a>
+      <a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a>
+      <a href="agenda.html">Committee agenda</a>
+      <a href="minutes.html">Minutes</a>
+      <a href="profiles.html">Profiles</a>
+      <a href="role-leadership.html">Preview: Leadership / accreditation</a>
+    </nav>
+  </header>
+  <main>
+    <section class="card">
+      <h2>Terminology: direct vs. indirect measures</h2>
+      <dl style="margin:0;">
+        <dt><strong>Direct measures</strong></dt>
+        <dd style="margin:0 0 0.75rem 1rem;">Evidence from <strong>scored student work</strong> tied to outcomes — in practice, the <strong>rubrics</strong> (and similar structured assessments) faculty use when rating performance.</dd>
+        <dt><strong>Indirect measures</strong></dt>
+        <dd style="margin:0 0 0 1rem;"><strong>Surveys</strong> (e.g. senior, alumni, employer) and other perception tools. They inform improvement but do not replace direct evidence.</dd>
+      </dl>
+      <p style="font-size:0.9rem;margin-top:0.75rem;"><a href="../docs/AOL_Terminology.md">Full: AOL_Terminology.md</a></p>
+    </section>
+    <section class="card">
+      <h2>Strategic plan alignment (Goal 2)</h2>
+      <p style="font-size:0.92rem;line-height:1.55;">
+        Closing-the-loop work, rubrics, and the assessment calendar line up with Goal 2 in the <em>COB Strategic Plan (2026AY&ndash;2031AY)</em>. Quoted objectives, plain-language notes, and the committee&rsquo;s 2.2 / 2.3 / 2.4 references are on the <a href="index.html#strategic-plan-goal2">home page (Strategic plan alignment)</a>. Always reconcile wording with the official PDF.
+      </p>
+    </section>
+    <section class="card">
+      <h2>Governance diagrams</h2>
+      <p>
+        <strong><a href="governance.html">Open the Governance page</a></strong> for Mermaid charts: holistic gap analysis,
+        Decisions A/B/C (committee evidence for A and B; organic C with optional AOL suggestions), and
+        recommended sequence (PICs, practitioners, Admin) — same sources as <code>docs/diagrams/</code>.
+      </p>
+    </section>
+    <section class="card">
+      <h2>Evidence hierarchy (UPIC / GPIC)</h2>
+      <p><strong>Primary:</strong> <strong>Rubrics</strong> — the primary source of evidence: direct assessment of student work on program outcomes (rubric-based course assessments and related direct measures).</p>
+      <p><strong>Secondary:</strong> <strong>ETS</strong> Major Field Test scores and <strong>indirect measures</strong> (e.g. surveys). ETS can be linked to O*NET-relevant curriculum signals (syllabus learning objectives → mappings → domains). Indirect measures corroborate gaps; they do not replace standardized direct evidence.</p>
+      <p><strong>Gaps worth acting upon</strong> are prioritized analytic gaps where the college has deployable in-house or network resources; other gaps stay logged for future cycles.</p>
+      <p><a href="../docs/Needs_Assessment_Methodology.md">Full: Needs_Assessment_Methodology.md</a> (open in repo or editor)</p>
+    </section>
+    <section class="card">
+      <h2>Syllabus-to-O*NET methodology</h2>
+      <p>
+        Course learning objectives are linked to <strong>O*NET task statements</strong> using <strong>semantic similarity</strong>
+        (Sentence-BERT embeddings and cosine similarity), following the published <strong>Course-Skill Atlas</strong> /
+        Syllabus-to-O*NET approach (Javadian Sabet et al., 2024, <em>Scientific Data</em>;
+        <a href="https://doi.org/10.1038/s41597-024-03931-8">DOI</a>).
+        O*NET content is authored by the <strong>U.S. Department of Labor</strong> (<a href="https://www.onetcenter.org/">O*NET Resource Center</a>).
+        This repo may also use hybrid or profile-tuned runs; see the methodology doc for disclosure.
+      </p>
+      <p>
+        <a href="../docs/Needs_Assessment_Methodology.md#syllabus-to-onet-methodology">Needs_Assessment_Methodology.md — Syllabus-to-O*NET</a> ·
+        <a href="../docs/Syllabus_Occupation_KSAO_Stack.md">Syllabus_Occupation_KSAO_Stack.md</a> (stack and O*NET Web Services notes)
+      </p>
+      <p>
+        <strong>Demo brief (charts):</strong> <a href="curriculum_onet_gap_research.html">O*NET / NLP brief</a> — literature-backed NLP–SME convergence (Putka et al.) plus an illustrative syllabus→O*NET workflow aligned with <a href="governance.html#gap-holistic">holistic gap judgment</a>.
+      </p>
+    </section>
+    <section class="card">
+      <h2>FERPA and display (summary)</h2>
+      <ul>
+        <li><strong>Real student data:</strong> accurate aggregates only; suppress small-<em>n</em> cells per IR.</li>
+        <li><strong>Exploration / training:</strong> synthetic or de-identified sandboxes where appropriate.</li>
+        <li><strong>ETS:</strong> prefer vendor-provided aggregates for MFT where available.</li>
+      </ul>
+      <p><a href="../docs/AOL_Website_Specification.md">Full: AOL_Website_Specification.md</a> §3b</p>
+    </section>
+    <section class="card">
+      <h2>Rubrics (course-level AOL inventory)</h2>
+      <p>See the <a href="rubrics.html">Rubrics</a> page for the table drawn from <code>RUBRICS_TABLE.md</code> and links to Bayoupal / focus group plans.</p>
+    </section>
+    <section class="card">
+      <h2>ETS and indirect measures</h2>
+      <p>Exam-first sequencing and two-report structure (aggregate + by major) are policy-defined; the live site will store and display both report types as approved.</p>
+      <p><a href="../docs/ETS_Indirect_Measurement_Policy.md">ETS_Indirect_Measurement_Policy.md</a></p>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>Demo only — not official institutional policy page.</p>
+    <p class="site-footer-strategic" style="font-size:0.85rem;color:var(--muted);margin-top:0.5rem;">Strategic plan (demo): COB <strong>Goal 2</strong> — <a href="index.html">Home</a> · <a href="governance.html">Governance</a> · <a href="agenda.html#announcements">Committee agenda</a></p>
+  </footer>
+</body>
+</html>
