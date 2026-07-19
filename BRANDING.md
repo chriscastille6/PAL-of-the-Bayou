@@ -21,9 +21,11 @@ The site title and base URL live in `config/_default/hugo.yaml`. The organizatio
 
 ## Logo and icons
 
-The primary logo is `assets/media/pal-bayou-logo.png`. The navbar shows the logo (set by `header.navbar.show_logo` in `params.yaml`).
+The official lab logo is the circular crest: the Louisiana map with the Bayou region in red, the lab name around the ring, and the tagline "Using Evidence to Transform Organizations." The master copy lives at `static/img/image1.png`.
 
-The site icon (favicon) is `assets/media/icon.png`. Reuse these files rather than creating new logo variants.
+The Hugo Blox theme resolves the navbar logo from `assets/media/logo.png` (and `assets/media/logo_dark.png` for dark mode), and the favicon from `assets/media/icon.png`. All of these hold the crest. The navbar logo is shown when `header.navbar.show_logo` is `true` in `params.yaml`.
+
+For convenience, the crest is also mirrored at `assets/media/pal-bayou-logo.png` and `static/img/pal-bayou-logo.png`. Reuse these files rather than creating new logo variants. If you replace the logo, update every copy listed here so they stay in sync.
 
 ## Colors
 
