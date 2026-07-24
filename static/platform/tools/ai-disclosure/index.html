@@ -1,0 +1,472 @@
+<!--
+File location: static/platform/tools/ai-disclosure/index.html
+What this file does: Student/instructor AI disclosure form for assignments
+Why this file exists: Restore the BayouPAL platform AI Disclosure Form after the live
+  path at /platform/tools/ai-disclosure/ began returning Apache 503 for every request
+  under that directory (server-side directory/handler failure; source lives in the
+  separate Psychological Assessments project and is not in this Hugo repo).
+Tech stack: HTML, Tailwind CSS (CDN), vanilla JS — matches platform/survey/checklist.html
+RELEVANT FILES:
+  - platform/js/participant-id.js (live BayouPAL; loaded when same-origin available)
+  - https://github.com/chriscastille6/CANDIDATE-ID-GENERATOR
+  - docs/platform-ai-disclosure/README.md
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Disclosure Form | People Analytics Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Shared ID helper when served under bayoupal.nicholls.edu/platform/ -->
+    <script src="../../js/participant-id.js"></script>
+    <style>
+        .nicholls-red { background-color: #AE132A; }
+        .nicholls-red-text { color: #AE132A; }
+        .nicholls-gray-text { color: #72808A; }
+        .brand-gradient { background: linear-gradient(135deg, #AE132A 0%, #dc2626 100%); }
+        .check-item:hover { background-color: #fef2f2; }
+        .tool-row:hover { background-color: #fafafa; }
+        .candidate-id {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            letter-spacing: 0.04em;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; }
+            #resultsScreen { box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-2xl mx-auto px-4 py-12">
+        <div class="text-center mb-8 no-print">
+            <a href="../../index.html" class="inline-flex items-center text-gray-700 hover:text-gray-900 transition-colors">
+                <div class="w-10 h-10 brand-gradient rounded-xl flex items-center justify-center mr-3 shadow-md">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <div class="text-left">
+                    <span class="text-xl font-bold nicholls-red-text block">People Analytics Lab</span>
+                    <span class="text-sm nicholls-gray-text block">of the Bayou</span>
+                </div>
+            </a>
+        </div>
+
+        <div id="formScreen" class="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+            <p class="text-xs text-gray-500 mb-4 uppercase tracking-wide">Assignment submission record</p>
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">AI Disclosure Form</h1>
+            <p class="text-gray-600 mb-6">
+                Disclose AI tools used for an assignment. Identify specific tools and their purpose.
+                Includes a candidate generation ID for submission records. Your name is used only to
+                derive the ID and is <strong>not stored</strong>.
+            </p>
+
+            <form id="disclosureForm" class="space-y-6">
+                <section class="pb-6 border-b border-gray-200 space-y-4">
+                    <h2 class="text-lg font-semibold text-gray-900">Assignment</h2>
+                    <div>
+                        <label for="course" class="block text-sm font-medium text-gray-700 mb-2">Course (optional)</label>
+                        <input type="text" id="course" name="course" autocomplete="off"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                               placeholder="e.g., MNGT 367">
+                    </div>
+                    <div>
+                        <label for="assignment" class="block text-sm font-medium text-gray-700 mb-2">Assignment name <span class="text-red-600">*</span></label>
+                        <input type="text" id="assignment" name="assignment" required autocomplete="off"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                               placeholder="e.g., Case analysis memo">
+                    </div>
+                </section>
+
+                <section class="pb-6 border-b border-gray-200 space-y-4">
+                    <h2 class="text-lg font-semibold text-gray-900">Candidate Generation ID</h2>
+                    <p class="text-sm text-gray-600">
+                        Enter your name to generate a consistent ID for this submission.
+                        The same name always produces the same ID. Names are never saved with the disclosure.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">First name <span class="text-red-600">*</span></label>
+                            <input type="text" id="firstName" name="firstName" required autocomplete="given-name"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                        </div>
+                        <div>
+                            <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Last name <span class="text-red-600">*</span></label>
+                            <input type="text" id="lastName" name="lastName" required autocomplete="family-name"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="middleName" class="block text-sm font-medium text-gray-700 mb-2">Middle name (optional)</label>
+                        <input type="text" id="middleName" name="middleName" autocomplete="additional-name"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                    </div>
+                    <div id="candidateIdBox" class="hidden rounded-lg border-2 border-green-600 bg-green-50 p-4 text-center">
+                        <p class="text-sm text-gray-600 mb-1">Your Candidate ID</p>
+                        <p id="candidateIdValue" class="candidate-id text-xl font-bold text-green-700"></p>
+                    </div>
+                </section>
+
+                <section class="space-y-4">
+                    <h2 class="text-lg font-semibold text-gray-900">AI tools used</h2>
+                    <p class="text-sm text-gray-600">
+                        Select each tool you used, then briefly state its purpose for this assignment.
+                        If you did not use AI, check “No AI tools used.”
+                    </p>
+
+                    <label class="check-item flex items-start p-4 border border-gray-200 rounded-lg cursor-pointer transition-colors">
+                        <input type="checkbox" id="noAi" name="noAi" class="mt-1 mr-3 h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500">
+                        <span class="text-gray-900 font-medium">No AI tools used for this assignment</span>
+                    </label>
+
+                    <div id="toolsList" class="space-y-3">
+                        <!-- rows injected by JS -->
+                    </div>
+
+                    <div class="pt-2">
+                        <label for="otherTool" class="block text-sm font-medium text-gray-700 mb-2">Other tool (optional)</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="otherTool" name="otherTool" autocomplete="off"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                   placeholder="Tool name">
+                            <input type="text" id="otherPurpose" name="otherPurpose" autocomplete="off"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                   placeholder="Purpose">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="notes" class="block text-sm font-medium text-gray-700 mb-2">Additional notes (optional)</label>
+                        <textarea id="notes" name="notes" rows="3"
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                  placeholder="Anything else your instructor should know about AI use on this assignment..."></textarea>
+                    </div>
+                </section>
+
+                <p id="formError" class="text-sm text-red-600 hidden" role="alert"></p>
+
+                <div class="flex gap-4 pt-2 no-print">
+                    <button type="submit" class="flex-1 px-6 py-3 nicholls-red text-white rounded-lg hover:opacity-90 font-medium transition-opacity">
+                        Generate disclosure
+                    </button>
+                    <a href="../../index.html" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium transition-colors inline-flex items-center">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div id="resultsScreen" class="bg-white rounded-lg shadow-lg p-8 border border-gray-200 hidden">
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 brand-gradient rounded-full flex items-center justify-center mx-auto mb-4 no-print">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-bold text-gray-900 mb-2">AI Disclosure Record</h2>
+                <p class="text-gray-600">Attach or paste this record with your assignment submission.</p>
+            </div>
+
+            <div id="disclosurePreview" class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6 text-sm text-gray-800 whitespace-pre-wrap font-mono"></div>
+
+            <div class="space-y-3 mb-6 no-print">
+                <button type="button" onclick="downloadText()" class="w-full px-6 py-3 nicholls-red text-white rounded-lg hover:opacity-90 font-medium transition-opacity">
+                    Download as text
+                </button>
+                <button type="button" onclick="downloadJSON()" class="w-full px-6 py-3 bg-gray-800 text-white rounded-lg hover:opacity-90 font-medium transition-opacity">
+                    Download as JSON
+                </button>
+                <button type="button" onclick="copyDisclosure()" class="w-full px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium transition-colors">
+                    Copy to clipboard
+                </button>
+                <button type="button" onclick="window.print()" class="w-full px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors">
+                    Print / Save as PDF
+                </button>
+                <p id="copyFeedback" class="text-sm text-green-600 hidden text-center">Copied to clipboard.</p>
+            </div>
+            <button type="button" onclick="resetForm()" class="block w-full text-center text-sm nicholls-red-text hover:opacity-80 no-print">
+                Create another disclosure
+            </button>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const DEFAULT_TOOLS = [
+                { id: 'chatgpt', label: 'ChatGPT (OpenAI)' },
+                { id: 'claude', label: 'Claude (Anthropic)' },
+                { id: 'gemini', label: 'Google Gemini' },
+                { id: 'copilot', label: 'Microsoft Copilot / GitHub Copilot' },
+                { id: 'perplexity', label: 'Perplexity' },
+                { id: 'grammarly', label: 'Grammarly / writing assistant' },
+                { id: 'packback', label: 'Packback' },
+                { id: 'cursor', label: 'Cursor / AI code editor' },
+                { id: 'image', label: 'Image generator (DALL·E, Midjourney, etc.)' }
+            ];
+
+            // Fallback matching platform/js/participant-id.js if that script did not load
+            // (e.g. GitHub Pages mirror without the shared platform/js tree).
+            const ID_CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const PARTICIPANT_ID_PEPPER = 'APID@W-2025-nicholls-research-v1';
+
+            function deriveParticipantIdFromName(firstName, lastName, middleName) {
+                if (window.ParticipantID && typeof window.ParticipantID.deriveFromName === 'function') {
+                    return window.ParticipantID.deriveFromName(firstName, lastName, middleName);
+                }
+                const nameParts = [firstName, middleName, lastName]
+                    .filter(function (name) { return name && String(name).trim(); })
+                    .map(function (name) { return String(name).trim(); });
+                const fullName = nameParts.join(' ').trim();
+                if (!fullName) return null;
+
+                const normalized = fullName.trim().toLowerCase().replace(/\s+/g, ' ');
+                const salted = PARTICIPANT_ID_PEPPER + normalized;
+                var hash = 0;
+                for (var i = 0; i < salted.length; i++) {
+                    hash = ((hash << 5) - hash) + salted.charCodeAt(i);
+                    hash = hash & hash;
+                }
+                var seed = Math.abs(hash);
+                var next = function () {
+                    seed = (seed * 9301 + 49297) % 233280;
+                    return seed / 233280;
+                };
+                return [4, 4, 4].map(function (len) {
+                    return Array.from({ length: len }, function () {
+                        return ID_CHARS[Math.floor(next() * ID_CHARS.length)];
+                    }).join('');
+                }).join('-');
+            }
+
+            const toolsList = document.getElementById('toolsList');
+            DEFAULT_TOOLS.forEach(function (tool) {
+                const wrap = document.createElement('div');
+                wrap.className = 'tool-row border border-gray-200 rounded-lg p-4 space-y-3';
+                wrap.innerHTML =
+                    '<label class="flex items-start cursor-pointer">' +
+                    '<input type="checkbox" class="tool-check mt-1 mr-3 h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500" data-tool-id="' + tool.id + '" data-tool-label="' + tool.label.replace(/"/g, '&quot;') + '">' +
+                    '<span class="text-gray-900 font-medium">' + tool.label + '</span>' +
+                    '</label>' +
+                    '<input type="text" class="tool-purpose w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500" ' +
+                    'data-tool-id="' + tool.id + '" placeholder="Purpose (e.g., brainstorm outline, check grammar, debug code)" disabled>';
+                toolsList.appendChild(wrap);
+            });
+
+            function setToolsEnabled(enabled) {
+                document.querySelectorAll('.tool-check, .tool-purpose, #otherTool, #otherPurpose').forEach(function (el) {
+                    el.disabled = !enabled;
+                    if (!enabled && el.classList.contains('tool-check')) el.checked = false;
+                    if (!enabled && (el.classList.contains('tool-purpose') || el.id === 'otherTool' || el.id === 'otherPurpose')) {
+                        el.value = '';
+                    }
+                });
+                document.querySelectorAll('.tool-purpose').forEach(function (el) {
+                    el.disabled = true;
+                });
+            }
+
+            document.getElementById('noAi').addEventListener('change', function () {
+                setToolsEnabled(!this.checked);
+            });
+
+            toolsList.addEventListener('change', function (e) {
+                if (!e.target.classList.contains('tool-check')) return;
+                const purpose = toolsList.querySelector('.tool-purpose[data-tool-id="' + e.target.dataset.toolId + '"]');
+                if (purpose) {
+                    purpose.disabled = !e.target.checked;
+                    if (!e.target.checked) purpose.value = '';
+                }
+                if (e.target.checked) {
+                    document.getElementById('noAi').checked = false;
+                    setToolsEnabled(true);
+                    e.target.checked = true;
+                    if (purpose) purpose.disabled = false;
+                }
+            });
+
+            ['firstName', 'lastName', 'middleName'].forEach(function (id) {
+                document.getElementById(id).addEventListener('input', refreshCandidateId);
+            });
+
+            function refreshCandidateId() {
+                const first = document.getElementById('firstName').value;
+                const last = document.getElementById('lastName').value;
+                const middle = document.getElementById('middleName').value;
+                const id = deriveParticipantIdFromName(first, last, middle);
+                const box = document.getElementById('candidateIdBox');
+                const value = document.getElementById('candidateIdValue');
+                if (id) {
+                    value.textContent = id;
+                    box.classList.remove('hidden');
+                } else {
+                    box.classList.add('hidden');
+                    value.textContent = '';
+                }
+                return id;
+            }
+
+            let lastRecord = null;
+            let lastText = '';
+
+            function showError(msg) {
+                const el = document.getElementById('formError');
+                if (!msg) {
+                    el.classList.add('hidden');
+                    el.textContent = '';
+                    return;
+                }
+                el.textContent = msg;
+                el.classList.remove('hidden');
+            }
+
+            function collectTools() {
+                const tools = [];
+                document.querySelectorAll('.tool-check:checked').forEach(function (cb) {
+                    const purposeEl = toolsList.querySelector('.tool-purpose[data-tool-id="' + cb.dataset.toolId + '"]');
+                    tools.push({
+                        id: cb.dataset.toolId,
+                        name: cb.dataset.toolLabel,
+                        purpose: (purposeEl && purposeEl.value.trim()) || ''
+                    });
+                });
+                const otherName = document.getElementById('otherTool').value.trim();
+                const otherPurpose = document.getElementById('otherPurpose').value.trim();
+                if (otherName) {
+                    tools.push({ id: 'other', name: otherName, purpose: otherPurpose });
+                }
+                return tools;
+            }
+
+            function formatText(record) {
+                const lines = [
+                    'AI DISCLOSURE FORM',
+                    'People Analytics Lab of the Bayou',
+                    '================================',
+                    '',
+                    'Candidate ID: ' + record.candidate_id,
+                    'Generated:   ' + record.timestamp,
+                    'Course:      ' + (record.course || '(not provided)'),
+                    'Assignment:  ' + record.assignment,
+                    '',
+                    'AI tools used:'
+                ];
+                if (record.no_ai_used) {
+                    lines.push('  - None (student attested no AI tools were used)');
+                } else if (!record.tools.length) {
+                    lines.push('  - (none listed)');
+                } else {
+                    record.tools.forEach(function (t) {
+                        lines.push('  - ' + t.name + (t.purpose ? ' — ' + t.purpose : ''));
+                    });
+                }
+                if (record.notes) {
+                    lines.push('', 'Notes:', record.notes);
+                }
+                lines.push(
+                    '',
+                    'Privacy note: The student name used to derive the Candidate ID is not stored in this record.',
+                    'CANDIDATE ID method: Sandnes (2021), PLOS ONE. https://doi.org/10.1371/journal.pone.0260569'
+                );
+                return lines.join('\n');
+            }
+
+            document.getElementById('disclosureForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                showError('');
+
+                const candidateId = refreshCandidateId();
+                if (!candidateId) {
+                    showError('Enter your first and last name to generate a Candidate ID.');
+                    return;
+                }
+
+                const assignment = document.getElementById('assignment').value.trim();
+                if (!assignment) {
+                    showError('Assignment name is required.');
+                    return;
+                }
+
+                const noAi = document.getElementById('noAi').checked;
+                const tools = collectTools();
+                if (!noAi && tools.length === 0) {
+                    showError('Select at least one AI tool, or check “No AI tools used.”');
+                    return;
+                }
+                if (!noAi) {
+                    const missingPurpose = tools.some(function (t) { return !t.purpose; });
+                    if (missingPurpose) {
+                        showError('Add a short purpose for each selected (or “Other”) tool.');
+                        return;
+                    }
+                }
+
+                lastRecord = {
+                    form: 'ai-disclosure',
+                    version: 1,
+                    timestamp: new Date().toISOString(),
+                    candidate_id: candidateId,
+                    course: document.getElementById('course').value.trim() || null,
+                    assignment: assignment,
+                    no_ai_used: noAi,
+                    tools: noAi ? [] : tools,
+                    notes: document.getElementById('notes').value.trim() || null
+                };
+                lastText = formatText(lastRecord);
+
+                // Session-only ID storage for consistency with other platform tools; never store the name.
+                try {
+                    sessionStorage.setItem('research_participant_id', candidateId);
+                } catch (err) { /* ignore */ }
+
+                document.getElementById('disclosurePreview').textContent = lastText;
+                document.getElementById('formScreen').classList.add('hidden');
+                document.getElementById('resultsScreen').classList.remove('hidden');
+                window.scrollTo(0, 0);
+            });
+
+            window.downloadText = function () {
+                if (!lastText) return;
+                const blob = new Blob([lastText], { type: 'text/plain;charset=utf-8' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'ai-disclosure-' + (lastRecord.candidate_id || 'record') + '.txt';
+                a.click();
+                URL.revokeObjectURL(a.href);
+            };
+
+            window.downloadJSON = function () {
+                if (!lastRecord) return;
+                const blob = new Blob([JSON.stringify(lastRecord, null, 2)], { type: 'application/json' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'ai-disclosure-' + (lastRecord.candidate_id || 'record') + '.json';
+                a.click();
+                URL.revokeObjectURL(a.href);
+            };
+
+            window.copyDisclosure = function () {
+                if (!lastText) return;
+                navigator.clipboard.writeText(lastText).then(function () {
+                    const fb = document.getElementById('copyFeedback');
+                    fb.classList.remove('hidden');
+                    setTimeout(function () { fb.classList.add('hidden'); }, 2000);
+                });
+            };
+
+            window.resetForm = function () {
+                lastRecord = null;
+                lastText = '';
+                document.getElementById('disclosureForm').reset();
+                setToolsEnabled(true);
+                document.getElementById('candidateIdBox').classList.add('hidden');
+                showError('');
+                document.getElementById('resultsScreen').classList.add('hidden');
+                document.getElementById('formScreen').classList.remove('hidden');
+                window.scrollTo(0, 0);
+            };
+        })();
+    </script>
+</body>
+</html>
