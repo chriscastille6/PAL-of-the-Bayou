@@ -1,0 +1,59 @@
+name: Deploy Correlation Calibrator (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "correlation_learning_app/web/**"
+      - "docs/correlation-calibrator/**"
+      - ".github/workflows/deploy-correlation-calibrator-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-correlation-calibrator
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Stage static site
+        run: |
+          mkdir -p _site/correlation-calibrator/assets
+          cp correlation_learning_app/web/index.html \
+             correlation_learning_app/web/app.js \
+             correlation_learning_app/web/data.js \
+             correlation_learning_app/web/styles.css \
+             _site/correlation-calibrator/
+          cp correlation_learning_app/web/assets/lab-emblem-circle.png \
+             _site/correlation-calibrator/assets/
+          printf '%s\n' \
+            '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/>' \
+            '<meta http-equiv="refresh" content="0; url=./correlation-calibrator/"/>' \
+            '<title>PAL static apps</title></head><body>' \
+            '<p><a href="./correlation-calibrator/">Correlation Calibrator</a></p>' \
+            '</body></html>' > _site/index.html
+          touch _site/.nojekyll
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
