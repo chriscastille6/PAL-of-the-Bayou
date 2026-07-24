@@ -35,11 +35,21 @@
     obvious: document.getElementById("obvious"),
     context: document.getElementById("context"),
     ladder: document.getElementById("ladder"),
-    besdHigh: document.getElementById("besdHigh"),
-    besdLow: document.getElementById("besdLow"),
-    besdHighLbl: document.getElementById("besdHighLbl"),
-    besdLowLbl: document.getElementById("besdLowLbl"),
     besdNote: document.getElementById("besdNote"),
+    sampleN: document.getElementById("sampleN"),
+    expectancy: document.getElementById("expectancy"),
+    expGuessHighCol: document.getElementById("expGuessHighCol"),
+    expGuessLowCol: document.getElementById("expGuessLowCol"),
+    expGuessHigh: document.getElementById("expGuessHigh"),
+    expGuessLow: document.getElementById("expGuessLow"),
+    expGuessHighLbl: document.getElementById("expGuessHighLbl"),
+    expGuessLowLbl: document.getElementById("expGuessLowLbl"),
+    expTrueHigh: document.getElementById("expTrueHigh"),
+    expTrueLow: document.getElementById("expTrueLow"),
+    expTrueHighLbl: document.getElementById("expTrueHighLbl"),
+    expTrueLowLbl: document.getElementById("expTrueLowLbl"),
+    expTrueHighSeries: document.getElementById("expTrueHighSeries"),
+    expTrueLowSeries: document.getElementById("expTrueLowSeries"),
     canvas: document.getElementById("scatter"),
     canvasCaption: document.getElementById("canvasCaption"),
     legend: document.getElementById("scatterLegend"),
@@ -64,6 +74,18 @@
     const sign = r > 0 ? "+" : r < 0 ? "−" : "";
     const abs = Math.abs(r).toFixed(2);
     return sign === "−" ? `−${abs}` : sign + abs;
+  }
+
+  function formatN(n) {
+    if (n == null || !Number.isFinite(n)) return "N not reported";
+    return `N ≈ ${Number(n).toLocaleString()}`;
+  }
+
+  /** BESD success rates: high/low groups = 0.5 ± r/2 */
+  function besdRates(r) {
+    const high = clamp((0.5 + r / 2) * 100, 0, 100);
+    const low = clamp((0.5 - r / 2) * 100, 0, 100);
+    return { high, low, gap: Math.round(Math.abs(r) * 100) };
   }
 
   function funderBand(absR) {
@@ -246,15 +268,6 @@
       ctx.moveTo(t0x, t0y);
       ctx.lineTo(t1x, t1y);
       ctx.stroke();
-
-      // Soft highlight pulse ring at center for “pop”
-      ctx.save();
-      ctx.globalAlpha = 0.22;
-      ctx.fillStyle = "#1e4d7b";
-      ctx.beginPath();
-      ctx.arc(midX, midY, 26, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
     }
 
     // 1D error ruler: guess → true on r ∈ [-1, 1]
@@ -330,28 +343,76 @@
     }
   }
 
+  function setSampleN(item) {
+    if (!el.sampleN) return;
+    el.sampleN.textContent = formatN(item?.n);
+  }
+
+  function setBar(barEl, lblEl, pct) {
+    if (!barEl || !lblEl) return;
+    const rounded = Math.round(pct);
+    barEl.style.height = `${clamp(pct, 0, 100)}%`;
+    lblEl.textContent = `${rounded}%`;
+  }
+
+  /**
+   * Expectancy bar chart under the scatter.
+   * While guessing: live BESD from the slider.
+   * After reveal: guess vs published side-by-side.
+   */
+  function updateExpectancy(guessR, trueR, revealed) {
+    if (!el.expectancy) return;
+    const g = besdRates(guessR);
+
+    if (!revealed) {
+      el.expectancy.classList.add("guess-mode");
+      el.expGuessHighCol.hidden = true;
+      el.expGuessLowCol.hidden = true;
+      el.expTrueHighSeries.textContent = "Guess";
+      el.expTrueLowSeries.textContent = "Guess";
+      setBar(el.expTrueHigh, el.expTrueHighLbl, g.high);
+      setBar(el.expTrueLow, el.expTrueLowLbl, g.low);
+      el.besdNote.textContent = `Your guess (r = ${fmtR(guessR)}): about a ${g.gap}-point success-rate gap between high and low groups (0.5 ± r/2).`;
+      return;
+    }
+
+    const t = besdRates(trueR);
+    el.expectancy.classList.remove("guess-mode");
+    el.expGuessHighCol.hidden = false;
+    el.expGuessLowCol.hidden = false;
+    el.expTrueHighSeries.textContent = "Published";
+    el.expTrueLowSeries.textContent = "Published";
+    setBar(el.expGuessHigh, el.expGuessHighLbl, g.high);
+    setBar(el.expGuessLow, el.expGuessLowLbl, g.low);
+    setBar(el.expTrueHigh, el.expTrueHighLbl, t.high);
+    setBar(el.expTrueLow, el.expTrueLowLbl, t.low);
+    el.besdNote.textContent = `Published r = ${fmtR(trueR)}: about a ${t.gap}-point success-rate gap (Rosenthal & Rubin BESD). Maroon = your guess; blue = published.`;
+  }
+
   function refreshScatter() {
     const guess = Number(el.slider.value);
+    const item = items[state.index];
+    setSampleN(item);
+
     if (!state.revealed) {
       drawScatter({
         cloudR: guess,
         guessR: guess,
         showError: false,
-        label: `Your guess visualized (r = ${fmtR(guess)})`,
+        label: `Your guess visualized (r = ${fmtR(guess)}) · ${formatN(item?.n)}`,
       });
+      updateExpectancy(guess, null, false);
       return;
     }
-    const item = items[state.index];
     const trueR = item.r;
     drawScatter({
       cloudR: trueR,
       guessR: state.lastGuess,
       trueR,
       showError: true,
-      label: `Published estimate pops in (r = ${fmtR(trueR)}${
-        item.n ? `, N ≈ ${item.n.toLocaleString()}` : ""
-      })`,
+      label: `Published estimate (r = ${fmtR(trueR)}) · ${formatN(item?.n)}`,
     });
+    updateExpectancy(state.lastGuess, trueR, true);
   }
 
   function updateGuessReadout() {
@@ -395,19 +456,6 @@
     });
   }
 
-  function showBesd(r) {
-    const high = 0.5 + r / 2;
-    const low = 0.5 - r / 2;
-    const hPct = clamp(high * 100, 0, 100);
-    const lPct = clamp(low * 100, 0, 100);
-    el.besdHigh.style.width = `${hPct}%`;
-    el.besdLow.style.width = `${lPct}%`;
-    el.besdHighLbl.textContent = `${Math.round(hPct)}%`;
-    el.besdLowLbl.textContent = `${Math.round(lPct)}%`;
-    const gap = Math.round(Math.abs(r) * 100);
-    el.besdNote.textContent = `BESD intuition: about a ${gap}-point success-rate gap between “high” and “low” groups (Rosenthal & Rubin).`;
-  }
-
   function loadItem() {
     if (state.index >= items.length) {
       finish();
@@ -428,6 +476,7 @@
     el.next.hidden = true;
     el.reveal.hidden = true;
     el.context.textContent = "";
+    setSampleN(item);
 
     renderPhases();
     updateGuessReadout();
@@ -449,7 +498,6 @@
     el.obvious.textContent = band.obvious;
     el.context.textContent = item.context;
     highlightLadder(band.rung);
-    showBesd(item.r);
     refreshScatter();
 
     // Brief CSS pop on metrics

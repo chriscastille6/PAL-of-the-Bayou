@@ -496,35 +496,130 @@ canvas {
   box-shadow: inset 3px 0 0 var(--maroon);
 }
 
-.besd {
-  margin-top: 12px;
-}
-
-.besd-bars {
-  display: grid;
-  gap: 8px;
-}
-
-.besd-row {
-  display: grid;
-  grid-template-columns: 110px 1fr 48px;
-  gap: 8px;
+.scatter-meta {
+  display: flex;
   align-items: center;
-  font-size: 0.9rem;
+  justify-content: flex-end;
+  margin: 0 0 8px;
 }
 
-.bar-track {
-  height: 18px;
-  background: #ece8e1;
+.n-badge {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--blue);
+  background: var(--blue-soft);
+  border: 1px solid #d3e2ef;
   border-radius: 999px;
-  overflow: hidden;
+  padding: 4px 12px;
+  letter-spacing: 0.01em;
 }
 
-.bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--blue), #3d7eb5);
-  border-radius: 999px;
-  transition: width 0.45s ease;
+.expectancy {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.expectancy-head h3 {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.expectancy-head .caption {
+  margin: 0 0 12px;
+}
+
+.expectancy-chart {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: end;
+  min-height: 160px;
+}
+
+.exp-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.exp-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 120px;
+  padding: 8px 10px 0;
+  background: linear-gradient(180deg, #fafafa 0%, #f3f1ec 100%);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.exp-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 44px;
+}
+
+.exp-col[hidden] {
+  display: none !important;
+}
+
+.exp-bar-wrap {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: 100px;
+}
+
+.exp-bar {
+  width: 100%;
+  min-height: 2px;
+  border-radius: 8px 8px 3px 3px;
+  transition: height 0.35s ease;
+}
+
+.exp-bar.guess {
+  background: linear-gradient(180deg, #a33a3a, var(--maroon));
+}
+
+.exp-bar.true {
+  background: linear-gradient(180deg, #3d7eb5, var(--blue));
+}
+
+.expectancy.guess-mode .exp-bar.true {
+  background: linear-gradient(180deg, #a33a3a, var(--maroon));
+}
+
+.exp-pct {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.exp-series {
+  font-size: 0.72rem;
+  font-weight: 650;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.exp-label {
+  font-size: 0.88rem;
+  font-weight: 650;
+  color: var(--slate);
 }
 
 .foot {

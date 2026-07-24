@@ -139,26 +139,6 @@
                   <span>Very small once; accumulates in the not-very-long run</span>
                 </div>
               </div>
-
-              <div class="besd">
-                <p class="caption" id="besdNote"></p>
-                <div class="besd-bars">
-                  <div class="besd-row">
-                    <span>High group</span>
-                    <div class="bar-track">
-                      <div class="bar-fill" id="besdHigh"></div>
-                    </div>
-                    <span id="besdHighLbl">—</span>
-                  </div>
-                  <div class="besd-row">
-                    <span>Low group</span>
-                    <div class="bar-track">
-                      <div class="bar-fill" id="besdLow"></div>
-                    </div>
-                    <span id="besdLowLbl">—</span>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -168,11 +148,64 @@
               Move the slider to preview your guess. After reveal, the cloud uses the published
               <em>r</em>.
             </p>
+            <div class="scatter-meta">
+              <p class="n-badge" id="sampleN" aria-live="polite">N not reported</p>
+            </div>
             <div class="canvas-wrap">
               <canvas id="scatter" width="400" height="400" aria-label="Scatter plot"></canvas>
             </div>
             <div class="scatter-legend" id="scatterLegend" hidden></div>
             <p class="caption" id="canvasCaption"></p>
+
+            <div class="expectancy" id="expectancy" aria-label="BESD expectancy chart">
+              <div class="expectancy-head">
+                <h3>Expectancy (BESD)</h3>
+                <p class="caption" id="besdNote">
+                  Success rates if the predictor is dichotomized into high vs low groups
+                  (0.5 ± r/2).
+                </p>
+              </div>
+              <div class="expectancy-chart" id="expectancyChart">
+                <div class="exp-group">
+                  <div class="exp-bars">
+                    <div class="exp-col guess" id="expGuessHighCol" hidden>
+                      <div class="exp-bar-wrap">
+                        <div class="exp-bar guess" id="expGuessHigh"></div>
+                      </div>
+                      <span class="exp-pct" id="expGuessHighLbl">—</span>
+                      <span class="exp-series">Guess</span>
+                    </div>
+                    <div class="exp-col true" id="expTrueHighCol">
+                      <div class="exp-bar-wrap">
+                        <div class="exp-bar true" id="expTrueHigh"></div>
+                      </div>
+                      <span class="exp-pct" id="expTrueHighLbl">—</span>
+                      <span class="exp-series" id="expTrueHighSeries">Guess</span>
+                    </div>
+                  </div>
+                  <span class="exp-label">High group</span>
+                </div>
+                <div class="exp-group">
+                  <div class="exp-bars">
+                    <div class="exp-col guess" id="expGuessLowCol" hidden>
+                      <div class="exp-bar-wrap">
+                        <div class="exp-bar guess" id="expGuessLow"></div>
+                      </div>
+                      <span class="exp-pct" id="expGuessLowLbl">—</span>
+                      <span class="exp-series">Guess</span>
+                    </div>
+                    <div class="exp-col true" id="expTrueLowCol">
+                      <div class="exp-bar-wrap">
+                        <div class="exp-bar true" id="expTrueLow"></div>
+                      </div>
+                      <span class="exp-pct" id="expTrueLowLbl">—</span>
+                      <span class="exp-series" id="expTrueLowSeries">Guess</span>
+                    </div>
+                  </div>
+                  <span class="exp-label">Low group</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
