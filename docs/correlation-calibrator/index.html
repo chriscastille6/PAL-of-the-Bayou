@@ -35,11 +35,12 @@
       <section class="card welcome" id="welcome">
         <h1>How obvious is that effect?</h1>
         <p class="lede">
-          Guess the correlation for each pair, then see the published estimate. Height and
-          weight feel obvious in daily life; most people effects do not.
+          Guess the correlation for each pair, then see the published estimate. We start with
+          ibuprofen and pain relief, then height–weight and other everyday anchors, before
+          management examples. Most people effects feel less obvious than you expect.
         </p>
         <ul>
-          <li>Real published correlations from psychology research</li>
+          <li>Real published correlations from psychology research (Funder &amp; Ozer framing)</li>
           <li>Compare your guess to how strong the effect looks day to day</li>
         </ul>
         <div class="actions">
@@ -62,9 +63,9 @@
         <div class="guesser-band card">
           <div class="guesser-pair">
             <div class="pair">
-              <div class="var" id="var1">Height</div>
+              <div class="var" id="var1">Ibuprofen use</div>
               <div class="vs">with</div>
-              <div class="var" id="var2">Weight</div>
+              <div class="var" id="var2">Pain reduction</div>
               <p class="desc" id="itemDesc"></p>
             </div>
           </div>
@@ -109,6 +110,10 @@
               <em>r</em>.
             </p>
             <div class="canvas-wrap">
+              <div class="published-r-chip" id="publishedChip" hidden>
+                <span class="published-r-k">Published r</span>
+                <span class="published-r-v" id="publishedChipValue">—</span>
+              </div>
               <canvas id="scatter" width="560" height="560" aria-label="Scatter plot"></canvas>
             </div>
             <div class="scatter-legend" id="scatterLegend" hidden></div>
@@ -218,7 +223,7 @@
           <div class="ladder" id="ladder" aria-label="Funder and Ozer ladder">
             <div class="rung" data-rung=".40+">
               <span class="rval">≥ .40</span>
-              <span>Very large / everyday-obvious (height–weight ≈ .44)</span>
+              <span>Very large / everyday-obvious</span>
             </div>
             <div class="rung" data-rung=".30">
               <span class="rval">≈ .30</span>

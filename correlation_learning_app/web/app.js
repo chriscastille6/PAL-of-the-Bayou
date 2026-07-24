@@ -10,9 +10,9 @@
    */
   const DRAW_CAP = 100000;
   const PHASES = [
+    "Medical",
     "Intuitive",
     "Single-event",
-    "Medical",
     "Business",
     "Mixed",
   ];
@@ -59,6 +59,8 @@
     canvas: document.getElementById("scatter"),
     canvasCaption: document.getElementById("canvasCaption"),
     legend: document.getElementById("scatterLegend"),
+    publishedChip: document.getElementById("publishedChip"),
+    publishedChipValue: document.getElementById("publishedChipValue"),
     meanError: document.getElementById("meanError"),
     scoreLine: document.getElementById("scoreLine"),
   };
@@ -316,7 +318,7 @@
     if (guessR != null && Number.isFinite(guessR)) {
       const [[g0x, g0y], [g1x, g1y]] = lineEnds(guessR, pad, plotW, plotH);
       ctx.strokeStyle = "#822727";
-      ctx.lineWidth = showError ? 2.5 : 2.5;
+      ctx.lineWidth = showError ? 2 : 2.75;
       ctx.setLineDash(showError ? [7, 5] : []);
       ctx.beginPath();
       ctx.moveTo(g0x, g0y);
@@ -325,11 +327,18 @@
       ctx.setLineDash([]);
     }
 
-    // True line pops in on reveal
+    // True / published line pops in on reveal — thicker + higher contrast
     if (showError && trueR != null && Number.isFinite(trueR)) {
       const [[t0x, t0y], [t1x, t1y]] = lineEnds(trueR, pad, plotW, plotH);
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.92)";
+      ctx.lineWidth = 8;
+      ctx.beginPath();
+      ctx.moveTo(t0x, t0y);
+      ctx.lineTo(t1x, t1y);
+      ctx.stroke();
       ctx.strokeStyle = "#1e4d7b";
-      ctx.lineWidth = 3.25;
+      ctx.lineWidth = 5.5;
       ctx.beginPath();
       ctx.moveTo(t0x, t0y);
       ctx.lineTo(t1x, t1y);
@@ -395,12 +404,21 @@
     }
 
     el.canvasCaption.textContent = label;
+    if (el.publishedChip && el.publishedChipValue) {
+      if (showError && trueR != null && Number.isFinite(trueR)) {
+        el.publishedChip.hidden = false;
+        el.publishedChipValue.textContent = fmtR(trueR);
+      } else {
+        el.publishedChip.hidden = true;
+        el.publishedChipValue.textContent = "—";
+      }
+    }
     if (el.legend) {
       if (showError) {
         el.legend.hidden = false;
         el.legend.innerHTML =
+          `<span class="leg true">Published r = ${fmtR(trueR)}</span>` +
           `<span class="leg guess">Your guess ${fmtR(guessR)}</span>` +
-          `<span class="leg true">Published ${fmtR(trueR)}</span>` +
           `<span class="leg err">|Error| ${(Math.abs(guessR - trueR)).toFixed(2)}</span>`;
       } else {
         el.legend.hidden = true;
@@ -477,7 +495,7 @@
       guessR: state.lastGuess,
       trueR,
       showError: true,
-      label: `Published estimate (r = ${fmtR(trueR)}) · ${sampleLabel}`,
+      label: `Published r = ${fmtR(trueR)} · ${sampleLabel}`,
     });
     updateExpectancy(state.lastGuess, trueR, true);
   }
@@ -552,6 +570,8 @@
     el.next.hidden = true;
     el.reveal.hidden = true;
     el.context.textContent = "";
+    if (el.publishedChip) el.publishedChip.hidden = true;
+    if (el.publishedChipValue) el.publishedChipValue.textContent = "—";
     setSampleN(state.sample);
 
     renderPhases();

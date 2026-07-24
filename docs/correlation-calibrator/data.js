@@ -1,5 +1,19 @@
-/** Item bank aligned with the Shiny app (Meyer et al., 2001; Funder & Ozer, 2019). */
+/** Item bank aligned with the Shiny app (Meyer et al., 2001; Funder & Ozer, 2019).
+ * Order: ibuprofen → height–weight → other intuitive → single-event →
+ * remaining medical → business → mixed.
+ */
 window.CORRELATION_ITEMS = [
+  {
+    phase: "Medical",
+    variable1: "Ibuprofen use",
+    variable2: "Pain reduction",
+    description:
+      "Effect of nonsteroidal anti-inflammatory drugs (e.g., ibuprofen) on pain reduction",
+    r: 0.14,
+    n: 8488,
+    context:
+      "Medical interventions often have more modest correlations than people assume.",
+  },
   {
     phase: "Intuitive",
     variable1: "Height",
@@ -60,17 +74,6 @@ window.CORRELATION_ITEMS = [
     n: null,
     context:
       "Single-event outcomes are hard to predict from aggregate skill — even skilled batters miss most of the time (Meyer et al., 2001).",
-  },
-  {
-    phase: "Medical",
-    variable1: "Ibuprofen use",
-    variable2: "Pain reduction",
-    description:
-      "Effect of nonsteroidal anti-inflammatory drugs (e.g., ibuprofen) on pain reduction",
-    r: 0.14,
-    n: 8488,
-    context:
-      "Medical interventions often have more modest correlations than people assume.",
   },
   {
     phase: "Medical",
