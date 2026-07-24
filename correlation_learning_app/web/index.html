@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Correlation Calibrator · PAL</title>
+    <meta
+      name="description"
+      content="Guess published correlations, then calibrate against Funder & Ozer (2019) common-language effect sizes."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand-row">
+          <img
+            class="emblem"
+            src="assets/lab-emblem-circle.png"
+            alt="People Analytics Lab emblem"
+          />
+          <p class="brand">Correlation Calibrator <span>· PAL of the Bayou</span></p>
+        </div>
+        <p class="progress-meta" id="progressMeta"></p>
+      </header>
+
+      <div class="phase-pills" id="phasePills" aria-hidden="true"></div>
+
+      <section class="card welcome" id="welcome">
+        <h1>How obvious is that effect?</h1>
+        <p class="lede">
+          Guess the correlation for each pair, then see the published estimate. Height and
+          weight feel obvious in daily life; most people effects do not.
+        </p>
+        <ul>
+          <li>Real published correlations from psychology research</li>
+          <li>Compare your guess to how strong the effect looks day to day</li>
+        </ul>
+        <div class="actions">
+          <button type="button" class="btn-primary" id="startBtn">Start calibrating</button>
+        </div>
+        <p class="foot">
+          Benchmarks adapted from
+          <a
+            href="https://doi.org/10.1177/2515245919847202"
+            target="_blank"
+            rel="noopener"
+            >Funder &amp; Ozer (2019)</a
+          >.
+          Anchors from Meyer et al. (2001). Inspired by Lakens’ guess-the-correlation idea.
+        </p>
+      </section>
+
+      <section class="game" id="game" hidden>
+        <div class="grid">
+          <div class="card">
+            <h2>Guess the correlation</h2>
+            <div class="pair">
+              <div class="var" id="var1">Height</div>
+              <div class="vs">with</div>
+              <div class="var" id="var2">Weight</div>
+              <p class="desc" id="itemDesc"></p>
+            </div>
+
+            <div class="slider-block">
+              <div class="slider-head">
+                <label for="guess">Your guess (r)</label>
+                <div class="guess-readout" id="guessReadout">0.00</div>
+              </div>
+              <input
+                id="guess"
+                type="range"
+                min="-1"
+                max="1"
+                step="0.01"
+                value="0"
+              />
+              <div class="ticks">
+                <span>−1.00</span><span>−0.50</span><span>0</span><span>+0.50</span
+                ><span>+1.00</span>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button type="button" class="btn-primary" id="submitBtn">Reveal estimate</button>
+              <button type="button" class="btn-secondary" id="nextBtn" hidden>
+                Next item
+              </button>
+            </div>
+
+            <div class="reveal-panel" id="reveal" hidden>
+              <div class="metrics">
+                <div class="metric">
+                  <p class="k">Published r</p>
+                  <p class="v" id="trueR">—</p>
+                </div>
+                <div class="metric">
+                  <p class="k">Your guess</p>
+                  <p class="v" id="yourGuess">—</p>
+                </div>
+                <div class="metric">
+                  <p class="k">|Error|</p>
+                  <p class="v" id="absError">—</p>
+                </div>
+              </div>
+
+              <p id="interpretation"></p>
+              <div class="obvious">
+                <strong>How obvious?</strong>
+                <span id="obvious"></span>
+              </div>
+              <p class="caption" id="context"></p>
+
+              <div class="ladder" id="ladder" aria-label="Funder and Ozer ladder">
+                <div class="rung" data-rung=".40+">
+                  <span class="rval">≥ .40</span>
+                  <span>Very large / everyday-obvious (height–weight ≈ .44)</span>
+                </div>
+                <div class="rung" data-rung=".30">
+                  <span class="rval">≈ .30</span>
+                  <span>Large — powerful short and long run</span>
+                </div>
+                <div class="rung" data-rung=".20">
+                  <span class="rval">≈ .20</span>
+                  <span>Medium — useful even short-run</span>
+                </div>
+                <div class="rung" data-rung=".10">
+                  <span class="rval">≈ .10</span>
+                  <span>Still small once; more consequential over time</span>
+                </div>
+                <div class="rung" data-rung=".05">
+                  <span class="rval">≈ .05</span>
+                  <span>Very small once; accumulates in the not-very-long run</span>
+                </div>
+              </div>
+
+              <div class="besd">
+                <p class="caption" id="besdNote"></p>
+                <div class="besd-bars">
+                  <div class="besd-row">
+                    <span>High group</span>
+                    <div class="bar-track">
+                      <div class="bar-fill" id="besdHigh"></div>
+                    </div>
+                    <span id="besdHighLbl">—</span>
+                  </div>
+                  <div class="besd-row">
+                    <span>Low group</span>
+                    <div class="bar-track">
+                      <div class="bar-fill" id="besdLow"></div>
+                    </div>
+                    <span id="besdLowLbl">—</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Scatterplot</h2>
+            <p class="lede" style="font-size: 0.95rem; margin-bottom: 12px">
+              Move the slider to preview your guess. After reveal, the cloud uses the published
+              <em>r</em>.
+            </p>
+            <div class="canvas-wrap">
+              <canvas id="scatter" width="400" height="400" aria-label="Scatter plot"></canvas>
+            </div>
+            <div class="scatter-legend" id="scatterLegend" hidden></div>
+            <p class="caption" id="canvasCaption"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card done-screen" id="done" hidden>
+        <h1>Session complete</h1>
+        <p class="lede">
+          Mean absolute error:
+          <strong id="meanError">—</strong>
+        </p>
+        <p class="score-line" id="scoreLine"></p>
+        <p class="lede">
+          Takeaway: if you only trust effects you can see at lunch, you will ignore most of what
+          helps people decisions.
+        </p>
+        <div class="actions">
+          <button type="button" class="btn-primary" id="restartBtn">Run again</button>
+        </div>
+      </section>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
