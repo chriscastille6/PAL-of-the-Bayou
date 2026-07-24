@@ -2,7 +2,13 @@
   "use strict";
 
   const items = window.CORRELATION_ITEMS;
-  const N_POINTS = 90;
+  /** Fallback when item.n is null/0/missing (e.g. baseball). */
+  const DEFAULT_N = 80;
+  /**
+   * Soft cap for extreme Ns (e.g. ~194k). Prefer full N for Meyer sizes
+   * like 19,724; only subsample above this threshold.
+   */
+  const DRAW_CAP = 100000;
   const PHASES = [
     "Intuitive",
     "Single-event",
@@ -63,7 +69,10 @@
     errors: [],
     lastGuess: 0,
     /** Fixed latent normals for smooth morphing as r changes */
-    latents: [],
+    latents: null,
+    /** Resolved sample size for the current item */
+    sample: { reported: null, drawN: DEFAULT_N, capped: false },
+    scatterRaf: 0,
   };
 
   function clamp(x, a, b) {
@@ -76,9 +85,45 @@
     return sign === "−" ? `−${abs}` : sign + abs;
   }
 
-  function formatN(n) {
-    if (n == null || !Number.isFinite(n)) return "N not reported";
-    return `N ≈ ${Number(n).toLocaleString()}`;
+  /**
+   * Map item.n → how many dots to draw.
+   * @returns {{ reported: number|null, drawN: number, capped: boolean }}
+   */
+  function resolveSample(item) {
+    const raw = item?.n;
+    if (raw == null || !Number.isFinite(raw) || raw <= 0) {
+      return { reported: null, drawN: DEFAULT_N, capped: false };
+    }
+    const reported = Math.round(raw);
+    if (reported > DRAW_CAP) {
+      return { reported, drawN: DRAW_CAP, capped: true };
+    }
+    return { reported, drawN: reported, capped: false };
+  }
+
+  /** Badge / caption text matching the points actually drawn. */
+  function formatSampleLabel(sample) {
+    if (!sample || sample.reported == null) return "N not reported";
+    if (sample.capped) {
+      return `showing ${sample.drawN.toLocaleString()} of ${sample.reported.toLocaleString()}`;
+    }
+    return `N ≈ ${sample.reported.toLocaleString()}`;
+  }
+
+  function pointSizeForN(n) {
+    if (n >= 50000) return 1;
+    if (n >= 10000) return 1.35;
+    if (n >= 2000) return 1.75;
+    if (n >= 400) return 2.4;
+    return 3.1;
+  }
+
+  function pointFill(showError, n) {
+    const a =
+      n >= 20000 ? 0.22 : n >= 5000 ? 0.32 : n >= 800 ? 0.48 : showError ? 0.55 : 0.72;
+    return showError
+      ? `rgba(30, 77, 123, ${a})`
+      : `rgba(130, 39, 39, ${a})`;
   }
 
   /** BESD success rates: high/low groups = 0.5 ± r/2 */
@@ -154,22 +199,21 @@
     };
   }
 
-  function makeLatents(seed) {
+  /** Build N latent (z1, z2) pairs once per item so the cloud morphs with r. */
+  function makeLatents(seed, n) {
+    const count = Math.max(1, Math.round(n) || DEFAULT_N);
+    const z1 = new Float32Array(count);
+    const z2 = new Float32Array(count);
     const rnd = mulberry32(seed * 9973 + 42);
-    const out = [];
-    for (let i = 0; i < N_POINTS; i++) {
+    for (let i = 0; i < count; i++) {
       const u1 = rnd() || 1e-12;
       const u2 = rnd() || 1e-12;
-      const z1 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
-      const z2 = Math.sqrt(-2 * Math.log(u1)) * Math.sin(2 * Math.PI * u2);
-      out.push([z1, z2]);
+      const mag = Math.sqrt(-2 * Math.log(u1));
+      const ang = 2 * Math.PI * u2;
+      z1[i] = mag * Math.cos(ang);
+      z2[i] = mag * Math.sin(ang);
     }
-    return out;
-  }
-
-  function cloudFromLatents(r) {
-    const s = Math.sqrt(Math.max(0, 1 - r * r));
-    return state.latents.map(([z1, z2]) => [z1, r * z1 + s * z2]);
+    return { z1, z2, n: count };
   }
 
   function toPlot(x, y, pad, plotW, plotH) {
@@ -235,15 +279,37 @@
     ctx.stroke();
     ctx.setLineDash([]);
 
-    const pts = cloudFromLatents(cloudR);
-    ctx.fillStyle = showError
-      ? "rgba(30, 77, 123, 0.55)"
-      : "rgba(130, 39, 39, 0.72)";
-    for (const [x, y] of pts) {
-      const [px, py] = toPlot(x, y, pad, plotW, plotH);
-      ctx.beginPath();
-      ctx.arc(px, py, 3.1, 0, Math.PI * 2);
-      ctx.fill();
+    // Point cloud: item.n dots (or DEFAULT_N / capped drawN)
+    const latents = state.latents;
+    const nDots = latents ? latents.n : 0;
+    if (latents && nDots > 0) {
+      const r = cloudR;
+      const s = Math.sqrt(Math.max(0, 1 - r * r));
+      const size = pointSizeForN(nDots);
+      const half = size / 2;
+      ctx.fillStyle = pointFill(!!showError, nDots);
+
+      // Efficient draw: fillRect for dense clouds (no per-point beginPath)
+      const { z1, z2 } = latents;
+      const xScale = plotW / (2 * LIM);
+      const yScale = plotH / (2 * LIM);
+      const ox = pad + plotW / 2;
+      const oy = pad + plotH / 2;
+      if (nDots >= 400) {
+        for (let i = 0; i < nDots; i++) {
+          const px = ox + z1[i] * xScale;
+          const py = oy - (r * z1[i] + s * z2[i]) * yScale;
+          ctx.fillRect(px - half, py - half, size, size);
+        }
+      } else {
+        for (let i = 0; i < nDots; i++) {
+          const px = ox + z1[i] * xScale;
+          const py = oy - (r * z1[i] + s * z2[i]) * yScale;
+          ctx.beginPath();
+          ctx.arc(px, py, size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
     }
 
     // Guess line (always while guessing; keep after reveal for comparison)
@@ -343,9 +409,9 @@
     }
   }
 
-  function setSampleN(item) {
+  function setSampleN(sample) {
     if (!el.sampleN) return;
-    el.sampleN.textContent = formatN(item?.n);
+    el.sampleN.textContent = formatSampleLabel(sample || state.sample);
   }
 
   function setBar(barEl, lblEl, pct) {
@@ -392,14 +458,15 @@
   function refreshScatter() {
     const guess = Number(el.slider.value);
     const item = items[state.index];
-    setSampleN(item);
+    const sampleLabel = formatSampleLabel(state.sample);
+    setSampleN(state.sample);
 
     if (!state.revealed) {
       drawScatter({
         cloudR: guess,
         guessR: guess,
         showError: false,
-        label: `Your guess visualized (r = ${fmtR(guess)}) · ${formatN(item?.n)}`,
+        label: `Your guess visualized (r = ${fmtR(guess)}) · ${sampleLabel}`,
       });
       updateExpectancy(guess, null, false);
       return;
@@ -410,16 +477,24 @@
       guessR: state.lastGuess,
       trueR,
       showError: true,
-      label: `Published estimate (r = ${fmtR(trueR)}) · ${formatN(item?.n)}`,
+      label: `Published estimate (r = ${fmtR(trueR)}) · ${sampleLabel}`,
     });
     updateExpectancy(state.lastGuess, trueR, true);
+  }
+
+  function scheduleScatterRefresh() {
+    if (state.scatterRaf) return;
+    state.scatterRaf = requestAnimationFrame(() => {
+      state.scatterRaf = 0;
+      refreshScatter();
+    });
   }
 
   function updateGuessReadout() {
     const g = Number(el.slider.value);
     el.guessReadout.textContent = fmtR(g);
     if (!state.revealed) {
-      refreshScatter();
+      scheduleScatterRefresh();
     }
   }
 
@@ -464,7 +539,8 @@
     const item = items[state.index];
     state.revealed = false;
     state.lastGuess = 0;
-    state.latents = makeLatents(state.index + 1);
+    state.sample = resolveSample(item);
+    state.latents = makeLatents(state.index + 1, state.sample.drawN);
 
     el.var1.textContent = item.variable1;
     el.var2.textContent = item.variable2;
@@ -476,7 +552,7 @@
     el.next.hidden = true;
     el.reveal.hidden = true;
     el.context.textContent = "";
-    setSampleN(item);
+    setSampleN(state.sample);
 
     renderPhases();
     updateGuessReadout();

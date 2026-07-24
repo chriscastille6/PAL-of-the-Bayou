@@ -165,44 +165,66 @@
                   (0.5 ± r/2).
                 </p>
               </div>
-              <div class="expectancy-chart" id="expectancyChart">
-                <div class="exp-group">
-                  <div class="exp-bars">
-                    <div class="exp-col guess" id="expGuessHighCol" hidden>
-                      <div class="exp-bar-wrap">
-                        <div class="exp-bar guess" id="expGuessHigh"></div>
-                      </div>
-                      <span class="exp-pct" id="expGuessHighLbl">—</span>
-                      <span class="exp-series">Guess</span>
-                    </div>
-                    <div class="exp-col true" id="expTrueHighCol">
-                      <div class="exp-bar-wrap">
-                        <div class="exp-bar true" id="expTrueHigh"></div>
-                      </div>
-                      <span class="exp-pct" id="expTrueHighLbl">—</span>
-                      <span class="exp-series" id="expTrueHighSeries">Guess</span>
-                    </div>
+              <div class="besd-chart" id="expectancyChart">
+                <div class="besd-y-axis" aria-hidden="true">
+                  <span class="besd-y-title">Success rate</span>
+                  <div class="besd-y-ticks">
+                    <span>100%</span>
+                    <span>75%</span>
+                    <span>50%</span>
+                    <span>25%</span>
+                    <span>0%</span>
                   </div>
-                  <span class="exp-label">High group</span>
                 </div>
-                <div class="exp-group">
-                  <div class="exp-bars">
-                    <div class="exp-col guess" id="expGuessLowCol" hidden>
-                      <div class="exp-bar-wrap">
-                        <div class="exp-bar guess" id="expGuessLow"></div>
-                      </div>
-                      <span class="exp-pct" id="expGuessLowLbl">—</span>
-                      <span class="exp-series">Guess</span>
+                <div class="besd-plot">
+                  <div class="besd-frame">
+                    <div class="besd-grid" aria-hidden="true">
+                      <span></span><span></span><span></span><span></span><span></span>
                     </div>
-                    <div class="exp-col true" id="expTrueLowCol">
-                      <div class="exp-bar-wrap">
-                        <div class="exp-bar true" id="expTrueLow"></div>
+                    <div class="besd-groups">
+                      <div class="exp-group">
+                        <div class="exp-bars">
+                          <div class="exp-col guess" id="expGuessHighCol" hidden>
+                            <div class="exp-bar-wrap">
+                              <div class="exp-bar guess" id="expGuessHigh"></div>
+                            </div>
+                            <span class="exp-pct" id="expGuessHighLbl">—</span>
+                            <span class="exp-series">Guess</span>
+                          </div>
+                          <div class="exp-col true" id="expTrueHighCol">
+                            <div class="exp-bar-wrap">
+                              <div class="exp-bar true" id="expTrueHigh"></div>
+                            </div>
+                            <span class="exp-pct" id="expTrueHighLbl">—</span>
+                            <span class="exp-series" id="expTrueHighSeries">Guess</span>
+                          </div>
+                        </div>
                       </div>
-                      <span class="exp-pct" id="expTrueLowLbl">—</span>
-                      <span class="exp-series" id="expTrueLowSeries">Guess</span>
+                      <div class="exp-group">
+                        <div class="exp-bars">
+                          <div class="exp-col guess" id="expGuessLowCol" hidden>
+                            <div class="exp-bar-wrap">
+                              <div class="exp-bar guess" id="expGuessLow"></div>
+                            </div>
+                            <span class="exp-pct" id="expGuessLowLbl">—</span>
+                            <span class="exp-series">Guess</span>
+                          </div>
+                          <div class="exp-col true" id="expTrueLowCol">
+                            <div class="exp-bar-wrap">
+                              <div class="exp-bar true" id="expTrueLow"></div>
+                            </div>
+                            <span class="exp-pct" id="expTrueLowLbl">—</span>
+                            <span class="exp-series" id="expTrueLowSeries">Guess</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <span class="exp-label">Low group</span>
+                  <div class="besd-x-axis">
+                    <span class="besd-x-tick">High on predictor</span>
+                    <span class="besd-x-tick">Low on predictor</span>
+                  </div>
+                  <p class="besd-x-title">Group</p>
                 </div>
               </div>
             </div>

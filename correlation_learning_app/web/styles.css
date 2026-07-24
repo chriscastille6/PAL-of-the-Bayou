@@ -534,57 +534,140 @@ canvas {
   margin: 0 0 12px;
 }
 
-.expectancy-chart {
+/* Framed BESD barplot with labeled axes */
+.besd-chart {
+  --besd-h: 148px;
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 4px 8px;
+  align-items: start;
+}
+
+.besd-y-axis {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 6px;
+  height: var(--besd-h);
+}
+
+.besd-y-title {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  align-self: center;
+}
+
+.besd-y-ticks {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex: 1;
+  height: 100%;
+  font-size: 0.72rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  line-height: 1;
+}
+
+.besd-plot {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.besd-frame {
+  position: relative;
+  height: var(--besd-h);
+  border-left: 2px solid #4a463e;
+  border-bottom: 2px solid #4a463e;
+  background: #fafafa;
+  border-radius: 0 6px 0 0;
+}
+
+.besd-grid {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.besd-grid span {
+  display: block;
+  width: 100%;
+  border-top: 1px solid #e5e0d6;
+}
+
+.besd-grid span:first-child {
+  border-top-color: transparent;
+}
+
+.besd-grid span:last-child {
+  border-top: none;
+}
+
+.besd-groups {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  align-items: end;
-  min-height: 160px;
+  gap: 12px;
+  height: 100%;
+  padding: 0 14px;
 }
 
 .exp-group {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  align-items: stretch;
+  justify-content: center;
+  min-width: 0;
+  height: 100%;
 }
 
 .exp-bars {
   display: flex;
-  align-items: flex-end;
+  align-items: stretch;
   justify-content: center;
   gap: 10px;
   width: 100%;
-  min-height: 120px;
-  padding: 8px 10px 0;
-  background: linear-gradient(180deg, #fafafa 0%, #f3f1ec 100%);
-  border: 1px solid var(--line);
-  border-radius: 12px;
+  height: 100%;
 }
 
 .exp-col {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  width: 44px;
+  width: 42px;
+  height: 100%;
 }
 
 .exp-col[hidden] {
   display: none !important;
 }
 
+/* Bar height % maps to full plot height (0–100% success rate) */
 .exp-bar-wrap {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: flex-end;
   width: 100%;
-  height: 100px;
 }
 
 .exp-bar {
   width: 100%;
   min-height: 2px;
-  border-radius: 8px 8px 3px 3px;
+  border-radius: 4px 4px 0 0;
   transition: height 0.35s ease;
 }
 
@@ -601,25 +684,74 @@ canvas {
 }
 
 .exp-pct {
+  position: relative;
+  z-index: 2;
+  margin-top: 4px;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
   color: var(--ink);
+  line-height: 1;
+  text-shadow: 0 0 4px #fafafa, 0 0 4px #fafafa;
+  pointer-events: none;
 }
 
 .exp-series {
-  font-size: 0.72rem;
+  position: absolute;
+  left: 50%;
+  bottom: -18px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.66rem;
   font-weight: 650;
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  line-height: 1;
 }
 
-.exp-label {
-  font-size: 0.88rem;
+.besd-x-axis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 22px;
+  padding: 0 14px;
+}
+
+.besd-x-tick {
+  text-align: center;
+  font-size: 0.86rem;
   font-weight: 650;
   color: var(--slate);
+}
+
+.besd-x-title {
+  margin: 4px 0 0;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+@media (max-width: 560px) {
+  .besd-chart {
+    grid-template-columns: 44px 1fr;
+  }
+
+  .besd-y-title {
+    font-size: 0.66rem;
+  }
+
+  .exp-col {
+    width: 34px;
+  }
+
+  .besd-x-tick {
+    font-size: 0.78rem;
+  }
 }
 
 .foot {
