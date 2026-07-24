@@ -119,7 +119,7 @@
             <div class="expectancy-head">
               <h3>Expectancy (BESD)</h3>
               <p class="caption" id="besdNote">
-                Success rates if the predictor is dichotomized into high vs low groups
+                Success rates after a median split on the predictor
                 (0.5 ± r/2).
               </p>
             </div>
@@ -179,10 +179,13 @@
                   </div>
                 </div>
                 <div class="besd-x-axis">
-                  <span class="besd-x-tick">Low on predictor</span>
-                  <span class="besd-x-tick">High on predictor</span>
+                  <span class="besd-x-tick">Below median</span>
+                  <span class="besd-x-tick">Above median</span>
                 </div>
                 <p class="besd-x-title">Group</p>
+                <p class="besd-split-note caption">
+                  Groups are a median split on the predictor — not −1 SD vs +1 SD.
+                </p>
               </div>
             </div>
           </div>

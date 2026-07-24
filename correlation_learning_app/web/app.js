@@ -438,7 +438,7 @@
       el.expTrueLowSeries.textContent = "Guess";
       setBar(el.expTrueHigh, el.expTrueHighLbl, g.high);
       setBar(el.expTrueLow, el.expTrueLowLbl, g.low);
-      el.besdNote.textContent = `Your guess (r = ${fmtR(guessR)}): about a ${g.gap}-point success-rate gap between high and low groups (0.5 ± r/2).`;
+      el.besdNote.textContent = `Your guess (r = ${fmtR(guessR)}): about a ${g.gap}-point success-rate gap between above-median and below-median groups (0.5 ± r/2).`;
       return;
     }
 
