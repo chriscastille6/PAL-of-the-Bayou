@@ -54,6 +54,7 @@ jobs:
             '<ul>' \
             '<li><a href="./correlation-calibrator/">Correlation Calibrator</a></li>' \
             '<li><a href="./mngt-502/decks/01_intro_evidence_pc.html">MNGT 502 Intro · Evidence · Process Consultation</a></li>' \
+            '<li><a href="./mngt-502/decks/03_simulation.html">MNGT 502 Simulation</a></li>' \
             '<li><a href="./mngt-502/">MNGT 502 slides hub</a></li>' \
             '</ul>' \
             '</body></html>' > _site/index.html

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speaker notes — Simulation</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1419;
+    --panel: #1a222d;
+    --line: #2d3748;
+    --text: #edf2f7;
+    --muted: #a0aec0;
+    --maroon: #c53030;
+    --blue: #63b3ed;
+    --ask: #fff5f5;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh;
+    font-family: "Source Sans 3", system-ui, sans-serif;
+    background: var(--bg); color: var(--text);
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "top top"
+      "nav main"
+      "foot foot";
+  }
+  header {
+    grid-area: top;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 16px 22px;
+    border-bottom: 1px solid var(--line); background: #121820;
+  }
+  header .meta { display: flex; flex-direction: column; gap: 2px; }
+  header .kicker {
+    font-family: Montserrat, sans-serif;
+    font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--maroon); font-weight: 700; margin: 0;
+  }
+  header h1 {
+    font-family: Montserrat, sans-serif;
+    font-size: 22px; margin: 0; font-weight: 800;
+  }
+  header .actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  header a, header button, .nav-btn {
+    font-family: Montserrat, sans-serif;
+    font-size: 13px; font-weight: 700;
+    border: 1px solid var(--line); background: var(--panel);
+    color: var(--text); border-radius: 8px;
+    padding: 10px 14px; cursor: pointer; text-decoration: none;
+  }
+  header a:hover, header button:hover, .nav-btn:hover { border-color: var(--maroon); }
+  header button.primary { background: var(--maroon); border-color: var(--maroon); }
+  .follow {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--muted);
+  }
+  .follow input { width: 16px; height: 16px; }
+  aside {
+    grid-area: nav;
+    border-right: 1px solid var(--line);
+    overflow: auto; padding: 12px;
+    background: #121820;
+  }
+  aside button {
+    display: block; width: 100%; text-align: left;
+    background: transparent; border: 1px solid transparent;
+    color: var(--muted); border-radius: 8px;
+    padding: 10px 12px; margin-bottom: 4px; cursor: pointer;
+    font: 600 14px/1.3 "Source Sans 3", sans-serif;
+  }
+  aside button:hover { background: var(--panel); color: var(--text); }
+  aside button.active {
+    background: var(--panel); border-color: var(--maroon); color: var(--text);
+  }
+  aside button .n {
+    font-family: Montserrat, sans-serif;
+    font-size: 11px; letter-spacing: .08em; color: var(--blue);
+    display: block; margin-bottom: 2px;
+  }
+  main {
+    grid-area: main; padding: 28px 36px 40px; overflow: auto;
+    max-width: 920px;
+  }
+  .slide-label {
+    font-family: Montserrat, sans-serif;
+    font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--blue); font-weight: 700; margin: 0 0 8px;
+  }
+  main h2 {
+    font-family: Montserrat, sans-serif;
+    font-size: 34px; line-height: 1.2; margin: 0 0 16px; font-weight: 800;
+  }
+  .lo {
+    display: inline-block;
+    background: var(--maroon); color: #fff;
+    font-family: Montserrat, sans-serif;
+    font-size: 12px; font-weight: 800; letter-spacing: .08em;
+    text-transform: uppercase; padding: 6px 10px; border-radius: 6px;
+    margin: 0 0 14px;
+  }
+  .ask {
+    background: #2b1a1a; border-left: 5px solid var(--maroon);
+    padding: 14px 18px; border-radius: 0 10px 10px 0;
+    font-size: 20px; line-height: 1.4; margin: 0 0 22px;
+  }
+  .ask strong { color: #feb2b2; }
+  .notes {
+    font-size: 20px; line-height: 1.55; color: var(--text);
+    white-space: pre-wrap;
+  }
+  footer {
+    grid-area: foot;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 14px 22px;
+    border-top: 1px solid var(--line); background: #121820;
+  }
+  footer .status { color: var(--muted); font-size: 14px; }
+  @media (max-width: 860px) {
+    body { grid-template-columns: 1fr; grid-template-areas: "top" "main" "foot"; }
+    aside { display: none; }
+  }
+</style>
+</head>
+<body data-deck-slug="03_simulation">
+<header>
+  <div class="meta">
+    <p class="kicker">MNGT 502 Managing Human Capital · 2 · speaker notes</p>
+    <h1>Simulation</h1>
+  </div>
+  <div class="actions">
+    <label class="follow"><input type="checkbox" id="followDeck" checked> Follow deck</label>
+    <a href="03_simulation.html" target="_blank" rel="noopener">Open slides</a>
+    <button type="button" class="primary" id="prevBtn">Prev</button>
+    <button type="button" class="primary" id="nextBtn">Next</button>
+  </div>
+</header>
+<aside id="toc" aria-label="Slide list"></aside>
+<main>
+  <p class="slide-label" id="slideLabel">Slide 1</p>
+  <h2 id="slideTitle">—</h2>
+  <div id="loBadge" hidden></div>
+  <p class="ask" id="askBlock" hidden></p>
+  <div class="notes" id="notesBody"></div>
+</main>
+<footer>
+  <div class="status" id="syncStatus">Listening for deck…</div>
+  <div>
+    <button type="button" class="nav-btn" id="copyBtn">Copy notes</button>
+  </div>
+</footer>
+<script type="application/json" id="notesData">[{"index": 0, "title": "Simulation sandbox", "lo": "", "ask": "", "notes": "Energy shift — hands-on. Toy firm, real tradeoffs.\n\nRemind PC: you facilitate; they own decisions.", "kind": "section"}, {"index": 1, "title": "Agenda", "lo": "", "ask": "", "notes": "Short outline only — keep it brisk.\n\nArc: walkthrough → Excel (priorities → costs → budget) → special decision/evidence → wrap-up.\n\nSim Overview PDF has no formal LO slide — do not invent S1–S5.", "kind": "bullets"}, {"index": 2, "title": "Four decision areas, one budget", "lo": "", "ask": "If budget is tight, which lever do you cut first?", "notes": "Merged former stats + SVG: cut-first ask + trade-off arcs.\n\nPoint at the arcs: dollars move across boxes — they are not free. Have them name which lever they’d cut first and why.\n\nSecond-order costs (morale, turnover, quality) are the point. Ask for a bad habit (max training every quarter / cut training first).", "kind": "visual"}, {"index": 3, "title": "Program decisions", "lo": "", "ask": "Which programs turn on in Q1 — and which can wait?", "notes": "Expand the Programs lever — fixed menu, fixed quarterly charge while on.\n\nStress: turning a program on hits the budget every quarter it stays on; stacking all six burns cash fast.\n\nAsk which two they’d buy first and why (morale vs. process vs. compliance).", "kind": "bullets"}, {"index": 4, "title": "Cheat sheet: decisions → performance measures", "lo": "", "ask": "Click the map to open it full size — keep it handy while you play.", "notes": "Full causal map — click to open full size in a new tab.\n\nKeep light: not a full model lecture. Tie odd results back here later (and again when you demo Decision Response after worksheets).", "kind": "visual"}, {"index": 5, "title": "Get the worksheets · open Excel", "lo": "", "ask": "Who owns which tab before anyone clicks wild?", "notes": "Merged logistics: Canvas download → workbook links → ownership.\n\nSay aloud twice: Goals & Strategies and Demographic Analysis are PDF-only — not missing Excel tabs.\n\nClick Student workbook / Instructor key. Training ROI is inside Forecasting Labor Requirements. One owner per Excel tab; everyone follows a little of the math.", "kind": "tiles"}, {"index": 6, "title": "Who is doing the Goals & Strategies worksheet?", "lo": "", "ask": "What competitive priorities must the HR budget serve?", "notes": "Who owns Goals & Strategies? Timebox 5–7 minutes.\n\nText-forward: this tab is NOT in the local Student .xlsx — the prompt comes from the Goals & Strategies PDF exercise. Priorities before allocation.\n\nEveryone joins the strategy discussion; the tab owner goes deeper and keeps the group moving.", "kind": "bullets"}, {"index": 7, "title": "Who is doing the Forecasting Labor Requirements worksheet?", "lo": "", "ask": "With 500 Level-1 workers, how productive must they be for each target?", "notes": "Recreated table (from the Student workbook): productivity goes in the yellow cells — Productivity Required? row, B10:E10 = Production Goal ÷ 500.\n\nWork Start/Q1 aloud (200, 210); leave Q2/Q3 for them. The Forecasting owner finishes the cells so the team moves faster.", "kind": "media"}, {"index": 8, "title": "Who is doing the Training ROI worksheet?", "lo": "", "ask": "What is the only number you type — and what does Excel do next?", "notes": "Teaching point: only New Productivity Rate is worth typing. Example: 200 × 2% → 204. Investment $60,000/qtr is GIVEN (B15:E15).\n\nSVG: yellow = New Productivity Rate only; cool “auto” cells = Employees Required, Cost Savings, ROI — sheet formulas fill those. Do not have them hand-enter ROI.\n\nSame Forecasting tab, rows 12–19. Tab owner enters the rate; formulas do the rest.", "kind": "media"}, {"index": 9, "title": "Who is doing the Staffing worksheet?", "lo": "", "ask": "10% turnover × 500 Level-1 — how many resign? How many to fill?", "notes": "Text-forward with verified cell refs: turnover rate drives Est. Resignations (col C); Positions to Fill (col E); promotions block rows 12–17.\n\nThe 500/55/59 numbers are ILLUSTRATIVE — flag as such. Staffing owner handles the cascading cells.\n\nFolded Demographic Analysis (PDF-only, ~60 sec): Level 5 firm vs community gaps; openings from turnover as a diversification chance. Not a missing Excel tab.", "kind": "bullets"}, {"index": 10, "title": "Who is doing the Turnover Cost worksheet?", "lo": "", "ask": "What if turnover falls from 10% to 7% — is there an ROI to retention?", "notes": "Text-forward with verified cell refs: Openings (col C) × [cost per hire (col D) + min. training (col F)] → Total Cost (col H), rows 4–8.\n\nAsk what a drop to 7% is worth; the tab owner reruns it.", "kind": "bullets"}, {"index": 11, "title": "Who is doing the Compensation worksheet?", "lo": "", "ask": "Level 5 at $18k/quarter + 20% benefits — total and hourly?", "notes": "Text-forward with verified cell refs: Benefits % = 0.20 (B2); Total Comp/Hourly D–F; raise block rows 13–18 (Overall Raise 0.05, B11).\n\nThe $21,600 / hourly numbers are ILLUSTRATIVE. Next slide = combined 80/20 + pay-by-level visual.", "kind": "bullets"}, {"index": 12, "title": "Total rewards and pay by level", "lo": "", "ask": "Which story matters for morale — and which for unit labor cost?", "notes": "One S4 visual — two stories side by side.\n\nLeft: 80/20 wages vs benefits; name add-ons → morale.\nRight: Level 1 dominates payroll $ — unit cost sensitivity.\n\nDo not let them treat these as the same chart. Next: Budget Allocation (priorities → costs → allocate).", "kind": "visual"}, {"index": 13, "title": "Who is doing the Budget Allocation worksheet?", "lo": "", "ask": "Before you argue strategy — what does the dashboard say?", "notes": "Moved after cost/comp/rewards on purpose — allocate with eyes open.\n\nText-forward with verified cell refs: set ratings (yellow) in B4:B7, then read Yearly (D4:D7) and Quarterly (E4:E7) allocations against the $1,400,000 budget (B1). Use the dashboard for unit labor cost + morale together.\n\nThe Budget owner goes deeper so the team can move faster.", "kind": "bullets"}, {"index": 14, "title": "Environment reports — industry surveys", "lo": "", "ask": "Which survey would you buy first — and why?", "notes": "After the lever/worksheet arc — now: market intel you can buy.\n\nFour purchasable industry surveys — budget line item, not free intel.\n\nAsk which one they’d buy first under a tight quarter (wages vs training vs production vs performance), given the staffing/comp/training work they just did.", "kind": "bullets"}, {"index": 15, "title": "Decision Response: choices → outcomes", "lo": "", "ask": "Where do you look when a wage increase’s effect on absenteeism is unclear?", "notes": "After Environment reports — demo live: Decisions tab → Decision Response. Pick Wage Increase × Absentees (matches the screenshot) or a pair from their firm.\n\nEmphasize trend reading and “all else equal”: a negative wage→absenteeism slope means higher wage increases go with lower absentees in the chart — not that wages are the only cause.\n\nDo not overclaim causality beyond what the sim scatter shows; treat it as a diagnostic link to investigate alongside the earlier cheat-sheet map.\n\nBridge next: SJT before the WFH special decision.", "kind": "media"}, {"index": 16, "title": "SJT warm-up (required)", "lo": "", "ask": "Complete at least one round before we open the WFH case.", "notes": "Calibrate line folded into lede: intuition first, then evidence.\n\nOne Open SJT label → modular-surveys. At least one round before WFH.\n\nTwo beats only: rate tactic effectiveness; we compare peer vs your intuition vs evidence later. Keep it brisk.", "kind": "media"}, {"index": 17, "title": "Mayer / Yahoo — the 2013 RTO memo", "lo": "", "ask": "What assumptions about work are baked into this note?", "notes": "Remote/hybrid section lede folded here — Yahoo-style pressure + budget add-on.\n\nRead the quote slowly. Ask what assumptions about collaboration, speed/quality, and physical co-location are baked in.\n\nAttribution follows the supplied PDF: Marissa Mayer, CEO of Yahoo, February 2013 (case text from Barends & Rousseau, 2018). Portrait + quote text are from Introduction to HR Analytics.pdf — no AllThingsD / Jackie Reses paraphrase.\n\nPedagogical ask: What assumptions about work are baked into this note? If a source is missing next time, flag it rather than inventing.", "kind": "mayer"}, {"index": 18, "title": "Your special decision — WFH options", "lo": "", "ask": "Which option would you pick before you see any evidence?", "notes": "Three options +1% budget add-ons. Straw poll before search.\n\nNo decision-tool screenshot — keep eyes on options A/B/C. Commit before evidence / logic models.", "kind": "bullets"}, {"index": 19, "title": "A logic model for policy decisions", "lo": "", "ask": "Where does a moderator act — on a box, or on a causal path?", "notes": "Teach the template before Mayer. Walk Policy → Mediator(s) → Outcomes (solid arrows). Point at each moderator box and the dashed arrow landing on the path midpoint — moderation acts on the causal path, not the box.\n\nThen the dashed Policy → Outcomes arc (label below the bend): direct effect or an uncaptured mediator.", "kind": "visual"}, {"index": 20, "title": "Mayer’s implied logic model", "lo": "", "ask": "What does the memo actually specify — and what are you filling in with a “?”?", "notes": "She doesn’t give you the whole model — name what’s asserted; leave mechanisms and boundary conditions as ? until evidence.\n\nFilled from the memo only: Policy = cancel WFH / work in offices; Outcomes = speed, quality, hallway/cafeteria insights, “one Yahoo,” office-only interactions. Mediators and both moderator stages stay “?”.\n\nDirect dashed arc = her asserted offices → outcomes claim. Resist inventing JD-R, job satisfaction, or industry moderators before students see the gaps.", "kind": "visual"}, {"index": 21, "title": "PICOC from Mayer to a research question", "lo": "", "ask": "Can you turn this PICOC into one sentence you would paste into Consensus?", "notes": "Walk P → I → C → O → C aloud using the filled Mayer boxes.\n\nThen read the research question in the red box — that is what they paste into Consensus on the next live slide.\n\nTeaching beat: AIs guess likely study outcomes; verify every claim.", "kind": "visual"}, {"index": 22, "title": "Consensus vs Gemini", "lo": "", "ask": "What will you verify before it goes in the memo?", "notes": "BEFORE Grant/Ding — search tools first, then counter-evidence.\n\nGemini = minimum; Consensus preferred for literature / fewer fake refs.\n\nOpen Consensus via short-label button. Paste PICOC; walk the hits live — disclose use; cite APA in the memo.\n\nLogos = institutions with Consensus access/endorsement (Yale University, University of Virginia, Mayo Clinic, WashU Medicine, Center for Evidence-Based Management, The Ohio State University, New York Medical College) — not a blanket endorsement claim.\n\nDeep Search ~$8 optional — never required to pass.", "kind": "compare"}, {"index": 23, "title": "Counter-evidence: Grant + Ding on RTO", "lo": "", "ask": "How does later evidence challenge (or support) Mayer’s assumptions?", "notes": "AFTER Consensus — later counter-evidence only. Do not let this replace Mayer as the assumptions provocation. Grant post is from Sim Overview p. 34 (img_034_0.png); Ding et al. (2024, SSRN 5031481) reports ~14% higher turnover after RTO mandates, concentrated in senior/skilled/female staff; time-to-fill +23%.\n\nAsk how this pressures Mayer’s assumptions about productivity/collaboration.", "kind": "media"}, {"index": 24, "title": "Sample CEO memo (PAL)", "lo": "", "ask": "What would stakeholders gain by accepting — and lose by rejecting — your proposal?", "notes": "One button only: Sample CEO memo (PAL) → PDF. Emphasize gain-if-accept / lose-if-reject stakes.\n\nPoint at simple audit visual. AI anticipation habit shows up in the sample note.\n\nIn-memo AI disclosure sentence is fine; BayouPAL tool link lives on BARS next.", "kind": "bullets"}, {"index": 25, "title": "Memo BARS — grading anchors", "lo": "", "ask": "What behavior moves a draft from Needs Improvement to Excellent?", "notes": "One compact BARS grid — all four criteria. Score = observable memo behavior.\n\nRead one Excellent vs Needs Improvement contrast (e.g., Problem/Options/Assumptions), then skim the other rows. Ask students to diagnose one paragraph in tonight’s draft.\n\nAI disclosure folded here: clear sentence in the memo is fine; short-label button → BayouPAL AI Disclosure for extra protection / audit trail (not a mandatory substitute for in-letter disclosure).", "kind": "rubric_bars"}, {"index": 26, "title": "Wrap-up — next steps", "lo": "", "ask": "What is the order before we leave this module?", "notes": "Merged close: worksheets → decisions #1/#2 → quiz as team Q&A; Manual/Case Discussion as one optional bullet.\n\nPacing (leave clock time for each):\n(1) Worksheets — finish, ask you for feedback, turn in by end of this segment.\n(2) Decisions — complete first and second in the sim as a team (they walked #1 with you; protect time for decision #2).\n(3) Simulation Quiz as a team = Q&A with you before leaving sim content.\n\nCirculate on worksheets and decision #2. Nudge trade-offs only if stuck — do not restart the lecture.", "kind": "bullets"}, {"index": 27, "title": "Next", "lo": "", "ask": "", "notes": "Hand-off to strategy / costing deck.", "kind": "big"}]</script>
+<script>
+(function () {
+  const slides = JSON.parse(document.getElementById("notesData").textContent);
+  const slug = document.body.dataset.deckSlug;
+  let channel = null;
+  try { channel = new BroadcastChannel("mngt502-notes-" + slug); } catch (e) {}
+  let idx = 0;
+
+  const els = {
+    toc: document.getElementById("toc"),
+    label: document.getElementById("slideLabel"),
+    title: document.getElementById("slideTitle"),
+    lo: document.getElementById("loBadge"),
+    ask: document.getElementById("askBlock"),
+    notes: document.getElementById("notesBody"),
+    status: document.getElementById("syncStatus"),
+    follow: document.getElementById("followDeck"),
+  };
+
+  slides.forEach((s, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.innerHTML = `<span class="n">SLIDE ${String(i + 1).padStart(2, "0")}</span>${s.title}`;
+    b.addEventListener("click", () => show(i, true));
+    els.toc.appendChild(b);
+  });
+
+  function publish(index) {
+    const msg = { type: "slide", index: index, source: "notes", slug: slug };
+    try { channel && channel.postMessage(msg); } catch (e) {}
+    try {
+      if (window.opener && !window.opener.closed) window.opener.postMessage(msg, "*");
+    } catch (e) {}
+  }
+
+  function show(i, broadcast) {
+    idx = Math.max(0, Math.min(i, slides.length - 1));
+    const s = slides[idx];
+    els.label.textContent = `Slide ${idx + 1} / ${slides.length}`;
+    els.title.textContent = s.title;
+    if (s.lo) {
+      els.lo.hidden = false;
+      els.lo.className = "lo";
+      els.lo.textContent = "LO " + s.lo;
+    } else {
+      els.lo.hidden = true;
+    }
+    if (s.ask) {
+      els.ask.hidden = false;
+      els.ask.innerHTML = "<strong>Discuss:</strong> " + s.ask.replace(/</g, "&lt;");
+    } else {
+      els.ask.hidden = true;
+    }
+    els.notes.textContent = s.notes || "(No notes for this slide.)";
+    [...els.toc.children].forEach((btn, j) => btn.classList.toggle("active", j === idx));
+    history.replaceState(null, "", "#s" + (idx + 1));
+    if (broadcast) {
+      publish(idx);
+      els.status.textContent = "Advanced from notes window";
+    }
+  }
+
+  function applyRemote(data) {
+    if (!data || typeof data !== "object") return;
+    if (data.slug && data.slug !== slug) return;
+    if (data.type !== "slide" || data.source === "notes") return;
+    if (!els.follow.checked) {
+      els.status.textContent = "Deck moved (follow off) — now on slide " + (data.index + 1);
+      return;
+    }
+    if (typeof data.index === "number" && data.index !== idx) {
+      show(data.index, false);
+    }
+    els.status.textContent = "Synced from deck · slide " + ((data.index ?? idx) + 1);
+  }
+
+  if (channel) channel.onmessage = (ev) => applyRemote(ev.data);
+  window.addEventListener("message", (ev) => applyRemote(ev.data));
+
+  document.getElementById("prevBtn").addEventListener("click", () => show(idx - 1, true));
+  document.getElementById("nextBtn").addEventListener("click", () => show(idx + 1, true));
+  document.getElementById("copyBtn").addEventListener("click", async () => {
+    const s = slides[idx];
+    const text = `Slide ${idx + 1}: ${s.title}\n\n` +
+      (s.lo ? `LO ${s.lo}\n` : "") +
+      (s.ask ? `Discuss: ${s.ask}\n\n` : "\n") +
+      (s.notes || "");
+    try {
+      await navigator.clipboard.writeText(text);
+      els.status.textContent = "Copied this slide’s notes";
+    } catch (e) {
+      els.status.textContent = "Copy failed — select text manually";
+    }
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if (["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName)) return;
+    if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") {
+      e.preventDefault(); show(idx + 1, true);
+    } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+      e.preventDefault(); show(idx - 1, true);
+    } else if (e.key === "Home") { e.preventDefault(); show(0, true); }
+    else if (e.key === "End") { e.preventDefault(); show(slides.length - 1, true); }
+  });
+
+  const m = location.hash.match(/^#s(\d+)$/);
+  show(m ? parseInt(m[1], 10) - 1 : 0, false);
+  els.status.textContent = "Ready — open the deck and advance; notes will follow";
+  try {
+    if (window.opener && !window.opener.closed) {
+      window.opener.postMessage({ type: "notes-ready", source: "notes", slug: slug }, "*");
+    }
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
