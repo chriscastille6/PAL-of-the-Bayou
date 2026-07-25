@@ -6,6 +6,7 @@ on:
     paths:
       - "correlation_learning_app/web/**"
       - "docs/correlation-calibrator/**"
+      - "static/mngt-502/**"
       - ".github/workflows/deploy-correlation-calibrator-pages.yml"
   workflow_dispatch:
 
@@ -41,11 +42,20 @@ jobs:
              _site/correlation-calibrator/
           cp correlation_learning_app/web/assets/lab-emblem-circle.png \
              _site/correlation-calibrator/assets/
+
+          # MNGT 502 intro deck (Style E) — relative ../assets paths must stay intact
+          mkdir -p _site/mngt-502
+          cp -R static/mngt-502/. _site/mngt-502/
+
           printf '%s\n' \
             '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/>' \
-            '<meta http-equiv="refresh" content="0; url=./correlation-calibrator/"/>' \
             '<title>PAL static apps</title></head><body>' \
-            '<p><a href="./correlation-calibrator/">Correlation Calibrator</a></p>' \
+            '<h1>PAL static apps</h1>' \
+            '<ul>' \
+            '<li><a href="./correlation-calibrator/">Correlation Calibrator</a></li>' \
+            '<li><a href="./mngt-502/decks/01_intro_evidence_pc.html">MNGT 502 Intro · Evidence · Process Consultation</a></li>' \
+            '<li><a href="./mngt-502/">MNGT 502 slides hub</a></li>' \
+            '</ul>' \
             '</body></html>' > _site/index.html
           touch _site/.nojekyll
 
