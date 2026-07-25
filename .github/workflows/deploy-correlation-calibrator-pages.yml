@@ -1,4 +1,4 @@
-name: Deploy Correlation Calibrator (GitHub Pages)
+name: Deploy static platform tools (GitHub Pages)
 
 on:
   push:
@@ -6,6 +6,8 @@ on:
     paths:
       - "correlation_learning_app/web/**"
       - "docs/correlation-calibrator/**"
+      - "static/platform/tools/roi-calculator/**"
+      - "docs/platform-roi-calculator/**"
       - ".github/workflows/deploy-correlation-calibrator-pages.yml"
   workflow_dispatch:
 
@@ -34,6 +36,7 @@ jobs:
       - name: Stage static site
         run: |
           mkdir -p _site/correlation-calibrator/assets
+          mkdir -p _site/platform/tools/roi-calculator
           cp correlation_learning_app/web/index.html \
              correlation_learning_app/web/app.js \
              correlation_learning_app/web/data.js \
@@ -41,11 +44,16 @@ jobs:
              _site/correlation-calibrator/
           cp correlation_learning_app/web/assets/lab-emblem-circle.png \
              _site/correlation-calibrator/assets/
+          cp static/platform/tools/roi-calculator/index.html \
+             _site/platform/tools/roi-calculator/
           printf '%s\n' \
             '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/>' \
-            '<meta http-equiv="refresh" content="0; url=./correlation-calibrator/"/>' \
             '<title>PAL static apps</title></head><body>' \
-            '<p><a href="./correlation-calibrator/">Correlation Calibrator</a></p>' \
+            '<h1>PAL static apps</h1>' \
+            '<ul>' \
+            '<li><a href="./correlation-calibrator/">Correlation Calibrator</a></li>' \
+            '<li><a href="./platform/tools/roi-calculator/">Human Capital ROI Calculator</a></li>' \
+            '</ul>' \
             '</body></html>' > _site/index.html
           touch _site/.nojekyll
 
