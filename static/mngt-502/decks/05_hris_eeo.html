@@ -176,15 +176,15 @@ svg {
 }
 .title-lockup { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
 .kicker {
-  font-family: var(--font-display); font-size: 18px; font-weight: 700;
+  font-family: var(--font-display); font-size: 23px; font-weight: 700;
   letter-spacing: .2em; text-transform: uppercase; color: var(--pal-maroon); margin: 0;
 }
 .deck-title {
-  font-family: var(--font-display); font-size: 40px; line-height: 1.08;
+  font-family: var(--font-display); font-size: 52px; line-height: 1.08;
   font-weight: 800; letter-spacing: -.02em; margin: 0;
 }
 .slide-num {
-  font-family: var(--font-display); font-size: 15px; font-weight: 600;
+  font-family: var(--font-display); font-size: 19px; font-weight: 600;
   letter-spacing: .14em; text-transform: uppercase; color: var(--pal-silver);
   align-self: flex-start; padding-top: 6px;
 }
@@ -194,7 +194,7 @@ svg {
 }
 .slide-body { max-width: 1640px; }
 .slide-body h2 {
-  font-family: var(--font-display); font-size: 48px; line-height: 1.12;
+  font-family: var(--font-display); font-size: 62px; line-height: 1.12;
   font-weight: 800; letter-spacing: -.02em; margin: 0 0 22px; color: var(--pal-black);
   max-width: 1100px;
 }
@@ -202,7 +202,7 @@ svg {
 .slide-body h2 a:hover { border-bottom-color: var(--pal-maroon); }
 .slide-body ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
 .slide-body li {
-  font-size: 28px; line-height: 1.35; color: var(--text-secondary);
+  font-size: 36px; line-height: 1.35; color: var(--text-secondary);
   padding-left: 26px; position: relative; max-width: 980px;
 }
 .slide-body li::before {
@@ -226,13 +226,13 @@ svg {
 .footnotes {
   position: absolute; left: 88px; right: 88px; bottom: 36px;
   border-top: 1px solid #e2e8f0; padding-top: 12px;
-  font-size: 16px; line-height: 1.35; color: var(--pal-gray);
+  font-size: 19px; line-height: 1.35; color: var(--pal-gray);
   max-height: 96px; overflow: hidden;
 }
 .footnotes ol { margin: 0; padding-left: 22px; }
 .footnotes a { color: var(--pal-blue); }
 .meta-footer {
-  position: absolute; right: 88px; bottom: 40px; font-size: 16px; color: var(--pal-silver);
+  position: absolute; right: 88px; bottom: 40px; font-size: 19px; color: var(--pal-silver);
 }
 .slide.has-footnotes .meta-footer { bottom: 120px; }
 .reveal { opacity: 0; transform: translateY(14px); transition: .5s cubic-bezier(.16,1,.3,1); }
@@ -244,11 +244,11 @@ svg {
 .deck-controls {
   display: flex; gap: 12px; align-items: center;
   background: rgba(26,32,44,.88); color: #fff; padding: 10px 16px;
-  border-radius: 999px; font-family: var(--font-body); font-size: 14px;
+  border-radius: 999px; font-family: var(--font-body); font-size: 18px;
 }
 .deck-controls button {
   border: 0; background: #822727; color: #fff; font-family: var(--font-display);
-  font-weight: 600; letter-spacing: .06em; text-transform: uppercase; font-size: 12px;
+  font-weight: 600; letter-spacing: .06em; text-transform: uppercase; font-size: 15.4px;
   padding: 8px 14px; border-radius: 999px; cursor: pointer;
 }
 .deck-controls button:hover { background: #6b1f22; }
@@ -286,7 +286,7 @@ svg {
 .deck-chrome-footer .credit {
   margin: 0;
   text-align: right;
-  font-size: 15px;
+  font-size: 19px;
   line-height: 1.35;
   color: var(--pal-silver);
   white-space: nowrap;
@@ -314,7 +314,7 @@ svg {
 }
 .topbar { flex: 0 0 auto; margin-bottom: 18px; }
 .emblem { width: 88px; height: 88px; }
-.deck-title { font-size: 34px; }
+.deck-title { font-size: 44px; }
 .slide-body {
   flex: 1 1 auto;
   min-height: 0;
@@ -348,16 +348,16 @@ svg {
   .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
 .slide-body h2 { max-width: 1500px; }
-.slide-body h2.tight { font-size: 38px; margin-bottom: 12px; }
+.slide-body h2.tight { font-size: 50px; margin-bottom: 12px; }
 .slide-body .lede {
-  font-size: 24px; line-height: 1.35; color: var(--pal-gray);
+  font-size: 31px; line-height: 1.35; color: var(--pal-gray);
   max-width: 1200px; margin: 0 0 12px;
 }
 .slide-body.has-media {
   display: grid; grid-template-columns: 1fr 1.15fr; gap: 32px; align-items: center;
 }
-.slide-body.has-media .copy h2 { font-size: 36px; max-width: none; }
-.slide-body.has-media .copy li { font-size: 22px; max-width: none; }
+.slide-body.has-media .copy h2 { font-size: 50px; max-width: none; }
+.slide-body.has-media .copy li { font-size: 34px; max-width: none; }
 .slide-body .media {
   background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
   min-height: 0; max-height: 100%; padding: 16px 18px;
@@ -392,7 +392,7 @@ svg {
   max-width: 1100px; margin: 0 auto 28px; text-align: center;
 }
 .big-statement {
-  font-family: var(--font-display); font-size: 56px; font-weight: 800;
+  font-family: var(--font-display); font-size: 64.4px; font-weight: 800;
   line-height: 1.25; letter-spacing: -.02em; color: var(--pal-black);
   max-width: 1400px; margin: 0 auto; text-align: center;
 }
@@ -402,7 +402,7 @@ svg {
 }
 .big-statement .note-aside {
   display: block; margin-top: 22px;
-  font-size: 26px; font-weight: 600; line-height: 1.4;
+  font-size: 30px; font-weight: 600; line-height: 1.4;
   color: var(--pal-gray); letter-spacing: 0;
 }
 .compare {
@@ -415,15 +415,19 @@ svg {
 .compare .panel.bad { border-top: 6px solid #822727; }
 .compare .panel.good { border-top: 6px solid #2c5282; }
 .compare h3 {
-  font-family: var(--font-display); font-size: 18px; font-weight: 800;
+  font-family: var(--font-display); font-size: 23px; font-weight: 800;
   margin: 0 0 8px; color: var(--pal-black);
 }
-.compare li { font-size: 20px; max-width: none; }
+.compare li { font-size: 25.6px; max-width: none; }
 .compare.compact li {
-  font-size: 15px; line-height: 1.28; max-width: none;
+  font-size: 20px; line-height: 1.28; max-width: none;
+}
+/* Student intros: Share with Chris prompts — a notch larger for projection */
+.compare.compact .panel.bad li {
+  font-size: 23px; line-height: 1.32; max-width: none;
 }
 .compare.compact .panel { padding: 12px 14px 10px; }
-.compare.compact h3 { font-size: 16px; margin-bottom: 6px; }
+.compare.compact h3 { font-size: 20px; margin-bottom: 6px; }
 .compare.compact ul { margin: 0; }
 .compare.compact li + li { margin-top: 5px; }
 .viz { width: 100%; height: auto; font-family: 'Source Sans 3', sans-serif; }
@@ -432,12 +436,12 @@ svg {
   display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 8px;
 }
 .do-dont h3 {
-  font-family: var(--font-display); font-size: 18px; font-weight: 800;
+  font-family: var(--font-display); font-size: 21px; font-weight: 800;
   letter-spacing: .08em; text-transform: uppercase; margin: 0 0 12px;
 }
 .do-dont .do h3 { color: var(--pal-blue); }
 .do-dont .dont h3 { color: var(--pal-maroon); }
-.do-dont li { font-size: 22px; max-width: none; }
+.do-dont li { font-size: 28px; max-width: none; }
 .phases {
   display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px;
   align-items: stretch; margin-top: 8px; flex: 1;
@@ -449,28 +453,28 @@ svg {
 .phases .phase.one { border-top: 6px solid #2c5282; }
 .phases .phase.two { border-top: 6px solid #822727; }
 .phases .phase h3 {
-  font-family: var(--font-display); font-size: 22px; font-weight: 800;
+  font-family: var(--font-display); font-size: 28px; font-weight: 800;
   margin: 0; color: var(--pal-black);
 }
 .phases .phase .tag {
-  font-family: var(--font-display); font-size: 13px; font-weight: 700;
+  font-family: var(--font-display); font-size: 16.6px; font-weight: 700;
   letter-spacing: .1em; text-transform: uppercase; margin: 0;
 }
 .phases .phase.one .tag { color: var(--pal-blue); }
 .phases .phase.two .tag { color: var(--pal-maroon); }
 .phases .phase p {
-  margin: 0; font-size: 22px; line-height: 1.35; color: var(--pal-gray);
+  margin: 0; font-size: 28px; line-height: 1.35; color: var(--pal-gray);
 }
 .phases .phase ul { margin-top: 6px; }
-.phases .phase li { font-size: 20px; max-width: none; }
+.phases .phase li { font-size: 25.6px; max-width: none; }
 .phases .handoff {
   align-self: center; text-align: center;
-  font-family: var(--font-display); font-size: 14px; font-weight: 700;
+  font-family: var(--font-display); font-size: 18px; font-weight: 700;
   letter-spacing: .08em; text-transform: uppercase; color: var(--pal-silver);
   max-width: 120px;
 }
 .phases .handoff .arrow {
-  display: block; font-size: 36px; color: var(--pal-maroon); margin: 8px 0;
+  display: block; font-size: 46px; color: var(--pal-maroon); margin: 8px 0;
   letter-spacing: 0; text-transform: none;
 }
 .sandbox-grid {
@@ -481,11 +485,11 @@ svg {
   background: #fff; border-top: 6px solid #2c5282;
 }
 .sandbox-grid h3 {
-  font-family: var(--font-display); font-size: 20px; font-weight: 800;
+  font-family: var(--font-display); font-size: 25.6px; font-weight: 800;
   margin: 0 0 12px; color: var(--pal-black);
 }
 .sandbox-grid p {
-  margin: 0; font-size: 20px; line-height: 1.4; color: var(--pal-gray);
+  margin: 0; font-size: 25.6px; line-height: 1.4; color: var(--pal-gray);
 }
 .ethics-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 6px;
@@ -498,14 +502,14 @@ svg {
   min-height: 0;
 }
 .ethics-grid .card h3 {
-  font-family: var(--font-display); font-size: 22px; font-weight: 800;
+  font-family: var(--font-display); font-size: 28px; font-weight: 800;
   margin: 0 0 10px; color: var(--pal-black);
 }
 .ethics-grid .card p {
-  margin: 0; font-size: 22px; line-height: 1.35; color: var(--pal-gray);
+  margin: 0; font-size: 28px; line-height: 1.35; color: var(--pal-gray);
 }
 .ethics-grid .card .cite {
-  display: block; margin-top: 10px; font-size: 15px; color: var(--pal-silver);
+  display: block; margin-top: 10px; font-size: 18px; color: var(--pal-silver);
   font-family: var(--font-display); letter-spacing: .02em;
 }
 .slide-body.fill { flex: 1 1 auto; min-height: 0; }
@@ -515,7 +519,7 @@ svg {
 .lo-pill {
   display: inline-block;
   font-family: var(--font-display);
-  font-size: 14px; font-weight: 800;
+  font-size: 18px; font-weight: 800;
   letter-spacing: .08em; text-transform: uppercase;
   color: #fff; background: var(--pal-maroon);
   padding: 6px 12px; border-radius: 6px;
@@ -526,7 +530,7 @@ svg {
   padding: 14px 18px;
   border-left: 6px solid var(--pal-maroon);
   background: #fff5f5;
-  font-size: 22px; line-height: 1.35; color: var(--pal-black);
+  font-size: 28px; line-height: 1.35; color: var(--pal-black);
   font-family: var(--font-display); font-weight: 600;
 }
 .objectives-list {
@@ -546,13 +550,13 @@ svg {
 }
 .objectives-list .obj .oid {
   font-family: var(--font-display);
-  font-size: 20px; font-weight: 800;
+  font-size: 25.6px; font-weight: 800;
   color: var(--pal-maroon);
   letter-spacing: .02em;
 }
 .objectives-list .obj .otext {
   margin: 0;
-  font-size: 20px; line-height: 1.3; color: var(--pal-black);
+  font-size: 25.6px; line-height: 1.3; color: var(--pal-black);
   font-weight: 600;
 }
 .objectives-list.compact { gap: 8px; }
@@ -561,8 +565,8 @@ svg {
   grid-template-columns: 56px 1fr;
   gap: 8px 12px;
 }
-.objectives-list.compact .obj .oid { font-size: 16px; }
-.objectives-list.compact .obj .otext { font-size: 16px; line-height: 1.25; }
+.objectives-list.compact .obj .oid { font-size: 20px; }
+.objectives-list.compact .obj .otext { font-size: 20px; line-height: 1.25; }
 
 a.slide-link, a.slide-link-btn {
   color: var(--pal-blue);
@@ -579,7 +583,7 @@ a.slide-link-btn {
   border: 1px solid #bee3f8;
   text-decoration: none;
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 23px;
 }
 a.slide-link-btn:hover { background: #bee3f8; }
 .links-row { margin: 10px 0 14px; }
@@ -592,12 +596,12 @@ a.slide-link-btn:hover { background: #bee3f8; }
   border: 1px solid #90cdf4;
   color: var(--pal-blue);
   font-family: var(--font-display);
-  font-size: 14px; font-weight: 700;
+  font-size: 16.5px; font-weight: 700;
   letter-spacing: .04em;
 }
 .owner-line {
   margin: 12px 0 0;
-  font-size: 18px; color: var(--pal-gray);
+  font-size: 21px; color: var(--pal-gray);
   font-family: var(--font-display); font-weight: 600;
 }
 .rubric-grid {
@@ -609,15 +613,15 @@ a.slide-link-btn:hover { background: #bee3f8; }
   background: #fff; border-top: 5px solid var(--pal-maroon);
 }
 .rubric-grid .rcard h3 {
-  font-family: var(--font-display); font-size: 20px; font-weight: 800;
+  font-family: var(--font-display); font-size: 25.6px; font-weight: 800;
   margin: 0 0 8px; color: var(--pal-black);
 }
 .rubric-grid .rcard .pts {
-  font-size: 14px; font-weight: 700; color: var(--pal-maroon);
+  font-size: 18px; font-weight: 700; color: var(--pal-maroon);
   letter-spacing: .06em; text-transform: uppercase; margin: 0 0 8px;
 }
 .rubric-grid .rcard p {
-  margin: 0; font-size: 17px; line-height: 1.35; color: var(--pal-gray);
+  margin: 0; font-size: 22px; line-height: 1.35; color: var(--pal-gray);
 }
 .rubric-bars {
   display: grid; gap: 12px; margin-top: 8px; flex: 1 1 auto;
@@ -639,40 +643,40 @@ a.slide-link-btn:hover { background: #bee3f8; }
   padding: 14px 13px;
   background: #f7fafc;
   border-top: 5px solid var(--pal-maroon);
-  font-family: var(--font-display); font-size: 17px; line-height: 1.18;
+  font-family: var(--font-display); font-size: 20px; line-height: 1.18;
   font-weight: 800; color: var(--pal-black);
 }
 .rubric-bars.compact .rubric-criterion-title {
   padding: 5px 7px;
   border-top-width: 3px;
-  font-size: 15px; line-height: 1.12;
+  font-size: 18px; line-height: 1.12;
 }
 .rubric-anchor {
   padding: 11px 10px;
   border-left: 1px solid #e2e8f0;
-  font-size: 13.5px; line-height: 1.24; color: var(--pal-gray);
+  font-size: 16px; line-height: 1.24; color: var(--pal-gray);
 }
 .rubric-bars.compact .rubric-anchor {
   padding: 4px 6px;
-  font-size: 16px; line-height: 1.18;
+  font-size: 19px; line-height: 1.18;
 }
 .rubric-anchor .level {
   display: block; margin: 0 0 6px;
-  font-family: var(--font-display); font-size: 13px; line-height: 1.1;
+  font-family: var(--font-display); font-size: 15px; line-height: 1.1;
   font-weight: 800; color: var(--pal-blue);
 }
 .rubric-bars.compact .rubric-anchor .level {
-  margin: 0 0 2px; font-size: 13px;
+  margin: 0 0 2px; font-size: 15px;
 }
 /* Free vertical chrome so compact BARS anchors stay projector-legible on one slide */
 .slide-body.fill:has(.rubric-bars.compact) h2.tight {
-  font-size: 28px; margin-bottom: 4px;
+  font-size: 33px; margin-bottom: 4px;
 }
 .slide-body.fill:has(.rubric-bars.compact) .lede {
-  font-size: 15px; margin: 0 0 2px; line-height: 1.25;
+  font-size: 18px; margin: 0 0 2px; line-height: 1.25;
 }
 .slide-body.fill:has(.rubric-bars.compact) .lo-ask {
-  font-size: 15px; margin: 0 0 4px;
+  font-size: 18px; margin: 0 0 4px;
 }
 .slide-body.fill:has(.rubric-bars.compact) .lo-pill {
   margin-bottom: 2px;
@@ -694,11 +698,11 @@ a.slide-link-btn:hover { background: #bee3f8; }
 .trust-strip .nameplate {
   padding: 10px 16px; border-radius: 8px;
   border: 1px solid #e2e8f0; background: #fff;
-  font-family: var(--font-display); font-size: 15px; font-weight: 700;
+  font-family: var(--font-display); font-size: 18px; font-weight: 700;
   color: var(--pal-black);
 }
 .trust-strip.compact .nameplate {
-  padding: 8px 12px; font-size: 13px;
+  padding: 8px 12px; font-size: 15px;
 }
 .trust-strip img {
   height: 68px;
@@ -738,7 +742,7 @@ a.slide-link-btn:hover { background: #bee3f8; }
 .trust-strip .logo-label {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 650;
   letter-spacing: .02em;
   color: var(--pal-gray);
@@ -746,7 +750,7 @@ a.slide-link-btn:hover { background: #bee3f8; }
   line-height: 1.2;
 }
 .trust-strip.compact .logo-label {
-  font-size: 12px;
+  font-size: 14px;
 }
 .trust-strip.labeled {
   gap: 18px 22px;
@@ -778,7 +782,7 @@ a.slide-link-btn:hover { background: #bee3f8; }
   height: 36px; width: auto; object-fit: contain;
 }
 .trust-brand .trust-caption {
-  margin: 0; font-size: 14px; color: var(--pal-gray);
+  margin: 0; font-size: 16.5px; color: var(--pal-gray);
   letter-spacing: .04em; text-transform: uppercase; font-weight: 600;
 }
 .mayer-split {
@@ -805,15 +809,15 @@ a.slide-link-btn:hover { background: #bee3f8; }
   display: flex; flex-direction: column; gap: 4px;
 }
 .mayer-split .mayer-aside .who {
-  font-family: var(--font-display); font-size: 20px; font-weight: 800; margin: 0;
+  font-family: var(--font-display); font-size: 25.6px; font-weight: 800; margin: 0;
 }
 .mayer-split .mayer-aside .when {
-  font-size: 15px; opacity: .9; margin: 0;
+  font-size: 19px; opacity: .9; margin: 0;
 }
 .mayer-split .mayer-quote {
   border-left: 6px solid var(--pal-maroon);
   background: #fff5f5; border-radius: 0 12px 12px 0;
-  padding: 18px 22px; font-size: 22px; line-height: 1.38; color: var(--pal-black);
+  padding: 18px 22px; font-size: 28px; line-height: 1.38; color: var(--pal-black);
 }
 .mayer-split .mayer-quote p { margin: 0 0 14px; }
 .mayer-split .mayer-quote p:last-child { margin: 0; }
@@ -826,7 +830,7 @@ a.slide-link-btn:hover { background: #bee3f8; }
   background: #f7fafc;
   display: flex; align-items: center; justify-content: center;
   color: var(--pal-gray); font-family: var(--font-display);
-  font-size: 24px; font-weight: 600;
+  font-size: 31px; font-weight: 600;
 }
 
 /* One LO per slide */
@@ -837,21 +841,21 @@ a.slide-link-btn:hover { background: #bee3f8; }
 }
 .one-lo .lo-kicker {
   font-family: var(--font-display);
-  font-size: 18px; font-weight: 700; letter-spacing: .14em;
+  font-size: 23px; font-weight: 700; letter-spacing: .14em;
   text-transform: uppercase; color: var(--pal-blue); margin: 0;
 }
 .one-lo .lo-id {
   font-family: var(--font-display);
-  font-size: 72px; font-weight: 800; line-height: 1;
+  font-size: 83px; font-weight: 800; line-height: 1;
   color: var(--pal-maroon); margin: 0; letter-spacing: -.02em;
 }
 .one-lo .lo-text {
   font-family: var(--font-display);
-  font-size: 40px; font-weight: 700; line-height: 1.25;
+  font-size: 46px; font-weight: 700; line-height: 1.25;
   color: var(--pal-black); margin: 0; max-width: 1500px;
 }
 .one-lo .lo-progress {
-  font-size: 18px; color: var(--pal-gray); margin: 8px 0 0;
+  font-size: 23px; color: var(--pal-gray); margin: 8px 0 0;
   font-family: var(--font-display); font-weight: 600;
 }
 
@@ -868,22 +872,22 @@ a.slide-link-btn:hover { background: #bee3f8; }
 .effects-grid .card.mix { border-top: 6px solid #b7791f; }
 .effects-grid .card.con { border-top: 6px solid #822727; }
 .effects-grid .card .tag {
-  font-family: var(--font-display); font-size: 13px; font-weight: 700;
+  font-family: var(--font-display); font-size: 16.6px; font-weight: 700;
   letter-spacing: .1em; text-transform: uppercase; margin: 0;
 }
 .effects-grid .card.pos .tag { color: var(--pal-blue); }
 .effects-grid .card.mix .tag { color: #b7791f; }
 .effects-grid .card.con .tag { color: var(--pal-maroon); }
 .effects-grid .card h3 {
-  font-family: var(--font-display); font-size: 24px; font-weight: 800;
+  font-family: var(--font-display); font-size: 31px; font-weight: 800;
   margin: 0; color: var(--pal-black);
 }
 .effects-grid .card ul { margin-top: 4px; gap: 10px; }
-.effects-grid .card li { font-size: 20px; max-width: none; line-height: 1.35; }
+.effects-grid .card li { font-size: 25.6px; max-width: none; line-height: 1.35; }
 .effects-callout {
   margin-top: 14px; padding: 14px 20px; border-radius: 10px;
   background: #ebf4ff; border: 1px solid #bee3f8;
-  font-size: 20px; line-height: 1.35; color: #2c5282;
+  font-size: 25.6px; line-height: 1.35; color: #2c5282;
   font-family: var(--font-display); font-weight: 600;
 }
 .slide-body.fill .effects-grid { flex: 1; }
@@ -907,14 +911,14 @@ a.slide-link-btn:hover { background: #bee3f8; }
 }
 .slide-footer .apa-refs {
   min-width: 0;
-  font-size: 14px;
+  font-size: 16.5px;
   line-height: 1.35;
   color: var(--pal-gray);
 }
 .slide-footer .apa-refs .label {
   display: block;
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -931,7 +935,7 @@ a.slide-link-btn:hover { background: #bee3f8; }
 .slide-footer .credit {
   display: none;
   margin: 0;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.3;
   color: var(--pal-silver);
   text-align: right;
@@ -969,20 +973,20 @@ a.slide-link-btn:hover { background: #bee3f8; }
 }
 .expand-card-kicker {
   font-family: var(--font-display);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--pal-maroon);
 }
 .expand-card-label {
-  font-size: 18px;
+  font-size: 21px;
   font-weight: 600;
   line-height: 1.3;
   color: var(--pal-black);
 }
 .expand-card-hint {
-  font-size: 15px;
+  font-size: 18px;
   color: var(--pal-silver);
 }
 .expand-overlay {
@@ -1025,7 +1029,7 @@ a.slide-link-btn:hover { background: #bee3f8; }
   background: #f7fafc;
   color: var(--pal-gray);
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: .06em;
   text-transform: uppercase;
@@ -1041,14 +1045,14 @@ a.slide-link-btn:hover { background: #bee3f8; }
 }
 .expand-title {
   font-family: var(--font-display);
-  font-size: 32px;
+  font-size: 41px;
   font-weight: 800;
   margin: 0 56px 18px 0;
   color: var(--pal-black);
   letter-spacing: -.02em;
 }
 .expand-body {
-  font-size: 24px;
+  font-size: 31px;
   line-height: 1.45;
   color: var(--pal-gray);
 }
@@ -1058,14 +1062,14 @@ a.slide-link-btn:hover { background: #bee3f8; }
   border-left: 5px solid var(--pal-maroon);
   background: #f7fafc;
   border-radius: 0 10px 10px 0;
-  font-size: 26px;
+  font-size: 33px;
   line-height: 1.4;
   color: var(--pal-black);
   font-style: italic;
 }
 .expand-gloss {
   margin: 0;
-  font-size: 22px;
+  font-size: 28px;
   line-height: 1.4;
   color: var(--pal-gray);
   font-style: normal;
@@ -1085,7 +1089,7 @@ body.expand-open .deck-controls {
 }
 .section-break .sec-num {
   font-family: var(--font-display);
-  font-size: 160px; font-weight: 800; line-height: .85;
+  font-size: 184px; font-weight: 800; line-height: .85;
   color: var(--pal-maroon); opacity: .18; margin: 0;
   letter-spacing: -.04em;
 }
@@ -1093,15 +1097,15 @@ body.expand-open .deck-controls {
 .section-break.no-num { padding-top: 80px; }
 .section-break .sec-eyebrow {
   font-family: var(--font-display);
-  font-size: 18px; font-weight: 700; letter-spacing: .14em;
+  font-size: 23px; font-weight: 700; letter-spacing: .14em;
   text-transform: uppercase; color: var(--pal-blue); margin: 0;
 }
 .section-break h2 {
-  font-size: 64px !important; max-width: 1400px !important;
+  font-size: 82px !important; max-width: 1400px !important;
   margin: 0 !important; line-height: 1.1;
 }
 .section-break .sec-lede {
-  font-size: 26px; line-height: 1.4; color: var(--pal-gray);
+  font-size: 33px; line-height: 1.4; color: var(--pal-gray);
   max-width: 1100px; margin: 0;
 }
 
@@ -1129,13 +1133,13 @@ body.expand-open .deck-controls {
   color: #fff;
 }
 .hero-copy h2 {
-  color: #fff !important; font-size: 52px !important;
+  color: #fff !important; font-size: 66.6px !important;
   max-width: 1100px !important; margin: 0 !important;
   text-shadow: 0 2px 24px rgba(0,0,0,.35);
 }
 .hero-copy .lede {
   color: rgba(255,255,255,.88) !important;
-  font-size: 24px !important; max-width: 900px; margin: 0 !important;
+  font-size: 31px !important; max-width: 900px; margin: 0 !important;
 }
 .hero-copy .lo-pill { background: #fff; color: var(--pal-maroon); }
 .hero-copy .lo-ask {
@@ -1144,7 +1148,7 @@ body.expand-open .deck-controls {
 }
 .hero-copy ul { margin: 0; gap: 10px; }
 .hero-copy li {
-  color: rgba(255,255,255,.92); font-size: 22px;
+  color: rgba(255,255,255,.92); font-size: 28px;
   max-width: 820px;
 }
 .hero-copy li::before { background: #fff; }
@@ -1156,16 +1160,16 @@ body.expand-open .deck-controls {
 }
 .quote-stage .q-mark {
   font-family: var(--font-display);
-  font-size: 96px; font-weight: 800; line-height: 1;
+  font-size: 110.4px; font-weight: 800; line-height: 1;
   color: var(--pal-maroon); opacity: .25; margin: 0;
 }
 .quote-stage .q-text {
   font-family: var(--font-display);
-  font-size: 42px; font-weight: 700; line-height: 1.25;
+  font-size: 48px; font-weight: 700; line-height: 1.25;
   color: var(--pal-black); margin: 0; max-width: 1400px;
 }
 .quote-stage .q-cite {
-  font-size: 20px; color: var(--pal-gray); margin: 0;
+  font-size: 25.6px; color: var(--pal-gray); margin: 0;
   letter-spacing: .04em;
 }
 
@@ -1184,15 +1188,15 @@ body.expand-open .deck-controls {
 }
 .stats-row .stat .val {
   font-family: var(--font-display);
-  font-size: 72px; font-weight: 800; line-height: 1;
+  font-size: 83px; font-weight: 800; line-height: 1;
   color: var(--pal-maroon); margin: 0; letter-spacing: -.03em;
 }
 .stats-row .stat .lab {
-  font-size: 22px; font-weight: 600; color: var(--pal-black);
+  font-size: 25px; font-weight: 600; color: var(--pal-black);
   margin: 0; line-height: 1.3;
 }
 .stats-row .stat .hint {
-  font-size: 17px; color: var(--pal-gray); margin: 0; line-height: 1.35;
+  font-size: 19.5px; color: var(--pal-gray); margin: 0; line-height: 1.35;
 }
 
 .tiles-grid {
@@ -1208,15 +1212,15 @@ body.expand-open .deck-controls {
 }
 .tiles-grid .tile .t-label {
   font-family: var(--font-display);
-  font-size: 14px; font-weight: 800; letter-spacing: .1em;
+  font-size: 18px; font-weight: 800; letter-spacing: .1em;
   text-transform: uppercase; color: var(--pal-blue); margin: 0;
 }
 .tiles-grid .tile h3 {
   font-family: var(--font-display);
-  font-size: 26px; font-weight: 800; margin: 0; color: var(--pal-black);
+  font-size: 33px; font-weight: 800; margin: 0; color: var(--pal-black);
 }
 .tiles-grid .tile p {
-  font-size: 20px; line-height: 1.35; color: var(--pal-gray); margin: 0;
+  font-size: 25.6px; line-height: 1.35; color: var(--pal-gray); margin: 0;
 }
 
 </style>
@@ -1358,7 +1362,7 @@ body.expand-open .deck-controls {
       
     <button type="button" class="expand-card reveal" data-expand-open="expand-detail-5" aria-expanded="false" aria-controls="expand-detail-5"><span class="expand-card-kicker">Definition</span><span class="expand-card-label">Patriotta’s full sensegiving definition</span><span class="expand-card-hint">Click to expand</span></button>
     </div>
-    <div class="media reveal"><img src="../assets/05_hris/sensegiving_before_after.png" alt="Before/after: dashboard vs sensegiving chart (Knaflic-style)"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/05_hris/sensegiving_before_after.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/05_hris/sensegiving_before_after.png" alt="Before/after: dashboard vs sensegiving chart (Knaflic-style)"></a></div>
   </div>
   
   <div class="expand-overlay" id="expand-detail-5" hidden aria-hidden="true">
@@ -1456,7 +1460,7 @@ body.expand-open .deck-controls {
       
       
     </div>
-    <div class="media reveal"><img src="../assets/04_hris_dei/pdf_p-038.png" alt="Staffing dashboard with projected resignations and turnover chart"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/04_hris_dei/pdf_p-038.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/04_hris_dei/pdf_p-038.png" alt="Staffing dashboard with projected resignations and turnover chart"></a></div>
   </div>
   
   
@@ -1482,7 +1486,7 @@ body.expand-open .deck-controls {
       
       
     </div>
-    <div class="media reveal"><img src="../assets/05_hris/slade_people_portfolios.png" alt="People portfolio investment vs retention trade-off (Slade et al., 2002; illustrative)"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/05_hris/slade_people_portfolios.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/05_hris/slade_people_portfolios.png" alt="People portfolio investment vs retention trade-off (Slade et al., 2002; illustrative)"></a></div>
   </div>
   
   
@@ -1572,7 +1576,7 @@ body.expand-open .deck-controls {
       
       
     </div>
-    <div class="media reveal"><img src="../assets/04_hris_dei/img_057_0.png" alt="HRManagement simulation Programs screen with HRIS selected ($11,000)"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/04_hris_dei/img_057_0.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/04_hris_dei/img_057_0.png" alt="HRManagement simulation Programs screen with HRIS selected ($11,000)"></a></div>
   </div>
   
   
@@ -1616,7 +1620,7 @@ body.expand-open .deck-controls {
     <p class="lede reveal">Assess → needs → platforms → design → vendor (Bauer Fig. 3.8).</p>
     
     
-    <div class="media reveal"><img src="../assets/05_hris/fig_3_8_hris_decision_steps.png" alt="FIGURE 3.8 HRIS Decision Steps — five-step staircase flowchart"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/05_hris/fig_3_8_hris_decision_steps.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/05_hris/fig_3_8_hris_decision_steps.png" alt="FIGURE 3.8 HRIS Decision Steps — five-step staircase flowchart"></a></div>
     
     
   </div>
@@ -1639,7 +1643,7 @@ body.expand-open .deck-controls {
     <p class="lede reveal">Data flow excerpt: rate employees → HR review → update employee file (Bauer Fig. 3.9).</p>
     <p class="lo-ask reveal">Where does the rating live after the conversation ends?</p>
     
-    <div class="media reveal"><img src="../assets/05_hris/fig_3_9_data_flow.png" alt="FIGURE 3.9 Data Flow Diagram Excerpt — performance ratings flow into Employee File"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/05_hris/fig_3_9_data_flow.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/05_hris/fig_3_9_data_flow.png" alt="FIGURE 3.9 Data Flow Diagram Excerpt — performance ratings flow into Employee File"></a></div>
     
     
   </div>
@@ -1667,7 +1671,7 @@ body.expand-open .deck-controls {
       
       
     </div>
-    <div class="media reveal"><img src="../assets/04_hris_dei/img_061_0.png" alt="Resistance to change spectrum: active resistance to enthusiastic support"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/04_hris_dei/img_061_0.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/04_hris_dei/img_061_0.png" alt="Resistance to change spectrum: active resistance to enthusiastic support"></a></div>
   </div>
   
   
@@ -1693,7 +1697,7 @@ body.expand-open .deck-controls {
       
       
     </div>
-    <div class="media reveal"><img src="../assets/04_hris_dei/img_062_0.png" alt="Theory of planned behaviour diagram"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/04_hris_dei/img_062_0.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/04_hris_dei/img_062_0.png" alt="Theory of planned behaviour diagram"></a></div>
   </div>
   
   
@@ -1714,7 +1718,7 @@ body.expand-open .deck-controls {
       
       
     </div>
-    <div class="media reveal"><img src="../assets/04_hris_dei/img_064_0.png" alt="Table 2: Stages of organizational change and processes emphasized (Prochaska et al., 2001)"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/04_hris_dei/img_064_0.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/04_hris_dei/img_064_0.png" alt="Table 2: Stages of organizational change and processes emphasized (Prochaska et al., 2001)"></a></div>
   </div>
   
   
@@ -1730,7 +1734,7 @@ body.expand-open .deck-controls {
     <p class="lede reveal">Scale what already works in pockets — deficit lectures rarely move adoption.</p>
     
     
-    <div class="media reveal"><img src="../assets/04_hris_dei/pdf_p-069.png" alt="Focus on the bright spots in change management"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/04_hris_dei/pdf_p-069.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/04_hris_dei/pdf_p-069.png" alt="Focus on the bright spots in change management"></a></div>
     
     
   </div>
@@ -1771,7 +1775,7 @@ body.expand-open .deck-controls {
     <p class="lede reveal">A single table holds employee rows — useful, but joins unlock more (Bauer Table 3.1).</p>
     
     
-    <div class="media reveal"><img src="../assets/05_hris/table_3_1_employee.png" alt="TABLE 3.1 Example of an employee data table"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/05_hris/table_3_1_employee.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/05_hris/table_3_1_employee.png" alt="TABLE 3.1 Example of an employee data table"></a></div>
     
     
   </div>
@@ -1794,7 +1798,7 @@ body.expand-open .deck-controls {
     <p class="lede reveal">EmployeeID joins people data to invoice data — no redundant copies (Bauer Fig. 3.12).</p>
     
     
-    <div class="media reveal"><img src="../assets/05_hris/fig_3_12_linking_tables.png" alt="FIGURE 3.12 Key variable linking employee and customer invoice tables"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/05_hris/fig_3_12_linking_tables.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/05_hris/fig_3_12_linking_tables.png" alt="FIGURE 3.12 Key variable linking employee and customer invoice tables"></a></div>
     
     
   </div>
@@ -1817,7 +1821,7 @@ body.expand-open .deck-controls {
     <p class="lede reveal">User-facing form writes the same row the table stores (Bauer Fig. 3.13).</p>
     
     
-    <div class="media reveal"><img src="../assets/05_hris/fig_3_13_example_form.png" alt="FIGURE 3.13 Example of a Form — Employee Info form above table"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/05_hris/fig_3_13_example_form.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/05_hris/fig_3_13_example_form.png" alt="FIGURE 3.13 Example of a Form — Employee Info form above table"></a></div>
     
     
   </div>
@@ -1840,7 +1844,7 @@ body.expand-open .deck-controls {
     <p class="lede reveal">SQL turns stored columns into answers — e.g., an average (Bauer Fig. 3.14).</p>
     
     
-    <div class="media reveal"><img src="../assets/05_hris/fig_3_14_sql_query.png" alt="FIGURE 3.14 Simple SQL query computing AVG from a table column"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/05_hris/fig_3_14_sql_query.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/05_hris/fig_3_14_sql_query.png" alt="FIGURE 3.14 Simple SQL query computing AVG from a table column"></a></div>
     
     
   </div>
@@ -1863,7 +1867,7 @@ body.expand-open .deck-controls {
     <p class="lede reveal">Same data, formatted for managers — sales by salesperson (Bauer Fig. 3.15).</p>
     
     
-    <div class="media reveal"><img src="../assets/05_hris/fig_3_15_report_bar_graph.png" alt="FIGURE 3.15 Example of a Report Bar Graph — total sales by salesperson"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/05_hris/fig_3_15_report_bar_graph.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/05_hris/fig_3_15_report_bar_graph.png" alt="FIGURE 3.15 Example of a Report Bar Graph — total sales by salesperson"></a></div>
     
     
   </div>
@@ -2034,6 +2038,7 @@ body.expand-open .deck-controls {
     <hr class="rule">
     <span class="lo-pill reveal">LO 4.3</span>
     <h2 class="tight reveal">Warm-up — is there adverse impact?</h2>
+    <p class="lede reveal">Selection rates first — then job-relatedness arguments.</p>
     <p class="lo-ask reveal">What information do you need from the vendor before you buy the tool?</p>
     
     <div class="compare">
@@ -2084,7 +2089,7 @@ body.expand-open .deck-controls {
     <p class="lede reveal">Exam 1 territory — Manager’s Toolbox: avoiding illegal interview questions.</p>
     
     
-    <div class="media reveal"><img src="../assets/04_hris_dei/pdf_p-126.png" alt="Table 4.1: Potentially illegal interview questions and employment practices"></div>
+    <div class="media reveal"><a class="media-open" href="../assets/04_hris_dei/pdf_p-126.png" target="_blank" rel="noopener noreferrer" title="Open full size"><img src="../assets/04_hris_dei/pdf_p-126.png" alt="Table 4.1: Potentially illegal interview questions and employment practices"></a></div>
     
     
   </div>

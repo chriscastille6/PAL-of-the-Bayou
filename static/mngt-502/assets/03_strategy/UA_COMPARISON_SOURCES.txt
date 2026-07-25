@@ -1,0 +1,23 @@
+UA comparison assets for MNGT 502 Module 3 strategy deck
+Source app: https://bayoupal.nicholls.edu/ua/staffing/
+Captured: 2026-07-25
+
+Scenario (sales hiring teaching case — Vinchur validities):
+- Current system: unstructured interview, r = 0.20 (Vinchur et al., 1998 approx.)
+- Proposed system: sales aptitude / best-practice selection, r = 0.45 (Vinchur et al., 1998 approx.)
+- Selection ratio: 0.333 (app default / Latham & Whyte teaching default)
+- N hires: 50
+- Average tenure: 3 years
+- SDy: $40,000
+- Selection cost per person: $300
+- Sturman adjustments (app defaults): variable costs 35%, tax 63%, discount 15%
+
+App outputs used on slides (do not invent alternate math):
+- Expectancy: Top (> +0.67σ) improvement +8.1% (17.8% → 26.0%); Zxs = 1.091
+- Traditional BCG utility: $1,592,144
+- Financially adjusted utility: $251,770
+- Per-employee utility (traditional): $31,843
+
+Files:
+- ua_expectancy_unstructured_vs_aptitude.png
+- ua_economic_value_unstructured_vs_aptitude.png
