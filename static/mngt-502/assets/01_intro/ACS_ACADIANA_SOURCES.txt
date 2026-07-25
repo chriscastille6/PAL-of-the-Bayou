@@ -1,0 +1,37 @@
+South Louisiana / Acadiana ACS chart — source notes
+========================================================
+
+Dataset: ACS 2024 5-year (2020-2024)
+Release id: acs2024_5yr
+Publisher: U.S. Census Bureau, American Community Survey
+Access path: Census Reporter API (https://api.censusreporter.org/1.0/data/show/acs2024_5yr)
+
+Why not api.census.gov?
+  Requests without a key redirect to missing_key.html.
+  www.census.gov / QuickFacts often return Cloudflare blocks here.
+  Census Reporter redistributes the same ACS estimates publicly.
+
+Geography:
+  Values are parish (county-equivalent) estimates. There is no Census Bureau ‘Acadiana’ summary geography on this chart; Lafayette / Lafourche / Terrebonne are shown as south Louisiana anchors (Acadiana + Houma–Thibodaux).
+
+Method:
+  % aged 65+ = sum of B01001 male and female age cells 65+ divided by total population (B01001001), rounded to 1 decimal.
+
+Tables:
+  B01001: Sex by Age — used for % aged 65+
+  B03002: Hispanic or Latino Origin by Race — composition context
+  B23025: Employment Status for the Population 16 Years and Over — LFPR
+
+Values used on the slide (% aged 65+):
+
+  United States           17.2%   (N=334,922,500; 65+ count=57,633,628)
+  Louisiana               16.7%   (N=4,611,961; 65+ count=772,404)
+  Lafayette Parish        14.7%   (N=247,997; 65+ count=36,468)
+  Lafourche Parish        16.6%   (N=96,252; 65+ count=15,932)
+  Terrebonne Parish       15.8%   (N=106,186; 65+ count=16,821)
+
+Composition / labor-force context (same vintage; speaker notes):
+
+  Lafayette Parish: White NH 61.7% · Black NH 25.4% · AIAN NH 0.1% · Hispanic 6.7% · LFPR 16+ 65.4%
+  Lafourche Parish: White NH 74.2% · Black NH 12.8% · AIAN NH 2.3% · Hispanic 5.9% · LFPR 16+ 56.8%
+  Terrebonne Parish: White NH 63.8% · Black NH 18.3% · AIAN NH 4.5% · Hispanic 7.2% · LFPR 16+ 58.9%

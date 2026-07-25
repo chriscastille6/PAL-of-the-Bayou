@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 720" role="img" aria-label="Percent aged 65 and over, ACS 2020-2024">
+<rect width="1100" height="720" fill="#ffffff"/>
+<text x="48" y="42" font-family="Montserrat, Arial, sans-serif" font-size="28" font-weight="800" fill="#1a202c">Percent aged 65+ — south Louisiana parishes</text>
+<text x="48" y="70" font-family="Montserrat, Arial, sans-serif" font-size="15" font-weight="600" fill="#718096">ACS 2020-2024 5-year estimates · parish geography (not a Census Acadiana region)</text>
+<text x="48" y="116" font-family="Montserrat, Arial, sans-serif" font-size="18" font-weight="700" fill="#1a202c">United States</text>
+<rect x="258" y="96" width="640" height="36" rx="6" fill="#e2e8f0"/>
+<rect x="258" y="96" width="550.4" height="36" rx="6" fill="#2c5282" fill-opacity="0.75"/>
+<text x="820.4" y="122" font-family="Montserrat, Arial, sans-serif" font-size="22" font-weight="800" fill="#2c5282">17.2%</text>
+<text x="48" y="194" font-family="Montserrat, Arial, sans-serif" font-size="18" font-weight="700" fill="#1a202c">Louisiana</text>
+<rect x="258" y="174" width="640" height="36" rx="6" fill="#e2e8f0"/>
+<rect x="258" y="174" width="534.4" height="36" rx="6" fill="#2c5282" fill-opacity="0.75"/>
+<text x="804.4" y="200" font-family="Montserrat, Arial, sans-serif" font-size="22" font-weight="800" fill="#2c5282">16.7%</text>
+<text x="48" y="272" font-family="Montserrat, Arial, sans-serif" font-size="18" font-weight="700" fill="#1a202c">Lafayette Parish</text>
+<rect x="258" y="252" width="640" height="36" rx="6" fill="#e2e8f0"/>
+<rect x="258" y="252" width="470.4" height="36" rx="6" fill="#822727" fill-opacity="1"/>
+<text x="740.4" y="278" font-family="Montserrat, Arial, sans-serif" font-size="22" font-weight="800" fill="#822727">14.7%</text>
+<text x="48" y="350" font-family="Montserrat, Arial, sans-serif" font-size="18" font-weight="700" fill="#1a202c">Lafourche Parish</text>
+<rect x="258" y="330" width="640" height="36" rx="6" fill="#e2e8f0"/>
+<rect x="258" y="330" width="531.2" height="36" rx="6" fill="#822727" fill-opacity="1"/>
+<text x="801.2" y="356" font-family="Montserrat, Arial, sans-serif" font-size="22" font-weight="800" fill="#822727">16.6%</text>
+<text x="48" y="428" font-family="Montserrat, Arial, sans-serif" font-size="18" font-weight="700" fill="#1a202c">Terrebonne Parish</text>
+<rect x="258" y="408" width="640" height="36" rx="6" fill="#e2e8f0"/>
+<rect x="258" y="408" width="505.6" height="36" rx="6" fill="#822727" fill-opacity="1"/>
+<text x="775.6" y="434" font-family="Montserrat, Arial, sans-serif" font-size="22" font-weight="800" fill="#822727">15.8%</text>
+<text x="48" y="496" font-family="Georgia, serif" font-size="13" fill="#4a5568">Source: U.S. Census Bureau, American Community Survey 2020-2024 5-year estimates, Table B01001 (via Census Reporter). Lafayette · Lafourche · Terrebonne highlighted.</text>
+<text x="48" y="518" font-family="Georgia, serif" font-size="13" fill="#718096">Teaching contrast: national Fig 1.4 projects 2050 aging; these bars are today’s parish age structure.</text>
+</svg>
