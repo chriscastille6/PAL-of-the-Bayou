@@ -1,0 +1,70 @@
+HRIS / HCM vendor marks for Deck 05 logo strip — local teaching use.
+Illustrative market examples only; not endorsements.
+
+workday.svg
+  Wikimedia Commons: File:Workday 2024 logo.svg
+  https://commons.wikimedia.org/wiki/File:Workday_2024_logo.svg
+  License: Public domain (simple text logo)
+
+sap.svg
+  Wikimedia Commons: File:SAP 2011 logo.svg
+  https://commons.wikimedia.org/wiki/File:SAP_2011_logo.svg
+  License: Public domain (simple text logo)
+  Note: SAP SuccessFactors is the HCM suite; mark is SAP parent brand.
+
+oracle.svg
+  Wikimedia Commons: File:Oracle logo.svg
+  https://commons.wikimedia.org/wiki/File:Oracle_logo.svg
+  License: Public domain (simple text logo)
+  Day 4 PDF names Oracle on the ERP “Link to Oracle” slide (p.20).
+
+adp.svg
+  Wikimedia Commons: File:ADP Regular.svg
+  https://commons.wikimedia.org/wiki/File:ADP_Regular.svg
+  License: CC BY-SA 4.0
+
+ukg.svg
+  Wikimedia Commons: File:UKG logo.svg
+  https://commons.wikimedia.org/wiki/File:UKG_logo.svg
+  License: Public domain (simple text logo)
+
+bamboohr.svg
+  Wikimedia Commons: File:BambooHR logo.svg
+  https://commons.wikimedia.org/wiki/File:BambooHR_logo.svg
+  License: Public domain (simple text logo)
+
+dayforce.svg
+  Wikimedia Commons: File:Dayforce logo.svg
+  https://commons.wikimedia.org/wiki/File:Dayforce_logo.svg
+  License: Public domain (simple text logo)
+  Dayforce is Ceridian’s HCM platform brand.
+
+PDF note (Day 4_ HRIS Overview and DEI Discussion.pdf):
+  Text extraction did not yield a named HRIS vendor strip.
+  Named related brands in text: Oracle (ERP link), Lightcast (SaaS example),
+  Microsoft (people-portfolio case), SHRM (vendor-selection reading).
+  Strip uses market-common HRIS/HCM platforms plus Oracle from the PDF.
+
+slade_people_portfolios.png
+  Extracted from Day 4_ HRIS Overview and DEI Discussion.pdf p.40
+  Embedded figure only (Microsoft people-portfolio investment/retention chart;
+  Slade et al., 2002). Not a full-slide screenshot.
+
+sensegiving_before_after.png / sensegiving_before.png / sensegiving_after.png
+  Extracted from Day 4 PDF p.29 embedded chart images (Knaflic-style
+  before/after). Title and Patriotta quote kept as slide HTML, not in image.
+
+Bauer Ch.3 textbook figures (official pack — not Day 4 PDF page crops)
+Source: tables_and_figures_385.zip (Bauer 2e Tables and Figures pack)
+  Path in zip: Tables and Figures/Figures/Bauer_2e_Figure 3.N.jpg
+               Tables and Figures/Tables/Bauer_2e_Table 3.1.jpg
+  Converted JPG → PNG keeping Deck 05 wired filenames (builder unchanged).
+  fig_3_8_hris_decision_steps.png   — Figure 3.8 (wired in Deck 05)
+  fig_3_9_data_flow.png             — Figure 3.9 (wired in Deck 05)
+  table_3_1_employee.png            — Table 3.1 (wired; flat table before 3.12)
+  fig_3_12_linking_tables.png       — Figure 3.12 (wired in Deck 05)
+  fig_3_13_example_form.png         — Figure 3.13 (wired in Deck 05)
+  fig_3_14_sql_query.png            — Figure 3.14 (wired in Deck 05)
+  fig_3_15_report_bar_graph.png     — Figure 3.15 (wired in Deck 05)
+  fig_3_11_lewin_change.png         — Figure 3.11 (on disk; not wired — length)
+  fig_3_3_gigo.png                  — Figure 3.3 (on disk; not wired — length)
