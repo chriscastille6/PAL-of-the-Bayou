@@ -24,3 +24,6 @@ themes/
 Tenure Review Packet/
 node_modules/
 static/assessments/people-analytics-fit/node_modules/
+
+# Local Netlify folder
+.netlify
