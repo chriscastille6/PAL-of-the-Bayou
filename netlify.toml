@@ -26,6 +26,37 @@
   to = "/thank-you"
   status = 301
 
+# Keep admin/auth/dashboard/coaching out of public discovery (library remains public)
+[[redirects]]
+  from = "/assessments/admin/*"
+  to = "/assessments/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/assessments/auth/*"
+  to = "/assessments/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/assessments/dashboard/*"
+  to = "/assessments/library/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/assessments/dashboard"
+  to = "/assessments/library/"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/assessments/coaching/*"
+  to = "/assessments/"
+  status = 302
+  force = true
+
 # Handle form submissions
 [[headers]]
   for = "/thank-you"

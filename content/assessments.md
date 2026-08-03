@@ -3,7 +3,7 @@ title: "Research Assessment Library"
 date: 2025-10-11T14:00:00-05:00
 lastmod: 2025-10-11T14:00:00-05:00
 draft: false
-summary: "Interactive psychological assessments for research and organizational applications"
+summary: "Research and education assessments — not for hiring or clinical decisions"
 tags: ["assessments", "research", "psychology", "tools"]
 categories: ["Research", "Tools"]
 featured: false
@@ -17,7 +17,9 @@ image:
 
 # Research Assessment Library
 
-Our assessment library provides validated psychological instruments designed for academic research and organizational applications. Each assessment combines scientific methodology with modern, user-friendly interfaces.
+These instruments are for **research and education** — not hiring decisions or clinical diagnosis.
+
+Our assessment library provides validated psychological instruments designed for academic research and organizational learning. Each assessment combines scientific methodology with modern, user-friendly interfaces.
 
 ## Available Assessments
 

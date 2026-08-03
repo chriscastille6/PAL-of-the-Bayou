@@ -1,0 +1,11 @@
+{{/* layouts/partials/components/affiliation_banner.html */}}
+{{/* Site-wide affiliation banner for non-.edu Netlify hosting optics. */}}
+{{/* RELEVANT FILES: config/_default/params.yaml, layouts/_default/baseof.html, assets/scss/template.scss */}}
+
+{{ with site.Params.affiliation.banner }}
+<aside class="affiliation-banner" role="note" aria-label="Site affiliation notice">
+  <div class="container-xl">
+    <p class="affiliation-banner__text">{{ . | markdownify }}</p>
+  </div>
+</aside>
+{{ end }}

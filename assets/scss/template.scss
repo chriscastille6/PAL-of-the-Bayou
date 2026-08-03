@@ -3,6 +3,31 @@
   text-align: center;
 }
 
+// Site-wide affiliation banner (params.affiliation.banner)
+.affiliation-banner {
+  background: #f3f4f6;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0.55rem 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: #374151;
+}
+
+.affiliation-banner__text {
+  margin: 0;
+  max-width: 56rem;
+}
+
+// Site-wide Bayou PAL affiliation disclaimer (footer.text)
+.site-footer .footer-disclaimer {
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  opacity: 0.9;
+}
+
 // Expand blog post content width for better desktop experience
 // Target all possible wrapper and container classes
 // Add some padding/margin for white space on sides

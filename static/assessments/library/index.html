@@ -11,20 +11,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Assessment Library - PAL of the Bayou</title>
   <link rel="stylesheet" href="/assessments/library/styles.css?v=1" />
-  <!-- Supabase integration (optional - library works without it) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/assessments/shared/supabase-client.js"></script>
-  <script src="/assessments/shared/access-control.js"></script>
 </head>
 <body>
   <div class="container">
     <div class="header">
       <h1 class="h1">Assessment Library</h1>
-      <p class="p">Research-grade psychological assessments for academic research and organizational applications.</p>
-      <div id="authLinks" style="margin-top: 12px; text-align: center;">
-        <a href="/assessments/auth/login.html" style="color: #667eea; text-decoration: none; margin-right: 16px;">Sign In</a>
-        <a href="/assessments/dashboard/" style="color: #667eea; text-decoration: none;">Dashboard</a>
-      </div>
+      <p class="p">Research- and education-oriented psychological assessments. Not for hiring decisions or clinical diagnosis.</p>
       <noscript>
         <div class="noscript">
           JavaScript appears to be disabled or Reader View is active. For the best experience, exit Reader View and enable JavaScript.
@@ -41,14 +33,11 @@
     </div>
 
     <div id="noAssessments" style="text-align: center; padding: 40px; color: #718096; display: none;">
-      <p>No assessments available. Please contact your lab administrator for access.</p>
-      <p style="margin-top: 12px;">
-        <a href="/assessments/auth/login.html" style="color: #667eea;">Sign in</a> to access assessments.
-      </p>
+      <p>No assessments available right now. Please <a href="/contact/" style="color: #667eea;">contact the lab</a> if you expected access.</p>
     </div>
 
     <div style="margin-top:2rem; text-align:center; color:#6b7280; font-size:.9rem;">
-      All assessments are designed for research purposes. Data is anonymous unless you explicitly consent.
+      For research and education only — not hiring or clinical decisions. Data is anonymous unless you explicitly consent.
       <div style="margin-top:.5rem;">
         <a class="link" href="/post/assessment-demo-simple/">See embedded demo page</a>
       </div>
@@ -178,17 +167,6 @@
         }).join('');
 
         grid.style.display = 'grid';
-
-        // Update auth links if user is logged in (only if Supabase available)
-        if (accessControl && window.AssessmentLibrary) {
-          accessControl.isAuthenticated().then(isAuth => {
-            if (isAuth) {
-              document.getElementById('authLinks').innerHTML = '<a href="/assessments/dashboard/" style="color: #667eea; text-decoration: none;">Dashboard</a>';
-            }
-          }).catch(() => {
-            // Supabase not available, keep default links
-          });
-        }
       } catch (error) {
         console.error('Error loading assessments:', error);
         document.getElementById('loadingMessage').textContent = 'Error loading assessments. Please try again.';
@@ -216,47 +194,11 @@
       window.open(url, '_blank');
     }
 
-    // Check 2FA requirement before loading assessments
+    // Public static catalog: skip auth/2FA gates (backends not enabled on this host)
     async function checkAccess() {
-      if (accessControl && window.AssessmentLibrary) {
-        try {
-          const isAuth = await accessControl.isAuthenticated();
-          if (isAuth) {
-            const authManager = new AuthManager();
-            const { required, has2FA } = await authManager.require2FA();
-            
-            if (required && !has2FA) {
-              // Redirect to 2FA setup
-              document.getElementById('loadingMessage').innerHTML = `
-                <div style="max-width: 500px; margin: 0 auto; text-align: center; padding: 40px;">
-                  <h2 style="color: #e53e3e; margin-bottom: 16px;">2FA Required</h2>
-                  <p style="color: #4a5568; margin-bottom: 24px;">
-                    Two-factor authentication is required to access assessments, view results, and use AI coaching features.
-                  </p>
-                  <a href="/assessments/auth/setup-2fa.html" 
-                     class="btn btn-primary" 
-                     style="display: inline-block; padding: 12px 24px; background: #667eea; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">
-                    Setup 2FA Now
-                  </a>
-                  <p style="margin-top: 16px;">
-                    <a href="/assessments/dashboard/" style="color: #667eea;">Go to Dashboard</a>
-                  </p>
-                </div>
-              `;
-              return;
-            }
-          }
-        } catch (error) {
-          console.error('Error checking 2FA:', error);
-          // Continue loading if check fails (fallback to allow access)
-        }
-      }
-      
-      // Load assessments if 2FA check passes or if not authenticated
       loadAssessments();
     }
 
-    // Check access on page load
     checkAccess();
   </script>
 </body>
