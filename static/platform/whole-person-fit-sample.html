@@ -1,0 +1,826 @@
+<!--
+File location: platform/whole-person-fit-sample.html
+What this file does: Sample feedback report for Whole-Person Fit (e.g. HR Analyst); two-panel layout with sidebar nav
+Why this file exists: Lets visitors preview the kind of report they receive; structure parallels Core Self-Awareness Profiler
+RELEVANT FILES: platform/core-self-awareness-profile/sample-profile.html, platform/hr-analyst-fit-assessment/people-analyst-fit-assessment.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whole-Person Fit — Sample Report | People Analytics Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .nicholls-red { background-color: #AE132A; }
+        .nicholls-red-text { color: #AE132A; }
+        .nicholls-gray-text { color: #72808A; }
+        .brand-gradient { background: linear-gradient(135deg, #AE132A 0%, #dc2626 100%); }
+        .assessment-card { transition: transform 0.2s, box-shadow 0.2s; }
+        .assessment-card:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        .radar-chart { font-family: system-ui, -apple-system, sans-serif; }
+        .radar-area { fill: rgba(37, 99, 235, 0.25); stroke: #2563eb; stroke-width: 2; }
+        .radar-line { stroke: #2563eb; stroke-width: 2; fill: none; }
+        .radar-point { fill: #2563eb; stroke: white; stroke-width: 2; }
+        .radar-axis { stroke: #d1d5db; stroke-width: 1; }
+        .radar-grid { stroke: #e5e7eb; stroke-width: 1; stroke-dasharray: 2 2; fill: none; }
+        .radar-label { font-size: 11px; fill: #374151; font-weight: 500; }
+        .nav-btn { display: block; width: 100%; padding: 0.75rem 1rem; min-height: 44px; margin-bottom: 0.25rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; text-align: left; background: white; border: 1px solid #e5e7eb; color: #374151; transition: all 0.15s; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .nav-btn:hover { background: #f9fafb; border-color: #d1d5db; }
+        .nav-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+        .outcome-content { display: none; }
+        .outcome-content.active { display: block; }
+        .bigfive-bar[data-dir="low"] { left: auto; right: 50%; }
+        @media (max-width: 767px) { #domain-radar { max-width: 100%; } }
+        @media print {
+            aside { display: none !important; }
+            .outcome-content { display: block !important; page-break-inside: avoid; }
+            .no-print { display: none !important; }
+            body { background: white; }
+            .assessment-card { box-shadow: none; border: 1px solid #e5e7eb; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="min-h-screen flex flex-col md:flex-row max-w-7xl mx-auto">
+        <!-- Sidebar: explore profile sections -->
+        <aside class="w-full md:w-64 bg-white border-r border-gray-200 md:min-h-screen flex-shrink-0">
+            <div class="sticky top-0 p-4">
+                <div class="flex justify-center mb-3">
+                    <img src="../hr-analyst-fit-assessment/web-app/public/lab-emblem.png" alt="People Analytics Lab of the Bayou" class="w-48 h-48 md:w-64 md:h-64 object-contain" onerror="this.style.display='none'">
+                </div>
+                <p class="text-xs text-amber-700 bg-amber-100 px-2 py-1 rounded mb-3 text-center font-medium">Sample report (demo)</p>
+                <p class="text-xs font-mono text-gray-600 mb-3 text-center">PAL-SAMPLE-0000</p>
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4 mb-4 border border-blue-100">
+                    <div class="text-2xl font-bold text-gray-900">70%</div>
+                    <div class="text-sm text-gray-600">Overall Fit</div>
+                    <div class="text-xs text-gray-500 mt-1">HR Analyst</div>
+                </div>
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Report sections</div>
+                <button class="nav-btn active" data-section="overview">Overview</button>
+                <button class="nav-btn" data-section="domain-fit">Domain Fit</button>
+                <button class="nav-btn" data-section="personality">Personality</button>
+                <button class="nav-btn" data-section="work-values">Work Values</button>
+                <button class="nav-btn" data-section="interests">Occupational Interests</button>
+                <button class="nav-btn" data-section="outcomes">Career Outcomes</button>
+                <button class="nav-btn" data-section="conflict">Conflict Management</button>
+                <button class="nav-btn" data-section="discuss">Discuss Results</button>
+                <div class="mt-4 pt-4 border-t border-gray-200 space-y-2 no-print">
+                    <button type="button" onclick="window.print()" class="block w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-lg text-center border border-gray-300">Print / Save as PDF</button>
+                    <a href="whole-person-fit-feedback.html" class="block w-full py-2 px-4 bg-amber-100 hover:bg-amber-200 text-amber-800 text-sm font-medium rounded-lg text-center border border-amber-300">Give us feedback</a>
+                    <a href="occupational-fit/index.html" class="block w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg text-center">Take the assessment →</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main content: detail for selected section -->
+        <main class="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto" id="main-content">
+            <!-- Overview -->
+            <div id="overview" class="outcome-content active">
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Your Fit Profile (Sample)</h2>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-6">
+                <div class="flex-shrink-0">
+                    <div class="w-48 h-48 brand-gradient rounded-full flex flex-col items-center justify-center shadow-lg">
+                        <div class="text-5xl font-bold text-white">70%</div>
+                        <div class="text-lg text-white opacity-90">Overall Fit</div>
+                    </div>
+                </div>
+                <div class="flex-1 max-w-md">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Human Resources Analysts</h3>
+                    <p class="text-gray-700 mb-2">Collect, compile, and analyze HR data, metrics, and statistics to develop insights and recommendations for HR decision-making.</p>
+                    <p class="text-gray-600 text-sm">You show strong alignment with the HR Analyst role (Liu et al., 2025).</p>
+                </div>
+            </div>
+            <p class="text-sm text-gray-500 mb-6">Profile summary: Occupational Interests (RIASEC) 68% · Personality (Big Five) 78% · Work Values 72% · Basic Interests 75% · Knowledge 65% · Skills 70%</p>
+
+            <div class="bg-blue-50 rounded-lg p-6 border-l-4 border-blue-500 mt-6">
+                <h3 class="font-semibold text-gray-900 mb-2">How is fit measured?</h3>
+                <p class="text-gray-700 text-sm mb-2">Your answers are compared to what people in each job typically report. We look at six areas: your interests (what you like to do), work values (what matters to you at work), knowledge (what you know), skills (what you can do), and personality (how you tend to think and act).</p>
+                <p class="text-gray-700 text-sm mb-2">Each area gets a score from 0–100% showing how similar you are to people in that job. Your <strong>overall fit</strong> is the average of those six scores.</p>
+                <h3 class="font-semibold text-gray-900 mt-4 mb-2">How does fit predict career outcomes?</h3>
+                <p class="text-gray-700 text-sm">Research shows that when your profile matches a job well, you are more likely to enjoy it, stay longer, and feel that the job meets your needs. The "Career Outcomes" section shows predicted scores for things like job satisfaction and fit—based on how well your profile aligns with the role.</p>
+            </div>
+        </div>
+            </div>
+
+            <!-- Domain fit overview -->
+            <div id="domain-fit" class="outcome-content">
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Domain Fit Overview</h2>
+            <p class="text-gray-600 text-sm mb-4">How well your profile aligns with the HR Analyst role across six areas. Each bar shows your fit score (0–100%) for that area.</p>
+            <div class="flex flex-col items-center gap-6">
+                <div id="domain-radar" class="w-full max-w-[320px] mx-auto" style="aspect-ratio: 1; overflow: visible;"></div>
+                <div class="w-full max-w-xl space-y-3">
+                    <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Basic Interests — activities you enjoy doing</span><span>75%</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:75%"></div></div></div>
+                    <div><div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-0.5 text-sm text-gray-700 mb-1"><span class="break-words">RIASEC — Realistic, Investigative, Artistic, Social, Enterprising, Conventional</span><span class="flex-shrink-0">68%</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:68%"></div></div></div>
+                    <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Work Values — what matters to you at work</span><span>72%</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:72%"></div></div></div>
+                    <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Knowledge — what you know (from school or experience)</span><span>65%</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:65%"></div></div></div>
+                    <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Skills — what you can do well</span><span>70%</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:70%"></div></div></div>
+                    <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Personality — how you tend to think and act (Big Five traits)</span><span>78%</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:78%"></div></div></div>
+                </div>
+            </div>
+        </div>
+            </div>
+
+            <!-- Personality (matches live report: click-to-expand facets with bar charts) -->
+            <div id="personality" class="outcome-content">
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Personality (Big Five)</h2>
+            <p class="text-gray-600 text-sm mb-4">The <strong>Big Five</strong> are five main personality traits researchers use to describe how people think and act. The center line is the 50th percentile (average). The bar shows how far you are from average—extending toward the anchor that fits you better. <strong>Click a trait or “View facet breakdown”</strong> to see facet-level bar charts.</p>
+            <div class="space-y-5">
+                <!-- Openness -->
+                <div class="border-l-4 border-amber-500 pl-6 py-4 bg-amber-50 rounded-r-lg bigfive-trait-card" data-trait="openness">
+                    <div class="flex items-center justify-between mb-2 cursor-pointer bigfive-trait-header" role="button" tabindex="0" aria-expanded="false" aria-controls="facets-openness" onclick="var card=this.closest('.bigfive-trait-card'); var d=card.querySelector('.bigfive-facet-detail'); d.classList.toggle('hidden'); var open=!d.classList.contains('hidden'); this.setAttribute('aria-expanded', open); var btn=card.querySelector('.bigfive-facet-toggle'); if(btn) btn.textContent=open ? 'Hide facet breakdown' : 'View facet breakdown';">
+                        <h3 class="text-lg font-semibold text-gray-900">Openness to Experience</h3>
+                        <span class="text-sm font-semibold text-amber-700 bg-amber-100 px-3 py-1 rounded-full">75th Percentile (Above Average)</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-1 text-xs text-gray-600"><span class="w-20 sm:w-28 flex-shrink-0 break-words">Prefer routine</span><span class="w-20 sm:w-28 text-right break-words">Curious, imaginative</span></div>
+                    <div class="bigfive-bar-track relative h-6 bg-gray-200 rounded my-2">
+                        <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div>
+                        <div class="bigfive-bar absolute top-1 bottom-1 rounded bg-amber-500" data-pct="75" data-dir="high" style="left: 50%; width: 25%;"></div>
+                    </div>
+                    <p class="text-gray-700 mb-3">People high in openness tend to be curious, creative, and open to new ideas. In the workplace, this often translates to innovation and comfort with ambiguity.</p>
+                    <p class="text-gray-800 font-medium mb-2">Your level supports analytical and learning-oriented work.</p>
+                    <p class="text-sm text-gray-600 italic mb-4">Your score places you at the <strong>75th percentile</strong>, meaning your level of openness is above average compared to others.</p>
+                    <button type="button" class="text-xs font-medium text-amber-800 hover:text-amber-900 underline mb-2 bigfive-facet-toggle" aria-expanded="false" aria-controls="facets-openness" onclick="var d=document.getElementById('facets-openness'); d.classList.toggle('hidden'); this.setAttribute('aria-expanded', !d.classList.contains('hidden')); this.textContent=d.classList.contains('hidden') ? 'View facet breakdown' : 'Hide facet breakdown';">View facet breakdown</button>
+                    <div id="facets-openness" class="bigfive-facet-detail hidden mt-3 pt-3 border-t border-amber-200">
+                        <p class="text-xs font-medium text-amber-800 mb-2">Facet scores (same bar style as above)</p>
+                        <div class="flex items-center gap-3 mt-2"><span class="text-xs font-medium text-gray-700 w-32 flex-shrink-0">Intellectual curiosity</span><div class="bigfive-bar-track relative flex-1 h-4 bg-gray-200 rounded"><div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div><div class="bigfive-bar absolute top-0 bottom-0 rounded bg-amber-500" data-dir="high" style="left: 50%; width: 28%;"></div></div><span class="text-xs text-amber-700 font-medium w-16 flex-shrink-0">78th %ile</span></div>
+                        <div class="flex items-center gap-3 mt-2"><span class="text-xs font-medium text-gray-700 w-32 flex-shrink-0">Creative imagination</span><div class="bigfive-bar-track relative flex-1 h-4 bg-gray-200 rounded"><div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div><div class="bigfive-bar absolute top-0 bottom-0 rounded bg-amber-500" data-dir="high" style="left: 50%; width: 22%;"></div></div><span class="text-xs text-amber-700 font-medium w-16 flex-shrink-0">72nd %ile</span></div>
+                    </div>
+                </div>
+                <!-- Conscientiousness -->
+                <div class="border-l-4 border-amber-500 pl-6 py-4 bg-amber-50 rounded-r-lg bigfive-trait-card" data-trait="conscientiousness">
+                    <div class="flex items-center justify-between mb-2 cursor-pointer bigfive-trait-header" role="button" tabindex="0" aria-expanded="false" aria-controls="facets-conscientiousness" onclick="var card=this.closest('.bigfive-trait-card'); var d=card.querySelector('.bigfive-facet-detail'); d.classList.toggle('hidden'); var open=!d.classList.contains('hidden'); this.setAttribute('aria-expanded', open); var btn=card.querySelector('.bigfive-facet-toggle'); if(btn) btn.textContent=open ? 'Hide facet breakdown' : 'View facet breakdown';">
+                        <h3 class="text-lg font-semibold text-gray-900">Conscientiousness</h3>
+                        <span class="text-sm font-semibold text-amber-700 bg-amber-100 px-3 py-1 rounded-full">90th Percentile (High)</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-1 text-xs text-gray-600"><span class="w-20 sm:w-28 flex-shrink-0 break-words">Laid back</span><span class="w-20 sm:w-28 text-right break-words">Detail and goal oriented</span></div>
+                    <div class="bigfive-bar-track relative h-6 bg-gray-200 rounded my-2">
+                        <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div>
+                        <div class="bigfive-bar absolute top-1 bottom-1 rounded bg-amber-500" data-pct="90" data-dir="high" style="left: 50%; width: 40%;"></div>
+                    </div>
+                    <p class="text-gray-700 mb-3">People high in conscientiousness tend to be organized, reliable, and persistent. In the workplace, this often translates to strong performance and dependability.</p>
+                    <p class="text-gray-800 font-medium mb-2">Strong fit for data quality and project delivery.</p>
+                    <p class="text-sm text-gray-600 italic mb-4">Your score places you at the <strong>90th percentile</strong>, meaning your level of conscientiousness is high compared to others.</p>
+                    <button type="button" class="text-xs font-medium text-amber-800 hover:text-amber-900 underline mb-2 bigfive-facet-toggle" aria-expanded="false" aria-controls="facets-conscientiousness" onclick="var d=document.getElementById('facets-conscientiousness'); d.classList.toggle('hidden'); this.setAttribute('aria-expanded', !d.classList.contains('hidden')); this.textContent=d.classList.contains('hidden') ? 'View facet breakdown' : 'Hide facet breakdown';">View facet breakdown</button>
+                    <div id="facets-conscientiousness" class="bigfive-facet-detail hidden mt-3 pt-3 border-t border-amber-200">
+                        <p class="text-xs font-medium text-amber-800 mb-2">Facet scores (same bar style as above)</p>
+                        <div class="flex items-center gap-3 mt-2"><span class="text-xs font-medium text-gray-700 w-32 flex-shrink-0">Organization</span><div class="bigfive-bar-track relative flex-1 h-4 bg-gray-200 rounded"><div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div><div class="bigfive-bar absolute top-0 bottom-0 rounded bg-amber-500" data-dir="high" style="left: 50%; width: 38%;"></div></div><span class="text-xs text-amber-700 font-medium w-16 flex-shrink-0">88th %ile</span></div>
+                        <div class="flex items-center gap-3 mt-2"><span class="text-xs font-medium text-gray-700 w-32 flex-shrink-0">Productiveness</span><div class="bigfive-bar-track relative flex-1 h-4 bg-gray-200 rounded"><div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div><div class="bigfive-bar absolute top-0 bottom-0 rounded bg-amber-500" data-dir="high" style="left: 50%; width: 42%;"></div></div><span class="text-xs text-amber-700 font-medium w-16 flex-shrink-0">92nd %ile</span></div>
+                        <div class="flex items-center gap-3 mt-2"><span class="text-xs font-medium text-gray-700 w-32 flex-shrink-0">Responsibility</span><div class="bigfive-bar-track relative flex-1 h-4 bg-gray-200 rounded"><div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div><div class="bigfive-bar absolute top-0 bottom-0 rounded bg-amber-500" data-dir="high" style="left: 50%; width: 40%;"></div></div><span class="text-xs text-amber-700 font-medium w-16 flex-shrink-0">90th %ile</span></div>
+                    </div>
+                </div>
+                <!-- Extraversion -->
+                <div class="border-l-4 border-amber-500 pl-6 py-4 bg-amber-50 rounded-r-lg bigfive-trait-card" data-trait="extraversion">
+                    <div class="flex items-center justify-between mb-2 cursor-pointer bigfive-trait-header" role="button" tabindex="0" aria-expanded="false" aria-controls="facets-extraversion" onclick="var card=this.closest('.bigfive-trait-card'); var d=card.querySelector('.bigfive-facet-detail'); d.classList.toggle('hidden'); var open=!d.classList.contains('hidden'); this.setAttribute('aria-expanded', open); var btn=card.querySelector('.bigfive-facet-toggle'); if(btn) btn.textContent=open ? 'Hide facet breakdown' : 'View facet breakdown';">
+                        <h3 class="text-lg font-semibold text-gray-900">Extraversion</h3>
+                        <span class="text-sm font-semibold text-amber-700 bg-amber-100 px-3 py-1 rounded-full">65th Percentile (Above Average)</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-1 text-xs text-gray-600"><span class="w-20 sm:w-28 flex-shrink-0 break-words">Reserved, reflective</span><span class="w-20 sm:w-28 text-right break-words">Outgoing, energetic</span></div>
+                    <div class="bigfive-bar-track relative h-6 bg-gray-200 rounded my-2">
+                        <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div>
+                        <div class="bigfive-bar absolute top-1 bottom-1 rounded bg-amber-500" data-pct="65" data-dir="high" style="left: 50%; width: 15%;"></div>
+                    </div>
+                    <p class="text-gray-700 mb-3">People high in extraversion tend to be outgoing and energetic. In the workplace, this often translates to strong communication and comfort with networking.</p>
+                    <p class="text-gray-800 font-medium mb-2">Comfort with collaboration and some solo focus. Fits mixed stakeholder and analytical work.</p>
+                    <p class="text-sm text-gray-600 italic mb-4">Your score places you at the <strong>65th percentile</strong>, meaning your level of extraversion is above average compared to others.</p>
+                    <button type="button" class="text-xs font-medium text-amber-800 hover:text-amber-900 underline mb-2 bigfive-facet-toggle" aria-expanded="false" aria-controls="facets-extraversion" onclick="var d=document.getElementById('facets-extraversion'); d.classList.toggle('hidden'); this.setAttribute('aria-expanded', !d.classList.contains('hidden')); this.textContent=d.classList.contains('hidden') ? 'View facet breakdown' : 'Hide facet breakdown';">View facet breakdown</button>
+                    <div id="facets-extraversion" class="bigfive-facet-detail hidden mt-3 pt-3 border-t border-amber-200">
+                        <p class="text-xs font-medium text-amber-800 mb-2">Facet scores (same bar style as above)</p>
+                        <div class="flex items-center gap-3 mt-2"><span class="text-xs font-medium text-gray-700 w-32 flex-shrink-0">Sociability</span><div class="bigfive-bar-track relative flex-1 h-4 bg-gray-200 rounded"><div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div><div class="bigfive-bar absolute top-0 bottom-0 rounded bg-amber-500" data-dir="high" style="left: 50%; width: 12%;"></div></div><span class="text-xs text-amber-700 font-medium w-16 flex-shrink-0">62nd %ile</span></div>
+                        <div class="flex items-center gap-3 mt-2"><span class="text-xs font-medium text-gray-700 w-32 flex-shrink-0">Assertiveness</span><div class="bigfive-bar-track relative flex-1 h-4 bg-gray-200 rounded"><div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div><div class="bigfive-bar absolute top-0 bottom-0 rounded bg-amber-500" data-dir="high" style="left: 50%; width: 18%;"></div></div><span class="text-xs text-amber-700 font-medium w-16 flex-shrink-0">68th %ile</span></div>
+                        <div class="flex items-center gap-3 mt-2"><span class="text-xs font-medium text-gray-700 w-32 flex-shrink-0">Energy level</span><div class="bigfive-bar-track relative flex-1 h-4 bg-gray-200 rounded"><div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div><div class="bigfive-bar absolute top-0 bottom-0 rounded bg-amber-500" data-dir="high" style="left: 50%; width: 15%;"></div></div><span class="text-xs text-amber-700 font-medium w-16 flex-shrink-0">65th %ile</span></div>
+                    </div>
+                </div>
+                <!-- Agreeableness -->
+                <div class="border-l-4 border-amber-500 pl-6 py-4 bg-amber-50 rounded-r-lg bigfive-trait-card" data-trait="agreeableness">
+                    <div class="flex items-center justify-between mb-2 cursor-pointer bigfive-trait-header" role="button" tabindex="0" aria-expanded="false" aria-controls="facets-agreeableness" onclick="var card=this.closest('.bigfive-trait-card'); var d=card.querySelector('.bigfive-facet-detail'); d.classList.toggle('hidden'); var open=!d.classList.contains('hidden'); this.setAttribute('aria-expanded', open); var btn=card.querySelector('.bigfive-facet-toggle'); if(btn) btn.textContent=open ? 'Hide facet breakdown' : 'View facet breakdown';">
+                        <h3 class="text-lg font-semibold text-gray-900">Agreeableness</h3>
+                        <span class="text-sm font-semibold text-amber-700 bg-amber-100 px-3 py-1 rounded-full">85th Percentile (High)</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-1 text-xs text-gray-600"><span class="w-20 sm:w-28 flex-shrink-0 break-words">Direct, assertive</span><span class="w-20 sm:w-28 text-right break-words">Cooperative, trusting</span></div>
+                    <div class="bigfive-bar-track relative h-6 bg-gray-200 rounded my-2">
+                        <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div>
+                        <div class="bigfive-bar absolute top-1 bottom-1 rounded bg-amber-500" data-pct="85" data-dir="high" style="left: 50%; width: 35%;"></div>
+                    </div>
+                    <p class="text-gray-700 mb-3">People high in agreeableness tend to be compassionate, trusting, and cooperative. In the workplace, this often translates to strong teamwork and conflict resolution.</p>
+                    <p class="text-gray-800 font-medium mb-2">Supports working with HR partners and employees.</p>
+                    <p class="text-sm text-gray-600 italic mb-4">Your score places you at the <strong>85th percentile</strong>, meaning your level of agreeableness is high compared to others.</p>
+                    <button type="button" class="text-xs font-medium text-amber-800 hover:text-amber-900 underline mb-2 bigfive-facet-toggle" aria-expanded="false" aria-controls="facets-agreeableness" onclick="var d=document.getElementById('facets-agreeableness'); d.classList.toggle('hidden'); this.setAttribute('aria-expanded', !d.classList.contains('hidden')); this.textContent=d.classList.contains('hidden') ? 'View facet breakdown' : 'Hide facet breakdown';">View facet breakdown</button>
+                    <div id="facets-agreeableness" class="bigfive-facet-detail hidden mt-3 pt-3 border-t border-amber-200">
+                        <p class="text-xs font-medium text-amber-800 mb-2">Facet scores (relevant to conflict style predictions)</p>
+                        <div class="flex items-center gap-3 mt-2"><span class="text-xs font-medium text-gray-700 w-32 flex-shrink-0">Compassion</span><div class="bigfive-bar-track relative flex-1 h-4 bg-gray-200 rounded"><div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div><div class="bigfive-bar absolute top-0 bottom-0 rounded bg-amber-500" data-dir="high" style="left: 50%; width: 32%;"></div></div><span class="text-xs text-amber-700 font-medium w-16 flex-shrink-0">82nd %ile</span></div>
+                        <div class="flex items-center gap-3 mt-2"><span class="text-xs font-medium text-gray-700 w-32 flex-shrink-0">Respectfulness</span><div class="bigfive-bar-track relative flex-1 h-4 bg-gray-200 rounded"><div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div><div class="bigfive-bar absolute top-0 bottom-0 rounded bg-amber-500" data-dir="high" style="left: 50%; width: 38%;"></div></div><span class="text-xs text-amber-700 font-medium w-16 flex-shrink-0">88th %ile</span></div>
+                        <div class="flex items-center gap-3 mt-2"><span class="text-xs font-medium text-gray-700 w-32 flex-shrink-0">Trust</span><div class="bigfive-bar-track relative flex-1 h-4 bg-gray-200 rounded"><div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div><div class="bigfive-bar absolute top-0 bottom-0 rounded bg-amber-500" data-dir="high" style="left: 50%; width: 35%;"></div></div><span class="text-xs text-amber-700 font-medium w-16 flex-shrink-0">85th %ile</span></div>
+                    </div>
+                </div>
+                <!-- Emotional Stability -->
+                <div class="border-l-4 border-amber-500 pl-6 py-4 bg-amber-50 rounded-r-lg bigfive-trait-card" data-trait="emotional_stability">
+                    <div class="flex items-center justify-between mb-2 cursor-pointer bigfive-trait-header" role="button" tabindex="0" aria-expanded="false" aria-controls="facets-emotional_stability" onclick="var card=this.closest('.bigfive-trait-card'); var d=card.querySelector('.bigfive-facet-detail'); d.classList.toggle('hidden'); var open=!d.classList.contains('hidden'); this.setAttribute('aria-expanded', open); var btn=card.querySelector('.bigfive-facet-toggle'); if(btn) btn.textContent=open ? 'Hide facet breakdown' : 'View facet breakdown';">
+                        <h3 class="text-lg font-semibold text-gray-900">Emotional Stability</h3>
+                        <span class="text-sm font-semibold text-amber-700 bg-amber-100 px-3 py-1 rounded-full">70th Percentile (Above Average)</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-1 text-xs text-gray-600"><span class="w-20 sm:w-28 flex-shrink-0 break-words">Sensitive to stress</span><span class="w-20 sm:w-28 text-right break-words">Calm under pressure</span></div>
+                    <div class="bigfive-bar-track relative h-6 bg-gray-200 rounded my-2">
+                        <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div>
+                        <div class="bigfive-bar absolute top-1 bottom-1 rounded bg-amber-500" data-pct="70" data-dir="high" style="left: 50%; width: 20%;"></div>
+                    </div>
+                    <p class="text-gray-700 mb-3">People high in emotional stability tend to remain calm under pressure and handle stress well. In the workplace, this often translates to resilience and consistent performance.</p>
+                    <p class="text-gray-800 font-medium mb-2">Helps with deadlines and sensitive people data.</p>
+                    <p class="text-sm text-gray-600 italic mb-4">Your score places you at the <strong>70th percentile</strong>, meaning your level of emotional stability is above average compared to others.</p>
+                    <button type="button" class="text-xs font-medium text-amber-800 hover:text-amber-900 underline mb-2 bigfive-facet-toggle" aria-expanded="false" aria-controls="facets-emotional_stability" onclick="var d=document.getElementById('facets-emotional_stability'); d.classList.toggle('hidden'); this.setAttribute('aria-expanded', !d.classList.contains('hidden')); this.textContent=d.classList.contains('hidden') ? 'View facet breakdown' : 'Hide facet breakdown';">View facet breakdown</button>
+                    <div id="facets-emotional_stability" class="bigfive-facet-detail hidden mt-3 pt-3 border-t border-amber-200">
+                        <p class="text-xs font-medium text-amber-800 mb-2">Facet scores (higher = more stable; reversed from raw anxiety/volatility)</p>
+                        <div class="flex items-center gap-3 mt-2"><span class="text-xs font-medium text-gray-700 w-32 flex-shrink-0">Anxiety (reversed)</span><div class="bigfive-bar-track relative flex-1 h-4 bg-gray-200 rounded"><div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div><div class="bigfive-bar absolute top-0 bottom-0 rounded bg-amber-500" data-dir="high" style="left: 50%; width: 22%;"></div></div><span class="text-xs text-amber-700 font-medium w-16 flex-shrink-0">72nd %ile</span></div>
+                        <div class="flex items-center gap-3 mt-2"><span class="text-xs font-medium text-gray-700 w-32 flex-shrink-0">Emotional volatility (reversed)</span><div class="bigfive-bar-track relative flex-1 h-4 bg-gray-200 rounded"><div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-500 -ml-px" title="50th percentile"></div><div class="bigfive-bar absolute top-0 bottom-0 rounded bg-amber-500" data-dir="high" style="left: 50%; width: 18%;"></div></div><span class="text-xs text-amber-700 font-medium w-16 flex-shrink-0">68th %ile</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+
+            <!-- Work Values -->
+            <div id="work-values" class="outcome-content">
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Work Values</h2>
+            <p class="text-gray-600 text-sm mb-4">Work values are what you find important in a job. When your values match what a job offers, you tend to be more satisfied. Scores are 1–5; higher = more important to you.</p>
+            <div class="space-y-3">
+                <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Knowledge Utilization — using what you know</span><span>4.5</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:90%"></div></div></div>
+                <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Variety — different tasks, not same thing every day</span><span>4.2</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:84%"></div></div></div>
+                <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Altruism — helping others, making a difference</span><span>3.8</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:76%"></div></div></div>
+                <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Independence — working on your own</span><span>3.5</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-400 rounded-full" style="width:70%"></div></div></div>
+                <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Leadership — leading or influencing others</span><span>3.4</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-400 rounded-full" style="width:68%"></div></div></div>
+                <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Prestige/Salary — status and pay</span><span>3.2</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-gray-400 rounded-full" style="width:64%"></div></div></div>
+            </div>
+            <p class="text-xs text-gray-500 mt-3">Scale: 1 = not important, 5 = very important</p>
+        </div>
+            </div>
+
+            <!-- Occupational Interests -->
+            <div id="interests" class="outcome-content">
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Occupational Interests (RIASEC)</h2>
+            <p class="text-gray-600 text-sm mb-4"><strong>RIASEC</strong> stands for six types of work: <strong>R</strong>ealistic (hands-on, tools), <strong>I</strong>nvestigative (analyzing, problem-solving), <strong>A</strong>rtistic (creating, designing), <strong>S</strong>ocial (helping people), <strong>E</strong>nterprising (leading, persuading), <strong>C</strong>onventional (organizing, detail work). Percentile = how you compare to others (e.g., 85th = higher than 85% of people).</p>
+            <div class="space-y-3">
+                <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Investigative — analyzing, problem-solving</span><span>85th percentile</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:85%"></div></div></div>
+                <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Social — helping people, teamwork</span><span>80th percentile</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:80%"></div></div></div>
+                <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Conventional — organizing, detail work</span><span>88th percentile</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width:88%"></div></div></div>
+                <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Enterprising — leading, persuading</span><span>70th percentile</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-blue-400 rounded-full" style="width:70%"></div></div></div>
+                <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Artistic — creating, designing</span><span>45th percentile</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-gray-400 rounded-full" style="width:45%"></div></div></div>
+                <div><div class="flex justify-between text-sm text-gray-700 mb-1"><span>Realistic — hands-on, tools</span><span>25th percentile</span></div><div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-gray-400 rounded-full" style="width:25%"></div></div></div>
+            </div>
+            <p class="text-xs text-gray-500 mt-4">Strong Investigative, Social, and Conventional interests align well with HR Analyst work (data, people, structure).</p>
+        </div>
+            </div>
+
+            <!-- Career Outcomes -->
+            <div id="outcomes" class="outcome-content">
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Predicted Career Outcomes</h2>
+            <p class="text-gray-600 text-sm mb-4">Based on research (Liu et al., 2025), we use your profile to predict how well HR Analyst work might fit you. Each statement below gives the predicted chance (as a percentage) that the outcome will be positive for you. We also show which parts of your profile drive each prediction.</p>
+            <div class="space-y-4">
+                <div class="border-l-4 border-green-500 pl-4 py-2">
+                    <p class="text-gray-800 font-medium mb-1">Career satisfaction</p>
+                    <p class="text-gray-700 text-sm">Given your profile, there is a <strong>78%</strong> chance you will be satisfied with your career path in this field.</p>
+                    <p class="text-xs text-gray-500 mt-1 italic">Driven mainly by your interests (what you enjoy) and values (what matters to you).</p>
+                    <p class="text-xs text-gray-700 mt-2"><strong>For you:</strong> Positive predictors: your strong interest fit (75%), your strong personality fit (78%). Negative predictors: your lower knowledge fit (65%).</p>
+                    <details class="mt-4 predictor-breakdown-details">
+                        <summary class="text-sm font-medium text-blue-600 hover:text-blue-800 cursor-pointer select-none">Show predictor breakdown (what drives this for you)</summary>
+                        <div class="mt-3 space-y-4">
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Positive predictors — support this outcome</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Basic Interests</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:75%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">75%</span></div>
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Personality</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:78%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">78%</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Negative predictors — limit this outcome</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Knowledge</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-red-400" style="width:65%"></div></div><span class="text-sm font-semibold text-red-700 w-10 flex-shrink-0">65%</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                    <div class="h-2 bg-gray-200 rounded-full overflow-hidden mt-2"><div class="h-full bg-green-500 rounded-full" style="width:78%"></div></div>
+                </div>
+                <div class="border-l-4 border-green-500 pl-4 py-2">
+                    <p class="text-gray-800 font-medium mb-1">Job satisfaction</p>
+                    <p class="text-gray-700 text-sm">Given your profile, there is a <strong>72%</strong> chance you will be satisfied in this specific job.</p>
+                    <p class="text-xs text-gray-500 mt-1 italic">Driven mainly by your interests and knowledge (what you know).</p>
+                    <p class="text-xs text-gray-700 mt-2"><strong>For you:</strong> Positive predictors: your strong personality fit (78%), your strong interest fit (75%). Negative predictors: your lower knowledge fit (65%).</p>
+                    <details class="mt-4 predictor-breakdown-details">
+                        <summary class="text-sm font-medium text-blue-600 hover:text-blue-800 cursor-pointer select-none">Show predictor breakdown (what drives this for you)</summary>
+                        <div class="mt-3 space-y-4">
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Positive predictors — support this outcome</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Personality</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:78%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">78%</span></div>
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Basic Interests</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:75%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">75%</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Negative predictors — limit this outcome</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Knowledge</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-red-400" style="width:65%"></div></div><span class="text-sm font-semibold text-red-700 w-10 flex-shrink-0">65%</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                    <div class="h-2 bg-gray-200 rounded-full overflow-hidden mt-2"><div class="h-full bg-green-500 rounded-full" style="width:72%"></div></div>
+                </div>
+                <div class="border-l-4 border-blue-500 pl-4 py-2">
+                    <p class="text-gray-800 font-medium mb-1">Job meets your needs</p>
+                    <p class="text-gray-700 text-sm">Given your profile, there is a <strong>68%</strong> chance the job will give you what you want (e.g., variety, meaning, growth).</p>
+                    <p class="text-xs text-gray-500 mt-1 italic">Driven mainly by your interests and values—whether the job offers what you care about.</p>
+                    <p class="text-xs text-gray-700 mt-2"><strong>For you:</strong> Positive predictors: your strong work values fit (72%), your strong interest fit (75%). Negative predictors: your lower knowledge fit (65%).</p>
+                    <details class="mt-4 predictor-breakdown-details">
+                        <summary class="text-sm font-medium text-blue-600 hover:text-blue-800 cursor-pointer select-none">Show predictor breakdown (what drives this for you)</summary>
+                        <div class="mt-3 space-y-4">
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Positive predictors — support this outcome</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Work Values</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:72%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">72%</span></div>
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Basic Interests</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:75%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">75%</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Negative predictors — limit this outcome</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Knowledge</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-red-400" style="width:65%"></div></div><span class="text-sm font-semibold text-red-700 w-10 flex-shrink-0">65%</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                    <div class="h-2 bg-gray-200 rounded-full overflow-hidden mt-2"><div class="h-full bg-blue-500 rounded-full" style="width:68%"></div></div>
+                </div>
+                <div class="border-l-4 border-blue-500 pl-4 py-2">
+                    <p class="text-gray-800 font-medium mb-1">Your skills match the job</p>
+                    <p class="text-gray-700 text-sm">Given your profile, there is a <strong>75%</strong> chance you have the skills this job needs.</p>
+                    <p class="text-xs text-gray-500 mt-1 italic">Driven mainly by your interests, knowledge, and personality—how well you match the job’s demands.</p>
+                    <p class="text-xs text-gray-700 mt-2"><strong>For you:</strong> Positive predictors: your strong personality fit (78%), your strong skills interest fit (70%). Negative predictors: your lower knowledge fit (65%).</p>
+                    <details class="mt-4 predictor-breakdown-details">
+                        <summary class="text-sm font-medium text-blue-600 hover:text-blue-800 cursor-pointer select-none">Show predictor breakdown (what drives this for you)</summary>
+                        <div class="mt-3 space-y-4">
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Positive predictors — support this outcome</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Personality</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:78%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">78%</span></div>
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Skills Interest</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:70%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">70%</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Negative predictors — limit this outcome</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Knowledge</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-red-400" style="width:65%"></div></div><span class="text-sm font-semibold text-red-700 w-10 flex-shrink-0">65%</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                    <div class="h-2 bg-gray-200 rounded-full overflow-hidden mt-2"><div class="h-full bg-blue-500 rounded-full" style="width:75%"></div></div>
+                </div>
+                <div class="border-l-4 border-purple-500 pl-4 py-2">
+                    <p class="text-gray-800 font-medium mb-1">Income potential</p>
+                    <p class="text-gray-700 text-sm">Given your profile, there is a <strong>65%</strong> chance this career offers strong income potential compared to other careers.</p>
+                    <p class="text-xs text-gray-500 mt-1 italic">Driven mainly by your knowledge and skills—what you know and can do.</p>
+                    <p class="text-xs text-gray-700 mt-2"><strong>For you:</strong> Positive predictors: your skills interest fit (70%), your knowledge interest fit (65%). Negative predictors: your lower personality fit for income-related outcomes (78% supports other outcomes more).</p>
+                    <details class="mt-4 predictor-breakdown-details">
+                        <summary class="text-sm font-medium text-blue-600 hover:text-blue-800 cursor-pointer select-none">Show predictor breakdown (what drives this for you)</summary>
+                        <div class="mt-3 space-y-4">
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Positive predictors — support this outcome</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Skills Interest</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:70%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">70%</span></div>
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Knowledge Interest</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:65%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">65%</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Negative predictors — limit this outcome</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-36 flex-shrink-0">Knowledge (interest proxy)</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-red-400" style="width:65%"></div></div><span class="text-sm font-semibold text-red-700 w-10 flex-shrink-0">65%</span></div>
+                                    <p class="text-xs text-gray-600 mt-1">Income is predicted more by actual knowledge and skills than by interests (Liu et al., 2024).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                    <div class="h-2 bg-gray-200 rounded-full overflow-hidden mt-2"><div class="h-full bg-purple-500 rounded-full" style="width:65%"></div></div>
+                </div>
+            </div>
+
+            <!-- Salary information from BLS OEWS (aligned with O*NET occupation data); Louisiana included for regional relevance -->
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Salary information (BLS OEWS)</h3>
+                <p class="text-sm text-gray-700 mb-3">Wage data for this occupation comes from the U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics (OEWS)—the same source used with O*NET occupation codes. Below: national figures and Louisiana state figures so you can see earning potential in our region.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">National (2023)</p>
+                        <p class="text-2xl font-bold text-gray-900">$67,650</p>
+                        <p class="text-sm text-gray-600 mb-1">Median annual wage</p>
+                        <p class="text-xs text-gray-500">Typical range: $51,500 – $92,400 (25th–75th percentile)</p>
+                    </div>
+                    <div class="bg-blue-50 rounded-lg p-4 border border-blue-100">
+                        <p class="text-xs font-semibold text-blue-700 uppercase tracking-wider mb-1">Louisiana (May 2023)</p>
+                        <p class="text-2xl font-bold text-gray-900">$63,290</p>
+                        <p class="text-sm text-gray-600 mb-1">Mean annual wage (state)</p>
+                        <p class="text-xs text-gray-500">Human Resources Specialists (13-1071). <a href="https://www.bls.gov/oes/2023/may/oes_la.htm" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">BLS Louisiana OEWS</a></p>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 mt-3">Source: U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics (OEWS). Wages vary by location, industry, and experience. Your fit score reflects how well your profile aligns with the occupation; actual earnings depend on the labor market.</p>
+            </div>
+        </div>
+            </div>
+
+            <!-- Conflict Management (personality-based predictions) -->
+            <div id="conflict" class="outcome-content">
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Predicted Conflict Management</h2>
+            <p class="text-gray-600 text-sm mb-4">Based on your personality profile, we predict your likely tendencies in conflict situations. These are <strong>tendencies</strong>, not destiny—context and choice matter. Predictions use <strong>facet-level</strong> weights from Espinoza et al. (2023), mapped from NEO to BFI-2-S via a Hommel-style text-inference method (Hommel &amp; Arslan, 2025). Domain-level meta-analysis (Tehrani &amp; Yamini, 2020) provides additional context.</p>
+
+            <!-- Thomas-Kilmann 2x2: assertiveness (y) × cooperativeness (x); person placed by predicted scores and labeled -->
+            <h3 class="text-lg font-semibold text-gray-900 mt-6 mb-2">Where you fall: Thomas-Kilmann model</h3>
+            <p class="text-gray-600 text-sm mb-3">The Thomas-Kilmann Conflict Mode Instrument (Thomas &amp; Kilmann, 1974) describes five conflict styles along two dimensions: <strong>assertiveness</strong> (pursuing your own concerns) and <strong>cooperativeness</strong> (meeting others’ concerns). Your predicted tendency is shown below the grid.</p>
+            <div class="tki-grid-wrapper mb-4 mx-auto flex flex-col items-center" style="width: 100%; max-width: 340px;">
+                <!-- Grid: y = assertiveness (bottom=low, top=high), x = cooperativeness (left=low, right=high) -->
+                <div class="relative border border-gray-300 rounded-lg overflow-hidden bg-gray-50 w-full" style="aspect-ratio: 1; min-height: 200px;">
+                    <!-- Row 1 = high assertiveness (top); Row 2 = low assertiveness (bottom). Col 1 = low coop (left), Col 2 = high coop (right). -->
+                    <div class="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-px bg-gray-300">
+                        <div class="bg-amber-50/80 p-2 flex flex-col items-center justify-center text-center"><span class="text-sm font-semibold text-gray-800">Competing</span><span class="text-xs text-gray-500">High assert. · Low coop.</span></div>
+                        <div class="bg-blue-100/90 p-2 flex flex-col items-center justify-center text-center border-2 border-blue-500 rounded"><span class="text-sm font-bold text-gray-900">Collaborating</span><span class="text-xs text-gray-600">High assert. · High coop.</span></div>
+                        <div class="bg-amber-50/80 p-2 flex flex-col items-center justify-center text-center"><span class="text-sm font-semibold text-gray-800">Avoiding</span><span class="text-xs text-gray-500">Low assert. · Low coop.</span></div>
+                        <div class="bg-blue-50/80 p-2 flex flex-col items-center justify-center text-center"><span class="text-sm font-semibold text-gray-800">Harmonizing</span><span class="text-xs text-gray-500">Low assert. · High coop.</span></div>
+                    </div>
+                    <!-- Center: Compromising -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/4 h-1/4 min-w-[60px] min-h-[60px] rounded-full bg-gray-200 border-2 border-gray-400 flex items-center justify-center text-center z-10"><span class="text-xs font-medium text-gray-700">Compromising</span></div>
+                </div>
+                <p class="text-base font-semibold text-gray-900 mt-2 text-center">Your predicted tendency: <span class="text-blue-600" id="conflict-predicted-tendency">Collaborating</span></p>
+                <p class="text-sm text-gray-500 mt-1 text-center" id="conflict-tendency-caption">Higher assertiveness and cooperativeness — you tend to seek solutions that meet everyone’s needs.</p>
+            </div>
+
+            <!-- LIME-style: facet-level supports vs contradicts (Espinoza et al. + Hommel-style mapping) -->
+            <h3 class="text-lg font-semibold text-gray-900 mt-6 mb-2">What drives your prediction</h3>
+            <p class="text-gray-600 text-sm mb-4">Your personality <strong>facets</strong> (BFI-2-S) support or contradict the predicted tendency. Below: which facets support this prediction (green) vs contradict it (red). Driven mainly by facet-level weights from Espinoza et al. (2023).</p>
+            <div class="lime-style-viz bg-white border border-gray-200 rounded-lg p-4 sm:p-5 mb-2" id="conflict-lime-viz">
+                <p class="text-sm font-semibold text-gray-800 mb-1">Prediction: <span class="text-blue-600" id="conflict-lime-style">Collaborating</span></p>
+                <p class="text-xs text-gray-500 mb-4" id="conflict-lime-caption">You tend to seek solutions that meet everyone’s needs (high assertiveness + high cooperativeness).</p>
+                <div class="space-y-3" id="conflict-supports-contradicts">
+                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Supports</p>
+                    <div id="conflict-supports-list"></div>
+                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2 mt-4 pt-3 border-t border-gray-100">Contradicts</p>
+                    <div id="conflict-contradicts-list"></div>
+                </div>
+            </div>
+
+            <h3 class="text-lg font-semibold text-gray-900 mt-6 mb-3">Likelihood of experiencing team conflict</h3>
+            <p class="text-gray-600 text-sm mb-3">Research links personality to how often people report task, relationship, and process conflict (e.g. Fui &amp; Hassan, 2015; Jelinčić et al., 2025). Your emotional stability and conscientiousness help lower relationship conflict.</p>
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm font-medium text-gray-800">Task conflict</span>
+                        <span class="text-xs text-gray-600">Average likelihood</span>
+                    </div>
+                    <div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-amber-400 rounded-full" style="width: 50%;"></div></div>
+                    <p class="text-xs text-gray-500 mt-1">Driven mainly by: Neuroticism (positive); Conscientiousness (negative in some samples).</p>
+                    <details class="mt-3 predictor-breakdown-details">
+                        <summary class="text-sm font-medium text-blue-600 hover:text-blue-800 cursor-pointer select-none">Show what supports vs. contradicts this likelihood</summary>
+                        <div class="mt-3 space-y-4">
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Supports (lower task conflict)</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-40 flex-shrink-0">Emotional stability (70th %ile)</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:70%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">70%</span></div>
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-40 flex-shrink-0">Conscientiousness (78th %ile)</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:78%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">78%</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Contradicts</p>
+                                <p class="text-xs text-gray-500">No strong personality-based contradictors for this sample.</p>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm font-medium text-gray-800">Relationship conflict</span>
+                        <span class="text-xs text-gray-600">Lower likelihood</span>
+                    </div>
+                    <div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-emerald-500 rounded-full" style="width: 35%;"></div></div>
+                    <p class="text-xs text-gray-500 mt-1">Driven mainly by: Neuroticism (positive); your emotional stability helps.</p>
+                    <details class="mt-3 predictor-breakdown-details">
+                        <summary class="text-sm font-medium text-blue-600 hover:text-blue-800 cursor-pointer select-none">Show what supports vs. contradicts this likelihood</summary>
+                        <div class="mt-3 space-y-4">
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Supports (lower relationship conflict)</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-40 flex-shrink-0">Emotional stability (70th %ile)</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:70%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">70%</span></div>
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-40 flex-shrink-0">Conscientiousness (78th %ile)</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:78%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">78%</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Contradicts</p>
+                                <p class="text-xs text-gray-500">No strong contradictors; your profile supports lower relationship conflict.</p>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm font-medium text-gray-800">Process conflict</span>
+                        <span class="text-xs text-gray-600">Average likelihood</span>
+                    </div>
+                    <div class="h-3 bg-gray-200 rounded-full overflow-hidden"><div class="h-full bg-amber-400 rounded-full" style="width: 50%;"></div></div>
+                    <p class="text-xs text-gray-500 mt-1">Driven mainly by: Neuroticism (positive); Conscientiousness (negative in some samples).</p>
+                    <details class="mt-3 predictor-breakdown-details">
+                        <summary class="text-sm font-medium text-blue-600 hover:text-blue-800 cursor-pointer select-none">Show what supports vs. contradicts this likelihood</summary>
+                        <div class="mt-3 space-y-4">
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Supports (lower process conflict)</p>
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-40 flex-shrink-0">Emotional stability (70th %ile)</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:70%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">70%</span></div>
+                                    <div class="flex items-center gap-3"><span class="text-sm text-gray-700 w-40 flex-shrink-0">Conscientiousness (78th %ile)</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:78%"></div></div><span class="text-sm font-semibold text-emerald-700 w-10 flex-shrink-0">78%</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-600 mb-2">Contradicts</p>
+                                <p class="text-xs text-gray-500">No strong personality-based contradictors for this sample.</p>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <p class="text-sm text-gray-700 mb-2"><strong>Want more focused feedback?</strong> Take our <a href="conflict-management-assessment/index.html" class="text-blue-600 hover:underline font-medium">Conflict Management Styles assessment</a> for behavior-based scores on the five styles and tailored tips. You can compare those results with these personality-based predictions.</p>
+            </div>
+
+            <div class="mt-6 bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <h4 class="text-sm font-semibold text-gray-900 mb-2">References</h4>
+                <ul class="text-xs text-gray-700 space-y-1">
+                    <li>Thomas, K. W., &amp; Kilmann, R. H. (1974). <em>Thomas-Kilmann Conflict Mode Instrument</em>. Tuxedo, NY: Xicom.</li>
+                    <li>Espinoza, J. A., O’Neill, T. A., &amp; Donia, M. B. L. (2023). Big Five factor and facet personality determinants of conflict management styles. <em>Personality and Individual Differences</em>, <em>203</em>, 112029. https://doi.org/10.1016/j.paid.2022.112029</li>
+                    <li>Hommel, B., &amp; Arslan, R. C. (2025). Language models accurately infer correlations between psychological items and scales from text alone. <em>Advances in Methods and Practices in Psychological Science</em>, <em>8</em>(4). https://doi.org/10.1177/25152459251377093</li>
+                    <li>Tehrani, H. D., &amp; Yamini, S. (2020). Personality traits and conflict resolution styles: A meta-analysis. <em>Personality and Individual Differences</em>, <em>157</em>, 109794. https://doi.org/10.1016/j.paid.2019.109794</li>
+                </ul>
+            </div>
+        </div>
+            </div>
+
+            <!-- Discuss Results -->
+            <div id="discuss" class="outcome-content">
+        <div class="assessment-card bg-blue-50 rounded-lg shadow-lg p-4 sm:p-6 md:p-8 border-l-4 border-blue-500 mb-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-3">Discuss Your Results</h2>
+            <p class="text-gray-700 mb-4">
+                Would you like to discuss your results further? <strong>Dr. Chris Castille</strong> is available to help you interpret your fit profile and explore career options. Contact him to schedule a conversation.
+            </p>
+            <div class="bg-white rounded-lg p-4 border border-blue-100">
+                <p class="text-gray-700 mb-1"><strong>Dr. Christopher Castille</strong></p>
+                <p class="text-gray-700 mb-1">Associate Professor of Management</p>
+                <p class="text-gray-700 mb-1"><a href="mailto:christopher.castille@nicholls.edu" class="text-blue-600 hover:underline">christopher.castille@nicholls.edu</a></p>
+                <p class="text-gray-700">Phone: <a href="tel:985-449-7015" class="text-blue-600 hover:underline">985-449-7015</a></p>
+                <p class="text-sm text-gray-600 mt-2">Nicholls State University | Al Danos College of Business Administration</p>
+            </div>
+        </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Footer (always visible) -->
+    <div class="max-w-7xl mx-auto px-4 pb-8">
+        <!-- References (APA style) -->
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">References</h2>
+            <p class="text-sm text-gray-700 mb-2">Liu, Z., Hoff, K. A., Chu, C., Oswald, F. L., & Rounds, J. (2025). Toward whole-person fit assessment: Integrating interests, values, skills, knowledge, and personality using the Occupational Information Network (O*NET). <em>Journal of Applied Psychology</em>, <em>110</em>(5), 623–647. https://doi.org/10.1037/apl0001232</p>
+            <p class="text-xs text-gray-500 mt-4">In APA style, journal names and volume numbers are italicized. The full reference is provided for transparency and replication.</p>
+        </div>
+
+        <!-- Notes -->
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Important Notes</h2>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                <ul class="space-y-2 text-gray-700 text-sm">
+                    <li>• This is a <strong>sample report</strong>. Your actual report will show your own scores and interpretations.</li>
+                    <li>• Results are for self-reflection and career exploration, not selection or diagnosis.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-12 pt-8 border-t border-gray-200">
+            <p class="text-gray-600 text-sm mb-2"><a href="index.html" class="nicholls-red-text hover:opacity-80 font-medium">← Back to Assessment Platform</a> · <button type="button" onclick="window.print()" class="nicholls-red-text hover:opacity-80 font-medium no-print" style="background:none;border:none;cursor:pointer;padding:0;font:inherit;">Print / Save as PDF</button> · <a href="whole-person-fit-feedback.html" class="nicholls-red-text hover:opacity-80 font-medium no-print">Give us feedback</a> · <a href="occupational-fit/index.html" class="nicholls-red-text hover:opacity-80 font-medium">Take the assessment</a></p>
+            <p class="text-gray-600 text-sm mb-4">Whole-Person Fit Assessment</p>
+            <p class="nicholls-gray-text text-sm">People Analytics Lab of the Bayou</p>
+            <p class="text-gray-500 text-xs">Nicholls State University | Al Danos College of Business Administration</p>
+        </div>
+    </div>
+
+    <script>
+        // Draw a radar chart (same logic as live HR Analyst report) so participants see what they will get
+        function drawRadarChart(containerId, data, maxValue) {
+            maxValue = maxValue || 100;
+            var container = document.getElementById(containerId);
+            if (!container || !data || data.length === 0) return;
+            var size = Math.min(320, container.clientWidth || 320);
+            var center = size / 2;
+            var radius = 100;
+            var numAxes = data.length;
+            var angleStep = (2 * Math.PI) / numAxes;
+            var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', size);
+            svg.setAttribute('height', size);
+            svg.setAttribute('viewBox', '0 0 ' + size + ' ' + size);
+            svg.setAttribute('class', 'radar-chart');
+            svg.setAttribute('style', 'overflow: visible;');
+            for (var i = 1; i <= 5; i++) {
+                var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', center);
+                circle.setAttribute('cy', center);
+                circle.setAttribute('r', (radius * i) / 5);
+                circle.setAttribute('class', 'radar-grid');
+                circle.setAttribute('fill', 'none');
+                svg.appendChild(circle);
+            }
+            var points = [];
+            for (var idx = 0; idx < data.length; idx++) {
+                var item = data[idx];
+                var angle = idx * angleStep - Math.PI / 2;
+                var value = Math.min((item.value / maxValue) * radius, radius);
+                var x = center + value * Math.cos(angle);
+                var y = center + value * Math.sin(angle);
+                points.push({ x: x, y: y, value: item.value, label: item.label });
+                var axisLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                axisLine.setAttribute('x1', center);
+                axisLine.setAttribute('y1', center);
+                axisLine.setAttribute('x2', center + radius * Math.cos(angle));
+                axisLine.setAttribute('y2', center + radius * Math.sin(angle));
+                axisLine.setAttribute('class', 'radar-axis');
+                svg.appendChild(axisLine);
+                var label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                var labelOffset = 32;
+                var labelX = center + (radius + labelOffset) * Math.cos(angle);
+                var labelY = center + (radius + labelOffset) * Math.sin(angle);
+                var textAnchor = 'middle';
+                var degrees = (angle * 180) / Math.PI;
+                if (degrees > -45 && degrees < 45) textAnchor = 'start';
+                else if (degrees > 135 || degrees < -135) textAnchor = 'end';
+                label.setAttribute('x', labelX);
+                label.setAttribute('y', labelY);
+                label.setAttribute('text-anchor', textAnchor);
+                label.setAttribute('dominant-baseline', 'middle');
+                label.setAttribute('class', 'radar-label');
+                label.textContent = item.label;
+                svg.appendChild(label);
+            }
+            if (points.length > 0) {
+                var pathD = points.map(function(p, i) { return (i === 0 ? 'M ' : 'L ') + p.x + ' ' + p.y; }).join(' ') + ' Z';
+                var area = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                area.setAttribute('d', pathD);
+                area.setAttribute('class', 'radar-area');
+                svg.appendChild(area);
+                var outline = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                outline.setAttribute('d', pathD);
+                outline.setAttribute('class', 'radar-line');
+                svg.appendChild(outline);
+                points.forEach(function(point) {
+                    var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', point.x);
+                    circle.setAttribute('cy', point.y);
+                    circle.setAttribute('r', 3);
+                    circle.setAttribute('class', 'radar-point');
+                    circle.setAttribute('title', point.label + ': ' + point.value + '%');
+                    svg.appendChild(circle);
+                });
+            }
+            container.innerHTML = '';
+            container.appendChild(svg);
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // Nav: show section, update active button
+            document.querySelectorAll('.nav-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var section = this.getAttribute('data-section');
+                    document.querySelectorAll('.outcome-content').forEach(function(el) { el.classList.remove('active'); });
+                    document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
+                    var target = document.getElementById(section);
+                    if (target) target.classList.add('active');
+                    this.classList.add('active');
+                    // On mobile, scroll main content into view after selecting a section
+                    if (window.innerWidth < 768) {
+                        document.getElementById('main-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                    // Redraw chart when its section becomes visible (container gets correct width)
+                    if (section === 'domain-fit') {
+                        setTimeout(function() {
+                            drawRadarChart('domain-radar', domainData, 100);
+                        }, 50);
+                    }
+                });
+            });
+            var domainData = [
+                { label: 'Basic Int.', value: 75 },
+                { label: 'RIASEC', value: 68 },
+                { label: 'Work Val.', value: 72 },
+                { label: 'Knowledge', value: 65 },
+                { label: 'Skills', value: 70 },
+                { label: 'Person.', value: 78 }
+            ];
+            drawRadarChart('domain-radar', domainData, 100);
+            window.addEventListener('resize', function() {
+                drawRadarChart('domain-radar', domainData, 100);
+            });
+
+            // Facet-level conflict prediction (Espinoza et al. + Hommel-style BFI-2 weights)
+            var CONFLICT_STYLE_FACET_WEIGHTS = {
+                avoiding: { intellectual_curiosity: 0.1287, sociability: 0.2387, assertiveness: 0.2004, compassion: 0.0639, trust: 0.0639, anxiety: 0.3044 },
+                accommodating: { intellectual_curiosity: 0.1722, sociability: 0.067, compassion: 0.2668, trust: 0.2603, anxiety: 0.2336 },
+                compromising: { productiveness: 0.4281, assertiveness: 0.1579, compassion: 0.3225, trust: 0.0915 },
+                integrating: { intellectual_curiosity: 0.1587, productiveness: 0.2327, responsibility: 0.1857, assertiveness: 0.1242, compassion: 0.2244, trust: 0.0743 },
+                dominating: { intellectual_curiosity: 0.1528, productiveness: 0.0471, assertiveness: 0.1438, compassion: 0.0192, respectfulness: 0.3265, trust: 0.3106 }
+            };
+            var CONFLICT_STYLE_DISPLAY_NAMES = { avoiding: 'Avoiding', accommodating: 'Harmonizing', compromising: 'Compromising', integrating: 'Collaborating', dominating: 'Competing' };
+            var FACET_DISPLAY_LABELS = { intellectual_curiosity: 'Intellectual curiosity', creative_imagination: 'Creative imagination', organization: 'Organization', productiveness: 'Productiveness', responsibility: 'Responsibility', sociability: 'Sociability', assertiveness: 'Assertiveness', energy_level: 'Energy level', compassion: 'Compassion', respectfulness: 'Respectfulness', trust: 'Trust', anxiety: 'Anxiety', emotional_volatility: 'Emotional volatility' };
+            // Sample personality facet scores (1-5); aligned with sample Personality section (high agreeableness, above-avg emotional stability)
+            var SAMPLE_PERSONALITY_FACETS = { intellectual_curiosity: 4, creative_imagination: 3.5, organization: 4, productiveness: 4.2, responsibility: 4, sociability: 3.8, assertiveness: 3.5, energy_level: 3.8, compassion: 4.2, respectfulness: 4, trust: 4, anxiety: 2.5, emotional_volatility: 2.8 };
+            function scoreToPercentile(score) {
+                if (score <= 1) return 2;
+                if (score >= 5) return 98;
+                var z = (score - 3) / 1;
+                var p = Math.round(50 + (z * 34));
+                return Math.max(1, Math.min(99, p));
+            }
+            function getPersonalityFacetPercentiles(personalityFacets) {
+                var out = {};
+                var reversed = ['anxiety', 'emotional_volatility'];
+                Object.keys(FACET_DISPLAY_LABELS).forEach(function(key) {
+                    var raw = personalityFacets[key];
+                    if (raw === undefined || raw === null) return;
+                    var score = reversed.indexOf(key) >= 0 ? 6 - raw : raw;
+                    out[key] = scoreToPercentile(score);
+                });
+                return out;
+            }
+            function getFacetWeightedConflictScores(personalityFacetPercentiles) {
+                var scores = {};
+                Object.keys(CONFLICT_STYLE_FACET_WEIGHTS).forEach(function(styleKey) {
+                    var weights = CONFLICT_STYLE_FACET_WEIGHTS[styleKey];
+                    var sum = 0;
+                    Object.keys(weights).forEach(function(facet) {
+                        var pct = personalityFacetPercentiles[facet];
+                        if (pct !== undefined) sum += weights[facet] * (pct / 100);
+                    });
+                    scores[styleKey] = sum;
+                });
+                return scores;
+            }
+            function formatOrdinal(n) {
+                var j = n % 10, k = n % 100;
+                if (j === 1 && k !== 11) return n + 'st';
+                if (j === 2 && k !== 12) return n + 'nd';
+                if (j === 3 && k !== 13) return n + 'rd';
+                return n + 'th';
+            }
+            function getConflictFacetPredictorLists(personalityFacetPercentiles, styleKey) {
+                var weights = CONFLICT_STYLE_FACET_WEIGHTS[styleKey];
+                if (!weights) return { positive: [], negative: [] };
+                var styleName = CONFLICT_STYLE_DISPLAY_NAMES[styleKey] || styleKey;
+                var positive = [], negative = [];
+                var HIGH = 65, LOW = 50;
+                Object.keys(weights).forEach(function(facet) {
+                    var pct = personalityFacetPercentiles[facet];
+                    if (pct === undefined) return;
+                    var label = FACET_DISPLAY_LABELS[facet] || facet;
+                    var ord = formatOrdinal(pct);
+                    if (pct >= HIGH) positive.push({ label: label, pct: pct, text: label + ' (' + ord + ' %ile) supports ' + styleName });
+                    else if (pct < LOW) negative.push({ label: label, pct: pct, text: label + ' (' + ord + ' %ile) contradicts ' + styleName });
+                });
+                positive.sort(function(a, b) { return b.pct - a.pct; });
+                negative.sort(function(a, b) { return a.pct - b.pct; });
+                return { positive: positive.slice(0, 5), negative: negative.slice(0, 3) };
+            }
+            var facetPct = getPersonalityFacetPercentiles(SAMPLE_PERSONALITY_FACETS);
+            var styleScores = getFacetWeightedConflictScores(facetPct);
+            var topStyle = 'integrating';
+            var topScore = 0;
+            Object.keys(styleScores).forEach(function(k) { if (styleScores[k] > topScore) { topScore = styleScores[k]; topStyle = k; } });
+            var predictorLists = getConflictFacetPredictorLists(facetPct, topStyle);
+            var tendencyName = CONFLICT_STYLE_DISPLAY_NAMES[topStyle];
+            var tendencyEl = document.getElementById('conflict-predicted-tendency');
+            var captionEl = document.getElementById('conflict-tendency-caption');
+            if (tendencyEl) tendencyEl.textContent = tendencyName;
+            if (captionEl) captionEl.textContent = (topStyle === 'integrating' ? 'Higher assertiveness and cooperativeness — you tend to seek solutions that meet everyone\'s needs.' : topStyle === 'dominating' ? 'Higher assertiveness, lower cooperativeness — you tend to pursue your own goals in conflict.' : topStyle === 'avoiding' ? 'Lower assertiveness and cooperativeness — you may prefer to avoid or delay conflict.' : topStyle === 'accommodating' ? 'Lower assertiveness, higher cooperativeness — you tend to yield to others\' concerns.' : 'You tend to split the difference and seek middle-ground solutions.');
+            var limeStyle = document.getElementById('conflict-lime-style');
+            var limeCaption = document.getElementById('conflict-lime-caption');
+            if (limeStyle) limeStyle.textContent = tendencyName;
+            if (limeCaption) limeCaption.textContent = (topStyle === 'integrating' ? 'You tend to seek solutions that meet everyone\'s needs (high assertiveness + high cooperativeness).' : 'Your facet profile drives this prediction (Espinoza et al., 2023).');
+            var supportsList = document.getElementById('conflict-supports-list');
+            var contradictsList = document.getElementById('conflict-contradicts-list');
+            if (supportsList) {
+                supportsList.innerHTML = predictorLists.positive.length ? predictorLists.positive.map(function(item) { return '<div class="lime-row flex items-center gap-3 mb-2"><span class="text-xs text-gray-700 w-48 flex-shrink-0">' + item.text + '</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:' + item.pct + '%"></div></div><span class="text-xs font-semibold text-emerald-700 w-10 flex-shrink-0">' + item.pct + '%</span></div>'; }).join('') : '<p class="text-xs text-gray-500">No strong facet-level supports for this sample.</p>';
+            }
+            if (contradictsList) {
+                contradictsList.innerHTML = predictorLists.negative.length ? predictorLists.negative.map(function(item) { return '<div class="lime-row flex items-center gap-3 mb-2"><span class="text-xs text-gray-700 w-48 flex-shrink-0">' + item.text + '</span><div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-red-400" style="width:' + (100 - item.pct) + '%"></div></div><span class="text-xs font-semibold text-red-700 w-10 flex-shrink-0">' + item.pct + '%</span></div>'; }).join('') : '<p class="text-xs text-gray-500">No strong facet-level contradictions for this sample.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

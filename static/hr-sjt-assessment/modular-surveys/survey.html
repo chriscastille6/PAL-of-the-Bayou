@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR SJT Modular Survey</title>
+    <link rel="stylesheet" href="css/survey.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Consent -->
+        <div id="consent-screen">
+            <div class="header">
+                <span class="pack-badge" data-pack-badge>Pack</span>
+                <h1 data-pack-title>HR SJT Survey</h1>
+                <p class="subtitle">Pre-decision rating effectiveness · Linked by Candidate ID</p>
+            </div>
+            <h2 style="color:#1e3a8a;margin-bottom:16px;">Informed Consent</h2>
+            <div class="consent-box" id="consent-box">
+                <h3>Research Study: HR Situational Judgment Test – Evidence-Based HR Decision-Making</h3>
+                <p><strong>Principal Investigator:</strong> Dr. Christopher M. Castille &nbsp;|&nbsp; <strong>Institution:</strong> Nicholls State University</p>
+                <h4>Purpose</h4>
+                <p>This research examines how students and working professionals evaluate the effectiveness of HR management tactics in situational judgment scenarios. Your responses will be used for research and teaching in aggregate. No names are stored with research data—only a participant ID.</p>
+                <p id="consent-role-note" class="role-note"></p>
+                <h4>What you will do (this sitting)</h4>
+                <p>You will complete <strong>one short survey pack</strong> (<span data-pack-count>1</span> scenario(s)) covering: <em data-pack-short></em>. You may complete a brief <strong>optional demographics</strong> questionnaire (skip any item), rate tactics on a 1–5 scale or <strong>skip</strong> any item, and download a PDF report. Students may upload the PDF to Canvas as directed. There are up to 8 packs; the same name always produces the same ID so your packs can be linked.</p>
+                <h4>Voluntary participation</h4>
+                <p>Participation is voluntary. You may skip any demographic item, skip any rating, skip this pack, or withdraw at any time by closing the browser. Contact the investigator to request destruction of data already collected. You must be 18 years of age or older.</p>
+                <h4>Risks and benefits</h4>
+                <p>Risks are minimal (time; feedback may differ from expectations). Benefits may include practice with HR situational judgment, a PDF summary of your ratings, and contribution to research. Students may receive course credit as determined by the instructor. There is no monetary payment.</p>
+                <h4>Confidentiality</h4>
+                <p>Your name is used only to generate a participant ID and is not stored with research data. Demographic answers (if provided) are stored with your participant ID only. Data are reported only in aggregate or de-identified form.</p>
+                <h4>Contact</h4>
+                <p>Dr. Christopher M. Castille, <a href="mailto:christopher.castille@nicholls.edu">christopher.castille@nicholls.edu</a>, (337) 256-0664. Questions about rights as a participant: Nicholls State University IRB.</p>
+            </div>
+            <div class="consent-checkbox-wrap">
+                <label>
+                    <input type="checkbox" id="consent-checkbox" aria-label="I agree to participate">
+                    <span>I have read and understand the above information. I am 18 years of age or older. I voluntarily agree to participate.</span>
+                </label>
+            </div>
+            <button type="button" class="btn btn-primary" id="consent-continue-btn" onclick="acceptConsent()" disabled>I Agree – Continue</button>
+        </div>
+
+        <!-- Participant ID -->
+        <div id="participant-id-screen" style="display:none;">
+            <div class="header">
+                <span class="pack-badge" data-pack-badge>Pack</span>
+                <h1 data-pack-title>HR SJT Survey</h1>
+            </div>
+            <div class="participant-id-section">
+                <h2 style="margin-bottom:16px;color:#1e3a8a;">Participant Information</h2>
+                <p class="note-box">
+                    <strong>Privacy note:</strong> Your name is used <strong>only to generate a Candidate ID</strong>.
+                    Your name is <strong>not stored</strong>. Use the <strong>same first and last name</strong> for every pack so your surveys link.
+                </p>
+                <label for="firstNameInput">First Name <span style="color:#dc2626;">*</span></label>
+                <input type="text" id="firstNameInput" placeholder="Enter your first name" required autocomplete="given-name">
+                <label for="lastNameInput">Last Name <span style="color:#dc2626;">*</span></label>
+                <input type="text" id="lastNameInput" placeholder="Enter your last name" required autocomplete="family-name">
+                <div id="participantIdDisplay" style="display:none;margin:16px 0;" class="note-box">
+                    <strong>Your Participant ID:</strong>
+                    <div id="generatedId" class="id-mono"></div>
+                </div>
+                <div id="participant-error" class="error-message" style="display:none;"></div>
+                <button class="btn btn-primary" onclick="continueWithParticipantId()" style="width:100%;">Generate ID and Continue</button>
+            </div>
+        </div>
+
+        <!-- Demographics (optional; once per Candidate ID) -->
+        <div id="demographics-screen" style="display:none;">
+            <div class="header">
+                <span class="pack-badge" data-pack-badge>Pack</span>
+                <h1>Optional Demographics</h1>
+                <p class="subtitle">Helps us compare students and professionals. All items are skippable.</p>
+            </div>
+            <div id="demographics-container"></div>
+        </div>
+
+        <!-- Intro -->
+        <div id="intro-screen" style="display:none;">
+            <div class="header">
+                <span class="pack-badge" data-pack-badge>Pack</span>
+                <h1 data-pack-title>HR SJT Survey</h1>
+                <p class="subtitle">Complete this pack <strong>before</strong> the corresponding class decision.</p>
+            </div>
+            <div class="id-reminder">
+                <p style="color:#92400e;font-weight:700;margin-bottom:8px;">Your Candidate ID</p>
+                <div id="candidateIdDisplay" class="id-mono"></div>
+                <p style="color:#b45309;font-size:0.95em;margin-top:8px;">Write this down. Use the same name on every pack.</p>
+            </div>
+            <div class="instructions">
+                <p>This sitting has <strong data-pack-count>1</strong> scenario(s):</p>
+                <p style="margin:12px 0;"><em data-pack-short></em></p>
+                <ol style="margin-left:20px;padding-left:20px;">
+                    <li style="margin-bottom:8px;">Read each scenario carefully</li>
+                    <li style="margin-bottom:8px;">Rate tactics on the 1–5 scale using your own judgment (you may skip any item)</li>
+                    <li style="margin-bottom:8px;">Download the PDF (includes your Candidate ID and any demographics you provided)</li>
+                </ol>
+                <p><strong>Important:</strong> Responses are voluntary—you may skip any tactic. There are no “correct” answers for this rating task. Do <strong>not</strong> look up evidence on specific tactics until your instructor trains you. Rely on your own judgment.</p>
+                <div class="scale-info">
+                    <strong>Rating Scale:</strong>
+                    <ul>
+                        <li><strong>1</strong> = Not effective / Poor</li>
+                        <li><strong>2</strong> = Somewhat ineffective / Below average</li>
+                        <li><strong>3</strong> = Moderately effective / Average</li>
+                        <li><strong>4</strong> = Effective / Good</li>
+                        <li><strong>5</strong> = Highly effective / Extremely good</li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary" onclick="startAssessment()">Begin Survey</button>
+            </div>
+        </div>
+
+        <!-- Assessment -->
+        <div id="assessment-container" style="display:none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+                <span class="progress-text" id="progress-text">Scenario 1 of 1</span>
+            </div>
+            <div class="incident-container" id="incident-container"></div>
+            <div class="navigation">
+                <button class="btn btn-secondary" id="prev-btn" onclick="previousIncident()" disabled>Previous</button>
+                <button class="btn btn-primary" id="next-btn" onclick="nextIncident()">Next</button>
+                <button class="btn btn-success" id="submit-btn" onclick="submitAssessment()" style="display:none;">Submit &amp; Get PDF</button>
+            </div>
+        </div>
+
+        <!-- Completion -->
+        <div id="completion-screen" style="display:none;">
+            <div class="lab-logo-container">
+                <img src="../lab-emblem.png" alt="People Analytics Lab of the Bayou" class="lab-logo"
+                     onerror="this.style.display='none';">
+                <h2 style="color:#dc2626;margin-top:10px;">People Analytics Lab of the Bayou</h2>
+                <p style="color:#64748b;font-size:0.9em;">Nicholls State University | Al Danos College of Business Administration</p>
+            </div>
+            <div class="header">
+                <h1>Survey Complete</h1>
+                <p data-pack-title>Pack finished</p>
+            </div>
+            <div id="detailed-report"></div>
+            <div style="text-align:center;margin:30px 0;">
+                <button id="downloadPDF" class="btn btn-primary" onclick="generatePDFReport()" style="font-size:1.1em;padding:15px 30px;">
+                    Download PDF Report
+                </button>
+            </div>
+            <p style="text-align:center;"><a href="index.html">← Choose another decision survey</a></p>
+            <img src="../lab-emblem.png" alt="" class="lab-logo" style="display:none;" aria-hidden="true">
+        </div>
+    </div>
+
+    <script src="../incidents-data.js"></script>
+    <script src="js/packs.js"></script>
+    <script src="js/participant-id.js"></script>
+    <script src="js/demographics.js"></script>
+    <script src="js/survey-engine.js"></script>
+</body>
+</html>

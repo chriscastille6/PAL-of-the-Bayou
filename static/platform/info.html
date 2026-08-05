@@ -1,0 +1,57 @@
+<!--
+File location: static/platform/info.html
+What this file does: Short rights/options page for the public assessment platform hub
+Why this file exists: Softened educational copy without study sign-up or auth flows
+RELEVANT FILES: static/platform/index.html, content/resources.md, content/ongoing-studies.md
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Rights and Options | People Analytics Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .nicholls-red-text { color: #AE132A; }
+        .nicholls-gray-text { color: #72808A; }
+        .brand-gradient { background: linear-gradient(135deg, #AE132A 0%, #dc2626 100%); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-3xl mx-auto px-4 py-12">
+        <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+            <a href="index.html" class="inline-flex items-center text-gray-700 hover:text-gray-900 mb-6">
+                <div class="w-10 h-10 brand-gradient rounded-xl flex items-center justify-center mr-3 shadow-md">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <span class="text-left">
+                    <span class="text-xl font-bold nicholls-red-text block">People Analytics Lab</span>
+                    <span class="text-sm nicholls-gray-text block">of the Bayou</span>
+                </span>
+            </a>
+
+            <h1 class="text-3xl font-bold text-gray-900 mb-6">Your Rights and Options</h1>
+
+            <section class="mb-8 text-gray-700 space-y-4">
+                <h2 class="text-xl font-bold text-gray-900">What this hub is</h2>
+                <p>A public overview of research- and education-oriented assessments, plus sample reports. It is not a clinical or hiring system.</p>
+            </section>
+
+            <section class="mb-8 text-gray-700 space-y-4">
+                <h2 class="text-xl font-bold text-gray-900">Privacy on this site</h2>
+                <p>No account is required. This static host does not collect assessment responses through the “Start Assessment” buttons (those soft-fail without the lab API).</p>
+                <p>Sample reports are illustrative only.</p>
+            </section>
+
+            <section class="mb-8 text-gray-700 space-y-4">
+                <h2 class="text-xl font-bold text-gray-900">Research participation</h2>
+                <p>Study recruitment is separate. See <a href="/ongoing-studies/" class="nicholls-red-text hover:underline">Ongoing Studies</a> on this website, or contact the lab.</p>
+            </section>
+
+            <a href="index.html" class="nicholls-red-text hover:opacity-80 font-medium">← Back to Assessment Platform</a>
+        </div>
+    </div>
+</body>
+</html>

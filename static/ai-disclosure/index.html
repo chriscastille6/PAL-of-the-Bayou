@@ -1,0 +1,247 @@
+<!--
+File location: static/ai-disclosure/index.html
+What this file does: Browser form for students to document AI tool use and print/save a PDF disclosure
+Why this file exists: Public educational resource adapted from a form shared at an AACSB conference; no server-side data collection
+RELEVANT FILES: static/ai-disclosure/participant-id.js, content/resources.md, Psychological Assessments/platform/tools/ai-disclosure/index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Disclosure Form | PAL of the Bayou</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/ai-disclosure/participant-id.js"></script>
+    <style>
+        .nicholls-red { background-color: #AE132A; }
+        .nicholls-red-text { color: #AE132A; }
+        .checkbox-option { border: 2px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem 1rem; cursor: pointer; transition: all 0.2s; background: white; }
+        .checkbox-option:hover { border-color: #93c5fd; }
+        .checkbox-option input:checked + .label-content { border-color: #2563eb; background-color: #eff6ff; font-weight: 600; }
+        .checkbox-option input { display: none; }
+        @media print { .no-print { display: none !important; } body { background: white; } }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-3xl mx-auto px-4 py-8">
+        <div class="mb-8 no-print">
+            <a href="/resources/" class="text-sm text-gray-500 hover:text-gray-700 mb-4 inline-block">← Back to Resources</a>
+            <h1 class="text-2xl font-bold text-gray-900">AI Disclosure Form</h1>
+            <p class="text-gray-600 mt-1">Use this form for any assignment where you used AI tools.</p>
+            <p class="text-xs text-gray-500 mt-2">Adapted from a form shared at an AACSB conference. No data is collected on this site. You download a PDF to submit with your assignment.</p>
+        </div>
+
+        <div id="formScreen" class="bg-white rounded-lg shadow border border-gray-200 p-6 md:p-8 no-print">
+            <form id="aiDisclosureForm">
+                <section class="mb-8 pb-6 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-3">Candidate Generation ID</h2>
+                    <p class="text-sm text-gray-600 mb-4">Enter your name to generate a consistent ID. Your name is never stored—only the derived code is used.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First name</label>
+                            <input type="text" id="firstName" name="firstName" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="First name">
+                        </div>
+                        <div>
+                            <label for="middleName" class="block text-sm font-medium text-gray-700 mb-1">Middle name</label>
+                            <input type="text" id="middleName" name="middleName" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="Middle name">
+                        </div>
+                        <div>
+                            <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last name</label>
+                            <input type="text" id="lastName" name="lastName" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="Last name">
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <button type="button" id="deriveIdBtn" class="px-4 py-2 nicholls-red text-white rounded-lg hover:opacity-90 font-medium">
+                            Generate CANDIDATE ID
+                        </button>
+                        <span id="candidateIdDisplay" class="text-sm font-mono text-gray-500">—</span>
+                    </div>
+                </section>
+
+                <section class="mb-8">
+                    <label for="assignmentName" class="block text-lg font-semibold text-gray-900 mb-2">Name of Assignment</label>
+                    <input type="text" id="assignmentName" name="assignmentName" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="e.g., MNGT 370 Case Study 2">
+                </section>
+
+                <section class="mb-8">
+                    <label class="checkbox-option flex items-start gap-3 block">
+                        <input type="checkbox" name="noAiTools" id="noAiTools">
+                        <span class="label-content border-2 border-transparent rounded px-2 -mx-2 py-1 flex-1">I did not use any AI tools in this assignment</span>
+                    </label>
+                </section>
+
+                <section id="toolsSection" class="mb-8">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-2">AI tools and how you used each</h2>
+                    <p class="text-sm text-gray-600 mb-4">Add each tool and check the purpose(s) you used it for. Example: ChatGPT for Brainstorming + Initial Structure; Consensus.app for Research.</p>
+                    <div id="toolEntries"></div>
+                    <button type="button" id="addToolBtn" class="mt-3 px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-blue-500 hover:text-blue-600 font-medium">
+                        + Add tool
+                    </button>
+                </section>
+
+                <section class="mb-8">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-2">AI Platform URLs (optional)</h2>
+                    <p class="text-sm text-gray-600 mb-3">If the AI platforms used allow unique URLs, include copies of the web links here:</p>
+                    <div class="space-y-2">
+                        <input type="url" id="url1" name="url1" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="https://...">
+                        <input type="url" id="url2" name="url2" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="https://...">
+                        <input type="url" id="url3" name="url3" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="https://...">
+                    </div>
+                </section>
+
+                <button type="submit" class="w-full nicholls-red text-white py-3 rounded-lg font-semibold hover:opacity-90">
+                    See finalized form
+                </button>
+            </form>
+        </div>
+
+        <div id="finalizedScreen" class="hidden">
+            <div class="bg-white rounded-lg shadow border border-gray-200 p-6 md:p-8 no-print">
+                <p class="text-sm text-gray-600 mb-4">Review your disclosure below. Your name does not appear—only your Candidate ID.</p>
+                <button type="button" onclick="window.print()" class="w-full nicholls-red text-white py-3 rounded-lg font-semibold hover:opacity-90 mb-3">
+                    Print / Save as PDF
+                </button>
+                <button type="button" id="backToFormBtn" class="w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300">
+                    Back to form
+                </button>
+            </div>
+            <div id="finalizedContent" class="bg-white p-8 mt-6 print:shadow-none print:border-0"></div>
+        </div>
+    </div>
+
+    <script>
+        const PURPOSE_OPTIONS = [
+            { value: 'brainstorming', label: 'Brainstorming' },
+            { value: 'initial_structure', label: 'Initial Structure' },
+            { value: 'research', label: 'Research' },
+            { value: 'writing', label: 'Writing' },
+            { value: 'technical', label: 'Technical Explanations' },
+            { value: 'review', label: 'Review and Revision' },
+            { value: 'editing', label: 'Editing/Proofreading' },
+            { value: 'formatting', label: 'Formatting and Style' },
+            { value: 'programming', label: 'Programming/Coding' },
+            { value: 'data_viz', label: 'Data Visualization' },
+            { value: 'other', label: 'Other' }
+        ];
+
+        let toolCount = 0;
+        document.getElementById('addToolBtn').addEventListener('click', addToolBlock);
+        addToolBlock();
+
+        function addToolBlock() {
+            const id = 'tool-' + (++toolCount);
+            const div = document.createElement('div');
+            div.className = 'tool-block mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50';
+            div.dataset.toolId = id;
+            const purposesHtml = PURPOSE_OPTIONS.map(p => `
+                <label class="inline-flex items-center mr-4 mb-2">
+                    <input type="checkbox" name="${id}_purpose" value="${p.value}" class="rounded border-gray-300 text-blue-600">
+                    <span class="ml-2 text-sm">${p.label}</span>
+                </label>
+            `).join('');
+            div.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <input type="text" class="tool-name flex-1 border border-gray-300 rounded-lg px-3 py-2 mr-2" placeholder="e.g., ChatGPT, Consensus.app" data-tool-name>
+                    <button type="button" class="remove-tool px-2 py-1 text-red-600 hover:bg-red-50 rounded text-sm">Remove</button>
+                </div>
+                <p class="text-xs text-gray-600 mb-2">What did you use this tool for? Check all that apply:</p>
+                <div class="flex flex-wrap gap-x-4 gap-y-1">${purposesHtml}</div>
+                <input type="url" class="tool-url mt-3 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="Optional: URL for this tool" data-tool-url>
+            `;
+            div.querySelector('.remove-tool').addEventListener('click', () => { if (document.querySelectorAll('.tool-block').length > 1) div.remove(); });
+            document.getElementById('toolEntries').appendChild(div);
+        }
+
+        document.getElementById('noAiTools').addEventListener('change', function () {
+            const toolsSection = document.getElementById('toolsSection');
+            toolsSection.classList.toggle('opacity-50', this.checked);
+            toolsSection.querySelectorAll('input, button').forEach(el => { el.disabled = this.checked; });
+        });
+
+        let currentCandidateId = null;
+        document.getElementById('deriveIdBtn').addEventListener('click', function () {
+            const first = (document.getElementById('firstName').value || '').trim();
+            const middle = (document.getElementById('middleName')?.value || '').trim();
+            const last = (document.getElementById('lastName').value || '').trim();
+            if (!first || !middle || !last) {
+                document.getElementById('candidateIdDisplay').textContent = 'Enter first, middle, and last name';
+                return;
+            }
+            const id = typeof ParticipantID !== 'undefined' ? ParticipantID.deriveFromName(first, last, middle) : null;
+            if (id) {
+                currentCandidateId = id;
+                document.getElementById('candidateIdDisplay').textContent = id;
+                document.getElementById('candidateIdDisplay').classList.remove('text-gray-500');
+                document.getElementById('candidateIdDisplay').classList.add('text-gray-900', 'font-semibold');
+            } else {
+                document.getElementById('candidateIdDisplay').textContent = '—';
+            }
+        });
+
+        document.getElementById('aiDisclosureForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!currentCandidateId) {
+                const first = (document.getElementById('firstName').value || '').trim();
+                const middle = (document.getElementById('middleName')?.value || '').trim();
+                const last = (document.getElementById('lastName').value || '').trim();
+                if (first && middle && last && typeof ParticipantID !== 'undefined') {
+                    currentCandidateId = ParticipantID.deriveFromName(first, last, middle);
+                }
+            }
+            if (!currentCandidateId) {
+                currentCandidateId = typeof ParticipantID !== 'undefined' ? ParticipantID.generate() : 'PAL-' + Math.random().toString(36).slice(2, 6).toUpperCase() + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+            }
+
+            const noAiTools = document.getElementById('noAiTools').checked;
+            const toolEntries = [];
+            document.querySelectorAll('.tool-block').forEach(block => {
+                const name = (block.querySelector('[data-tool-name]').value || '').trim();
+                if (!name && !noAiTools) return;
+                const purposes = Array.from(block.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+                const purposeLabels = PURPOSE_OPTIONS.reduce((o, p) => { o[p.value] = p.label; return o; }, {});
+                const url = (block.querySelector('[data-tool-url]').value || '').trim();
+                toolEntries.push({ tool: name || '(unnamed)', purposes: purposes.map(p => purposeLabels[p] || p), url });
+            });
+
+            const flatUrls = [document.getElementById('url1').value, document.getElementById('url2').value, document.getElementById('url3').value].filter(Boolean);
+            const assignmentName = document.getElementById('assignmentName').value || '(not specified)';
+
+            let toolsHtml = '';
+            if (noAiTools) {
+                toolsHtml = '<p class="mb-4"><strong>AI Tools:</strong> I did not use any AI tools.</p>';
+            } else if (toolEntries.length) {
+                toolsHtml = '<p class="mb-2"><strong>Tools and purposes:</strong></p><ul class="list-disc list-inside mb-4">' +
+                    toolEntries.map(t => '<li><strong>' + escapeHtml(t.tool) + '</strong> → ' + (t.purposes.length ? t.purposes.join(', ') : '—') + (t.url ? ' (' + escapeHtml(t.url) + ')' : '') + '</li>').join('') +
+                    '</ul>';
+            } else {
+                toolsHtml = '<p class="mb-4">No tools specified.</p>';
+            }
+
+            const content = document.getElementById('finalizedContent');
+            content.innerHTML = `
+                <h1 class="text-2xl font-bold text-gray-900 mb-1">AI Disclosure Form</h1>
+                <p class="text-sm text-gray-500 mb-6">AI transparency for coursework and research assignments</p>
+                <p class="mb-4"><strong>Candidate Generation ID:</strong> <span class="font-mono">${currentCandidateId}</span></p>
+                <p class="mb-4"><strong>Assignment:</strong> ${escapeHtml(assignmentName)}</p>
+                ${toolsHtml}
+                ${flatUrls.length ? '<p class="mb-2"><strong>URLs:</strong></p><ul class="list-disc list-inside mb-4">' + flatUrls.map(u => '<li>' + escapeHtml(u) + '</li>').join('') + '</ul>' : ''}
+                <p class="text-sm text-gray-500">Generated ${new Date().toLocaleString()}</p>
+            `;
+
+            document.getElementById('formScreen').classList.add('hidden');
+            document.getElementById('finalizedScreen').classList.remove('hidden');
+        });
+
+        document.getElementById('backToFormBtn').addEventListener('click', function () {
+            document.getElementById('formScreen').classList.remove('hidden');
+            document.getElementById('finalizedScreen').classList.add('hidden');
+        });
+
+        function escapeHtml(s) {
+            const div = document.createElement('div');
+            div.textContent = s;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

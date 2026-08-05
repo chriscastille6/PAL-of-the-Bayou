@@ -1,0 +1,114 @@
+<!--
+File location: platform/conflict-management-feedback-sample.html
+What this file does: Sample feedback report for Conflict Management Styles assessment (BayouPAL assessment library)
+Why this file exists: Lets visitors preview the kind of report they receive after completing the assessment
+RELEVANT FILES: platform/index.html, platform/conflict-management-assessment/index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conflict Management Styles — Sample Feedback | People Analytics Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .nicholls-red { background-color: #AE132A; }
+        .nicholls-red-text { color: #AE132A; }
+        .nicholls-gray-text { color: #72808A; }
+        .brand-gradient { background: linear-gradient(135deg, #AE132A 0%, #dc2626 100%); }
+        .assessment-card { transition: transform 0.2s, box-shadow 0.2s; }
+        .assessment-card:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center justify-center w-16 h-16 brand-gradient rounded-2xl mb-4 shadow-lg">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+            </div>
+            <h1 class="text-4xl font-bold nicholls-red-text mb-2">Conflict Management Styles</h1>
+            <p class="text-lg text-gray-600 mb-2">Your Feedback (Sample)</p>
+            <p class="text-sm nicholls-gray-text">People Analytics Lab of the Bayou</p>
+            <p class="text-sm font-mono text-gray-600 mt-2">Participant ID: A1B2-C3D4-E5F6</p>
+            <p class="text-xs text-amber-700 bg-amber-100 px-2 py-1 rounded mt-3 inline-block">Sample report (demo)</p>
+        </div>
+
+        <!-- Sample Profile -->
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Your Conflict Management Profile</h2>
+            <p class="text-gray-600 mb-6">Your dominant style: <strong class="nicholls-red-text">Collaborating</strong> (score: 10/12)</p>
+            <div class="space-y-4 mb-6">
+                <div class="flex items-center gap-4">
+                    <span class="w-28 text-sm font-medium text-gray-700">Collaborating</span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-4"><div class="nicholls-red h-4 rounded-full" style="width:83%"></div></div>
+                    <span class="text-sm text-gray-600 w-8">10/12</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="w-28 text-sm font-medium text-gray-700">Compromising</span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-4"><div class="nicholls-red h-4 rounded-full" style="width:83%"></div></div>
+                    <span class="text-sm text-gray-600 w-8">10/12</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="w-28 text-sm font-medium text-gray-700">Harmonizing</span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-4"><div class="bg-gray-400 h-4 rounded-full" style="width:58%"></div></div>
+                    <span class="text-sm text-gray-600 w-8">7/12</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="w-28 text-sm font-medium text-gray-700">Competing</span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-4"><div class="bg-gray-400 h-4 rounded-full" style="width:42%"></div></div>
+                    <span class="text-sm text-gray-600 w-8">5/12</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="w-28 text-sm font-medium text-gray-700">Avoiding</span>
+                    <div class="flex-1 bg-gray-200 rounded-full h-4"><div class="bg-gray-400 h-4 rounded-full" style="width:25%"></div></div>
+                    <span class="text-sm text-gray-600 w-8">3/12</span>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 pt-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Evidence-Based Feedback</h3>
+                <p class="text-sm text-gray-700 mb-2"><strong>Strengths:</strong> Creates mutual trust; maintains positive relationships; builds commitments. Meta-analyses show collaborative/problem-solving approaches are preferred in collectivist cultures and linked to better team outcomes (Holt & DeVore, 2005).</p>
+                <p class="text-sm text-gray-700 mb-2"><strong>Watch out:</strong> Time and energy consuming.</p>
+                <p class="text-sm text-gray-700 mb-2"><strong>Outcomes:</strong> Generally associated with higher satisfaction and relationship quality when used appropriately.</p>
+                <p class="text-sm text-gray-700 mb-2"><strong>When to use:</strong> When both the issue and the relationship are important, and you have sufficient time. Collaboration generally yields the best outcomes but is the most difficult to implement (Whetten & Cameron, Ch. 7).</p>
+                <p class="text-sm text-gray-700 mt-4 p-3 bg-blue-50 border-l-4 border-blue-500 rounded-r"><strong>Consider trying:</strong> Collaboration only works when both parties engage. When others won't reciprocate, don't over-invest—you can be taken advantage of. When time is tight or the other party won't engage, a quick compromise or even standing firm may be appropriate. Invite when you can: "What would it take for both of us to walk away satisfied?"</p>
+            </div>
+            <p class="text-sm text-gray-500 italic mt-6">This is illustrative. Your actual report will reflect your responses.</p>
+        </div>
+
+        <!-- Discussion Questions -->
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Discussion Questions for Your Team</h3>
+            <p class="text-sm text-gray-600 mb-4">Use these prompts to reflect with teammates on conflict styles and team dynamics.</p>
+            <ul class="list-decimal list-inside space-y-2 text-gray-700">
+                <li>How does your dominant style show up in our team? Can you give a recent example?</li>
+                <li>When have you seen a teammate use a different style effectively? What did you learn?</li>
+                <li>In what situations might your preferred style backfire? When might you try a different approach?</li>
+                <li>If two teammates have very different styles (e.g., competing vs. harmonizing), how can the team work through that?</li>
+                <li>What's one conflict you're currently avoiding or accommodating? What would it take to address it more directly?</li>
+            </ul>
+        </div>
+
+        <!-- Notes -->
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Important Notes</h2>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                <ul class="space-y-2 text-gray-700 text-sm">
+                    <li>• This is a <strong>sample report</strong>. Your actual report will show your own score profile and tailored feedback.</li>
+                    <li>• Results are for self-reflection only and are not diagnostic.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-12 pt-8 border-t border-gray-200">
+            <p class="text-gray-600 text-sm mb-2"><a href="index.html" class="nicholls-red-text hover:opacity-80 font-medium">← Back to Assessment Platform</a></p>
+            <p class="text-gray-600 text-sm mb-4">Conflict Management Styles</p>
+            <p class="nicholls-gray-text text-sm">People Analytics Lab of the Bayou</p>
+            <p class="text-gray-500 text-xs">Nicholls State University | Al Danos College of Business Administration</p>
+        </div>
+    </div>
+</body>
+</html>

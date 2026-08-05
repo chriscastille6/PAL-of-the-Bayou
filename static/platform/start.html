@@ -1,0 +1,65 @@
+<!--
+File location: static/platform/start.html
+What this file does: Soft-fail stub when a visitor clicks Start Assessment on the public hub
+Why this file exists: Full interactive runs need BayouPAL assessment-flow + API; static Netlify has neither
+RELEVANT FILES: static/platform/index.html, Psychological Assessments/static-export/js/api.js
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment launch (static) | People Analytics Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .nicholls-red { background-color: #AE132A; }
+        .nicholls-red-text { color: #AE132A; }
+        .brand-gradient { background: linear-gradient(135deg, #AE132A 0%, #dc2626 100%); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-xl mx-auto px-4 py-12">
+        <a href="index.html" class="text-sm text-gray-500 hover:text-gray-700 mb-6 inline-block">← Back to Assessment Platform</a>
+
+        <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+            <div class="w-12 h-12 brand-gradient rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-900 mb-2" id="title">Interactive launch unavailable here</h1>
+            <p class="text-gray-600 mb-4">
+                This public site hosts the platform hub and sample reports only.
+                Starting <span id="name" class="font-medium">this assessment</span> soft-fails without the lab API
+                (same idea as the BayouPAL static export).
+            </p>
+            <p class="text-sm text-gray-500 mb-6">
+                No account is created. No research data is stored on this host.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <a id="sampleLink" href="index.html" class="inline-block text-center px-6 py-3 nicholls-red text-white rounded-lg hover:opacity-90 font-medium">View sample report</a>
+                <a href="index.html" class="inline-block text-center px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-medium">Return to hub</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Map query param → label + sample report path
+        var map = {
+            ei: { name: 'Emotional Intelligence', sample: 'ei-feedback-sample.html' },
+            rpm: { name: "Raven's Progressive Matrices", sample: 'rpm-feedback-sample.html' },
+            wpf: { name: 'Whole-Person Fit', sample: 'whole-person-fit-sample.html' },
+            csap: { name: 'Core Self-Awareness Profiler', sample: 'core-self-awareness-profile/sample-profile.html' },
+            cpp: { name: 'Creative Personality Profiler', sample: 'creative-personality-profiler/sample-profile.html' },
+            lai: { name: 'Loss Aversion Inventory', sample: 'lai-feedback-sample.html' },
+            conflict: { name: 'Conflict Management Styles', sample: 'conflict-management-feedback-sample.html' }
+        };
+        var key = new URLSearchParams(location.search).get('assessment') || '';
+        var info = map[key];
+        if (info) {
+            document.getElementById('name').textContent = info.name;
+            document.getElementById('sampleLink').href = info.sample;
+            console.info('[platform-static] start soft-fail for', key);
+        }
+    </script>
+</body>
+</html>

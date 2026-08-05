@@ -1,0 +1,94 @@
+<!--
+File location: platform/lai-feedback-sample.html
+What this file does: Sample feedback report for Loss Aversion Inventory (BayouPAL assessment library)
+Why this file exists: Lets visitors preview the kind of report they receive after completing the LAI
+RELEVANT FILES: platform/index.html, loss-assessment-inventory/index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loss Aversion Inventory — Sample Feedback | People Analytics Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .nicholls-red { background-color: #AE132A; }
+        .nicholls-red-text { color: #AE132A; }
+        .nicholls-gray-text { color: #72808A; }
+        .brand-gradient { background: linear-gradient(135deg, #AE132A 0%, #dc2626 100%); }
+        .assessment-card { transition: transform 0.2s, box-shadow 0.2s; }
+        .assessment-card:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center justify-center w-16 h-16 brand-gradient rounded-2xl mb-4 shadow-lg">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <h1 class="text-4xl font-bold nicholls-red-text mb-2">Loss Aversion Inventory</h1>
+            <p class="text-lg text-gray-600 mb-2">Your Feedback (Sample)</p>
+            <p class="text-sm nicholls-gray-text">People Analytics Lab of the Bayou</p>
+            <p class="text-sm font-mono text-gray-600 mt-2">Participant ID: PAL-SAMPLE-0000</p>
+            <p class="text-xs text-amber-700 bg-amber-100 px-2 py-1 rounded mt-3 inline-block">Sample report (demo)</p>
+        </div>
+
+        <!-- Sample score -->
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Your Score</h2>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-6">
+                <div class="flex-shrink-0">
+                    <div class="w-48 h-48 brand-gradient rounded-full flex flex-col items-center justify-center shadow-lg">
+                        <div class="text-5xl font-bold text-white">4.25</div>
+                        <div class="text-lg text-white opacity-90">scale 1–7</div>
+                    </div>
+                </div>
+                <div class="flex-1 max-w-md">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">What This Means</h3>
+                    <p class="text-gray-700">
+                        Compared to the validation sample (Li et al., 2021), your score is at the <strong>62nd percentile</strong>. Your score is <strong>in line with</strong> the typical level where losses sting about twice as bad as equal gains feel good (Kahneman & Tversky, 1979).
+                    </p>
+                </div>
+            </div>
+            <p class="text-sm text-gray-500 italic">This is illustrative. Your actual report will reflect your responses.</p>
+        </div>
+
+        <!-- Feedback content (matches LAI real feedback) -->
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6 prose prose-gray max-w-none">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">About Loss Aversion</h2>
+            <p><strong>What loss aversion is.</strong> Losing something often hurts more than gaining the same thing feels good. Losing $100 can feel worse than gaining $100 feels good. That idea is loss aversion (Kahneman & Tversky, 1979). It shows up with money, with wins and losses, and in other choices (Li et al., 2021). It is not the same as being risk-averse: loss aversion is about losses vs. gains, not about preferring safe vs. risky options (Li et al., 2021).</p>
+            <figure class="my-6 mx-auto max-w-2xl" aria-label="Prospect theory value function: losses loom larger than gains">
+                <img src="../loss-assessment-inventory/loss_aversion_value_function.png" alt="Prospect theory value function: losses loom larger than gains" class="w-full h-auto rounded-lg border border-gray-200" />
+                <figcaption class="text-xs mt-2 text-center text-gray-500">Losses count more than gains of the same size (Kahneman & Tversky, 1979).</figcaption>
+            </figure>
+            <p class="mt-4"><strong>Three ideas in the chart.</strong> <em>Reference point:</em> Where you start from—often the status quo or “no change.” <em>Diminishing sensitivity:</em> The farther you get from that starting point, the less each extra gain or loss seems to matter (Kahneman & Tversky, 1979). <em>Loss aversion:</em> Losses feel bigger than equal-sized gains; the same amount hurts more than it pleases.</p>
+            <p class="mt-4"><strong>What higher scores can mean.</strong> You may pay more attention to what you could lose than to what you could gain. You may find it harder to let go of time or money you have already spent, and to try something new (Li et al., 2021).</p>
+            <p class="mt-4">Most people are at least a bit loss-averse. Spotting when it affects you can help you make clearer choices (Li et al., 2021).</p>
+            <p class="text-sm text-gray-600 mt-6"><strong>References</strong></p>
+            <p class="text-sm text-gray-500">Kahneman, D., & Tversky, A. (1979). Prospect theory: An analysis of decision under risk. <em>Econometrica</em>, <em>47</em>(2), 263–291. Li, J., Chai, L., Nordstrom, O., Tangpong, C., & Hung, K.-T. (2021). Development of a loss aversion scale. <em>Journal of Managerial Issues</em>, <em>33</em>(1), 69–89.</p>
+        </div>
+
+        <!-- Notes -->
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Important Notes</h2>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                <ul class="space-y-2 text-gray-700 text-sm">
+                    <li>• This is a <strong>sample report</strong>. Your actual report will show your own score and percentile.</li>
+                    <li>• Results are for self-reflection only and are not diagnostic.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-12 pt-8 border-t border-gray-200">
+            <p class="text-gray-600 text-sm mb-2"><a href="index.html" class="nicholls-red-text hover:opacity-80 font-medium">← Back to Assessment Platform</a></p>
+            <p class="text-gray-600 text-sm mb-4">Loss Aversion Inventory</p>
+            <p class="nicholls-gray-text text-sm">People Analytics Lab of the Bayou</p>
+            <p class="text-gray-500 text-xs">Nicholls State University | Al Danos College of Business Administration</p>
+        </div>
+    </div>
+</body>
+</html>

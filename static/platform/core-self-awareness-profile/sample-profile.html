@@ -1,0 +1,378 @@
+<!--
+File location: platform/core-self-awareness-profile/sample-profile.html
+What this file does: Sample feedback report for Core Self-Awareness Profiler (shareable demo for students)
+Why this file exists: Preview of what students see after completing the assessment
+RELEVANT FILES: core-self-awareness-profile/SAMPLE_FEEDBACK_REPORT.html, web-app/src/components/ResultsPage.tsx
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core Self-Awareness Profiler – Sample Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .nav-btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-align: left;
+            background: white;
+            border: 1px solid #e5e7eb;
+            color: #374151;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+        .nav-btn:hover { background: #f9fafb; border-color: #d1d5db; }
+        .nav-btn.active { background: #2563eb; color: white; border-color: #2563eb; box-shadow: 0 2px 4px rgba(37,99,235,0.3); }
+        .outcome-content { display: none; }
+        .outcome-content.active { display: block; }
+        @media print {
+            body { background: white; font-size: 11pt; }
+            aside { display: none !important; }
+            .outcome-content { display: block !important; page-break-inside: avoid; margin-bottom: 1.5rem; }
+            .outcome-content:not(:first-child) { page-break-before: auto; }
+            main { padding: 0 !important; max-width: 100% !important; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex flex-col md:flex-row max-w-7xl mx-auto">
+        <!-- Sidebar: buttons on the left -->
+        <aside class="w-full md:w-72 bg-gray-100 border-r border-gray-200 md:min-h-screen flex-shrink-0">
+            <div class="sticky top-0 p-4">
+                <div class="flex justify-center mb-4">
+                    <img src="lab-emblem.png" alt="Lab Emblem" class="w-48 h-48 object-contain" onerror="this.style.display='none'">
+                </div>
+                <p class="text-xs text-amber-700 bg-amber-100 px-2 py-1 rounded mb-3 text-center font-medium">Sample profile (demo)</p>
+                <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Report sections</div>
+                <button class="nav-btn active" data-section="overview">Profile Overview</button>
+                <button class="nav-btn" data-section="sms">Self-Monitoring (SMS)</button>
+                <button class="nav-btn" data-section="ei">Emotional Intelligence</button>
+                <button class="nav-btn" data-section="bigfive">Big Five Personality</button>
+                <button class="nav-btn" data-section="values">Values (Moral Reasoning)</button>
+                <button class="nav-btn" data-section="cultural">Cultural Values</button>
+                <button class="nav-btn" data-section="csi">Cognitive Style (CSI)</button>
+                <button class="nav-btn" data-section="toa">Tolerance of Ambiguity</button>
+                <button class="nav-btn" data-section="loc">Locus of Control</button>
+                <div class="mt-6 pt-4 border-t border-gray-300">
+                    <a href="index.html" class="block w-full py-2 px-4 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg shadow-sm text-center mb-2">Take the assessment →</a>
+                    <button type="button" onclick="printFullReport()" class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                        Print / Save as PDF
+                    </button>
+                    <p class="text-xs text-gray-500 mt-2 text-center">Save as PDF from print dialog</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <main class="flex-1 p-6 md:p-8 overflow-y-auto">
+            <!-- Overview -->
+            <div id="overview" class="outcome-content active">
+                <h1 class="text-3xl font-semibold text-gray-900 mb-2">Your Core Self-Awareness Profiler Results</h1>
+                <p class="text-sm text-gray-500 mb-2">Seven dimensions: Self-Monitoring, EI, Big Five, Values (DIT), Cognitive Style, Tolerance of Ambiguity, Locus of Control</p>
+                <p class="text-sm text-gray-600 mb-6">Completed: February 2, 2026 · Time taken: 42 min 18 sec</p>
+                <div class="rounded-2xl p-6 mb-6 text-white" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);">
+                    <h2 class="text-xl font-semibold mb-2">Profile Summary</h2>
+                    <p class="text-sm opacity-90">SMS 72 · EI 68 · Big Five 75 · Values 58 · CSI 70 · TOA 65 · LOC 8/23 (Internal)</p>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-3">Key strengths (3)</h2>
+                    <ul class="list-none space-y-3 text-gray-700 text-sm">
+                        <li class="border-l-2 border-green-500 pl-4"><span class="font-medium text-gray-900">Big Five profile.</span> Self-awareness of personality supports working with different styles and managing your impact on team dynamics.</li>
+                        <li class="border-l-2 border-green-500 pl-4"><span class="font-medium text-gray-900">Self-monitoring.</span> Helps you read the room and adapt your style, which can improve communication and collaboration in diverse teams.</li>
+                        <li class="border-l-2 border-green-500 pl-4"><span class="font-medium text-gray-900">Cognitive style.</span> A clear thinking style helps you contribute structure or creativity to problem-solving and planning with others.</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-3">Growth opportunities (3)</h2>
+                    <ul class="list-none space-y-3 text-gray-700 text-sm">
+                        <li class="border-l-2 border-amber-500 pl-4"><span class="font-medium text-gray-900">Moral reasoning (DIT).</span> Reflecting on ethical dilemmas can support more consistent, principle-based decisions in team contexts.</li>
+                        <li class="border-l-2 border-amber-500 pl-4"><span class="font-medium text-gray-900">Tolerance of ambiguity.</span> Building comfort with uncertainty can help you contribute when teams face unclear goals or changing priorities.</li>
+                        <li class="border-l-2 border-amber-500 pl-4"><span class="font-medium text-gray-900">Emotional intelligence.</span> Developing EI can improve stress management, feedback, and empathy—strengthening your impact in teams.</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-3">Narrative (PAMS-linked)</h2>
+                    <ul class="list-none space-y-3 text-gray-700 text-sm">
+                        <li class="border-l-2 border-blue-200 pl-4">Your profile suggests strengths in self-presentation and adaptability (SMS) and in personality dimensions associated with engagement and performance (Big Five).</li>
+                        <li class="border-l-2 border-blue-200 pl-4">Emotional intelligence and cognitive style (Planning-dominant) support structured problem-solving and team coordination.</li>
+                        <li class="border-l-2 border-blue-200 pl-4">Values (DIT) and tolerance of ambiguity are in a moderate range; continued reflection on ethical dilemmas and comfort with uncertainty may further support leadership development.</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Profile Overview</h3>
+                    <p class="text-sm text-gray-600 mb-4">Your scores across seven dimensions (higher = stronger). Use the buttons on the left to jump to any section.</p>
+                    <div class="w-64 h-64 mx-auto bg-gray-100 rounded-full flex items-center justify-center text-gray-500 text-sm">Radar chart</div>
+                </div>
+                <p class="text-xs text-gray-500 mt-6">PAMS: Personal Assessment of Management Skills (outcomes for practicing managers). Narrative predictions are linked to PAMS for educational use.</p>
+            </div>
+
+            <!-- Self-Monitoring (SMS) -->
+            <div id="sms" class="outcome-content">
+                <h1 class="text-2xl font-bold text-gray-900 mb-4">Self-Monitoring (SMS)</h1>
+                <p class="text-gray-700 mb-4">Self-monitoring is how much you adjust your behavior to fit the situation. High self-monitors read the room and adapt; low self-monitors tend to act the same across situations.</p>
+                <p class="text-lg font-semibold text-blue-600 mb-2">72/100 · High self-monitor</p>
+                <p class="text-sm text-gray-600 mb-6">Higher scores mean you adapt your behavior more to the situation; lower scores mean you tend to act consistently across situations.</p>
+                <p class="text-xs text-gray-600 border-t border-gray-200 pt-4 mt-4">Snyder, M., &amp; Gangestad, S. (1986). On the nature of self-monitoring: Matters of assessment, matters of validity. <em>Journal of Personality and Social Psychology</em>, <em>51</em>, 125–139.</p>
+            </div>
+
+            <!-- Emotional Intelligence -->
+            <div id="ei" class="outcome-content">
+                <h1 class="text-2xl font-bold text-gray-900 mb-4">Emotional Intelligence</h1>
+                <p class="text-gray-700 mb-4">Emotional intelligence is the ability to notice, understand, and manage emotions—in yourself and others. It has four parts: perceiving emotions, understanding them, regulating your own, and managing others'.</p>
+                <p class="text-lg font-semibold text-blue-600 mb-4">Overall: 68/100</p>
+                <div class="mb-6">
+                    <div class="w-full h-80 bg-gray-100 rounded-xl flex items-center justify-center text-gray-500 text-sm">EI radar (Recognition, Understanding, Regulation, Management)</div>
+                </div>
+                <div class="space-y-3 mb-4">
+                    <div class="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-500">
+                        <p class="font-medium text-gray-900">Recognition — 72/100</p>
+                        <p class="text-sm text-gray-700 mt-0.5">Perceiving emotions accurately in yourself and others (faces, tone, body language).</p>
+                    </div>
+                    <div class="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-500">
+                        <p class="font-medium text-gray-900">Understanding — 68/100</p>
+                        <p class="text-sm text-gray-700 mt-0.5">Understanding what emotions mean and how they change and combine.</p>
+                    </div>
+                    <div class="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-500">
+                        <p class="font-medium text-gray-900">Regulation — 64/100</p>
+                        <p class="text-sm text-gray-700 mt-0.5">Managing your own emotions so they support goals and well-being.</p>
+                    </div>
+                    <div class="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-500">
+                        <p class="font-medium text-gray-900">Management — 70/100</p>
+                        <p class="text-sm text-gray-700 mt-0.5">Influencing others' emotions to support relationships and teamwork.</p>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-700 mb-4">Recognition supports accurate reading of others and situational awareness. Understanding helps explain behavior and anticipate reactions. Regulation supports stress management and consistent performance. Management supports teamwork, leadership, and conflict resolution. Together, these facets are linked in research to job performance, leadership emergence, and well-being.</p>
+                <p class="text-xs text-gray-600 border-t border-gray-200 pt-4 mt-4">Mayer, J. D., &amp; Salovey, P. (1997). What is emotional intelligence? In P. Salovey &amp; D. Sluyter (Eds.), <em>Emotional development and emotional intelligence</em> (pp. 3–31). Basic Books. O'Boyle, E. H., et al. (2011). The relation between emotional intelligence and job performance: A meta-analysis. <em>Journal of Organizational Behavior</em>, <em>32</em>(5), 788–818.</p>
+            </div>
+
+            <!-- Big Five Personality -->
+            <div id="bigfive" class="outcome-content">
+                <h1 class="text-2xl font-bold text-gray-900 mb-4">Big Five Personality</h1>
+                <p class="text-gray-700 mb-4">The Big Five are five broad personality traits: Openness (curiosity, creativity), Conscientiousness (organization, dependability), Extraversion (sociability, energy), Agreeableness (warmth, cooperation), and Emotional Stability (calm under pressure).</p>
+                <div class="mb-6">
+                    <div class="w-full h-80 bg-gray-100 rounded-xl flex items-center justify-center text-gray-500 text-sm">Big Five radar (Openness, Conscientiousness, Extraversion, Agreeableness, Emotional Stability)</div>
+                    <p class="text-xs text-gray-500 text-center mt-1">Emotional Stability = inverse of Neuroticism (higher = calmer under pressure).</p>
+                </div>
+                <div class="space-y-4 mb-6">
+                    <div class="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-500">
+                        <h3 class="font-semibold text-gray-900">Openness — 74/100</h3>
+                        <p class="text-sm text-gray-700 mt-1">People high in openness tend to be curious, creative, and open to new ideas.</p>
+                        <p class="text-sm font-medium text-gray-800 mt-2">Your moderate openness suggests you like some variety and new ideas while also valuing familiar, structured approaches.</p>
+                    </div>
+                    <div class="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-500">
+                        <h3 class="font-semibold text-gray-900">Conscientiousness — 78/100</h3>
+                        <p class="text-sm text-gray-700 mt-1">People high in conscientiousness tend to be organized, reliable, and persistent.</p>
+                        <p class="text-sm font-medium text-gray-800 mt-2">Your high conscientiousness suggests you are organized and reliable—well suited to roles that need attention to detail and consistent follow-through.</p>
+                    </div>
+                    <div class="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-500">
+                        <h3 class="font-semibold text-gray-900">Extraversion — 72/100</h3>
+                        <p class="text-sm text-gray-700 mt-1">People high in extraversion tend to be outgoing and energetic and to enjoy being with others.</p>
+                        <p class="text-sm font-medium text-gray-800 mt-2">Your moderate extraversion suggests you enjoy some social interaction and can step up when needed, plus time for focused solo work.</p>
+                    </div>
+                    <div class="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-500">
+                        <h3 class="font-semibold text-gray-900">Agreeableness — 70/100</h3>
+                        <p class="text-sm text-gray-700 mt-1">People high in agreeableness tend to be compassionate, trusting, and cooperative.</p>
+                        <p class="text-sm font-medium text-gray-800 mt-2">Your moderate agreeableness suggests you can be cooperative and also assert your own needs when needed.</p>
+                    </div>
+                    <div class="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-500">
+                        <h3 class="font-semibold text-gray-900">Emotional Stability — 35/100</h3>
+                        <p class="text-sm text-gray-700 mt-1">Neuroticism reflects tendency to worry or feel stressed; the flip side is emotional stability—staying calm under pressure.</p>
+                        <p class="text-sm font-medium text-gray-800 mt-2">Your higher neuroticism (lower emotional stability) suggests you may do best in roles with lower stress and supportive, predictable conditions.</p>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-600 border-t border-gray-200 pt-4 mt-4">Soto, C. J., &amp; John, O. P. (2017). The next Big Five Inventory (BFI-2). <em>Journal of Personality and Social Psychology</em>, <em>113</em>, 117–143. Barrick, M. R., &amp; Mount, M. K. (1991). The Big Five personality dimensions and job performance: A meta-analysis. <em>Personnel Psychology</em>, <em>44</em>(1), 1–26.</p>
+            </div>
+
+            <!-- Values (Moral Reasoning / DIT) -->
+            <div id="values" class="outcome-content">
+                <h1 class="text-2xl font-bold text-gray-900 mb-4">Values: Moral Reasoning (DIT)</h1>
+                <p class="text-gray-700 mb-4">Moral reasoning describes how you think about right and wrong. The DIT measures whether you lean toward following rules, pleasing others, upholding order, or reasoning from principles and fairness.</p>
+                <p class="text-lg font-semibold text-amber-800 mb-2">Postconventional emphasis: 58%</p>
+                <p class="text-gray-700 mb-4">Your responses mix conventional and postconventional reasoning. You consider both social norms and rules and broader principles when thinking about right and wrong. Many adults show this mixed pattern.</p>
+                <div class="mb-4">
+                    <p class="text-sm font-medium text-gray-700 mb-2">Stage emphasis (% of total)</p>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1"><span>Stage 2</span><span>10%</span></div>
+                            <div class="h-6 bg-gray-200 rounded overflow-hidden"><div class="h-full bg-amber-600 rounded" style="width: 10%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1"><span>Stage 3</span><span>14%</span></div>
+                            <div class="h-6 bg-gray-200 rounded overflow-hidden"><div class="h-full bg-amber-500 rounded" style="width: 14%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1"><span>Stage 4</span><span>18%</span></div>
+                            <div class="h-6 bg-gray-200 rounded overflow-hidden"><div class="h-full bg-amber-400 rounded" style="width: 18%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1"><span>Stage 5</span><span>58%</span></div>
+                            <div class="h-6 bg-gray-200 rounded overflow-hidden"><div class="h-full bg-amber-400 rounded" style="width: 58%"></div></div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Stage 2–3 Preconventional · Stage 4 Conventional · Stage 5 Postconventional. Percent of total emphasis.</p>
+                </div>
+                <p class="text-xs text-gray-600 mb-4">Based on Kohlberg/Rest DIT; for educational use.</p>
+                <p class="text-xs text-gray-600 border-t border-gray-200 pt-4 mt-4">Rest, J. (1979). <em>Development in Judging Moral Issues</em>. University of Minnesota Press. DIT: Center for the Study of Ethical Development, UA. Kohlberg's stages of moral development; DIT P% = emphasis on postconventional (Stage 5–6) reasoning.</p>
+            </div>
+
+            <!-- Cultural Values -->
+            <div id="cultural" class="outcome-content">
+                <h1 class="text-2xl font-bold text-gray-900 mb-4">Cultural Values (Trompenaars)</h1>
+                <p class="text-gray-700 mb-4">Cultural values shape how you view rules vs. relationships, time, individual vs. group, and other dimensions. There are no right answers—knowing your preferences helps you work across cultures.</p>
+                <div class="space-y-4 mb-6">
+                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <h3 class="text-sm font-semibold text-gray-800 mb-2">What are these dimensions?</h3>
+                        <p class="text-sm text-gray-700">The Trompenaars model describes seven dimensions of culture, based on research across 50+ countries. They capture how people differ on rules vs. relationships, time, individual vs. group, task vs. person, control, emotional expression, and status. There are no right answers—knowing your preferences helps you work across cultures.</p>
+                    </div>
+                    <div class="bg-amber-50 rounded-lg p-4 border border-amber-200">
+                        <h3 class="text-sm font-semibold text-gray-800 mb-2">Why it matters</h3>
+                        <p class="text-sm text-gray-700">Cultural intelligence (CQ) is linked to cross-cultural adjustment, performance, job satisfaction, and well-being among expatriates and managers. Understanding your cultural profile helps you anticipate misunderstandings and adapt your style when working across cultures.</p>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Your profile (7 dimensions)</h3>
+                <p class="text-sm text-gray-600 mb-4">For each dimension: your choice, what it measures, and exemplar cultures (e.g. USA, Japan, Germany) where that value is common.</p>
+                <ul class="space-y-4 mb-6">
+                    <li class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+                        <p class="font-semibold text-gray-900 mb-1">Universalism vs Particularism</p>
+                        <p class="text-sm text-gray-700 mb-1"><strong>Your choice:</strong> Testify that he was going 45 mph (tell the truth)</p>
+                        <p class="text-xs text-gray-600 mb-1"><strong>Definition:</strong> Whether rules apply equally to everyone (universalism) or relationships and context matter more (particularism).</p>
+                        <p class="text-sm text-gray-800 mt-2 border-l-2 border-blue-300 pl-3">You chose to tell the truth (universalist)—rules apply equally; relationships matter less than the rule. Exemplar cultures: USA, UK, Germany, Netherlands, Nordic countries—one rule for all.</p>
+                    </li>
+                    <li class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+                        <p class="font-semibold text-gray-900 mb-1">Time orientation</p>
+                        <p class="text-sm text-gray-700 mb-1"><strong>Your choice:</strong> Future: Long-term goals and possible outcomes</p>
+                        <p class="text-xs text-gray-600 mb-1"><strong>Definition:</strong> Whether you focus more on the past (experience, tradition), the present (current demands), or the future (long-term goals).</p>
+                        <p class="text-sm text-gray-800 mt-2 border-l-2 border-blue-300 pl-3">Future-oriented—long-term goals and possible outcomes matter most. Exemplar cultures: USA, Japan, China, Netherlands—planning and long-term strategy.</p>
+                    </li>
+                    <li class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+                        <p class="font-semibold text-gray-900 mb-1">Individualism vs Communitarianism</p>
+                        <p class="text-sm text-gray-700 mb-1"><strong>Your choice:</strong> The team as a whole</p>
+                        <p class="text-xs text-gray-600 mb-1"><strong>Definition:</strong> Whether responsibility and identity sit with the individual or the group (team, community).</p>
+                        <p class="text-sm text-gray-800 mt-2 border-l-2 border-blue-300 pl-3">The team as a whole—you lean toward shared responsibility and group loyalty. Exemplar cultures: Japan, China, Korea, Mexico, Brazil, many African cultures—collective responsibility.</p>
+                    </li>
+                    <li class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+                        <p class="font-semibold text-gray-900 mb-1">Specific vs Diffuse</p>
+                        <p class="text-sm text-gray-700 mb-1"><strong>Your choice:</strong> Organisation as system (specific)</p>
+                        <p class="text-xs text-gray-600 mb-1"><strong>Definition:</strong> Whether you see an organisation mainly as a system of roles and goals (specific) or as people and relationships (diffuse).</p>
+                        <p class="text-sm text-gray-800 mt-2 border-l-2 border-blue-300 pl-3">Organisation as system (specific)—task-focused; roles and goals are separate from private life. Exemplar cultures: USA, UK, Germany, Netherlands—clear roles, task-first.</p>
+                    </li>
+                    <li class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+                        <p class="font-semibold text-gray-900 mb-1">Internal vs External control</p>
+                        <p class="text-sm text-gray-700 mb-1"><strong>Your choice:</strong> Effort and drive (internal)</p>
+                        <p class="text-xs text-gray-600 mb-1"><strong>Definition:</strong> Whether you believe outcomes are driven mainly by your own effort (internal) or by luck, breaks, and the environment (external).</p>
+                        <p class="text-sm text-gray-800 mt-2 border-l-2 border-blue-300 pl-3">Effort and drive (internal)—you feel in control; success is a matter of taking advantage of opportunities. Exemplar cultures: USA, UK, Nordic countries, Germany—internal locus.</p>
+                    </li>
+                    <li class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+                        <p class="font-semibold text-gray-900 mb-1">Neutral vs Emotional</p>
+                        <p class="text-sm text-gray-700 mb-1"><strong>Your choice:</strong> I disagree</p>
+                        <p class="text-xs text-gray-600 mb-1"><strong>Definition:</strong> Whether showing emotions openly is seen as unprofessional (neutral) or as a sign of sincerity (emotional/affective).</p>
+                        <p class="text-sm text-gray-800 mt-2 border-l-2 border-blue-300 pl-3">I disagree—you are comfortable showing feelings (affective). Exemplar cultures: Italy, Spain, Mexico, Brazil, Saudi Arabia—expressive, emotions as sincerity.</p>
+                    </li>
+                    <li class="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
+                        <p class="font-semibold text-gray-900 mb-1">Ascription vs Achievement</p>
+                        <p class="text-sm text-gray-700 mb-1"><strong>Your choice:</strong> I disagree</p>
+                        <p class="text-xs text-gray-600 mb-1"><strong>Definition:</strong> Whether respect and status come mainly from who you are (family, role, age) or from what you do (achievement).</p>
+                        <p class="text-sm text-gray-800 mt-2 border-l-2 border-blue-300 pl-3">I disagree—status comes from what you do (achievement). Exemplar cultures: USA, UK, Australia, Netherlands—merit and performance.</p>
+                    </li>
+                </ul>
+                <p class="text-xs text-gray-500 mb-2">For full interpretation and benchmarks, see the <a href="https://www.thtconsulting.com/dashboard/results-iap/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Intercultural Awareness Profiler (THT Consulting)</a>.</p>
+                <p class="text-xs text-gray-600 border-t border-gray-200 pt-4 mt-4">Trompenaars, F., &amp; Hampden-Turner, C. InterCultural Awareness Profiler. THT Consulting. <em>Riding the Waves of Culture</em> (2nd ed.). Nicholas Brealey.</p>
+            </div>
+
+            <!-- Cognitive Style (CSI) -->
+            <div id="csi" class="outcome-content">
+                <h1 class="text-2xl font-bold text-gray-900 mb-4">Cognitive Style (CSI)</h1>
+                <p class="text-gray-700 mb-4">Cognitive style is how you prefer to think: Knowing (logic, analysis), Planning (structure, routines), or Creating (new ideas, flexibility). Most people use a mix with one style leading.</p>
+                <p class="text-lg font-semibold text-blue-800 mb-2">Planning-dominant</p>
+                <div class="mb-6">
+                    <p class="text-sm font-medium text-gray-700 mb-2">Subscales (0–100)</p>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1"><span>Knowing</span><span>68</span></div>
+                            <div class="h-6 bg-gray-200 rounded overflow-hidden"><div class="h-full bg-blue-500 rounded" style="width: 68%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1"><span>Planning</span><span>74</span></div>
+                            <div class="h-6 bg-gray-200 rounded overflow-hidden"><div class="h-full bg-blue-500 rounded" style="width: 74%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1"><span>Creating</span><span>69</span></div>
+                            <div class="h-6 bg-gray-200 rounded overflow-hidden"><div class="h-full bg-blue-500 rounded" style="width: 69%"></div></div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Knowing = logic and objectivity; Planning = structure and routines; Creating = openness and innovation.</p>
+                </div>
+                <p class="text-sm text-gray-600 mb-6">Most people use a mix with one style leading; your diagnosis above reflects your pattern.</p>
+                <p class="text-xs text-gray-600 border-t border-gray-200 pt-4 mt-4">Cools, E., &amp; Van den Broeck, H. (2007). Development and validation of the Cognitive Style Indicator. <em>The Journal of Psychology</em>, <em>141</em>(4), 359–387.</p>
+            </div>
+
+            <!-- Tolerance of Ambiguity -->
+            <div id="toa" class="outcome-content">
+                <h1 class="text-2xl font-bold text-gray-900 mb-4">Tolerance of Ambiguity</h1>
+                <p class="text-gray-700 mb-4">Tolerance of ambiguity is how comfortable you are with unclear or uncertain situations. Some people prefer clear answers and structure; others are fine with open-ended problems.</p>
+                <p class="text-lg font-semibold text-blue-600 mb-2">65/100 · Tolerates ambiguity</p>
+                <div class="mb-6">
+                    <p class="text-sm font-medium text-gray-700 mb-2">Subscales (0–100)</p>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1"><span>Novelty</span><span>62</span></div>
+                            <div class="h-6 bg-gray-200 rounded overflow-hidden"><div class="h-full bg-blue-500 rounded" style="width: 62%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1"><span>Complexity</span><span>68</span></div>
+                            <div class="h-6 bg-gray-200 rounded overflow-hidden"><div class="h-full bg-blue-500 rounded" style="width: 68%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1"><span>Insolubility</span><span>64</span></div>
+                            <div class="h-6 bg-gray-200 rounded overflow-hidden"><div class="h-full bg-blue-500 rounded" style="width: 64%"></div></div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Novelty (new situations), Complexity (multiple cues), Insolubility (unsolvable problems). Higher = more tolerance.</p>
+                </div>
+                <p class="text-sm text-gray-600 mb-6">Higher scores mean you are more comfortable with unclear or open-ended situations; lower scores mean you prefer clarity and structure.</p>
+                <p class="text-xs text-gray-600 border-t border-gray-200 pt-4 mt-4">Budner, S. (1962). Intolerance of ambiguity as a personality variable. <em>Journal of Personality</em>, <em>30</em>(1), 29–50.</p>
+            </div>
+
+            <!-- Locus of Control -->
+            <div id="loc" class="outcome-content">
+                <h1 class="text-2xl font-bold text-gray-900 mb-4">Locus of Control</h1>
+                <p class="text-gray-700 mb-4">Locus of control is the extent to which you believe outcomes are controlled by your own actions (internal) versus luck, fate, or others (external).</p>
+                <p class="text-lg font-semibold text-blue-600 mb-2">Score: 9/23 · Internal locus of control</p>
+                <p class="text-sm text-gray-600 mb-6">Higher scores (more external choices) indicate a tendency to attribute outcomes to luck or others; lower scores indicate a more internal locus (belief in personal control).</p>
+                <p class="text-xs text-gray-600 border-t border-gray-200 pt-4 mt-4">Rotter, J. B. (1966). Generalized expectancies for internal versus external control of reinforcement. <em>Psychological Monographs</em>, <em>80</em>(1), 1–28.</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.querySelectorAll('[data-section]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var section = this.getAttribute('data-section');
+                document.querySelectorAll('.outcome-content').forEach(function(el) { el.classList.remove('active'); });
+                document.querySelectorAll('.nav-btn').forEach(function(el) { el.classList.remove('active'); });
+                var content = document.getElementById(section);
+                if (content) content.classList.add('active');
+                this.classList.add('active');
+            });
+        });
+        function printFullReport() {
+            document.querySelectorAll('.outcome-content').forEach(function(el) { el.classList.add('active'); });
+            window.print();
+            setTimeout(function() {
+                document.querySelectorAll('.outcome-content').forEach(function(el) { el.classList.remove('active'); });
+                document.getElementById('overview').classList.add('active');
+                document.querySelectorAll('.nav-btn').forEach(function(el) { el.classList.remove('active'); });
+                document.querySelector('[data-section="overview"]').classList.add('active');
+            }, 100);
+        }
+    </script>
+</body>
+</html>

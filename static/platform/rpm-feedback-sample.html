@@ -1,0 +1,285 @@
+<!--
+File location: platform/rpm-feedback-sample.html
+What this file does: Sample feedback page for Raven's Progressive Matrices test results
+Why this file exists: Provides a template for displaying RPM assessment results with clean, minimal styling
+RELEVANT FILES: platform/index.html, platform/assessment-flow.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Fluid Intelligence Profile | People Analytics Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .nicholls-red {
+            background-color: #AE132A;
+        }
+        .nicholls-red-text {
+            color: #AE132A;
+        }
+        .nicholls-gray {
+            background-color: #72808A;
+        }
+        .nicholls-gray-text {
+            color: #72808A;
+        }
+        .brand-gradient {
+            background: linear-gradient(135deg, #AE132A 0%, #dc2626 100%);
+        }
+        .assessment-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .assessment-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 brand-gradient rounded-2xl mb-4 shadow-lg">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                    </svg>
+                </div>
+            </div>
+            <h1 class="text-4xl font-bold nicholls-red-text mb-2">Your Fluid Intelligence Profile</h1>
+            <p class="text-lg text-gray-600 mb-2">Raven's Progressive Matrices Test Results</p>
+            <p class="text-sm nicholls-gray-text">People Analytics Lab of the Bayou</p>
+            <p class="text-sm font-mono text-gray-600 mt-2">Participant ID: PAL-SAMPLE-0000</p>
+        </div>
+
+        <!-- Overall Score Section -->
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Your Performance</h2>
+            
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-8">
+                <!-- Percentile Circle -->
+                <div class="flex-shrink-0">
+                    <div class="w-48 h-48 brand-gradient rounded-full flex flex-col items-center justify-center shadow-lg">
+                        <div class="text-6xl font-bold text-white mb-2" id="percentileValue">75</div>
+                        <div class="text-lg text-white opacity-90">Percentile</div>
+                    </div>
+                </div>
+                
+                <!-- Interpretation -->
+                <div class="flex-1 max-w-md">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-3">What This Means</h3>
+                    <p class="text-gray-700 mb-4" id="percentileInterpretation">
+                        You scored higher than 75% of test-takers in the normative sample. This indicates strong pattern recognition and abstract reasoning abilities.
+                    </p>
+                    <div class="text-sm text-gray-500 italic">
+                        Based on Matzen et al. (2010) normative data from 80 participants who completed 840 matrix problems
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+                <div class="bg-gray-50 rounded-lg p-4 text-center border border-gray-200">
+                    <div class="text-3xl font-bold nicholls-red-text mb-1" id="accuracyValue">75%</div>
+                    <div class="text-sm text-gray-600">Accuracy</div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4 text-center border border-gray-200">
+                    <div class="text-3xl font-bold nicholls-red-text mb-1" id="correctValue">15/20</div>
+                    <div class="text-sm text-gray-600">Correct</div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4 text-center border border-gray-200">
+                    <div class="text-3xl font-bold nicholls-red-text mb-1" id="timeValue">8.5s</div>
+                    <div class="text-sm text-gray-600">Avg Time</div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4 text-center border border-gray-200">
+                    <div class="text-3xl font-bold nicholls-red-text mb-1" id="totalTimeValue">170s</div>
+                    <div class="text-sm text-gray-600">Total Time</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Breakdown -->
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Performance Breakdown</h2>
+            
+            <div class="space-y-6">
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-semibold text-gray-700">Level 1 (Basic Patterns)</span>
+                        <span class="text-gray-600 font-medium" id="level1Score">5/5 (100%)</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="bg-green-500 h-3 rounded-full transition-all duration-500" style="width: 100%" id="level1Bar"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-semibold text-gray-700">Level 2 (Medium Complexity)</span>
+                        <span class="text-gray-600 font-medium" id="level2Score">6/8 (75%)</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="nicholls-red h-3 rounded-full transition-all duration-500" style="width: 75%" id="level2Bar"></div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-semibold text-gray-700">Level 3 (High Complexity)</span>
+                        <span class="text-gray-600 font-medium" id="level3Score">4/7 (57%)</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="bg-amber-500 h-3 rounded-full transition-all duration-500" style="width: 57%" id="level3Bar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Normative Data -->
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Normative Data</h2>
+            <div class="bg-purple-50 border-l-4 border-purple-500 rounded-lg p-6">
+                <p class="text-gray-700 mb-3">
+                    Your percentile score is based on normative data from Matzen et al. (2010), who developed software for systematically generating 
+                    large numbers of Raven-like matrix problems with normed properties. Their research involved 80 participants who completed 840 matrix problems, 
+                    with each problem presented to 4 participants across 20 counterbalanced lists.
+                </p>
+                <p class="text-gray-700 text-sm italic">
+                    Source: Matzen, L. E., Benz, Z. O., Dixon, K. R., et al. (2010). 
+                    Recreating Raven's: Software for systematically generating large numbers of Raven-like matrix problems 
+                    with normed properties. <em>Behavior Research Methods</em>, <em>42</em>, 525–541. 
+                    <a href="https://doi.org/10.3758/BRM.42.2.525" target="_blank" class="text-blue-600 hover:underline">https://doi.org/10.3758/BRM.42.2.525</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Education and Cognitive Development -->
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Education and Cognitive Development</h2>
+            <div class="bg-green-50 border-l-4 border-green-500 rounded-lg p-6">
+                <p class="text-gray-700 mb-3">
+                    Research demonstrates that education can improve the cognitive abilities measured by intelligence tests like RPM. 
+                    In a meta-analysis of 142 effect sizes from 42 data sets involving over 600,000 participants, Ritchie and Tucker-Drob (2018) 
+                    found consistent evidence that each additional year of education is associated with an increase of approximately <strong>1 to 5 IQ points</strong>.
+                </p>
+                <p class="text-gray-700 mb-3">
+                    These educational effects on intelligence persist across the lifespan and are present across all broad categories of cognitive ability studied. 
+                    Education appears to be the most consistent, robust, and durable method yet identified for raising intelligence.
+                </p>
+                <p class="text-gray-700 text-sm italic">
+                    Source: Ritchie, S. J., & Tucker-Drob, E. M. (2018). How much does education improve intelligence? A meta-analysis. 
+                    <em>Psychological Science</em>, <em>29</em>(8), 1358–1369. <a href="https://doi.org/10.1177/0956797618774253" target="_blank" class="text-blue-600 hover:underline">https://doi.org/10.1177/0956797618774253</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Fluid Intelligence and Cognitive Ability -->
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Fluid Intelligence and Cognitive Ability</h2>
+            <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-6">
+                <p class="text-gray-700 mb-3">
+                    The Raven's Progressive Matrices test measures <strong>fluid intelligence</strong> (Gf) - your ability to solve novel problems, 
+                    identify patterns, and reason abstractly without relying on previously learned knowledge.
+                </p>
+                <p class="text-gray-700 mb-3">
+                    RPM measures a cognitive ability that is strongly associated with what many scholars study colloquially as "IQ" (psychometric <em>g</em>, or general intelligence). 
+                    The test directly assesses fluid intelligence, which is a core component of psychometric <em>g</em>, making it one of the best measures of general cognitive ability.
+                </p>
+                <p class="text-gray-700 mb-3">
+                    This ability is distinct from <strong>crystallized intelligence</strong> (Gc), which involves knowledge and skills acquired through 
+                    education and experience. Fluid intelligence is more stable across the lifespan and less influenced by cultural factors (Horn & Cattell, 1966).
+                </p>
+                <p class="text-gray-700 text-sm italic">
+                    Source: Horn, J. L., & Cattell, R. B. (1966). Refinement and test of the theory of fluid and crystallized general intelligences. 
+                    <em>Journal of Educational Psychology</em>, <em>57</em>(5), 253–270. <a href="https://doi.org/10.1037/h0023816" target="_blank" class="text-blue-600 hover:underline">https://doi.org/10.1037/h0023816</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Important Notes -->
+        <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Important Notes</h2>
+            
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                <h3 class="font-semibold text-yellow-900 mb-3">About This Assessment</h3>
+                <ul class="space-y-2 text-yellow-800 text-sm">
+                    <li>• This test measures fluid intelligence, not overall intelligence or academic achievement</li>
+                    <li>• This is a development version - results should not be used for high-stakes decisions</li>
+                    <li>• Fluid intelligence is just one component of cognitive ability</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-12 pt-8 border-t border-gray-200">
+            <p class="text-gray-600 text-sm mb-2"><a href="index.html" class="nicholls-red-text hover:opacity-80 font-medium">← Back to Assessment Platform</a></p>
+            <p class="text-gray-600 text-sm mb-4">Raven's Progressive Matrices Test</p>
+            <div class="mt-6">
+                <p class="nicholls-gray-text text-sm">People Analytics Lab of the Bayou</p>
+                <p class="text-gray-500 text-xs">Nicholls State University | Al Danos College of Business Administration</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data - in real implementation, this would come from test results
+        const sampleResults = {
+            percentile: 75,
+            accuracy: 75,
+            correct: 15,
+            total: 20,
+            avgTime: 8.5,
+            totalTime: 170,
+            levelScores: {
+                1: { correct: 5, total: 5, percent: 100 },
+                2: { correct: 6, total: 8, percent: 75 },
+                3: { correct: 4, total: 7, percent: 57 }
+            }
+        };
+
+        // Update page with results
+        function updateProfile(results) {
+            document.getElementById('percentileValue').textContent = results.percentile;
+            document.getElementById('accuracyValue').textContent = results.accuracy + '%';
+            document.getElementById('correctValue').textContent = `${results.correct}/${results.total}`;
+            document.getElementById('timeValue').textContent = results.avgTime + 's';
+            document.getElementById('totalTimeValue').textContent = results.totalTime + 's';
+            
+            // Update percentile interpretation
+            const percentile = results.percentile;
+            let interpretation = '';
+            if (percentile >= 90) {
+                interpretation = `You scored higher than ${percentile}% of test-takers. This indicates exceptional pattern recognition and abstract reasoning abilities, placing you in the top 10% of performers.`;
+            } else if (percentile >= 75) {
+                interpretation = `You scored higher than ${percentile}% of test-takers. This indicates strong pattern recognition and abstract reasoning abilities, placing you in the top quartile.`;
+            } else if (percentile >= 50) {
+                interpretation = `You scored higher than ${percentile}% of test-takers. This indicates above-average pattern recognition and abstract reasoning abilities.`;
+            } else if (percentile >= 25) {
+                interpretation = `You scored higher than ${percentile}% of test-takers. This indicates average pattern recognition and abstract reasoning abilities with room for improvement.`;
+            } else {
+                interpretation = `You scored higher than ${percentile}% of test-takers. This suggests areas for development in pattern recognition and abstract reasoning.`;
+            }
+            document.getElementById('percentileInterpretation').textContent = interpretation;
+            
+            // Update level scores
+            const levels = results.levelScores;
+            document.getElementById('level1Score').textContent = `${levels[1].correct}/${levels[1].total} (${levels[1].percent}%)`;
+            document.getElementById('level2Score').textContent = `${levels[2].correct}/${levels[2].total} (${levels[2].percent}%)`;
+            document.getElementById('level3Score').textContent = `${levels[3].correct}/${levels[3].total} (${levels[3].percent}%)`;
+            
+            document.getElementById('level1Bar').style.width = levels[1].percent + '%';
+            document.getElementById('level2Bar').style.width = levels[2].percent + '%';
+            document.getElementById('level3Bar').style.width = levels[3].percent + '%';
+            
+        }
+
+        // Initialize with sample data
+        updateProfile(sampleResults);
+        
+        // In real implementation, load from sessionStorage or URL params
+        // const results = JSON.parse(sessionStorage.getItem('rpmResults'));
+        // if (results) updateProfile(results);
+    </script>
+</body>
+</html>

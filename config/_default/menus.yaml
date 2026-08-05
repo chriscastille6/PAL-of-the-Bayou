@@ -22,6 +22,9 @@ main:
   - name: Ongoing Studies
     url: /ongoing-studies/
     weight: 35
+  - name: Resources
+    url: /resources/
+    weight: 37
   - name: Contact
     url: contact
     weight: 40

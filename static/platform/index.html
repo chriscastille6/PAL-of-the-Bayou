@@ -1,0 +1,170 @@
+<!--
+File location: static/platform/index.html
+What this file does: Public psychological assessments hub (BayouPAL platform-style cards)
+Why this file exists: Resources links here instead of the auth-gated /assessments/library/ catalog
+RELEVANT FILES: content/resources.md, static/platform/start.html, static/platform/info.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Platform | People Analytics Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .assessment-card { transition: transform 0.2s, box-shadow 0.2s; }
+        .assessment-card:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        .nicholls-red { background-color: #AE132A; }
+        .nicholls-red-text { color: #AE132A; }
+        .nicholls-gray-text { color: #72808A; }
+        .brand-gradient { background: linear-gradient(135deg, #AE132A 0%, #dc2626 100%); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-6xl mx-auto px-4 py-12">
+        <div class="mb-6">
+            <a href="/resources/" class="text-sm text-gray-500 hover:text-gray-700">← Back to Resources</a>
+        </div>
+
+        <div class="text-center mb-12">
+            <div class="mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 brand-gradient rounded-2xl mb-4 shadow-lg">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+            </div>
+            <h1 class="text-4xl font-bold nicholls-red-text mb-2">People Analytics Lab</h1>
+            <p class="text-xl text-gray-700 max-w-2xl mx-auto mb-2">of the Bayou</p>
+            <p class="text-lg nicholls-gray-text max-w-xl mx-auto mb-2">Nicholls State University</p>
+            <p class="text-gray-600 max-w-xl mx-auto mb-4">
+                Research- and education-oriented psychological assessments for self-reflection and learning
+            </p>
+            <p class="text-sm text-gray-500 max-w-2xl mx-auto">
+                This is a public hub with sample reports. Full interactive runs soft-fail without the lab API
+                (same pattern as the BayouPAL static export). No accounts, study sign-ups, AOL, or HSIRB here.
+            </p>
+        </div>
+
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">Available Assessments</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            <!-- Emotional Intelligence -->
+            <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background-color: #fef2f2;">
+                    <svg class="w-6 h-6" style="color: #AE132A;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Emotional Intelligence</h2>
+                <p class="text-gray-600 mb-4">Recognize, understand, regulate, and manage emotions through situational judgment and facial recognition tasks.</p>
+                <p class="text-sm text-gray-500 mb-4">30–45 minutes</p>
+                <a href="start.html?assessment=ei" class="inline-block w-full text-center px-6 py-3 nicholls-red text-white rounded-lg hover:opacity-90 font-medium">Start Assessment →</a>
+                <p class="mt-3 text-center"><a href="ei-feedback-sample.html" class="text-sm text-gray-500 hover:text-gray-700 underline">View sample report</a></p>
+            </div>
+
+            <!-- Raven's -->
+            <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background-color: #f3f4f6;">
+                    <svg class="w-6 h-6" style="color: #72808A;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Raven's Progressive Matrices</h2>
+                <p class="text-gray-600 mb-4">Measure fluid intelligence and pattern recognition through abstract reasoning tasks.</p>
+                <p class="text-sm text-gray-500 mb-4">10–15 minutes</p>
+                <a href="start.html?assessment=rpm" class="inline-block w-full text-center px-6 py-3 nicholls-red text-white rounded-lg hover:opacity-90 font-medium">Start Assessment →</a>
+                <p class="mt-3 text-center"><a href="rpm-feedback-sample.html" class="text-sm text-gray-500 hover:text-gray-700 underline">View sample report</a></p>
+            </div>
+
+            <!-- Whole-Person Fit -->
+            <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background-color: #eff6ff;">
+                    <svg class="w-6 h-6" style="color: #1d4ed8;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Whole-Person Fit Assessment</h2>
+                <p class="text-gray-600 mb-4">Compare interests, values, knowledge, skills, and personality to O*NET occupations.</p>
+                <p class="text-sm text-gray-500 mb-4">Varies by assessment</p>
+                <a href="start.html?assessment=wpf" class="inline-block w-full text-center px-6 py-3 nicholls-red text-white rounded-lg hover:opacity-90 font-medium">Start Assessment →</a>
+                <p class="mt-3 text-center"><a href="whole-person-fit-sample.html" class="text-sm text-gray-500 hover:text-gray-700 underline">View sample report</a></p>
+            </div>
+
+            <!-- Core Self-Awareness -->
+            <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background-color: #f0fdf4;">
+                    <svg class="w-6 h-6" style="color: #15803d;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Core Self-Awareness Profiler</h2>
+                <p class="text-gray-600 mb-4">Self-monitoring, EI, Big Five, moral reasoning, cultural values, cognitive style, and tolerance of ambiguity.</p>
+                <p class="text-sm text-gray-500 mb-4">45–60 minutes</p>
+                <a href="start.html?assessment=csap" class="inline-block w-full text-center px-6 py-3 nicholls-red text-white rounded-lg hover:opacity-90 font-medium">Start Assessment →</a>
+                <p class="mt-3 text-center"><a href="core-self-awareness-profile/sample-profile.html" class="text-sm text-gray-500 hover:text-gray-700 underline">View sample report</a></p>
+            </div>
+
+            <!-- Creative Personality -->
+            <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background-color: #eef2ff;">
+                    <svg class="w-6 h-6" style="color: #4338ca;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Creative Personality Profiler</h2>
+                <p class="text-gray-600 mb-4">Creative style, innovative attitude, creative self-efficacy, and creative personal identity.</p>
+                <p class="text-sm text-gray-500 mb-4">18–25 minutes</p>
+                <a href="start.html?assessment=cpp" class="inline-block w-full text-center px-6 py-3 nicholls-red text-white rounded-lg hover:opacity-90 font-medium">Start Assessment →</a>
+                <p class="mt-3 text-center"><a href="creative-personality-profiler/sample-profile.html" class="text-sm text-gray-500 hover:text-gray-700 underline">View sample profile</a></p>
+            </div>
+
+            <!-- Loss Aversion -->
+            <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background-color: #eff6ff;">
+                    <svg class="w-6 h-6" style="color: #1d4ed8;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Loss Aversion Inventory</h2>
+                <p class="text-gray-600 mb-4">Brief scale of how much you weigh potential losses versus gains (Li et al., 2021).</p>
+                <p class="text-sm text-gray-500 mb-4">5–10 minutes</p>
+                <a href="start.html?assessment=lai" class="inline-block w-full text-center px-6 py-3 nicholls-red text-white rounded-lg hover:opacity-90 font-medium">Start Assessment →</a>
+                <p class="mt-3 text-center"><a href="lai-feedback-sample.html" class="text-sm text-gray-500 hover:text-gray-700 underline">View sample report</a></p>
+            </div>
+
+            <!-- Conflict Management -->
+            <div class="assessment-card bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background-color: #fce7f3;">
+                    <svg class="w-6 h-6" style="color: #be185d;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Conflict Management Styles</h2>
+                <p class="text-gray-600 mb-4">Preferred approaches to conflict (collaborating, competing, avoiding, harmonizing, compromising).</p>
+                <p class="text-sm text-gray-500 mb-4">~5 minutes</p>
+                <a href="start.html?assessment=conflict" class="inline-block w-full text-center px-6 py-3 nicholls-red text-white rounded-lg hover:opacity-90 font-medium">Start Assessment →</a>
+                <p class="mt-3 text-center"><a href="conflict-management-feedback-sample.html" class="text-sm text-gray-500 hover:text-gray-700 underline">View sample report</a></p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">About These Assessments</h3>
+            <div class="space-y-4 text-gray-700">
+                <p>Assessments are <strong>non-diagnostic</strong> and meant for research, teaching, and self-reflection. Results are descriptive, not clinical labels.</p>
+                <p>This public hub does not require an account. Interactive launches soft-fail without the lab backend; sample reports work offline.</p>
+                <p>Study recruitment lives on <a href="/ongoing-studies/" class="nicholls-red-text hover:underline">Ongoing Studies</a>, not here.</p>
+            </div>
+            <div class="mt-6">
+                <a href="info.html" class="nicholls-red-text hover:opacity-80 font-medium">Learn more about your rights and options →</a>
+            </div>
+        </div>
+
+        <footer class="mt-16 pt-8 border-t border-gray-200 text-center text-gray-600 text-sm">
+            <p class="mb-2">People Analytics Lab of the Bayou</p>
+            <p class="nicholls-gray-text mb-2">Nicholls State University | Al Danos College of Business Administration</p>
+            <p class="text-gray-500">Educational / research use</p>
+        </footer>
+    </div>
+</body>
+</html>

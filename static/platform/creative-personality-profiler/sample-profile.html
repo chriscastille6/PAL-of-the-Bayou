@@ -1,0 +1,137 @@
+<!--
+platform/creative-personality-profiler/sample-profile.html
+Static demo of Creative Personality Profiler results (sample scores + same evidence block as live report).
+RELEVANT FILES: platform/creative-personality-profiler/cpp-feedback.js, platform/creative-personality-profiler/cpp-charts.js, platform/index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Personality Profiler — Sample Profile | People Analytics Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            body { background: #fff !important; }
+            .max-w-3xl { max-width: 100% !important; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-3xl mx-auto px-4 py-8">
+        <div class="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mb-6 text-sm text-amber-950 text-center print:hidden">
+            <strong>Sample profile (demo).</strong> Scores are illustrative. <a href="../assessment-flow.html?assessment=cpp" class="text-[#2563eb] underline font-medium">Start the real assessment</a> or <a href="../index.html" class="text-[#2563eb] underline font-medium">platform home</a>.
+        </div>
+        <div class="bg-white rounded-lg shadow border p-8">
+            <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between print:hidden">
+                <button type="button" id="samplePrintPdfBtn" class="inline-flex items-center justify-center px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-900 text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:ring-offset-2">Print to PDF</button>
+                <p class="text-xs text-gray-500 sm:text-right">Opens the print dialog — choose <strong>Save as PDF</strong> if your browser offers it.</p>
+            </div>
+            <div id="profileContent"></div>
+        </div>
+    </div>
+    <script src="cpp-data.js"></script>
+    <script src="cpp-charts.js"></script>
+    <script src="cpp-feedback.js"></script>
+    <script>
+        (function () {
+            function radarSvg(scores) {
+                var keys = ['imagination', 'incubation', 'investment', 'improvement']
+                var labels = ['Imagination', 'Incubation', 'Investment', 'Improvement']
+                var vals = keys.map(function (k) { return scores[k] })
+                var max = 100
+                var cx = 160
+                var cy = 160
+                var r = 110
+                var pts = []
+                for (var i = 0; i < 4; i++) {
+                    var ang = -Math.PI / 2 + (i * 2 * Math.PI) / 4
+                    var vr = (vals[i] / max) * r
+                    pts.push([cx + vr * Math.cos(ang), cy + vr * Math.sin(ang)])
+                }
+                var d = pts.map(function (p, i) {
+                    return (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)
+                }).join(' ') + ' Z'
+                var axes = ''
+                for (var a = 0; a < 4; a++) {
+                    var ang2 = -Math.PI / 2 + (a * 2 * Math.PI) / 4
+                    var lx = cx + r * Math.cos(ang2)
+                    var ly = cy + r * Math.sin(ang2)
+                    axes += '<line x1="' + cx + '" y1="' + cy + '" x2="' + lx + '" y2="' + ly + '" stroke="#e5e7eb" stroke-width="1"/>'
+                    var tx = cx + (r + 22) * Math.cos(ang2)
+                    var ty = cy + (r + 22) * Math.sin(ang2)
+                    var anchor = Math.abs(tx - cx) < 5 ? 'middle' : tx < cx ? 'end' : 'start'
+                    axes += '<text x="' + tx + '" y="' + ty + '" text-anchor="' + anchor + '" class="text-xs fill-gray-700">' + labels[a] + '</text>'
+                }
+                return '<svg viewBox="0 0 320 320" class="w-full max-w-sm mx-auto" aria-label="Creative style radar chart">' +
+                    '<polygon points="' + cx + ',' + (cy - r) + ' ' + (cx + r) + ',' + cy + ' ' + cx + ',' + (cy + r) + ' ' + (cx - r) + ',' + cy + '" fill="none" stroke="#e5e7eb" stroke-width="1"/>' +
+                    axes + '<path d="' + d + '" fill="rgba(37,99,235,0.15)" stroke="#2563eb" stroke-width="2" /></svg>'
+            }
+
+            var creative = { imagination: 30, incubation: 24, investment: 27, improvement: 19 }
+            var iasTotal = 37
+            var iasBand = 'Third quartile (comparison sample)'
+            var sscs = { cseMean: 4.08, cpiMean: 3.92, src: 4 }
+            var D = window.CPP_DATA || {}
+            var NORMS_SSCS = D.normsSscs || { cseMean: 3.8, cpiMean: 3.88 }
+            var NORMS_IAS = D.normsIas || { mean: 36, q1: 32, q2lo: 33, q2hi: 35, q3lo: 36, q3hi: 38, q4: 39 }
+            var NORMS_CREATIVE = D.normsCreative || {
+                imagination: 24.7,
+                incubation: 25.9,
+                investment: 25.5,
+                improvement: 24.0
+            }
+            var DIM_KEYS = D.dimKeys || ['imagination', 'incubation', 'investment', 'improvement']
+            var DIM_LABELS = D.dimLabels || ['Imagination', 'Incubation', 'Investment', 'Improvement']
+
+            var html = '<h2 class="text-2xl font-bold text-gray-900 mb-2">Your profile</h2>'
+            html += '<p class="text-gray-600 mb-4">Scores are self-report snapshots for reflection, not clinical labels. <span class="text-amber-800 font-medium">(Sample data below.)</span></p>'
+            html += '<h3 class="text-lg font-semibold text-gray-900 mb-2">Creative style (average points per item)</h3>'
+            html += radarSvg(creative)
+            html += '<ul class="mt-4 space-y-1 text-sm text-gray-700">'
+            html += '<li><strong>Imagination:</strong> ' + creative.imagination.toFixed(1) + '</li>'
+            html += '<li><strong>Incubation:</strong> ' + creative.incubation.toFixed(1) + '</li>'
+            html += '<li><strong>Investment:</strong> ' + creative.investment.toFixed(1) + '</li>'
+            html += '<li><strong>Improvement:</strong> ' + creative.improvement.toFixed(1) + '</li>'
+            html += '</ul>'
+            if (window.CPP_CHARTS && typeof window.CPP_CHARTS.creativeStyleBars === 'function') {
+                html += window.CPP_CHARTS.creativeStyleBars(creative, DIM_KEYS, DIM_LABELS, NORMS_CREATIVE)
+            }
+            html += '<p class="text-xs text-gray-500 mt-2">Comparison norms (student sample, N ≈ 5,000) from Whetten &amp; Cameron (2011): Imagination M ≈ 24.7; Incubation M ≈ 25.9; Investment M ≈ 25.5; Improvement M ≈ 24.0.</p>'
+            html += '<h3 class="text-lg font-semibold text-gray-900 mt-6 mb-2">Innovative attitude (sum of 10 items)</h3>'
+            html += '<p class="text-gray-800"><strong>Total:</strong> ' + iasTotal + ' (range 10–50)</p>'
+            html += '<p class="text-sm text-gray-600 mt-1">Approximate band vs. comparison data: ' + iasBand + '. Reference means: M ≈ 36; quartile cut scores ≈ 32 / 33–35 / 36–38 / 39+.</p>'
+            if (window.CPP_CHARTS && typeof window.CPP_CHARTS.iasTotalBar === 'function') {
+                html += window.CPP_CHARTS.iasTotalBar(iasTotal, NORMS_IAS)
+            }
+            html += '<h3 class="text-lg font-semibold text-gray-900 mt-6 mb-2">Short Scale of Creative Self (SSCS)</h3>'
+            html += '<ul class="space-y-1 text-sm text-gray-800">'
+            html += '<li><strong>Creative self-efficacy</strong> (mean of 6 items): ' + sscs.cseMean.toFixed(2) + ' (scale 1–5)</li>'
+            html += '<li><strong>Creative personal identity</strong> (mean of 4 items): ' + sscs.cpiMean.toFixed(2) + '</li>'
+            html += '<li><strong>Self-rated creativity</strong> (single item): ' + sscs.src + '</li>'
+            html += '</ul>'
+            if (window.CPP_CHARTS && typeof window.CPP_CHARTS.sscsBars === 'function') {
+                html += window.CPP_CHARTS.sscsBars(sscs, NORMS_SSCS)
+            }
+            html += '<p class="text-xs text-gray-500 mt-2">Reference means from Karwowski et al. (2018), Study 1 (N = 1,582): CSE M ≈ ' + NORMS_SSCS.cseMean + '; CPI M ≈ ' + NORMS_SSCS.cpiMean + ' (1–5 Likert).</p>'
+
+            if (window.CPP_FEEDBACK && typeof window.CPP_FEEDBACK.evidenceBlock === 'function') {
+                html += window.CPP_FEEDBACK.evidenceBlock(creative, iasTotal, iasBand, sscs, NORMS_SSCS)
+            }
+
+            html += '<div class="mt-8 pt-6 border-t border-gray-200"><p class="text-sm font-semibold text-gray-800">Instrument references</p>'
+            html += '<p class="text-xs text-gray-600 mt-2">DeGraff, J., &amp; Lawrence, K. A. (2002). <em>Creativity at Work</em>. Jossey-Bass.</p>'
+            html += '<p class="text-xs text-gray-600 mt-2">Ettlie, J. E., &amp; O’Keefe, R. D. (1982). <em>Journal of Management Studies</em>, <em>19</em>(2), 163–182.</p>'
+            html += '<p class="text-xs text-gray-600 mt-2">Karwowski, M., Lebuda, I., &amp; Wiśniewska, E. (2018). <em>The International Journal of Creativity &amp; Problem Solving</em>, <em>28</em>(1), 45–57.</p>'
+            html += '<p class="text-xs text-gray-600 mt-2">Whetten, D. A., &amp; Cameron, K. S. (2011). <em>Developing management skills</em> (8th ed.). Prentice Hall.</p></div>'
+
+            document.getElementById('profileContent').innerHTML = html
+            var pb = document.getElementById('samplePrintPdfBtn')
+            if (pb && !pb._cppPrintBound) {
+                pb._cppPrintBound = true
+                pb.addEventListener('click', function () { window.print() })
+            }
+        })()
+    </script>
+</body>
+</html>

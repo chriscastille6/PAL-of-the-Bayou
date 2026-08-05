@@ -1,0 +1,97 @@
+<!--
+platform/occupation-ei-report-sample.html
+Sample Occupation Emotional Labor report: shows how EI vs. emotional labor demands are presented,
+plus a research note on when EI may be harmful or a crutch in rationality-demanding roles.
+RELEVANT FILES: platform/occupation-ei-report.html, mngt370/docs/EI_DEMAND_METHODOLOGY.md
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Occupation Emotional Labor Report — Sample | People Analytics Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .nicholls-red { background-color: #AE132A; }
+        .nicholls-red-text { color: #AE132A; }
+        .nicholls-gray-text { color: #72808A; }
+        .brand-gradient { background: linear-gradient(135deg, #AE132A 0%, #dc2626 100%); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-3xl mx-auto px-4 py-12">
+        <header class="text-center mb-8">
+            <a href="index.html" class="inline-flex items-center text-gray-700 hover:text-gray-900 transition-colors">
+                <div class="w-10 h-10 brand-gradient rounded-xl flex items-center justify-center mr-3 shadow-md">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="text-left">
+                    <span class="text-xl font-bold nicholls-red-text block">People Analytics Lab</span>
+                    <span class="text-sm nicholls-gray-text block">of the Bayou</span>
+                </div>
+            </a>
+        </header>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-lg px-4 py-2 mb-6 text-center text-sm text-amber-800">
+            Sample report — for layout and research-note illustration only.
+        </div>
+
+        <!-- Main report -->
+        <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6">
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">Occupation Emotional Labor Report</h1>
+            <p class="text-gray-600 text-sm mb-6">How your emotional intelligence compares to the emotional labor demands of your top occupation (O*NET-based).</p>
+
+            <div class="mb-6">
+                <h2 class="text-xl font-semibold text-gray-900">Medical and Health Services Managers</h2>
+                <p class="text-gray-600 text-sm mt-1">Plan, direct, or coordinate medical and health services in hospitals, clinics, or similar organizations.</p>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6 mb-4">
+                <div class="flex flex-wrap gap-6 items-center">
+                    <div><span class="text-sm text-gray-600 block">Your EI score</span><span class="text-2xl font-bold text-gray-900">69</span></div>
+                    <div class="text-gray-400">vs</div>
+                    <div><span class="text-sm text-gray-600 block">Occupation emotional labor demand</span><span class="text-2xl font-bold text-gray-900">Moderate</span></div>
+                </div>
+                <p class="mt-4 text-sm text-gray-600">Research shows EI predicts job performance more in high–emotional-labor jobs and less or not at all in low–emotional-labor jobs (Joseph & Newman, 2010).</p>
+            </div>
+        </div>
+
+        <!-- What are emotional labor demands? + embedded Economist-style chart -->
+        <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-3">What are emotional labor demands?</h2>
+            <p class="text-gray-700 mb-6">
+                <strong>Emotional labor demands</strong> are how much a job typically requires you to manage emotions, read others, and regulate your own reactions. Jobs differ: some rely heavily on customer contact, calming upset people, or displaying positive emotion; others rely more on analysis, technical skill, or working with things rather than people. Research shows that emotional intelligence (EI) tends to predict job performance <strong>more</strong> in high–emotional-labor jobs and <strong>less or not at all</strong> in low–emotional-labor jobs (Joseph & Newman, 2010). We use Low, Moderate, and High for interpretive clarity; only Low and High are research-validated.
+            </p>
+            <div id="el-examples-mount"></div>
+        </div>
+        <script src="js/el-examples-table.js"></script>
+        <script>renderElExamplesTable(document.getElementById('el-examples-mount'));</script>
+
+        <!-- Research note: when EI can be harmful or a crutch -->
+        <div class="bg-white rounded-lg shadow-lg p-8 border border-gray-200 mb-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">Interpreting Your Report: When More EI Isn’t Better</h2>
+            <p class="text-gray-700 mb-4">
+                This report compares your EI to the <em>emotional labor demands</em> of your occupation—how much the job typically requires managing emotions, reading others, and regulating your own reactions. Ability EI is often described as a cascade: <em>emotion recognition → understanding → regulation/management</em> (Joseph & Newman, 2010). Matching or exceeding occupational demands can support performance in people-heavy roles. But meta-analytic evidence shows the EI–job performance link is <strong>context-dependent</strong>: it is positive in high–emotional-labor jobs and can be <strong>negative in low–emotional-labor jobs</strong> (Joseph & Newman, 2010). So high EI or over-reliance on emotional labor can be harmful or act as a crutch where rationality, analytical distance, or impartial judgment are needed.
+            </p>
+            <ul class="list-disc pl-6 text-gray-700 space-y-2 mb-4">
+                <li><strong>Analytical and technical roles:</strong> In jobs where cold, systematic analysis or evidence-based decisions matter, over-attending to emotions can bias judgment or slow decisions; the EI–performance relationship tends to be weaker or negative in such contexts (Joseph & Newman, 2010; Antonakis, 2004; Locke, 2005).</li>
+                <li><strong>Impartiality and fairness:</strong> Roles requiring neutral treatment of others (e.g., adjudication, auditing, some HR decisions) may be undermined when EI leads to favoritism or empathy-based exceptions (Grant, 2013).</li>
+                <li><strong>Emotional labor as a crutch:</strong> In high emotional-labor jobs, leaning on surface acting or suppression without addressing underlying stress can increase burnout and reduce well-being (Hochschild; Grandey & Gabriel, 2015).</li>
+            </ul>
+            <p class="text-gray-700 mb-4">
+                So: <em>fit</em> matters. A large positive gap here means the occupation demands more EI than you currently show—which may be a development target in a people-focused role, or a signal that a more analytical, lower–emotional-labor path could suit you better. A negative gap (you exceed the demand) can be a strength in that role, or a reminder to balance emotional engagement with rational decision-making where the job requires it.
+            </p>
+            <p class="text-sm text-gray-500">
+                <strong>Sources (illustrative):</strong> Joseph, D. L., & Newman, D. A. (2010). Emotional intelligence: An integrative meta-analysis and cascading model. <em>Journal of Applied Psychology</em>, 95(1), 54–78. <a href="https://doi.org/10.1037/a0017286" target="_blank" rel="noopener" class="text-blue-600 hover:underline">https://doi.org/10.1037/a0017286</a> — cascading model (perception → understanding → regulation) and context-dependent EI–job performance (positive in high emotional labor jobs, negative in low). Antonakis, J. (2004). On why “emotional intelligence” will not predict leadership effectiveness beyond IQ. Locke, E. A. (2005). Why emotional intelligence is an invalid concept. <em>Journal of Organizational Behavior</em>, 26, 425–431. Grant, A. M. (2013). <em>Give and take</em>. Viking. Grandey, A. A., & Gabriel, A. S. (2015). Emotional labor at a crossroads. <em>Annual Review of Organizational Psychology and Organizational Behavior</em>, 2, 323–349.
+            </p>
+        </div>
+
+        <p class="text-center text-sm text-gray-500">
+            <a href="index.html" class="text-gray-600 hover:underline">Back to assessments</a> ·
+            <a href="occupation-ei-report.html" class="nicholls-red-text hover:underline">View your report</a> (when unlocked)
+        </p>
+    </div>
+</body>
+</html>
