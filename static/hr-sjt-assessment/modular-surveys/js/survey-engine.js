@@ -1,6 +1,8 @@
 /**
  * Modular HR SJT survey engine (client-side).
- * Flow: consent → name/ID → optional demographics → intro → rate → PDF.
+ * Flow: consent → name/ID → intro → rate → PDF.
+ * Demographics are a separate optional page (demographics.html).
+ * Consent copy is driven by ../study-status.json (SONA can flip IRB without rewriting HTML).
  */
 (function () {
     const RATING_LABELS = {
@@ -20,6 +22,16 @@
     let consentGiven = false;
     let demographicsData = null;
     let participantRole = 'student';
+    let studyStatus = null;
+
+    const DEFAULT_STUDY_STATUS = {
+        irb_approved: false,
+        data_collection: false,
+        mode: 'classroom_only',
+        irb_protocol_id: null,
+        approved_date: null,
+        status_message: null
+    };
 
     function $(id) {
         return document.getElementById(id);
@@ -87,7 +99,6 @@
         participantRole = (params.get('role') || sessionStorage.getItem('hr_sjt_role') || 'student').toLowerCase();
         if (participantRole !== 'professional') participantRole = 'student';
         sessionStorage.setItem('hr_sjt_role', participantRole);
-        applyRoleConsentNote();
 
         const consentCb = $('consent-checkbox');
         const consentBtn = $('consent-continue-btn');
@@ -116,15 +127,151 @@
         window.previousIncident = previousIncident;
         window.submitAssessment = submitAssessment;
         window.generatePDFReport = generatePDFReport;
+
+        loadStudyStatus().then((status) => {
+            studyStatus = status;
+            renderConsentFromStatus(status);
+            applyPackLabels();
+        });
     }
 
-    function applyRoleConsentNote() {
+    function applyPackLabels() {
+        if (!pack) return;
+        document.querySelectorAll('[data-pack-title]').forEach((el) => {
+            el.textContent = pack.decisionLabel || pack.title;
+        });
+        document.querySelectorAll('[data-pack-short]').forEach((el) => {
+            el.textContent = pack.shortTitle;
+        });
+        document.querySelectorAll('[data-pack-count]').forEach((el) => {
+            el.textContent = String(incidents.length);
+        });
+        document.querySelectorAll('[data-pack-badge]').forEach((el) => {
+            el.textContent = `Decision ${pack.decisionOrder} of 8`;
+        });
+    }
+
+
+    function contactHtml() {
+        return "Dr. Christopher M. Castille, <a href=\"mailto:christopher.castille@nicholls.edu\">christopher.castille@nicholls.edu</a>, (337) 256-0664. Questions about rights as a participant: Nicholls State University IRB.";
+    }
+
+    function loadStudyStatus() {
+        const url = new URL('../study-status.json', window.location.href).href;
+        return fetch(url, { cache: 'no-store' })
+            .then((res) => {
+                if (!res.ok) throw new Error('study-status HTTP ' + res.status);
+                return res.json();
+            })
+            .then((data) => ({ ...DEFAULT_STUDY_STATUS, ...data }))
+            .catch(() => {
+                console.warn('study-status.json unavailable; using classroom defaults (fail-closed).');
+                return { ...DEFAULT_STUDY_STATUS };
+            });
+    }
+
+    function renderConsentFromStatus(status) {
+        const box = $('consent-box');
+        if (!box) return;
+        const approved = !!(status && status.irb_approved);
+        const collecting = !!(status && status.data_collection);
+        box.innerHTML = approved
+            ? buildResearchConsentHtml(status, collecting)
+            : buildClassroomConsentHtml(status, collecting);
+        applyRoleConsentNote(approved);
+        const agree = $('consent-agree-label');
+        if (agree) {
+            agree.textContent = approved
+                ? 'I have read and understand the above information. I am 18 years of age or older. I voluntarily agree to participate.'
+                : 'I have read and understand the above information. I am 18 years of age or older. I agree to continue this classroom educational activity.';
+        }
+    }
+
+    function statusBannerHtml(status) {
+        if (status && status.status_message) {
+            return `<p class="note-box" style="border-left:4px solid #1e3a8a;"><strong>Status:</strong> ${escapeHtml(status.status_message)}</p>`;
+        }
+        return '';
+    }
+
+    function buildClassroomConsentHtml(status, collecting) {
+        const dataLine = collecting
+            ? '<p><strong>Data:</strong> This classroom activity may store ratings locally in your browser and on a PDF you download. Research database collection is configured separately.</p>'
+            : '<p><strong>No data are collected</strong> by the investigators or this website as of today. Ratings stay in your browser session and on the PDF you choose to download (for example, to upload to Canvas). Nothing is sent to a research server.</p>';
+        return `
+            ${statusBannerHtml(status)}
+            <h3>Classroom Educational Activity: HR Situational Judgment Test</h3>
+            <p><strong>Instructor:</strong> Dr. Christopher M. Castille &nbsp;|&nbsp; <strong>Institution:</strong> Nicholls State University</p>
+            <div class="note-box" style="border-left:4px solid #b91c1c;background:#fef2f2;">
+                <p style="margin:0;"><strong>This activity is NOT approved by the Nicholls State University IRB.</strong>
+                It is <strong>purely for classroom educational purposes</strong>.</p>
+            </div>
+            <h4>Purpose</h4>
+            <p>This exercise helps you practice evaluating HR management tactics in situational judgment scenarios before class decisions. It is a teaching tool, not an IRB-approved research study.</p>
+            <p id="consent-role-note" class="role-note"></p>
+            <h4>What you will do (this sitting)</h4>
+            <p>You will complete <strong>one short survey pack</strong> (<span data-pack-count>1</span> scenario(s)) covering: <em data-pack-short></em>. Rate tactics on a 1–5 scale or <strong>skip</strong> any item, then download a PDF report. Students may upload the PDF to Canvas as directed. There are up to 8 packs; the same name always produces the same Candidate ID so your packs can be linked for course work.</p>
+            <p>Optional demographics are <strong>not required</strong> to complete this pack. If you wish, complete them separately from the survey hub.</p>
+            <h4>Voluntary participation</h4>
+            <p>Participation in this classroom activity is voluntary. You may skip any rating, skip this pack, or stop at any time by closing the browser. You must be 18 years of age or older.</p>
+            <h4>Risks and benefits</h4>
+            <p>Risks are minimal (time; feedback may differ from expectations). Benefits may include practice with HR situational judgment and a PDF summary of your ratings. Students may receive course credit as determined by the instructor. There is no monetary payment.</p>
+            <h4>Privacy</h4>
+            ${dataLine}
+            <p>Your name is used only to generate a Candidate ID and is not stored with any instructor-facing research database. The ID appears on your PDF for course upload if required.</p>
+            <h4>Contact</h4>
+            <p>${contactHtml()}</p>
+        `;
+    }
+
+    function buildResearchConsentHtml(status, collecting) {
+        const protocol = status && status.irb_protocol_id
+            ? `<p><strong>IRB protocol:</strong> ${escapeHtml(String(status.irb_protocol_id))}`
+              + (status.approved_date ? ` &nbsp;|&nbsp; <strong>Approved:</strong> ${escapeHtml(String(status.approved_date))}` : '')
+              + `</p>`
+            : '';
+        const dataPara = collecting
+            ? '<p>Your responses will be used for research and teaching in aggregate. No names are stored with research data—only a participant ID.</p>'
+            : '<p><strong>Note:</strong> IRB approval is recorded, but data collection is currently off in study settings. No research data are collected until collection is enabled.</p>';
+        return `
+            ${statusBannerHtml(status)}
+            <h3>Research Study: HR Situational Judgment Test – Evidence-Based HR Decision-Making</h3>
+            <p><strong>Principal Investigator:</strong> Dr. Christopher M. Castille &nbsp;|&nbsp; <strong>Institution:</strong> Nicholls State University</p>
+            ${protocol}
+            <h4>Purpose</h4>
+            <p>This research examines how students and working professionals evaluate the effectiveness of HR management tactics in situational judgment scenarios.</p>
+            ${dataPara}
+            <p id="consent-role-note" class="role-note"></p>
+            <h4>What you will do (this sitting)</h4>
+            <p>You will complete <strong>one short survey pack</strong> (<span data-pack-count>1</span> scenario(s)) covering: <em data-pack-short></em>. You may rate tactics on a 1–5 scale or <strong>skip</strong> any item, and download a PDF report. Students may upload the PDF to Canvas as directed. Optional demographics are available separately and are not required to finish this pack. There are up to 8 packs; the same name always produces the same ID so your packs can be linked.</p>
+            <h4>Voluntary participation</h4>
+            <p>Participation is voluntary. You may skip any rating, skip this pack, or withdraw at any time by closing the browser. Contact the investigator to request destruction of data already collected. You must be 18 years of age or older.</p>
+            <h4>Risks and benefits</h4>
+            <p>Risks are minimal (time; feedback may differ from expectations). Benefits may include practice with HR situational judgment, a PDF summary of your ratings, and contribution to research. Students may receive course credit as determined by the instructor. There is no monetary payment.</p>
+            <h4>Confidentiality</h4>
+            <p>Your name is used only to generate a participant ID and is not stored with research data. Demographic answers (if provided on the optional demographics page) are stored with your participant ID only. Data are reported only in aggregate or de-identified form.</p>
+            <h4>Contact</h4>
+            <p>${contactHtml()}</p>
+        `;
+    }
+
+    function escapeHtml(text) {
+        return String(text)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function applyRoleConsentNote(approved) {
         const note = $('consent-role-note');
         if (!note) return;
         if (participantRole === 'professional') {
             note.innerHTML = '<strong>For professionals / managers:</strong> You were invited as a working professional. Participation has no effect on your employment or relationship with Nicholls State University.';
-        } else {
+        } else if (approved) {
             note.innerHTML = '<strong>For students:</strong> Research use of your ratings is voluntary. Course PDF submission policies, if any, are separate from this research consent.';
+        } else {
+            note.innerHTML = '<strong>For students:</strong> This pack is a classroom educational exercise. Course PDF submission policies, if any, are set by your instructor and are separate from any future research consent.';
         }
     }
 
@@ -167,45 +314,9 @@
         setText('candidateIdDisplay', participantId);
 
         hide('participant-id-screen');
-        goToDemographicsOrIntro();
-    }
-
-    function goToDemographicsOrIntro() {
+        // Demographics are optional and live on demographics.html — never block pack flow.
         demographicsData = (window.Demographics && Demographics.load(participantId)) || null;
-        // Ask once per Candidate ID; allow edit if they want by clearing storage
-        if (demographicsData && demographicsData.saved_at) {
-            show('intro-screen');
-            return;
-        }
-        showDemographicsScreen();
-    }
-
-    function showDemographicsScreen() {
-        show('demographics-screen');
-        if (window.Demographics) {
-            Demographics.renderForm($('demographics-container'), demographicsData);
-            const skipBtn = $('demo-skip-btn');
-            const contBtn = $('demo-continue-btn');
-            if (skipBtn) {
-                skipBtn.onclick = () => {
-                    demographicsData = { skipped: true };
-                    Demographics.save(participantId, demographicsData);
-                    hide('demographics-screen');
-                    show('intro-screen');
-                };
-            }
-            if (contBtn) {
-                contBtn.onclick = () => {
-                    demographicsData = Demographics.collect();
-                    Demographics.save(participantId, demographicsData);
-                    hide('demographics-screen');
-                    show('intro-screen');
-                };
-            }
-        } else {
-            hide('demographics-screen');
-            show('intro-screen');
-        }
+        show('intro-screen');
     }
 
     function startAssessment() {

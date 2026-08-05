@@ -1,6 +1,6 @@
 # Demographics Instrument (Optional) — Modular HR SJT
 
-Administered once per Candidate ID after consent and name/ID, before scenario ratings.
+Optional and separate from packs 01–08. Open `demographics.html` from the survey hub anytime. Not required to complete any pack. Same Candidate ID links answers to pack PDFs in the same browser.
 All items are optional / skippable. Stored with participant ID only (not name). Included on the PDF report.
 
 | Item ID | Prompt | Response type |

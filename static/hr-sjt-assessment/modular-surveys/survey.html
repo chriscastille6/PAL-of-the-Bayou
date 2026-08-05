@@ -18,26 +18,12 @@
             </div>
             <h2 style="color:#1e3a8a;margin-bottom:16px;">Informed Consent</h2>
             <div class="consent-box" id="consent-box">
-                <h3>Research Study: HR Situational Judgment Test – Evidence-Based HR Decision-Making</h3>
-                <p><strong>Principal Investigator:</strong> Dr. Christopher M. Castille &nbsp;|&nbsp; <strong>Institution:</strong> Nicholls State University</p>
-                <h4>Purpose</h4>
-                <p>This research examines how students and working professionals evaluate the effectiveness of HR management tactics in situational judgment scenarios. Your responses will be used for research and teaching in aggregate. No names are stored with research data—only a participant ID.</p>
-                <p id="consent-role-note" class="role-note"></p>
-                <h4>What you will do (this sitting)</h4>
-                <p>You will complete <strong>one short survey pack</strong> (<span data-pack-count>1</span> scenario(s)) covering: <em data-pack-short></em>. You may complete a brief <strong>optional demographics</strong> questionnaire (skip any item), rate tactics on a 1–5 scale or <strong>skip</strong> any item, and download a PDF report. Students may upload the PDF to Canvas as directed. There are up to 8 packs; the same name always produces the same ID so your packs can be linked.</p>
-                <h4>Voluntary participation</h4>
-                <p>Participation is voluntary. You may skip any demographic item, skip any rating, skip this pack, or withdraw at any time by closing the browser. Contact the investigator to request destruction of data already collected. You must be 18 years of age or older.</p>
-                <h4>Risks and benefits</h4>
-                <p>Risks are minimal (time; feedback may differ from expectations). Benefits may include practice with HR situational judgment, a PDF summary of your ratings, and contribution to research. Students may receive course credit as determined by the instructor. There is no monetary payment.</p>
-                <h4>Confidentiality</h4>
-                <p>Your name is used only to generate a participant ID and is not stored with research data. Demographic answers (if provided) are stored with your participant ID only. Data are reported only in aggregate or de-identified form.</p>
-                <h4>Contact</h4>
-                <p>Dr. Christopher M. Castille, <a href="mailto:christopher.castille@nicholls.edu">christopher.castille@nicholls.edu</a>, (337) 256-0664. Questions about rights as a participant: Nicholls State University IRB.</p>
+                <p class="note-box">Loading consent information…</p>
             </div>
             <div class="consent-checkbox-wrap">
                 <label>
                     <input type="checkbox" id="consent-checkbox" aria-label="I agree to participate">
-                    <span>I have read and understand the above information. I am 18 years of age or older. I voluntarily agree to participate.</span>
+                    <span id="consent-agree-label">I have read and understand the above information. I am 18 years of age or older. I agree to continue this classroom educational activity.</span>
                 </label>
             </div>
             <button type="button" class="btn btn-primary" id="consent-continue-btn" onclick="acceptConsent()" disabled>I Agree – Continue</button>
@@ -68,7 +54,7 @@
             </div>
         </div>
 
-        <!-- Demographics (optional; once per Candidate ID) -->
+        <!-- Demographics moved to demographics.html (optional; never blocks packs) -->
         <div id="demographics-screen" style="display:none;">
             <div class="header">
                 <span class="pack-badge" data-pack-badge>Pack</span>

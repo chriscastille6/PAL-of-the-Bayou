@@ -135,7 +135,7 @@ const DEMOGRAPHICS_FIELDS = [
     },
     {
         id: 'prior_hr_coursework',
-        label: 'Have you completed formal HR coursework before this study?',
+        label: 'Have you completed formal HR coursework before this activity?',
         type: 'select',
         options: [
             '',
@@ -181,8 +181,8 @@ function renderDemographicsForm(container, existing) {
     let html = `
         <p class="note-box">
             These questions are <strong>optional</strong>. You may skip any item.
-            Answers are stored with your Candidate ID only (not your name) so we can study
-            patterns across students and professionals.
+            Answers are stored with your Candidate ID only (not your name) in this browser.
+            Survey packs do not require demographics.
         </p>
         <form id="demographics-form" class="demo-form">
     `;

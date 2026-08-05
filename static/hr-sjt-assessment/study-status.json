@@ -1,0 +1,10 @@
+{
+  "irb_approved": false,
+  "data_collection": false,
+  "mode": "classroom_only",
+  "irb_protocol_id": null,
+  "approved_date": null,
+  "status_message": null,
+  "updated": "2026-08-04",
+  "sona_notes": "SONA/PRAMS: flip this file only \u2014 do not rewrite survey.html. When Nicholls IRB approval is granted, set irb_approved=true, data_collection=true (if collecting), mode=\"research\", and optionally irb_protocol_id, approved_date, status_message. Redeploy or sync this JSON to Netlify static/hr-sjt-assessment/."
+}

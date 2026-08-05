@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optional Demographics — HR SJT</title>
+    <link rel="stylesheet" href="css/survey.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Optional Demographics</h1>
+            <p class="subtitle">Separate from the 8 decision surveys · Not required to complete any pack</p>
+        </div>
+
+        <div class="note-box" id="study-status-banner">
+            Loading study status…
+        </div>
+
+        <div id="id-step">
+            <h2 style="color:#1e3a8a;margin-bottom:12px;">Your Candidate ID</h2>
+            <p class="note-box">
+                Use the <strong>same first and last name</strong> you use on the survey packs so demographics
+                can appear on those PDFs if you already generated an ID.
+            </p>
+            <div class="participant-id-section">
+                <label for="firstNameInput">First Name <span style="color:#dc2626;">*</span></label>
+                <input type="text" id="firstNameInput" placeholder="Enter your first name" required autocomplete="given-name">
+                <label for="lastNameInput">Last Name <span style="color:#dc2626;">*</span></label>
+                <input type="text" id="lastNameInput" placeholder="Enter your last name" required autocomplete="family-name">
+                <div id="participantIdDisplay" style="display:none;margin:16px 0;" class="note-box">
+                    <strong>Your Participant ID:</strong>
+                    <div id="generatedId" class="id-mono"></div>
+                </div>
+                <div id="participant-error" class="error-message" style="display:none;"></div>
+                <button type="button" class="btn btn-primary" id="id-continue-btn" style="width:100%;">Continue to demographics</button>
+            </div>
+        </div>
+
+        <div id="demo-step" style="display:none;">
+            <div id="demographics-container"></div>
+            <p style="margin-top:16px;"><a href="index.html">← Back to survey hub</a></p>
+        </div>
+
+        <div id="done-step" style="display:none;">
+            <div class="note-box" style="border-left:4px solid #15803d;background:#f0fdf4;">
+                <p style="margin:0;"><strong>Saved.</strong> Optional demographics are stored with your Candidate ID in this browser.
+                Future pack PDFs from this browser can include them. Packs never require demographics.</p>
+            </div>
+            <p id="done-id" class="id-mono" style="margin:16px 0;"></p>
+            <p><a class="btn btn-primary" href="index.html">Return to survey hub</a></p>
+        </div>
+    </div>
+
+    <script src="js/participant-id.js"></script>
+    <script src="js/demographics.js"></script>
+    <script>
+    (function () {
+        const DEFAULT_STATUS = {
+            irb_approved: false,
+            data_collection: false,
+            mode: 'classroom_only'
+        };
+        let participantId = null;
+
+        function $(id) { return document.getElementById(id); }
+
+        function loadStatus() {
+            const url = new URL('../study-status.json', window.location.href).href;
+            return fetch(url, { cache: 'no-store' })
+                .then((r) => { if (!r.ok) throw new Error('status'); return r.json(); })
+                .then((d) => ({ ...DEFAULT_STATUS, ...d }))
+                .catch(() => ({ ...DEFAULT_STATUS }));
+        }
+
+        function renderBanner(status) {
+            const el = $('study-status-banner');
+            if (!el) return;
+            if (status.irb_approved) {
+                el.innerHTML = '<strong>Optional research demographics.</strong> Complete only if you wish. Not required for survey packs.';
+            } else {
+                el.innerHTML = '<strong>Classroom educational activity — not Nicholls IRB approved.</strong> '
+                    + 'Demographics are optional and not required for any of the 8 decision surveys. '
+                    + (status.data_collection
+                        ? ''
+                        : '<strong>No research data are collected</strong> by this site as of today; answers stay in your browser.');
+            }
+        }
+
+        function showStep(id) {
+            ['id-step', 'demo-step', 'done-step'].forEach((s) => {
+                const el = $(s);
+                if (el) el.style.display = s === id ? 'block' : 'none';
+            });
+        }
+
+        $('id-continue-btn').onclick = function () {
+            const firstName = ($('firstNameInput').value || '').trim();
+            const lastName = ($('lastNameInput').value || '').trim();
+            const errorDiv = $('participant-error');
+            if (!firstName || !lastName) {
+                errorDiv.textContent = 'Please enter both your first and last name.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            participantId = generateCandidateIdFromName(firstName, '', lastName);
+            if (!participantId) {
+                errorDiv.textContent = 'Failed to generate participant ID. Please try again.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            errorDiv.style.display = 'none';
+            sessionStorage.setItem('candidate_id', participantId);
+            sessionStorage.setItem('research_participant_id', participantId);
+            $('generatedId').textContent = participantId;
+            $('participantIdDisplay').style.display = 'block';
+
+            const existing = Demographics.load(participantId);
+            Demographics.renderForm($('demographics-container'), existing);
+            const skipBtn = $('demo-skip-btn');
+            const contBtn = $('demo-continue-btn');
+            if (skipBtn) {
+                skipBtn.textContent = 'Clear / skip and return';
+                skipBtn.onclick = () => {
+                    Demographics.save(participantId, { skipped: true });
+                    finish();
+                };
+            }
+            if (contBtn) {
+                contBtn.textContent = 'Save demographics';
+                contBtn.onclick = () => {
+                    Demographics.save(participantId, Demographics.collect());
+                    finish();
+                };
+            }
+            showStep('demo-step');
+        };
+
+        function finish() {
+            $('done-id').textContent = 'Candidate ID: ' + participantId;
+            showStep('done-step');
+        }
+
+        // Prefill if session already has an ID
+        const saved = sessionStorage.getItem('candidate_id') || sessionStorage.getItem('research_participant_id');
+        if (saved) {
+            $('generatedId').textContent = saved;
+            $('participantIdDisplay').style.display = 'block';
+        }
+
+        loadStatus().then(renderBanner);
+    })();
+    </script>
+</body>
+</html>
