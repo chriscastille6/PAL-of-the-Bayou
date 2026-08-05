@@ -41,14 +41,6 @@ header:
     show_search: true
     highlight_active_link: false
 
-# Affiliation notice (banner + footer) for independent Netlify hosting
-affiliation:
-  banner: >-
-    People Analytics Lab (PAL) of the Bayou is a faculty educational site
-    sharing research and assessment tools for learning and community use. It is
-    not a Nicholls State University IT service, and these materials are not
-    clinical diagnosis or employment decisions.
-
 # Site footer
 
 footer:
