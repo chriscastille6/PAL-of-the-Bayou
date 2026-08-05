@@ -10,7 +10,7 @@
     <div class="container">
         <div class="header">
             <h1>Choose Your Survey</h1>
-            <p class="subtitle">Select who you are, then click the decision you are preparing for. Complete the survey, then download your PDF.</p>
+            <p class="subtitle">Click the decision you are preparing for. Complete the survey, then download your PDF.</p>
         </div>
 
         <div class="note-box">
@@ -18,19 +18,12 @@
             Demographics are <strong>optional</strong> and live on a <a href="demographics.html">separate page</a> — packs never require them.
         </div>
 
-        <h2 class="hub-section-title">1. Who are you?</h2>
-        <div class="role-picker" role="group" aria-label="Participant role">
-            <button type="button" class="role-btn active" data-role="student" id="role-student">Student</button>
-            <button type="button" class="role-btn" data-role="professional" id="role-professional">HR professional / manager</button>
-        </div>
-
-        <h2 class="hub-section-title">2. Which decision are you preparing for?</h2>
         <div class="decision-grid" id="decision-grid" aria-label="Survey choices by decision">
             <!-- filled by script -->
         </div>
 
         <div class="canvas-callout">
-            <strong>Optional:</strong> <a href="demographics.html">Complete optional demographics</a> (separate from packs 01–08; never required to finish a survey).
+            <strong>Optional:</strong> <a href="demographics.html">Complete optional demographics</a> (Student vs HR professional and other items; separate from packs 01–08; never required to finish a survey).
         </div>
 
         <div class="canvas-callout">
@@ -47,25 +40,8 @@
 
     <script src="js/packs.js"></script>
     <script>
-        let selectedRole = sessionStorage.getItem('hr_sjt_role') || 'student';
-        if (selectedRole !== 'professional') selectedRole = 'student';
-
-        function setRole(role) {
-            selectedRole = role;
-            sessionStorage.setItem('hr_sjt_role', role);
-            document.querySelectorAll('.role-btn').forEach((btn) => {
-                btn.classList.toggle('active', btn.dataset.role === role);
-            });
-            renderPacks();
-        }
-
-        document.getElementById('role-student').onclick = () => setRole('student');
-        document.getElementById('role-professional').onclick = () => setRole('professional');
-        setRole(selectedRole);
-
-        function renderPacks() {
+        (function () {
             const grid = document.getElementById('decision-grid');
-            grid.innerHTML = '';
             Object.keys(SURVEY_PACKS)
                 .sort((a, b) => SURVEY_PACKS[a].decisionOrder - SURVEY_PACKS[b].decisionOrder)
                 .forEach((id) => {
@@ -73,7 +49,7 @@
                     const n = pack.incidentNames.length;
                     const card = document.createElement('a');
                     card.className = 'decision-card';
-                    card.href = `survey.html?pack=${pack.id}&role=${encodeURIComponent(selectedRole)}`;
+                    card.href = `survey.html?pack=${pack.id}`;
                     card.setAttribute('aria-label', `${pack.decisionLabel}. ${n} scenario${n === 1 ? '' : 's'}.`);
                     card.innerHTML = `
                         <span class="decision-number">Decision ${pack.decisionOrder}</span>
@@ -82,7 +58,7 @@
                     `;
                     grid.appendChild(card);
                 });
-        }
+        })();
     </script>
 </body>
 </html>

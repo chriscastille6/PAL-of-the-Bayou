@@ -96,9 +96,18 @@
         });
 
         const params = new URLSearchParams(window.location.search);
-        participantRole = (params.get('role') || sessionStorage.getItem('hr_sjt_role') || 'student').toLowerCase();
+        // Role is optional on packs: prefer URL override, then demographics/localStorage, else student default for consent copy.
+        const storedRole = (window.Demographics && Demographics.getStoredRole)
+            ? Demographics.getStoredRole()
+            : (sessionStorage.getItem('hr_sjt_role') || localStorage.getItem('hr_sjt_role') || '');
+        participantRole = (params.get('role') || storedRole || 'student').toLowerCase();
         if (participantRole !== 'professional') participantRole = 'student';
-        sessionStorage.setItem('hr_sjt_role', participantRole);
+        if (window.Demographics && Demographics.setStoredRole) {
+            Demographics.setStoredRole(participantRole);
+        } else {
+            sessionStorage.setItem('hr_sjt_role', participantRole);
+            try { localStorage.setItem('hr_sjt_role', participantRole); } catch (e) { /* ignore */ }
+        }
 
         const consentCb = $('consent-checkbox');
         const consentBtn = $('consent-continue-btn');

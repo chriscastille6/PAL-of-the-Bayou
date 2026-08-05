@@ -38,6 +38,20 @@
         </div>
 
         <div id="demo-step" style="display:none;">
+            <h2 class="hub-section-title" style="margin-top:0;">Who are you?</h2>
+            <p style="color:#64748b;margin:-8px 0 12px;">Choose the path that best fits you. This is optional and separate from the decision packs.</p>
+            <div class="role-card-grid" role="group" aria-label="Participant role">
+                <button type="button" class="role-card" data-role="student" id="role-student">
+                    <span class="decision-number">Path</span>
+                    <span class="decision-name">Student</span>
+                    <span class="decision-meta">Undergraduate or graduate learner</span>
+                </button>
+                <button type="button" class="role-card" data-role="professional" id="role-professional">
+                    <span class="decision-number">Path</span>
+                    <span class="decision-name">HR professional / manager</span>
+                    <span class="decision-meta">Working professional or manager</span>
+                </button>
+            </div>
             <div id="demographics-container"></div>
             <p style="margin-top:16px;"><a href="index.html">← Back to survey hub</a></p>
         </div>
@@ -116,6 +130,29 @@
             $('participantIdDisplay').style.display = 'block';
 
             const existing = Demographics.load(participantId);
+            let selectedRole = Demographics.getStoredRole();
+            if (existing && existing.hub_role) selectedRole = existing.hub_role;
+            if (selectedRole !== 'professional') selectedRole = selectedRole === 'student' ? 'student' : '';
+
+            function setRole(role) {
+                selectedRole = role;
+                Demographics.setStoredRole(role);
+                document.querySelectorAll('.role-card').forEach((btn) => {
+                    btn.classList.toggle('active', btn.dataset.role === role);
+                    btn.setAttribute('aria-pressed', btn.dataset.role === role ? 'true' : 'false');
+                });
+            }
+
+            document.getElementById('role-student').onclick = () => setRole('student');
+            document.getElementById('role-professional').onclick = () => setRole('professional');
+            if (selectedRole) setRole(selectedRole);
+            else {
+                document.querySelectorAll('.role-card').forEach((btn) => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-pressed', 'false');
+                });
+            }
+
             Demographics.renderForm($('demographics-container'), existing);
             const skipBtn = $('demo-skip-btn');
             const contBtn = $('demo-continue-btn');
@@ -129,7 +166,12 @@
             if (contBtn) {
                 contBtn.textContent = 'Save demographics';
                 contBtn.onclick = () => {
-                    Demographics.save(participantId, Demographics.collect());
+                    const data = Demographics.collect();
+                    if (selectedRole) {
+                        data.hub_role = selectedRole;
+                        Demographics.setStoredRole(selectedRole);
+                    }
+                    Demographics.save(participantId, data);
                     finish();
                 };
             }

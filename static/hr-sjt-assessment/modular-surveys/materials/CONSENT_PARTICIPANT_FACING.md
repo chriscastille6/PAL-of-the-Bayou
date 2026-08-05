@@ -1,7 +1,7 @@
 # Exact Consent Text Participants See (Modular Surveys)
 
 **Source of truth for the live interface:** `../survey.html` consent screen, filled at load by `../js/survey-engine.js` from `../../study-status.json`.  
-**Audience variants:** wording adjusts slightly for Students vs Professionals (`?role=student` or `?role=professional`, or selection on the hub).
+**Audience variants:** wording adjusts slightly for Students vs Professionals. Role comes from optional demographics (`hr_sjt_role` in browser storage) or an optional `?role=student|professional` URL override — not from the survey hub.
 
 **SONA / PRAMS:** flip fields in `hr-sjt-assessment/study-status.json` (see `../../STUDY_STATUS.md`). Do not rewrite this HTML to change IRB status.
 

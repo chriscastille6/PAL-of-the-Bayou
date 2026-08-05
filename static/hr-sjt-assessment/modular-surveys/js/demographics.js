@@ -146,8 +146,29 @@ const DEMOGRAPHICS_FIELDS = [
     }
 ];
 
+const ROLE_STORAGE_KEY = 'hr_sjt_role';
+
 function demographicsStorageKey(participantId) {
     return DEMOGRAPHICS_STORAGE_PREFIX + participantId;
+}
+
+function getStoredRole() {
+    try {
+        const raw = (sessionStorage.getItem(ROLE_STORAGE_KEY) || localStorage.getItem(ROLE_STORAGE_KEY) || '').toLowerCase();
+        if (raw === 'professional' || raw === 'student') return raw;
+    } catch (e) { /* ignore */ }
+    return '';
+}
+
+function setStoredRole(role) {
+    const normalized = String(role || '').toLowerCase() === 'professional' ? 'professional' : 'student';
+    try {
+        sessionStorage.setItem(ROLE_STORAGE_KEY, normalized);
+        localStorage.setItem(ROLE_STORAGE_KEY, normalized);
+    } catch (e) {
+        console.warn('Could not save role:', e);
+    }
+    return normalized;
 }
 
 function loadDemographics(participantId) {
@@ -245,6 +266,11 @@ function collectDemographicsFromForm() {
 function formatDemographicsForDisplay(data) {
     if (!data) return [];
     const lines = [];
+    if (data.hub_role === 'professional') {
+        lines.push({ label: 'Who are you?', value: 'HR professional / manager' });
+    } else if (data.hub_role === 'student') {
+        lines.push({ label: 'Who are you?', value: 'Student' });
+    }
     DEMOGRAPHICS_FIELDS.forEach((field) => {
         let val = data[field.id];
         if (Array.isArray(val)) val = val.length ? val.join('; ') : '';
@@ -271,5 +297,7 @@ window.Demographics = {
     save: saveDemographics,
     renderForm: renderDemographicsForm,
     collect: collectDemographicsFromForm,
-    formatForDisplay: formatDemographicsForDisplay
+    formatForDisplay: formatDemographicsForDisplay,
+    getStoredRole: getStoredRole,
+    setStoredRole: setStoredRole
 };

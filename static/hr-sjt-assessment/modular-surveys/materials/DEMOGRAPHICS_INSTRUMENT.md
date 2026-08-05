@@ -5,6 +5,7 @@ All items are optional / skippable. Stored with participant ID only (not name). 
 
 | Item ID | Prompt | Response type |
 |---------|--------|---------------|
+| hub_role | Who are you? (Student vs HR professional / manager) | Large card buttons on demographics page; also stored as `hr_sjt_role` for consent path |
 | participant_role | Which best describes you? | Select (student / HR professional / manager / other / prefer not to say) |
 | age_range | Age range | Select (18-24 … 65+ / prefer not to say) |
 | gender | Gender identity | Select |

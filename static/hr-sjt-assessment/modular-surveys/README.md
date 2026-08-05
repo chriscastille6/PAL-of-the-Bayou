@@ -18,7 +18,7 @@ One sitting for all 27 scenarios is too long and can harm rating quality. Shorte
 4. Rate tactics (1–5) for that pack’s scenarios (**demographics are not required**)  
 5. **Download PDF** → upload to the Canvas assignment for that decision  
 
-Optional demographics: open `demographics.html` from the hub anytime (separate from packs 01–08).  
+Optional demographics: open `demographics.html` from the hub anytime (separate from packs 01–08). Student vs HR professional is chosen there (large card buttons), not on the hub.  
 
 PDF filename pattern:
 
