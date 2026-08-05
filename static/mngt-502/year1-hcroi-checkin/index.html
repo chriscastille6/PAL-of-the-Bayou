@@ -1,0 +1,722 @@
+<!--
+File location: static/mngt-502/year1-hcroi-checkin/index.html
+What this file does: MNGT 502 Year-1 HCROI midpoint check-in worksheet (client-side)
+Why this file exists: Bridge Fitz-enz HCROI frames with Interpretive Year-1 sim review before
+  meeting the instructor; feed totals into the live ROI calculator
+Tech stack: HTML, Tailwind CSS (CDN), vanilla JS — no server storage
+RELEVANT FILES:
+  - static/platform/tools/roi-calculator/index.html
+  - static/mngt-502/year1-hcroi-checkin/instructor/
+  - content/resources.md
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Year-1 HCROI Midpoint Check-in | MNGT 502 | People Analytics Lab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --nicholls-red: #AE132A;
+      --nicholls-gray: #72808A;
+      --ink: #1e293b;
+      --paper: #f8fafc;
+      --panel: #ffffff;
+      --line: #e2e8f0;
+      --accent-soft: #fef2f2;
+    }
+    body {
+      font-family: "Source Sans 3", "Segoe UI", "Helvetica Neue", sans-serif;
+      background:
+        radial-gradient(ellipse 80% 50% at 10% -10%, rgba(174, 19, 42, 0.08), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 100% 0%, rgba(114, 128, 138, 0.12), transparent 50%),
+        linear-gradient(180deg, #f1f5f9 0%, var(--paper) 40%, #eef2f6 100%);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+    .nicholls-red { background-color: var(--nicholls-red); }
+    .nicholls-red-text { color: var(--nicholls-red); }
+    .brand-gradient { background: linear-gradient(135deg, #AE132A 0%, #9f1239 100%); }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 0.75rem;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+    .section-enter {
+      animation: riseIn 0.45s ease both;
+    }
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .metric-pill {
+      border-left: 4px solid var(--nicholls-red);
+      background: var(--accent-soft);
+      border-radius: 0 0.5rem 0.5rem 0;
+      padding: 0.75rem 1rem;
+    }
+    input[type="number"], input[type="text"] {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: #fff;
+    }
+    input:focus {
+      outline: 2px solid rgba(174, 19, 42, 0.35);
+      border-color: var(--nicholls-red);
+    }
+    .label-hint { font-size: 0.75rem; color: #64748b; }
+    .tag-sim {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: #e0f2fe;
+      color: #075985;
+      padding: 0.1rem 0.4rem;
+      border-radius: 0.25rem;
+      margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+    .tag-assumed {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: #fef3c7;
+      color: #92400e;
+      padding: 0.1rem 0.4rem;
+      border-radius: 0.25rem;
+      margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+    table.cost-table th, table.cost-table td {
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+    table.cost-table th { color: #475569; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; }
+    #briefSheet { display: none; }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white; }
+      .panel { box-shadow: none; border: none; }
+      #briefSheet {
+        display: block !important;
+        page-break-inside: avoid;
+      }
+      #appMain { display: none !important; }
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="appMain" class="max-w-5xl mx-auto px-4 py-8 sm:py-10">
+    <header class="mb-8 no-print section-enter">
+      <a href="/resources/" class="inline-flex items-center text-sm text-slate-600 hover:text-slate-900 mb-4">
+        ← Back to Resources
+      </a>
+      <div class="flex items-start gap-3 mb-3">
+        <div class="w-11 h-11 brand-gradient rounded-xl flex items-center justify-center shadow-sm shrink-0" aria-hidden="true">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m-6 4h6m-6 4h4M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-wide text-slate-500">MNGT 502 · Managing Human Capital</p>
+          <h1 class="text-2xl sm:text-3xl font-bold nicholls-red-text leading-tight">Year-1 HCROI Midpoint Check-in</h1>
+          <p class="text-slate-600 mt-1 max-w-2xl">
+            After quarters Q1–Q4 of the Interpretive HRManagement simulation, estimate human capital cost components,
+            then bring a one-page brief to your midpoint meeting with Dr. Castille.
+            Nothing is uploaded or stored on this site.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- 1. Refresher -->
+    <section class="panel p-6 sm:p-8 mb-6 section-enter" style="animation-delay: 0.05s">
+      <h2 class="text-xl font-bold text-slate-900 mb-2">1. Refresher: HCCF &amp; HCROI</h2>
+      <p class="text-slate-600 mb-4 text-sm max-w-3xl">
+        Fitz-enz human capital metrics connect people costs to organizational financials.
+        Cascio–Boudreau costing breaks the big cost drivers into measurable buckets you can discuss with your instructor.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div class="rounded-lg border border-slate-200 p-4 bg-slate-50">
+          <h3 class="font-semibold text-slate-900 mb-2">HCCF — four components</h3>
+          <ul class="text-sm text-slate-700 space-y-1 list-disc list-inside">
+            <li><strong>Pay &amp; benefits</strong> — wages/salaries plus benefits load</li>
+            <li><strong>Contingents</strong> — temps, contractors, agency spend</li>
+            <li><strong>Absenteeism $</strong> — cost of scheduled time lost</li>
+            <li><strong>Turnover $</strong> — cost of separations and replacement</li>
+          </ul>
+          <p class="text-xs text-slate-500 mt-2">HCCF = Pay &amp; benefits + Contingents + Absenteeism + Turnover</p>
+        </div>
+        <div class="rounded-lg border border-slate-200 p-4 bg-slate-50">
+          <h3 class="font-semibold text-slate-900 mb-2">HCROI (Fitz-enz)</h3>
+          <p class="text-sm text-slate-700 mb-2">
+            HCROI = (Revenue − (Expenses − HCCF)) / HCCF
+          </p>
+          <p class="text-sm text-slate-600">
+            Related metrics: <strong>HCRF</strong> = Revenue / Total FTEs;
+            <strong>HCVA</strong> = adjusted profit / Total FTEs.
+            Use the live calculator for the full set once your cost totals are ready.
+          </p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <h3 class="font-semibold text-slate-900 mb-1 text-sm">Turnover cost buckets</h3>
+          <p class="text-sm text-slate-600">Separation · Replacement · Training · Performance (ramp / lost productivity)</p>
+          <p class="text-xs text-slate-500 mt-1">Rate: separations ÷ average workforce</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-slate-900 mb-1 text-sm">Absenteeism cost buckets</h3>
+          <p class="text-sm text-slate-600">Absentees · Managing absence · Substitutes · Reduced quantity/quality</p>
+          <p class="text-xs text-slate-500 mt-1">Rate: days lost ÷ (workforce × workable days)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Inputs -->
+    <section class="panel p-6 sm:p-8 mb-6 section-enter no-print" style="animation-delay: 0.1s">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900">2. Year-1 inputs</h2>
+          <p class="text-sm text-slate-600 mt-1">Pull figures from your Year-1 sim reports. Tags mark <span class="tag-sim">sim-reported</span> vs <span class="tag-assumed">assumed</span> teachable defaults.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" id="btnDemo" class="nicholls-red text-white text-sm font-medium px-4 py-2 rounded-lg hover:opacity-90">Load demo Year-1</button>
+          <button type="button" id="btnReset" class="border border-slate-300 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg hover:bg-slate-50">Reset demo</button>
+          <button type="button" id="btnClear" class="border border-amber-300 text-amber-900 text-sm font-medium px-4 py-2 rounded-lg hover:bg-amber-50">Clear all</button>
+        </div>
+      </div>
+
+      <div class="mb-5">
+        <label for="teamName" class="block text-sm font-medium text-slate-700 mb-1">Team name <span class="label-hint">(local only — never uploaded)</span></label>
+        <input type="text" id="teamName" placeholder="e.g., Team Delta" autocomplete="off">
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <fieldset class="space-y-3">
+          <legend class="text-sm font-semibold text-slate-900 border-b border-slate-200 pb-1 w-full mb-1">Workforce &amp; rates base</legend>
+          <div>
+            <label for="startHc" class="block text-sm font-medium text-slate-700">Starting headcount (Year-1) <span class="tag-sim">sim</span></label>
+            <input type="number" id="startHc" min="0" step="1">
+          </div>
+          <div>
+            <label for="endHc" class="block text-sm font-medium text-slate-700">Ending headcount (after Q4) <span class="tag-sim">sim</span></label>
+            <input type="number" id="endHc" min="0" step="1">
+          </div>
+          <div>
+            <label for="separations" class="block text-sm font-medium text-slate-700">Separations (Year-1 total) <span class="tag-sim">sim</span></label>
+            <input type="number" id="separations" min="0" step="1">
+          </div>
+          <div>
+            <label for="absenceDays" class="block text-sm font-medium text-slate-700">Absence days lost (Year-1) <span class="tag-sim">sim</span></label>
+            <input type="number" id="absenceDays" min="0" step="1">
+          </div>
+          <div>
+            <label for="workableDays" class="block text-sm font-medium text-slate-700">Workable days / year <span class="tag-assumed">assumed</span></label>
+            <input type="number" id="workableDays" min="1" step="1">
+          </div>
+          <div>
+            <label for="hoursPerDay" class="block text-sm font-medium text-slate-700">Hours per workday <span class="tag-assumed">assumed</span></label>
+            <input type="number" id="hoursPerDay" min="1" step="0.5">
+          </div>
+        </fieldset>
+
+        <fieldset class="space-y-3">
+          <legend class="text-sm font-semibold text-slate-900 border-b border-slate-200 pb-1 w-full mb-1">Compensation &amp; finance</legend>
+          <div>
+            <label for="payrollBenefits" class="block text-sm font-medium text-slate-700">Payroll + benefits ($) <span class="tag-sim">sim / worksheet</span></label>
+            <input type="number" id="payrollBenefits" min="0" step="1000">
+          </div>
+          <div>
+            <label for="contingentCosts" class="block text-sm font-medium text-slate-700">Contingent costs ($) <span class="tag-sim">sim</span></label>
+            <input type="number" id="contingentCosts" min="0" step="1000">
+          </div>
+          <div>
+            <label for="contingentFte" class="block text-sm font-medium text-slate-700">Contingent FTEs <span class="tag-sim">sim</span></label>
+            <input type="number" id="contingentFte" min="0" step="1">
+          </div>
+          <div>
+            <label for="revenue" class="block text-sm font-medium text-slate-700">Total revenue ($) <span class="tag-sim">sim / financials</span></label>
+            <input type="number" id="revenue" min="0" step="1000">
+          </div>
+          <div>
+            <label for="expenses" class="block text-sm font-medium text-slate-700">Total expenses ($) <span class="tag-sim">sim / financials</span></label>
+            <input type="number" id="expenses" min="0" step="1000">
+          </div>
+        </fieldset>
+      </div>
+
+      <details class="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-4" open>
+        <summary class="font-semibold text-slate-900 cursor-pointer">Simplified cost parameters (teachable defaults)</summary>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
+          <div>
+            <label for="avgAnnualPay" class="block text-sm font-medium text-slate-700">Avg annual pay per employee ($) <span class="tag-assumed">assumed</span></label>
+            <input type="number" id="avgAnnualPay" min="0" step="100">
+            <p class="label-hint mt-1">Used for hourly wage and performance/ramp estimates.</p>
+          </div>
+          <div>
+            <label for="benefitsLoad" class="block text-sm font-medium text-slate-700">Benefits load on wages (%) <span class="tag-assumed">assumed</span></label>
+            <input type="number" id="benefitsLoad" min="0" max="100" step="1">
+          </div>
+          <div>
+            <label for="sepAdminHours" class="block text-sm font-medium text-slate-700">Separation admin hours / exit <span class="tag-assumed">assumed</span></label>
+            <input type="number" id="sepAdminHours" min="0" step="0.5">
+          </div>
+          <div>
+            <label for="hrWage" class="block text-sm font-medium text-slate-700">HR hourly wage ($) <span class="tag-assumed">assumed</span></label>
+            <input type="number" id="hrWage" min="0" step="1">
+          </div>
+          <div>
+            <label for="sepPayWeeks" class="block text-sm font-medium text-slate-700">Separation pay (weeks) <span class="tag-assumed">assumed</span></label>
+            <input type="number" id="sepPayWeeks" min="0" step="0.5">
+          </div>
+          <div>
+            <label for="hireCost" class="block text-sm font-medium text-slate-700">Replacement / hire cost per separation ($) <span class="tag-assumed">sim-aligned</span></label>
+            <input type="number" id="hireCost" min="0" step="100">
+          </div>
+          <div>
+            <label for="trainCost" class="block text-sm font-medium text-slate-700">Training cost per hire ($) <span class="tag-assumed">sim-aligned</span></label>
+            <input type="number" id="trainCost" min="0" step="100">
+          </div>
+          <div>
+            <label for="perfLossPct" class="block text-sm font-medium text-slate-700">Performance / ramp loss (% of annual pay) <span class="tag-assumed">assumed</span></label>
+            <input type="number" id="perfLossPct" min="0" max="100" step="1">
+          </div>
+          <div>
+            <label for="manageHrsPerDay" class="block text-sm font-medium text-slate-700">Supervisor hours managing each absent day <span class="tag-assumed">assumed</span></label>
+            <input type="number" id="manageHrsPerDay" min="0" step="0.1">
+          </div>
+          <div>
+            <label for="supervisorWage" class="block text-sm font-medium text-slate-700">Supervisor hourly wage ($) <span class="tag-assumed">assumed</span></label>
+            <input type="number" id="supervisorWage" min="0" step="1">
+          </div>
+          <div>
+            <label for="subWageFactor" class="block text-sm font-medium text-slate-700">Substitute wage factor (% of loaded hourly) <span class="tag-assumed">assumed</span></label>
+            <input type="number" id="subWageFactor" min="0" max="150" step="5">
+          </div>
+          <div>
+            <label for="absentProdLoss" class="block text-sm font-medium text-slate-700">Reduced qty/quality (% of absentee wage cost) <span class="tag-assumed">assumed</span></label>
+            <input type="number" id="absentProdLoss" min="0" max="100" step="5">
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- 3. Outputs -->
+    <section class="panel p-6 sm:p-8 mb-6 section-enter" style="animation-delay: 0.15s">
+      <h2 class="text-xl font-bold text-slate-900 mb-1">3. Outputs</h2>
+      <p class="text-sm text-slate-600 mb-4">Rates and dollar costs update as you change inputs.</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+        <div class="metric-pill">
+          <p class="text-xs uppercase tracking-wide text-slate-500">Avg workforce</p>
+          <p id="outAvgWorkforce" class="text-xl font-bold text-slate-900">—</p>
+        </div>
+        <div class="metric-pill">
+          <p class="text-xs uppercase tracking-wide text-slate-500">Turnover rate</p>
+          <p id="outTurnoverRate" class="text-xl font-bold text-slate-900">—</p>
+        </div>
+        <div class="metric-pill">
+          <p class="text-xs uppercase tracking-wide text-slate-500">Absence rate</p>
+          <p id="outAbsenceRate" class="text-xl font-bold text-slate-900">—</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div>
+          <h3 class="font-semibold text-slate-900 mb-2">Turnover $ by bucket</h3>
+          <table class="cost-table w-full text-sm">
+            <thead><tr><th>Bucket</th><th>Amount</th></tr></thead>
+            <tbody>
+              <tr><td>Separation</td><td id="outSep$">—</td></tr>
+              <tr><td>Replacement</td><td id="outRep$">—</td></tr>
+              <tr><td>Training</td><td id="outTrain$">—</td></tr>
+              <tr><td>Performance</td><td id="outPerf$">—</td></tr>
+              <tr class="font-semibold"><td>Total turnover</td><td id="outTurnover$">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3 class="font-semibold text-slate-900 mb-2">Absenteeism $ by bucket</h3>
+          <table class="cost-table w-full text-sm">
+            <thead><tr><th>Bucket</th><th>Amount</th></tr></thead>
+            <tbody>
+              <tr><td>Absentees (paid time)</td><td id="outAbs$">—</td></tr>
+              <tr><td>Managing absence</td><td id="outManage$">—</td></tr>
+              <tr><td>Substitutes</td><td id="outSub$">—</td></tr>
+              <tr><td>Reduced qty/quality</td><td id="outQty$">—</td></tr>
+              <tr class="font-semibold"><td>Total absenteeism</td><td id="outAbsence$">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-semibold text-slate-900 mb-2">HCCF building blocks</h3>
+        <table class="cost-table w-full text-sm max-w-xl">
+          <thead><tr><th>Component</th><th>Amount</th></tr></thead>
+          <tbody>
+            <tr><td>Pay &amp; benefits</td><td id="outPay$">—</td></tr>
+            <tr><td>Contingents</td><td id="outCont$">—</td></tr>
+            <tr><td>Absenteeism</td><td id="outAbsHccf$">—</td></tr>
+            <tr><td>Turnover</td><td id="outTurnHccf$">—</td></tr>
+            <tr class="font-bold text-base"><td>HCCF</td><td id="outHccf$" class="nicholls-red-text">—</td></tr>
+          </tbody>
+        </table>
+        <p class="text-sm text-slate-600 mt-3">Quick HCROI preview (same formula as the calculator): <strong id="outHcroiPreview">—</strong></p>
+      </div>
+    </section>
+
+    <!-- 4. Bridge -->
+    <section class="panel p-6 sm:p-8 mb-6 section-enter no-print" style="animation-delay: 0.2s">
+      <h2 class="text-xl font-bold text-slate-900 mb-2">4. Bridge to Fitz-enz ROI calculator</h2>
+      <p class="text-sm text-slate-600 mb-4 max-w-3xl">
+        Open the live Human Capital ROI Calculator with your Year-1 totals prefilled via URL query parameters.
+        Review HCRF, HCCF, HCVA, and HCROI there. Optional UA tools:
+        <a class="nicholls-red-text underline" href="/ua/home/">Utility Analysis portal</a>.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a id="bridgeLink" href="/platform/tools/roi-calculator/" class="inline-flex items-center nicholls-red text-white font-medium px-5 py-3 rounded-lg hover:opacity-90">
+          Open ROI calculator with Year-1 totals →
+        </a>
+        <button type="button" id="btnCopyUrl" class="border border-slate-300 text-slate-700 font-medium px-5 py-3 rounded-lg hover:bg-slate-50 text-sm">
+          Copy prefilled URL
+        </button>
+      </div>
+      <p id="copyUrlStatus" class="text-sm text-green-700 mt-2 hidden">URL copied.</p>
+    </section>
+
+    <!-- 5. Print brief -->
+    <section class="panel p-6 sm:p-8 mb-6 section-enter no-print" style="animation-delay: 0.25s">
+      <h2 class="text-xl font-bold text-slate-900 mb-2">5. Printable check-in brief</h2>
+      <p class="text-sm text-slate-600 mb-4">Print or Save as PDF for your midpoint meeting. Team name stays in your browser only.</p>
+      <button type="button" onclick="window.print()" class="nicholls-red text-white font-medium px-5 py-3 rounded-lg hover:opacity-90">
+        Print / Save 1-page brief
+      </button>
+      <ul class="mt-4 text-sm text-slate-700 space-y-2 list-disc list-inside">
+        <li>Which HCCF component surprised you most after Year-1, and why?</li>
+        <li>What one Year-2 decision could most reduce turnover or absence $ without harming productivity?</li>
+        <li>How will you use HCROI language (not just “headcount”) in the midpoint conversation?</li>
+      </ul>
+    </section>
+
+    <!-- 6. Assumptions -->
+    <section class="panel p-6 sm:p-8 mb-6 section-enter" style="animation-delay: 0.3s">
+      <h2 class="text-xl font-bold text-slate-900 mb-2">6. Assumptions panel</h2>
+      <ul class="text-sm text-slate-700 space-y-2 list-disc list-inside">
+        <li><strong>Measured / sim-reported:</strong> headcount, separations, absence days, payroll+benefits, contingents, revenue, expenses — from your Interpretive exports or worksheets.</li>
+        <li><strong>Estimated / assumed:</strong> workable days, hours/day, benefits load, separation admin hours, hire/training floors, performance % of pay, supervisor manage hours, substitute factor, reduced qty/quality %.</li>
+        <li>This tool is a <strong>simplified teachable costing worksheet</strong>. It is <strong>not</strong> the Interpretive engine and not Cascio’s full micro-step workbook.</li>
+        <li>Demo Year-1 data are synthetic classroom defaults (Bayou Energy / start-of-sim spirit). Replace with your team’s figures before the meeting.</li>
+        <li><strong>FERPA / privacy:</strong> no student data are collected, uploaded, or stored. Print locally; submit only if your instructor asks (e.g., Canvas).</li>
+      </ul>
+    </section>
+
+    <footer class="text-center text-xs text-slate-500 pb-8 no-print">
+      People Analytics Lab of the Bayou · MNGT 502 teaching tool · Client-side only
+    </footer>
+  </div>
+
+  <!-- Print-only brief -->
+  <div id="briefSheet" class="max-w-3xl mx-auto p-8 text-slate-900">
+    <h1 class="text-2xl font-bold nicholls-red-text mb-1">MNGT 502 · Year-1 HCROI Midpoint Check-in</h1>
+    <p class="text-sm text-slate-600 mb-4">Meeting brief for Dr. Castille · Generated locally (not uploaded)</p>
+    <p class="mb-2"><strong>Team:</strong> <span id="briefTeam">—</span></p>
+    <table class="w-full text-sm mb-4 border-collapse">
+      <tr class="border-b"><td class="py-1">Avg workforce</td><td class="py-1 text-right" id="briefAvg">—</td></tr>
+      <tr class="border-b"><td class="py-1">Turnover rate</td><td class="py-1 text-right" id="briefTurnRate">—</td></tr>
+      <tr class="border-b"><td class="py-1">Absence rate</td><td class="py-1 text-right" id="briefAbsRate">—</td></tr>
+      <tr class="border-b"><td class="py-1">Pay &amp; benefits</td><td class="py-1 text-right" id="briefPay">—</td></tr>
+      <tr class="border-b"><td class="py-1">Contingents</td><td class="py-1 text-right" id="briefCont">—</td></tr>
+      <tr class="border-b"><td class="py-1">Absenteeism $</td><td class="py-1 text-right" id="briefAbs">—</td></tr>
+      <tr class="border-b"><td class="py-1">Turnover $</td><td class="py-1 text-right" id="briefTurn">—</td></tr>
+      <tr class="border-b font-bold"><td class="py-1">HCCF</td><td class="py-1 text-right" id="briefHccf">—</td></tr>
+      <tr><td class="py-1">HCROI preview</td><td class="py-1 text-right" id="briefHcroi">—</td></tr>
+    </table>
+    <p class="text-sm font-semibold mb-1">Turnover buckets:</p>
+    <p class="text-sm mb-3" id="briefTurnBuckets">—</p>
+    <p class="text-sm font-semibold mb-1">Absenteeism buckets:</p>
+    <p class="text-sm mb-4" id="briefAbsBuckets">—</p>
+    <p class="text-sm font-semibold mb-1">Discussion prompts</p>
+    <ol class="text-sm list-decimal list-inside space-y-1">
+      <li>Which HCCF component surprised you most after Year-1, and why?</li>
+      <li>What one Year-2 decision could most reduce turnover or absence $ without harming productivity?</li>
+      <li>How will you use HCROI language in the midpoint conversation?</li>
+    </ol>
+  </div>
+
+  <script>
+    (function () {
+      var DEMO = {
+        teamName: "",
+        startHc: 680,
+        endHc: 700,
+        separations: 56,
+        absenceDays: 2380,
+        workableDays: 250,
+        hoursPerDay: 8,
+        payrollBenefits: 28000000,
+        contingentCosts: 900000,
+        contingentFte: 40,
+        revenue: 72000000,
+        expenses: 60000000,
+        avgAnnualPay: 42000,
+        benefitsLoad: 35,
+        sepAdminHours: 3,
+        hrWage: 35,
+        sepPayWeeks: 1,
+        hireCost: 4500,
+        trainCost: 3000,
+        perfLossPct: 25,
+        manageHrsPerDay: 0.4,
+        supervisorWage: 48,
+        subWageFactor: 85,
+        absentProdLoss: 50
+      };
+
+      var FIELD_IDS = Object.keys(DEMO);
+
+      function num(id) {
+        var el = document.getElementById(id);
+        if (!el) return NaN;
+        var v = parseFloat(el.value);
+        return Number.isFinite(v) ? v : NaN;
+      }
+
+      function money(n) {
+        if (!Number.isFinite(n)) return "—";
+        return "$" + Math.round(n).toLocaleString("en-US");
+      }
+
+      function pct(n) {
+        if (!Number.isFinite(n)) return "—";
+        return (n * 100).toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%";
+      }
+
+      function ratio(n) {
+        if (!Number.isFinite(n)) return "—";
+        return n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function setInputs(values) {
+        FIELD_IDS.forEach(function (key) {
+          var el = document.getElementById(key);
+          if (!el) return;
+          if (values[key] === "" || values[key] === null || typeof values[key] === "undefined") {
+            el.value = "";
+          } else {
+            el.value = values[key];
+          }
+        });
+      }
+
+      function clearInputs() {
+        var blank = {};
+        FIELD_IDS.forEach(function (k) { blank[k] = ""; });
+        setInputs(blank);
+      }
+
+      function compute() {
+        var startHc = num("startHc");
+        var endHc = num("endHc");
+        var separations = num("separations");
+        var absenceDays = num("absenceDays");
+        var workableDays = num("workableDays");
+        var hoursPerDay = num("hoursPerDay");
+        var payrollBenefits = num("payrollBenefits");
+        var contingentCosts = num("contingentCosts");
+        var contingentFte = num("contingentFte");
+        var revenue = num("revenue");
+        var expenses = num("expenses");
+        var avgAnnualPay = num("avgAnnualPay");
+        var benefitsLoad = num("benefitsLoad") / 100;
+        var sepAdminHours = num("sepAdminHours");
+        var hrWage = num("hrWage");
+        var sepPayWeeks = num("sepPayWeeks");
+        var hireCost = num("hireCost");
+        var trainCost = num("trainCost");
+        var perfLossPct = num("perfLossPct") / 100;
+        var manageHrsPerDay = num("manageHrsPerDay");
+        var supervisorWage = num("supervisorWage");
+        var subWageFactor = num("subWageFactor") / 100;
+        var absentProdLoss = num("absentProdLoss") / 100;
+
+        var avgWorkforce = (startHc + endHc) / 2;
+        var turnoverRate = avgWorkforce > 0 ? separations / avgWorkforce : NaN;
+        var absenceRate = (avgWorkforce > 0 && workableDays > 0)
+          ? absenceDays / (avgWorkforce * workableDays)
+          : NaN;
+
+        var weeklyPay = avgAnnualPay / 52;
+        var sepCost = separations * (sepAdminHours * hrWage + sepPayWeeks * weeklyPay);
+        var repCost = separations * hireCost;
+        var trainCostTotal = separations * trainCost;
+        var perfCost = separations * avgAnnualPay * perfLossPct;
+        var turnoverTotal = sepCost + repCost + trainCostTotal + perfCost;
+
+        var hoursLost = absenceDays * hoursPerDay;
+        var loadedHourly = (workableDays > 0 && hoursPerDay > 0)
+          ? (avgAnnualPay * (1 + benefitsLoad)) / (workableDays * hoursPerDay)
+          : NaN;
+        var absCost = hoursLost * loadedHourly;
+        var manageCost = absenceDays * manageHrsPerDay * supervisorWage;
+        var subCost = hoursLost * loadedHourly * subWageFactor;
+        var qtyCost = absCost * absentProdLoss;
+        var absenceTotal = absCost + manageCost + subCost + qtyCost;
+
+        var hccf = payrollBenefits + contingentCosts + absenceTotal + turnoverTotal;
+        var adjustedProfit = revenue - (expenses - hccf);
+        var hcroi = hccf > 0 ? adjustedProfit / hccf : NaN;
+        var employees = Math.round(avgWorkforce);
+
+        return {
+          avgWorkforce: avgWorkforce,
+          employees: employees,
+          turnoverRate: turnoverRate,
+          absenceRate: absenceRate,
+          sepCost: sepCost,
+          repCost: repCost,
+          trainCostTotal: trainCostTotal,
+          perfCost: perfCost,
+          turnoverTotal: turnoverTotal,
+          absCost: absCost,
+          manageCost: manageCost,
+          subCost: subCost,
+          qtyCost: qtyCost,
+          absenceTotal: absenceTotal,
+          payrollBenefits: payrollBenefits,
+          contingentCosts: contingentCosts,
+          contingentFte: contingentFte,
+          hccf: hccf,
+          revenue: revenue,
+          expenses: expenses,
+          hcroi: hcroi
+        };
+      }
+
+      function render(r) {
+        document.getElementById("outAvgWorkforce").textContent =
+          Number.isFinite(r.avgWorkforce) ? r.avgWorkforce.toFixed(1) : "—";
+        document.getElementById("outTurnoverRate").textContent = pct(r.turnoverRate);
+        document.getElementById("outAbsenceRate").textContent = pct(r.absenceRate);
+
+        document.getElementById("outSep$").textContent = money(r.sepCost);
+        document.getElementById("outRep$").textContent = money(r.repCost);
+        document.getElementById("outTrain$").textContent = money(r.trainCostTotal);
+        document.getElementById("outPerf$").textContent = money(r.perfCost);
+        document.getElementById("outTurnover$").textContent = money(r.turnoverTotal);
+
+        document.getElementById("outAbs$").textContent = money(r.absCost);
+        document.getElementById("outManage$").textContent = money(r.manageCost);
+        document.getElementById("outSub$").textContent = money(r.subCost);
+        document.getElementById("outQty$").textContent = money(r.qtyCost);
+        document.getElementById("outAbsence$").textContent = money(r.absenceTotal);
+
+        document.getElementById("outPay$").textContent = money(r.payrollBenefits);
+        document.getElementById("outCont$").textContent = money(r.contingentCosts);
+        document.getElementById("outAbsHccf$").textContent = money(r.absenceTotal);
+        document.getElementById("outTurnHccf$").textContent = money(r.turnoverTotal);
+        document.getElementById("outHccf$").textContent = money(r.hccf);
+        document.getElementById("outHcroiPreview").textContent =
+          Number.isFinite(r.hcroi) ? ratio(r.hcroi) + " ($ return per $1 HCCF)" : "—";
+
+        var team = document.getElementById("teamName").value.trim() || "—";
+        document.getElementById("briefTeam").textContent = team;
+        document.getElementById("briefAvg").textContent =
+          Number.isFinite(r.avgWorkforce) ? r.avgWorkforce.toFixed(1) : "—";
+        document.getElementById("briefTurnRate").textContent = pct(r.turnoverRate);
+        document.getElementById("briefAbsRate").textContent = pct(r.absenceRate);
+        document.getElementById("briefPay").textContent = money(r.payrollBenefits);
+        document.getElementById("briefCont").textContent = money(r.contingentCosts);
+        document.getElementById("briefAbs").textContent = money(r.absenceTotal);
+        document.getElementById("briefTurn").textContent = money(r.turnoverTotal);
+        document.getElementById("briefHccf").textContent = money(r.hccf);
+        document.getElementById("briefHcroi").textContent = Number.isFinite(r.hcroi) ? ratio(r.hcroi) : "—";
+        document.getElementById("briefTurnBuckets").textContent =
+          "Separation " + money(r.sepCost) + " · Replacement " + money(r.repCost) +
+          " · Training " + money(r.trainCostTotal) + " · Performance " + money(r.perfCost);
+        document.getElementById("briefAbsBuckets").textContent =
+          "Absentees " + money(r.absCost) + " · Managing " + money(r.manageCost) +
+          " · Substitutes " + money(r.subCost) + " · Reduced qty/quality " + money(r.qtyCost);
+
+        updateBridge(r);
+      }
+
+      function buildQuery(r) {
+        var params = new URLSearchParams();
+        if (Number.isFinite(r.revenue)) params.set("revenue", String(Math.round(r.revenue)));
+        if (Number.isFinite(r.expenses)) params.set("expenses", String(Math.round(r.expenses)));
+        if (Number.isFinite(r.payrollBenefits)) params.set("payroll", String(Math.round(r.payrollBenefits)));
+        if (Number.isFinite(r.contingentCosts)) params.set("contingent", String(Math.round(r.contingentCosts)));
+        if (Number.isFinite(r.employees)) params.set("employees", String(r.employees));
+        if (Number.isFinite(r.contingentFte)) params.set("contingentFte", String(Math.round(r.contingentFte)));
+        if (Number.isFinite(r.absenceTotal)) params.set("absence", String(Math.round(r.absenceTotal)));
+        if (Number.isFinite(r.turnoverTotal)) params.set("turnover", String(Math.round(r.turnoverTotal)));
+        params.set("autocalc", "1");
+        return params.toString();
+      }
+
+      function updateBridge(r) {
+        var q = buildQuery(r);
+        var href = "/platform/tools/roi-calculator/" + (q ? "?" + q : "");
+        document.getElementById("bridgeLink").href = href;
+      }
+
+      function refresh() {
+        render(compute());
+      }
+
+      document.getElementById("btnDemo").addEventListener("click", function () {
+        setInputs(DEMO);
+        refresh();
+      });
+      document.getElementById("btnReset").addEventListener("click", function () {
+        setInputs(DEMO);
+        refresh();
+      });
+      document.getElementById("btnClear").addEventListener("click", function () {
+        clearInputs();
+        refresh();
+      });
+      document.getElementById("btnCopyUrl").addEventListener("click", function () {
+        var href = document.getElementById("bridgeLink").href;
+        var absolute = href.indexOf("http") === 0 ? href : (window.location.origin + href);
+        var status = document.getElementById("copyUrlStatus");
+        function ok() {
+          status.classList.remove("hidden");
+          setTimeout(function () { status.classList.add("hidden"); }, 2000);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(absolute).then(ok);
+        } else {
+          var ta = document.createElement("textarea");
+          ta.value = absolute;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          ok();
+        }
+      });
+
+      FIELD_IDS.concat(["teamName"]).forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener("input", refresh);
+      });
+
+      setInputs(DEMO);
+      refresh();
+    })();
+  </script>
+</body>
+</html>
