@@ -192,6 +192,33 @@ h1 { color: #1e3a8a; margin-bottom: 10px; }
     padding: 12px;
     margin: 12px 0;
 }
+.program-callout {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #64748b;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    color: #334155;
+}
+
+.program-callout h2 {
+    color: #1e293b;
+    font-size: 1.1em;
+    font-weight: 700;
+    margin: 0 0 10px;
+}
+
+.program-callout p {
+    margin: 0 0 0.85em;
+    font-size: 0.98em;
+    line-height: 1.55;
+}
+
+.program-callout p:last-child {
+    margin-bottom: 0;
+}
+
 .note-box {
     color: #1e40af;
     background: #eff6ff;
