@@ -607,6 +607,37 @@ RELEVANT FILES:
                 a.click();
                 URL.revokeObjectURL(url);
             });
+
+            // Query-param prefill from Year-1 check-in (and similar bridges).
+            // Supported keys: revenue, expenses, payroll, contingent, employees,
+            // contingentFte, absence, turnover; optional autocalc=1.
+            (function applyQueryPrefill() {
+                var params = new URLSearchParams(window.location.search);
+                if (![].some.call(params.keys(), function () { return true; })) return;
+
+                var map = {
+                    revenue: "totalRevenue",
+                    expenses: "totalExpenses",
+                    payroll: "payrollBenefits",
+                    contingent: "contingentCosts",
+                    employees: "totalEmployees",
+                    contingentFte: "contingentFtes",
+                    absence: "absenceCosts",
+                    turnover: "turnoverCosts"
+                };
+                var patched = {};
+                Object.keys(map).forEach(function (key) {
+                    if (!params.has(key)) return;
+                    var v = parseFloat(params.get(key));
+                    if (Number.isFinite(v) && v >= 0) patched[map[key]] = v;
+                });
+                if (Object.keys(patched).length) setInputs(patched);
+
+                if (params.get("autocalc") === "1") {
+                    var r = calculate();
+                    if (r) showResults(r);
+                }
+            })();
         })();
     </script>
 </body>
