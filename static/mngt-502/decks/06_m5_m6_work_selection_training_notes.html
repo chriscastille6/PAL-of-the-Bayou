@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speaker notes — MNGT 502 Managing Human Capital · 5 — Work · Recruiting · Selection · Training</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1419;
+    --panel: #1a222d;
+    --line: #2d3748;
+    --text: #edf2f7;
+    --muted: #a0aec0;
+    --maroon: #c53030;
+    --blue: #63b3ed;
+    --ask: #fff5f5;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh;
+    font-family: "Source Sans 3", system-ui, sans-serif;
+    background: var(--bg); color: var(--text);
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "top top"
+      "nav main"
+      "foot foot";
+  }
+  header {
+    grid-area: top;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 16px 22px;
+    border-bottom: 1px solid var(--line); background: #121820;
+  }
+  header .meta { display: flex; flex-direction: column; gap: 2px; }
+  header .kicker {
+    font-family: Montserrat, sans-serif;
+    font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--maroon); font-weight: 700; margin: 0;
+  }
+  header h1 {
+    font-family: Montserrat, sans-serif;
+    font-size: 22px; margin: 0; font-weight: 800;
+  }
+  header .actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  header a, header button, .nav-btn {
+    font-family: Montserrat, sans-serif;
+    font-size: 13px; font-weight: 700;
+    border: 1px solid var(--line); background: var(--panel);
+    color: var(--text); border-radius: 8px;
+    padding: 10px 14px; cursor: pointer; text-decoration: none;
+  }
+  header a:hover, header button:hover, .nav-btn:hover { border-color: var(--maroon); }
+  header button.primary { background: var(--maroon); border-color: var(--maroon); }
+  .follow {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--muted);
+  }
+  .follow input { width: 16px; height: 16px; }
+  aside {
+    grid-area: nav;
+    border-right: 1px solid var(--line);
+    overflow: auto; padding: 12px;
+    background: #121820;
+  }
+  aside button {
+    display: block; width: 100%; text-align: left;
+    background: transparent; border: 1px solid transparent;
+    color: var(--muted); border-radius: 8px;
+    padding: 10px 12px; margin-bottom: 4px; cursor: pointer;
+    font: 600 14px/1.3 "Source Sans 3", sans-serif;
+  }
+  aside button:hover { background: var(--panel); color: var(--text); }
+  aside button.active {
+    background: var(--panel); border-color: var(--maroon); color: var(--text);
+  }
+  aside button .n {
+    font-family: Montserrat, sans-serif;
+    font-size: 11px; letter-spacing: .08em; color: var(--blue);
+    display: block; margin-bottom: 2px;
+  }
+  main {
+    grid-area: main; padding: 28px 36px 40px; overflow: auto;
+    max-width: 920px;
+  }
+  .slide-label {
+    font-family: Montserrat, sans-serif;
+    font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--blue); font-weight: 700; margin: 0 0 8px;
+  }
+  main h2 {
+    font-family: Montserrat, sans-serif;
+    font-size: 34px; line-height: 1.2; margin: 0 0 16px; font-weight: 800;
+  }
+  .lo {
+    display: inline-block;
+    background: var(--maroon); color: #fff;
+    font-family: Montserrat, sans-serif;
+    font-size: 12px; font-weight: 800; letter-spacing: .08em;
+    text-transform: uppercase; padding: 6px 10px; border-radius: 6px;
+    margin: 0 0 14px;
+  }
+  .ask {
+    background: #2b1a1a; border-left: 5px solid var(--maroon);
+    padding: 14px 18px; border-radius: 0 10px 10px 0;
+    font-size: 20px; line-height: 1.4; margin: 0 0 22px;
+  }
+  .ask strong { color: #feb2b2; }
+  .notes {
+    font-size: 20px; line-height: 1.55; color: var(--text);
+    white-space: pre-wrap;
+  }
+  footer {
+    grid-area: foot;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 14px 22px;
+    border-top: 1px solid var(--line); background: #121820;
+  }
+  footer .status { color: var(--muted); font-size: 14px; }
+  @media (max-width: 860px) {
+    body { grid-template-columns: 1fr; grid-template-areas: "top" "main" "foot"; }
+    aside { display: none; }
+  }
+</style>
+</head>
+<body data-deck-slug="06_m5_m6_work_selection_training">
+<header>
+  <div class="meta">
+    <p class="kicker">MNGT 502 Managing Human Capital · 4 · speaker notes</p>
+    <h1>HRIS · DEI &amp; EEO</h1>
+  </div>
+  <div class="actions">
+    <label class="follow"><input type="checkbox" id="followDeck" checked> Follow deck</label>
+    <a href="06_m5_m6_work_selection_training.html" target="_blank" rel="noopener">Open slides</a>
+    <button type="button" class="primary" id="prevBtn">Prev</button>
+    <button type="button" class="primary" id="nextBtn">Next</button>
+  </div>
+</header>
+<aside id="toc" aria-label="Slide list"></aside>
+<main>
+  <p class="slide-label" id="slideLabel">Slide 1</p>
+  <h2 id="slideTitle">—</h2>
+  <div id="loBadge" hidden></div>
+  <p class="ask" id="askBlock" hidden></p>
+  <div class="notes" id="notesBody"></div>
+</main>
+<footer>
+  <div class="status" id="syncStatus">Listening for deck…</div>
+  <div>
+    <button type="button" class="nav-btn" id="copyBtn">Copy notes</button>
+  </div>
+</footer>
+<script type="application/json" id="notesData">[{"index": 0, "title": "Title", "lo": "", "ask": "", "notes": "Cold open. Thesis: HPWPs still matter in smaller firms; then job analysis → recruiting → selection validity (Sackett) → training.", "kind": "section"}, {"index": 1, "title": "Agenda", "lo": "", "ask": "", "notes": "Walk once. Do not skip the Hansen open — it answers Day 1 pushback.", "kind": "bullets"}, {"index": 2, "title": "Day 1 challenge", "lo": "", "ask": "", "notes": "Let the room answer briefly, then land Hansen.", "kind": "section"}, {"index": 3, "title": "Hansen SME HPWP", "lo": "", "ask": "", "notes": "Emphasize: effects are positive but modest on hard finance; innovation and people attitudes are stronger. Not a free lunch — still a system.", "kind": "bullets"}, {"index": 4, "title": "SME implications", "lo": "", "ask": "", "notes": "Callback to Day 1 HPWS/AMO. Then pivot to Ch. 5.", "kind": "bullets"}, {"index": 5, "title": "Ch5 section", "lo": "", "ask": "", "notes": "Section break into official LOs.", "kind": "section"}, {"index": 6, "title": "Ch5 LOs", "lo": "", "ask": "", "notes": "Verbatim Bauer deck LOs. Spot-check with discussion, not a lecture read-aloud.", "kind": "bullets"}, {"index": 7, "title": "Job analysis purposes", "lo": "", "ask": "", "notes": "Essential vs marginal is the ADA/accommodation hook from Day 5 special decisions.", "kind": "bullets"}, {"index": 8, "title": "JA vs competency", "lo": "", "ask": "", "notes": "Use hospital/role-confusion pop quiz from Day 5 if time.", "kind": "bullets"}, {"index": 9, "title": "JA methods", "lo": "", "ask": "", "notes": "Method triangulation beats a single manager’s memory.", "kind": "bullets"}, {"index": 10, "title": "Job design", "lo": "", "ask": "", "notes": "ScienceForWork / job characteristics theory as optional depth.", "kind": "bullets"}, {"index": 11, "title": "Ch6 section", "lo": "", "ask": "", "notes": "Still Module 5. Talent supply chain before selection theater.", "kind": "section"}, {"index": 12, "title": "Ch6 LOs", "lo": "", "ask": "", "notes": "Verbatim deck LOs.", "kind": "bullets"}, {"index": 13, "title": "Workforce planning", "lo": "", "ask": "", "notes": "Sim hook: hiring vs training floors. Keep light.", "kind": "bullets"}, {"index": 14, "title": "Recruitment stages", "lo": "", "ask": "", "notes": "Applicant experience is a retention problem before day one.", "kind": "bullets"}, {"index": 15, "title": "Break", "lo": "", "ask": "", "notes": "Reset. Next: selection systems and the Sackett update.", "kind": "section"}, {"index": 16, "title": "Ch7 section", "lo": "", "ask": "", "notes": "Validity is a business decision — updated numbers, same logic.", "kind": "section"}, {"index": 17, "title": "Ch7 LOs", "lo": "", "ask": "", "notes": "LOs aligned to Bauer Ch. 7 themes (no separate Google dump in-repo).", "kind": "bullets"}, {"index": 18, "title": "Selection basics", "lo": "", "ask": "", "notes": "Keep UA callback short — they already saw r=.20 vs .45 charts.", "kind": "bullets"}, {"index": 19, "title": "Why update S&H", "lo": "", "ask": "", "notes": "Do not trash S&H — credit the classic, then show the correction.", "kind": "bullets"}, {"index": 20, "title": "Sackett chart", "lo": "", "ask": "", "notes": "Pause on the chart. Ask: which tools would you fund first in a 40-person firm?", "kind": "bullets"}, {"index": 21, "title": "Validity diversity", "lo": "", "ask": "", "notes": "Keep this executive-light. Point: structured process helps prediction and fairness narrative.", "kind": "bullets"}, {"index": 22, "title": "Selection design", "lo": "", "ask": "", "notes": "Resume screening workshop next — connect structure to scoring rubrics.", "kind": "bullets"}, {"index": 23, "title": "Ch8 section", "lo": "", "ask": "", "notes": "Development spend is an investment thesis — not a vibe.", "kind": "section"}, {"index": 24, "title": "Ch8 LOs", "lo": "", "ask": "", "notes": "Aligned to Bauer Ch. 8 + sim Training ROI worksheet.", "kind": "bullets"}, {"index": 25, "title": "Needs assessment", "lo": "", "ask": "", "notes": "Callback to Ch. 5 — bad job design masquerades as a training need.", "kind": "bullets"}, {"index": 26, "title": "Transfer evaluation", "lo": "", "ask": "", "notes": "Invite skepticism without cynicism — measure what you fund.", "kind": "bullets"}, {"index": 27, "title": "Careers", "lo": "", "ask": "", "notes": "Kim & Ployhart / bundling callbacks optional.", "kind": "bullets"}, {"index": 28, "title": "Workshop close", "lo": "", "ask": "", "notes": "Hand off to scheduled workshop activities.", "kind": "bullets"}, {"index": 29, "title": "Takeaways", "lo": "", "ask": "", "notes": "Park M7–M9 for Day 3.", "kind": "bullets"}]</script>
+<script>
+(function () {
+  const slides = JSON.parse(document.getElementById("notesData").textContent);
+  const slug = document.body.dataset.deckSlug;
+  let channel = null;
+  try { channel = new BroadcastChannel("mngt502-notes-" + slug); } catch (e) {}
+  let idx = 0;
+
+  const els = {
+    toc: document.getElementById("toc"),
+    label: document.getElementById("slideLabel"),
+    title: document.getElementById("slideTitle"),
+    lo: document.getElementById("loBadge"),
+    ask: document.getElementById("askBlock"),
+    notes: document.getElementById("notesBody"),
+    status: document.getElementById("syncStatus"),
+    follow: document.getElementById("followDeck"),
+  };
+
+  slides.forEach((s, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.innerHTML = `<span class="n">SLIDE ${String(i + 1).padStart(2, "0")}</span>${s.title}`;
+    b.addEventListener("click", () => show(i, true));
+    els.toc.appendChild(b);
+  });
+
+  function publish(index) {
+    const msg = { type: "slide", index: index, source: "notes", slug: slug };
+    try { channel && channel.postMessage(msg); } catch (e) {}
+    try {
+      if (window.opener && !window.opener.closed) window.opener.postMessage(msg, "*");
+    } catch (e) {}
+  }
+
+  function show(i, broadcast) {
+    idx = Math.max(0, Math.min(i, slides.length - 1));
+    const s = slides[idx];
+    els.label.textContent = `Slide ${idx + 1} / ${slides.length}`;
+    els.title.textContent = s.title;
+    if (s.lo) {
+      els.lo.hidden = false;
+      els.lo.className = "lo";
+      els.lo.textContent = "LO " + s.lo;
+    } else {
+      els.lo.hidden = true;
+    }
+    if (s.ask) {
+      els.ask.hidden = false;
+      els.ask.innerHTML = "<strong>Discuss:</strong> " + s.ask.replace(/</g, "&lt;");
+    } else {
+      els.ask.hidden = true;
+    }
+    els.notes.textContent = s.notes || "(No notes for this slide.)";
+    [...els.toc.children].forEach((btn, j) => btn.classList.toggle("active", j === idx));
+    history.replaceState(null, "", "#s" + (idx + 1));
+    if (broadcast) {
+      publish(idx);
+      els.status.textContent = "Advanced from notes window";
+    }
+  }
+
+  function applyRemote(data) {
+    if (!data || typeof data !== "object") return;
+    if (data.slug && data.slug !== slug) return;
+    if (data.type !== "slide" || data.source === "notes") return;
+    if (!els.follow.checked) {
+      els.status.textContent = "Deck moved (follow off) — now on slide " + (data.index + 1);
+      return;
+    }
+    if (typeof data.index === "number" && data.index !== idx) {
+      show(data.index, false);
+    }
+    els.status.textContent = "Synced from deck · slide " + ((data.index ?? idx) + 1);
+  }
+
+  if (channel) channel.onmessage = (ev) => applyRemote(ev.data);
+  window.addEventListener("message", (ev) => applyRemote(ev.data));
+
+  document.getElementById("prevBtn").addEventListener("click", () => show(idx - 1, true));
+  document.getElementById("nextBtn").addEventListener("click", () => show(idx + 1, true));
+  document.getElementById("copyBtn").addEventListener("click", async () => {
+    const s = slides[idx];
+    const text = `Slide ${idx + 1}: ${s.title}\n\n` +
+      (s.lo ? `LO ${s.lo}\n` : "") +
+      (s.ask ? `Discuss: ${s.ask}\n\n` : "\n") +
+      (s.notes || "");
+    try {
+      await navigator.clipboard.writeText(text);
+      els.status.textContent = "Copied this slide’s notes";
+    } catch (e) {
+      els.status.textContent = "Copy failed — select text manually";
+    }
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if (["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName)) return;
+    if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") {
+      e.preventDefault(); show(idx + 1, true);
+    } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+      e.preventDefault(); show(idx - 1, true);
+    } else if (e.key === "Home") { e.preventDefault(); show(0, true); }
+    else if (e.key === "End") { e.preventDefault(); show(slides.length - 1, true); }
+  });
+
+  const m = location.hash.match(/^#s(\d+)$/);
+  show(m ? parseInt(m[1], 10) - 1 : 0, false);
+  els.status.textContent = "Ready — open the deck and advance; notes will follow";
+  try {
+    if (window.opener && !window.opener.closed) {
+      window.opener.postMessage({ type: "notes-ready", source: "notes", slug: slug }, "*");
+    }
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

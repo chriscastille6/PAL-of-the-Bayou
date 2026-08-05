@@ -1,0 +1,4 @@
+sackett_vs_schmidt_hunter_validity.svg
+Values from Sackett, P. R., Zhang, C., Berry, C. M., & Lievens, F. (2022).
+Revisiting meta-analytic estimates of validity in personnel selection.
+Journal of Applied Psychology. Table 3 vs Schmidt & Hunter (1998).
