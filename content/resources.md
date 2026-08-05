@@ -2,10 +2,10 @@
 # File location: content/resources.md
 # What this file does: Public Resources hub listing a short set of educational tools
 # Why this file exists: Gives visitors one nav entry for tools we choose to share publicly
-# RELEVANT FILES: config/_default/menus.yaml, static/ai-disclosure/index.html, static/platform/index.html, static/correlation-calibrator/index.html, static/hr-sjt-assessment/modular-surveys/index.html
+# RELEVANT FILES: config/_default/menus.yaml, static/ai-disclosure/index.html, static/platform/index.html, static/platform/tools/roi-calculator/index.html, static/correlation-calibrator/index.html, static/hr-sjt-assessment/modular-surveys/index.html
 title: "Resources"
 date: 2026-08-01T00:00:00-05:00
-lastmod: 2026-08-05T00:00:00-05:00
+lastmod: 2026-08-05T14:10:00-05:00
 draft: false
 summary: "Public educational tools from the People Analytics Lab"
 tags: ["resources", "tools", "assessments", "teaching"]
@@ -30,6 +30,10 @@ Calibrate intuition about correlation strength with published anchors and a BESD
 ### [HR SJT Modular Surveys](/hr-sjt-assessment/modular-surveys/)
 
 Eight pre-decision rating packs for HR Analytics. Complete a pack in the browser, download your PDF, then upload it to Canvas. No account and no zip required.
+
+### [Human Capital ROI Calculator](/platform/tools/roi-calculator/)
+
+Estimate Fitz-enz human capital Return on Investment (ROI) metrics from organizational financials and workforce costs. Enter values, then calculate. Nothing is uploaded or stored.
 
 ---
 
