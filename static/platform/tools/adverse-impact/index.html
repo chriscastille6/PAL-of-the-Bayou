@@ -2,7 +2,7 @@
 File location: static/platform/tools/adverse-impact/index.html
 What this file does: Classroom adverse-impact calculator — 4/5ths (impact ratio),
   chi-square, Fisher exact, two-proportion Z, plus an educational Bayes factor for
-  evidence for/against selection-rate parity (Courey & Oswald, 2024 communication frame).
+  H₁ = Adverse Impact vs H₀ = No Adverse Impact (Courey & Oswald, 2024 communication frame).
 Why this file exists: MNGT 502 / HR Analytics teaching beat; replaces external
   adverseimpact.org link with a Bayou PAL–hosted synthetic-data tool.
 Tech stack: Static HTML + CSS + vanilla JS (client-side only; no backend; no uploads)
@@ -855,12 +855,19 @@ RELEVANT FILES:
       <details class="method">
         <summary>Method notes · GOF vs hiring funnel</summary>
         <p>
-          <strong>Primary (this class):</strong> One-way χ² goodness-of-fit. Observed headcount in a focal category
-          vs expected counts if the firm matched community availability % at that level.
-          H₀: firm composition = community %. Rejecting H₀ flags underutilization for further review — not a finding of unlawful discrimination.
+          <strong>Bayes factor hypotheses (hiring funnel — primary for this fixture):</strong>
+          <strong>H₁ = Adverse Impact</strong> (unequal selection rates);
+          <strong>H₀ = No Adverse Impact</strong> (parity / equal rates).
+          BF₁₀ &gt; 1 favors H₁; BF₁₀ &lt; 1 favors H₀.
         </p>
         <p>
-          <strong>Follow-on:</strong> Impact ratio = comparison selection rate ÷ reference selection rate.
+          <strong>Primary (this class · firm vs community):</strong> One-way χ² goodness-of-fit. Observed headcount in a focal category
+          vs expected counts if the firm matched community availability % at that level.
+          Composition H₀: firm = community %. Rejecting that H₀ flags underutilization for further review — not a finding of unlawful discrimination.
+          The educational GOF BF is vs community %; it is not identical to selection-rate adverse impact.
+        </p>
+        <p>
+          <strong>Follow-on (hiring funnel):</strong> Impact ratio = comparison selection rate ÷ reference selection rate.
           UGESP 4/5ths rule of thumb flags when IR &lt; 0.80. Chi-square (Yates when any expected cell &lt; 5),
           Fisher’s exact, two-proportion Z, and an educational Beta–binomial BF (Courey &amp; Oswald communication frame)
           apply to applicant→hire tables — a different question than firm-vs-community composition.
@@ -919,7 +926,7 @@ RELEVANT FILES:
       mode: "hire",
       refLabel: "Men", refN: 157, refH: 2, cmpLabel: "Women", cmpN: 158, cmpH: 2,
       whyTitle: "Courey · parity",
-      whyBody: "Manuscript vignette with near-parity selection rates (IR ≈ 0.99) — evidence for H₀ / against AI."
+      whyBody: "Manuscript vignette with near-parity selection rates (IR ≈ 0.99) — evidence for H₀ (No Adverse Impact)."
     }
   };
 
@@ -1051,7 +1058,9 @@ RELEVANT FILES:
     else if (x >= 10) strength = "strong";
     else if (x >= 3) strength = "moderate";
     else if (bf === 1) return "no preference";
-    return favorH1 ? strength + " for unequal rates" : strength + " for parity";
+    return favorH1
+      ? strength + " for H₁ · Adverse Impact (unequal rates)"
+      : strength + " for H₀ · No Adverse Impact (parity)";
   }
 
   /** Lee & Wagenmakers (2013) / Jeffreys ladder as used in Courey & Oswald (2024). */
@@ -1074,17 +1083,17 @@ RELEVANT FILES:
     if (!els.bfScale) return;
     const active = (bf10 == null || !Number.isFinite(bf10)) ? null : bfScaleRowKey(bf10);
     const rows = [
-      { key: "h1-extreme", bf: "> 100", evidence: "Extreme Evidence for H₁" },
-      { key: "h1-vstrong", bf: "30 – 100", evidence: "Very Strong Evidence for H₁" },
-      { key: "h1-strong", bf: "10 – 30", evidence: "Strong Evidence for H₁" },
-      { key: "h1-moderate", bf: "3 – 10", evidence: "Moderate Evidence for H₁" },
-      { key: "h1-anecdotal", bf: "1 – 3", evidence: "Anecdotal Evidence for H₁" },
+      { key: "h1-extreme", bf: "> 100", evidence: "Extreme Evidence for H₁ · Adverse Impact" },
+      { key: "h1-vstrong", bf: "30 – 100", evidence: "Very Strong Evidence for H₁ · Adverse Impact" },
+      { key: "h1-strong", bf: "10 – 30", evidence: "Strong Evidence for H₁ · Adverse Impact" },
+      { key: "h1-moderate", bf: "3 – 10", evidence: "Moderate Evidence for H₁ · Adverse Impact" },
+      { key: "h1-anecdotal", bf: "1 – 3", evidence: "Anecdotal Evidence for H₁ · Adverse Impact" },
       { key: "eq", bf: "1", evidence: "No Evidence", neutral: true },
-      { key: "h0-anecdotal", bf: "1/3 – 1", evidence: "Anecdotal Evidence for H₀" },
-      { key: "h0-moderate", bf: "1/10 – 1/3", evidence: "Moderate Evidence for H₀" },
-      { key: "h0-strong", bf: "1/30 – 1/10", evidence: "Strong Evidence for H₀" },
-      { key: "h0-vstrong", bf: "1/100 – 1/30", evidence: "Very Strong Evidence for H₀" },
-      { key: "h0-extreme", bf: "< 1/100", evidence: "Extreme Evidence for H₀" }
+      { key: "h0-anecdotal", bf: "1/3 – 1", evidence: "Anecdotal Evidence for H₀ · No Adverse Impact" },
+      { key: "h0-moderate", bf: "1/10 – 1/3", evidence: "Moderate Evidence for H₀ · No Adverse Impact" },
+      { key: "h0-strong", bf: "1/30 – 1/10", evidence: "Strong Evidence for H₀ · No Adverse Impact" },
+      { key: "h0-vstrong", bf: "1/100 – 1/30", evidence: "Very Strong Evidence for H₀ · No Adverse Impact" },
+      { key: "h0-extreme", bf: "< 1/100", evidence: "Extreme Evidence for H₀ · No Adverse Impact" }
     ];
     const body = rows.map(r => {
       const cls = [r.key === active ? "active" : "", r.neutral ? "neutral" : ""].filter(Boolean).join(" ");
@@ -1093,9 +1102,10 @@ RELEVANT FILES:
         <td class="evidence">${r.evidence}</td>
       </tr>`;
     }).join("");
+    const defLine = "<strong>H₁ = Adverse Impact</strong> · <strong>H₀ = No Adverse Impact</strong> (course convention for this fixture).";
     const note = (bf10 == null || !Number.isFinite(bf10))
-      ? "Fixture for every analysis (Jeffreys / IBM SPSS style). Matching row highlights when a Bayes factor is computed."
-      : `Highlighted row matches BF₁₀ = ${fmt(bf10, 2)} for this analysis. H₁ / H₀ as labeled; approximate verbal categories — not a legal bright line.`;
+      ? `${defLine} Jeffreys / IBM SPSS-style ladder — highlighted row updates with each Analyze / example.`
+      : `${defLine} <strong>Highlighted row = this analysis (BF₁₀ = ${fmt(bf10, 2)})</strong>. Approximate verbal categories — not a legal bright line. Hiring funnel: selection-rate evidence. Firm vs community: educational BF vs community % (composition ≠ 4/5ths AI).`;
     els.bfScale.innerHTML = `
       <table class="bf-scale">
         <thead><tr><th scope="col">Bayes Factor</th><th scope="col">Evidence Category</th></tr></thead>
@@ -1461,7 +1471,8 @@ RELEVANT FILES:
       // hire walkthrough (association)
       if (step === 0) {
         html = `<p class="step-num">Step 1 of 6</p><h4>H₀ framing (hiring funnel)</h4>
-          <p><strong>H₀:</strong> selection rate does not depend on group.</p>
+          <p><strong>H₀ = No Adverse Impact:</strong> selection rates do not depend on group (parity).</p>
+          <p><strong>H₁ = Adverse Impact:</strong> unequal selection rates across groups.</p>
           <p>This is the follow-on question after firm-vs-community GOF flags a composition gap.</p>`;
       } else if (step === 1) {
         html = `<p class="step-num">Step 2 of 6</p><h4>Observed cells</h4>
@@ -1506,6 +1517,7 @@ RELEVANT FILES:
       els.gofFlag.innerHTML = "";
       chiWalkState = null;
       renderChiWalkStep();
+      renderBfScale(null);
       return;
     }
     const oFocal = d.focalN, oOther = d.otherN, n = d.totalN;
@@ -1589,6 +1601,7 @@ RELEVANT FILES:
       els.tableOut.innerHTML = `<div class="flag danger"><strong>Check inputs:</strong> ${err}</div>`;
       chiWalkState = null;
       renderChiWalkStep();
+      renderBfScale(null);
       return;
     }
     const a = d.refH, b = d.refN - d.refH, c = d.cmpH, e = d.cmpN - d.cmpH;
@@ -1649,22 +1662,22 @@ RELEVANT FILES:
     ].join("");
     els.freqNotes.innerHTML = (chiP < 0.05 || fisherP < 0.05)
       ? `<div class="flag warn"><strong>Association signal</strong> — combine with IR; not a legal conclusion.</div>`
-      : `<div class="flag ok"><strong>Fail to reject independence</strong> — see BF for evidence favoring parity.</div>`;
+      : `<div class="flag ok"><strong>Fail to reject independence</strong> — see BF for evidence favoring H₀ (No Adverse Impact / parity).</div>`;
 
     const favorsParity = bf01 > bf10;
     const catShort = bfCategoryShort(bf10);
     const primaryBf = favorsParity ? bf01 : bf10;
     const primaryLabel = favorsParity ? "BF₀₁" : "BF₁₀";
     els.bfHero.innerHTML = `
-      <div class="label">Educational Bayes factor · evidence category</div>
+      <div class="label">Educational Bayes factor · H₁ = Adverse Impact · H₀ = No Adverse Impact</div>
       <div class="category">${catShort}</div>
       <div class="amount">${primaryLabel} = ${fmt(primaryBf, 2)}
         <span style="font-weight:500;color:var(--text-muted);font-size:0.9rem;">(BF₀₁ ${fmt(bf01, 2)} · BF₁₀ ${fmt(bf10, 2)})</span>
       </div>
-      <div class="sub">Educational Beta–binomial — not JASP Gunel–Dickey. Highlighted row below = your result on the Jeffreys scale.</div>`;
+      <div class="sub">Educational Beta–binomial — not JASP Gunel–Dickey. Highlighted Jeffreys row below updates with this BF₁₀.</div>`;
     els.bfDetail.innerHTML = favorsParity
-      ? `<div class="flag ok"><strong>Evidence for parity:</strong> ~${fmt(bf01, 1)}× vs unequal rates.</div>`
-      : `<div class="flag warn"><strong>Evidence for unequal rates:</strong> ~${fmt(bf10, 1)}× vs parity.</div>`;
+      ? `<div class="flag ok"><strong>Evidence for H₀ · No Adverse Impact</strong> (parity): ~${fmt(bf01, 1)}× vs Adverse Impact (unequal rates).</div>`
+      : `<div class="flag warn"><strong>Evidence for H₁ · Adverse Impact</strong> (unequal rates): ~${fmt(bf10, 1)}× vs No Adverse Impact (parity).</div>`;
     renderBfScale(bf10);
 
     const gap = rateGapPosterior(d.refN, d.refH, d.cmpN, d.cmpH, d.alpha, 4000);
