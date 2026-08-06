@@ -1,613 +1,1169 @@
 <!--
 File location: static/platform/tools/roi-calculator/index.html
-What this file does: Interactive Human Capital ROI (HCROI) calculator for BayouPAL
-Why this file exists: Restore /platform/tools/roi-calculator/ after Apache 503 from a
-  dead Flask proxy on port 8011; source was not in this Hugo repo
-Tech stack: HTML, Tailwind CSS (CDN), Chart.js (CDN), vanilla JS — Fitz-enz HCROI metrics
+What this file does: Program ROI / Financial Analysis tool (NPV, IRR, hurdle rates)
+  for unique HR programs (simulation HRIS and related programs).
+Why this file exists: Canonical student path /platform/tools/roi-calculator/ must
+  serve Director-style program financial analysis — not Fitz-enz org-level HCROI.
+  Source of truth: Teaching/MNGT 425 - HR Analytics/Program_ROI_Calculator/
+Tech stack: Static HTML + Chart.js (CDN) + vanilla JS (exported from Flask Jinja)
 RELEVANT FILES:
-  - docs/platform-roi-calculator/README.md
-  - chriscastille6/performance-management-tool (enhanced_hc_roi_module.R formulas)
-  - .github/workflows/deploy-correlation-calibrator-pages.yml
+  - Teaching/.../Program_ROI_Calculator/templates/index.html
+  - Teaching/.../Program_ROI_Calculator/install/export-static-for-netlify.py
+  - static/platform/tools/hcroi-calculator/ (Fitz-enz org-level HCROI, if retained)
 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Human Capital ROI Calculator | People Analytics Lab</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <style>
-        :root {
-            --nicholls-red: #AE132A;
-            --nicholls-gray: #72808A;
-            --flow-revenue: #64748b;
-            --flow-value: #16a34a;
-            --flow-cost: #dc2626;
-        }
-        .nicholls-red { background-color: var(--nicholls-red); }
-        .nicholls-red-text { color: var(--nicholls-red); }
-        .nicholls-gray-text { color: var(--nicholls-gray); }
-        .brand-gradient { background: linear-gradient(135deg, #AE132A 0%, #dc2626 100%); }
-        .metric-card {
-            border-radius: 0.75rem;
-            padding: 1.25rem 1.5rem;
-            color: #fff;
-            min-height: 7.5rem;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
-        }
-        .metric-card::after {
-            content: "";
-            position: absolute;
-            right: -0.5rem;
-            bottom: -0.75rem;
-            width: 4.5rem;
-            height: 4.5rem;
-            opacity: 0.18;
-            background: currentColor;
-            mask: var(--metric-icon) center / contain no-repeat;
-            -webkit-mask: var(--metric-icon) center / contain no-repeat;
-        }
-        .metric-hcrf { background: linear-gradient(135deg, #15803d, #22c55e); --metric-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1.75.76 1.32 2.08 1.32 1.42 0 1.94-.7 1.94-1.3 0-.78-.5-1.2-2.04-1.55-2.2-.5-3.72-1.4-3.72-3.3 0-1.7 1.36-2.9 3.05-3.2V5h2.67v1.86c1.53.32 2.68 1.45 2.8 3.14h-1.96c-.1-.74-.75-1.3-1.9-1.3-1.2 0-1.8.58-1.8 1.25 0 .7.52 1.08 2.16 1.48 2.34.55 3.6 1.5 3.6 3.35 0 1.8-1.4 3-3.3 3.31z'/%3E%3C/svg%3E"); }
-        .metric-hccf { background: linear-gradient(135deg, #b91c1c, #ef4444); --metric-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z'/%3E%3C/svg%3E"); }
-        .metric-hcva { background: linear-gradient(135deg, #1d4ed8, #3b82f6); --metric-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z'/%3E%3C/svg%3E"); }
-        .metric-hcroi { background: linear-gradient(135deg, #047857, #10b981); --metric-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7.5 4h-2v3H2v2h3.5v3h2V9H11V7H7.5V4zm8.91 3.41L15 6l-1.41 1.41L15 8.83l1.41-1.42zM18 11h-2v2h2v-2zm-4 0h-2v2h2v-2zm8 0h-2v2h2v-2zm-4 4h-2v2h2v-2zm-4 0h-2v2h2v-2zm8 0h-2v2h2v-2z'/%3E%3C/svg%3E"); }
-        .flow-stage {
-            transition: transform 0.35s ease, opacity 0.35s ease;
-        }
-        .flow-stage.enter {
-            animation: riseIn 0.55s ease both;
-        }
-        @keyframes riseIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .results-hidden { display: none; }
-        input[type="number"]::-webkit-inner-spin-button {
-            opacity: 1;
-        }
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white; }
-            #resultsPanel { box-shadow: none; border: none; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Program ROI / Financial Analysis | People Analytics Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #1a2332;
+      --surface-hover: #243044;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --success: #22c55e;
+      --warn: #fbbf24;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border: #334155;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .container { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem; }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtitle { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.75rem; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .card h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .card h3 { font-size: 1rem; font-weight: 600; margin: 1rem 0 0.5rem; }
+    .card.primary-calc { border-color: rgba(59, 130, 246, 0.55); box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.15); }
+    .flow-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .steps { counter-reset: step; }
+    .step {
+      counter-increment: step;
+      padding: 1rem;
+      margin: 0.75rem 0;
+      background: rgba(59, 130, 246, 0.08);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+    }
+    .step::before {
+      content: counter(step);
+      display: inline-block;
+      width: 1.5rem;
+      height: 1.5rem;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 1.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-right: 0.75rem;
+    }
+    .formula {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(0,0,0,0.3);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      margin: 0.5rem 0;
+      display: inline-block;
+    }
+    .highlight { color: var(--accent); font-weight: 600; }
+    .result-box {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      font-size: 1.05rem;
+    }
+    .result-box strong { color: var(--success); }
+    .hero-result {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.18), rgba(59, 130, 246, 0.12));
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      border-radius: 12px;
+      padding: 1.35rem 1.35rem;
+      margin: 1.35rem 0 1rem;
+      text-align: center;
+    }
+    .hero-result .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+    .hero-result .amount {
+      font-size: 2.15rem;
+      font-weight: 700;
+      color: var(--success);
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.2;
+    }
+    .hero-result .sub {
+      margin-top: 0.5rem;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+    .prompts-box {
+      background: rgba(251, 191, 36, 0.08);
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      border-radius: 10px;
+      padding: 1.1rem 1.15rem;
+      margin: 0.5rem 0 0;
+    }
+    .prompts-box h4 {
+      color: var(--warn);
+      margin-bottom: 0.45rem;
+      font-size: 0.95rem;
+    }
+    .prompts-box .lede {
+      font-size: 0.95rem;
+      margin-bottom: 0.65rem;
+    }
+    .prompts-box ul {
+      margin: 0.35rem 0 0 1.15rem;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+    .prompts-box li { margin: 0.35rem 0; }
+    .prompts-box .note {
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .caution-note {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-left: 3px solid rgba(148, 163, 184, 0.45);
+      padding: 0.55rem 0.85rem;
+      margin: 1rem 0 0;
+      background: rgba(148, 163, 184, 0.06);
+      border-radius: 0 6px 6px 0;
+    }
+    .portfolio-box {
+      background: rgba(168, 85, 247, 0.1);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+    }
+    .portfolio-box strong { color: #a78bfa; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: var(--accent-hover); }
+    .btn-secondary {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+    .btn-secondary:hover { background: #334155; }
+    .program-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.75rem;
+      margin: 0.75rem 0 1.25rem;
+    }
+    .program-btn {
+      padding: 1rem;
+      background: var(--surface-hover);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+    .program-btn:hover { border-color: var(--accent); background: rgba(59,130,246,0.1); }
+    .program-btn.active { border-color: var(--accent); background: rgba(59,130,246,0.2); }
+    .calc-inputs { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; align-items: flex-end; }
+    .calc-inputs label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.9rem; }
+    .calc-inputs input, .calc-inputs .readonly-cost, .calc-inputs select {
+      padding: 0.5rem 0.75rem;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 1rem;
+      width: 140px;
+      font-family: inherit;
+    }
+    .calc-inputs select { width: 160px; }
+    .calc-inputs .readonly-cost {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: #93c5fd;
+      display: flex;
+      align-items: center;
+    }
+    .slider-block {
+      flex: 1 1 220px;
+      min-width: 200px;
+      max-width: 100%;
+    }
+    .slider-block input[type="range"] {
+      width: 100%;
+      max-width: 320px;
+      accent-color: var(--accent);
+      height: 1.5rem;
+      cursor: pointer;
+    }
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .slider-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: #93c5fd;
+      font-size: 1.1rem;
+      min-width: 3.5rem;
+    }
+    .mode-toggle {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      margin: 0.75rem 0 0.25rem;
+    }
+    .mode-toggle label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+    .mode-toggle input { accent-color: var(--accent); width: auto; }
+    .chart-panel { display: none; margin-top: 0.5rem; }
+    .chart-panel.visible { display: block; }
+    .calc-output { margin-top: 0.5rem; }
+    .calc-output p { margin: 0.5rem 0; }
+    .canvas-instructions {
+      background: rgba(168, 85, 247, 0.1);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    .canvas-instructions h4 { color: #a78bfa; margin-bottom: 0.5rem; }
+    ul { margin-left: 1.25rem; margin-top: 0.5rem; }
+    li { margin: 0.25rem 0; }
+    .chart-container { position: relative; height: 240px; margin: 1rem 0; }
+    .chart-container.wide { height: 280px; }
+    .nav-link { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .nav-link:hover { text-decoration: underline; }
+    .hint-toggle { font-size: 0.85rem; color: var(--accent); cursor: pointer; margin-left: 0.5rem; }
+    .hint-toggle:hover { text-decoration: underline; }
+    .hint-box { background: rgba(59, 130, 246, 0.08); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; margin: 0.5rem 0 1rem 1.5rem; border-radius: 0 6px 6px 0; font-size: 0.9rem; color: var(--text-muted); }
+    details.advanced > summary {
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      list-style: none;
+      padding: 0.25rem 0;
+    }
+    details.advanced > summary::-webkit-details-marker { display: none; }
+    details.advanced > summary::before { content: "▸ "; color: var(--accent); }
+    details.advanced[open] > summary::before { content: "▾ "; }
+    details.advanced .details-body { margin-top: 1rem; }
+  </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <div class="max-w-5xl mx-auto px-4 py-10">
-        <div class="text-center mb-8 no-print">
-            <a href="../../index.html" class="inline-flex items-center text-gray-700 hover:text-gray-900 transition-colors">
-                <div class="w-10 h-10 brand-gradient rounded-xl flex items-center justify-center mr-3 shadow-md">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </div>
-                <div class="text-left">
-                    <span class="text-xl font-bold nicholls-red-text block">People Analytics Lab</span>
-                    <span class="text-sm nicholls-gray-text block">of the Bayou</span>
-                </div>
-            </a>
+<body>
+  <div class="container">
+    <h1>Program ROI / Financial Analysis</h1>
+    <p class="subtitle">MNGT 425 / MNGT 502 — Given program cost and the hurdle rate, how much value must it generate?</p>
+
+    <!-- PRIMARY CALCULATOR -->
+    <div class="card primary-calc">
+      <h2>Decide before you buy</h2>
+
+      <p class="flow-label">1 · Sim program + horizon</p>
+      <div class="program-grid">
+        
+        <button type="button" class="program-btn " data-name="Employee Participation" data-cost="12000">
+          Employee Participation<br>
+          <span style="color: var(--text-muted); font-size: 0.85rem;">$12,000/quarter</span>
+        </button>
+        
+        <button type="button" class="program-btn " data-name="Grievance Procedure" data-cost="6000">
+          Grievance Procedure<br>
+          <span style="color: var(--text-muted); font-size: 0.85rem;">$6,000/quarter</span>
+        </button>
+        
+        <button type="button" class="program-btn " data-name="Orientation Program" data-cost="3000">
+          Orientation Program<br>
+          <span style="color: var(--text-muted); font-size: 0.85rem;">$3,000/quarter</span>
+        </button>
+        
+        <button type="button" class="program-btn active" data-name="HR Information System" data-cost="11000">
+          HR Information System<br>
+          <span style="color: var(--text-muted); font-size: 0.85rem;">$11,000/quarter</span>
+        </button>
+        
+        <button type="button" class="program-btn " data-name="Performance Appraisal System" data-cost="5000">
+          Performance Appraisal System<br>
+          <span style="color: var(--text-muted); font-size: 0.85rem;">$5,000/quarter</span>
+        </button>
+        
+        <button type="button" class="program-btn " data-name="DEI Initiative" data-cost="7000">
+          DEI Initiative<br>
+          <span style="color: var(--text-muted); font-size: 0.85rem;">$7,000/quarter</span>
+        </button>
+        
+      </div>
+
+      <div class="calc-inputs">
+        <label>
+          Program cost / quarter
+          <span class="readonly-cost" id="displayCost">$11,000</span>
+        </label>
+        <label>
+          Investment horizon
+          <select id="quarters" aria-label="Quarters the program runs">
+            <option value="1">1 quarter</option>
+            <option value="2">2 quarters</option>
+            <option value="3">3 quarters</option>
+            <option value="4" selected>4 quarters (full year)</option>
+          </select>
+        </label>
+      </div>
+
+      <p class="flow-label" style="margin-top:1.25rem;">2 · Interest / hurdle rate</p>
+      <div class="calc-inputs" style="margin-top:0.35rem;">
+        <div class="slider-block">
+          <label for="hurdle">Cost of capital (hurdle)</label>
+          <div class="slider-row">
+            <input type="range" id="hurdle" min="0" max="30" value="10" step="0.5" aria-valuemin="0" aria-valuemax="30" aria-valuenow="10">
+            <span class="slider-value" id="hurdleDisplay">10.0%</span>
+          </div>
         </div>
+      </div>
 
-        <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6 sm:p-8 mb-6">
-            <p class="text-xs text-gray-500 mb-2 uppercase tracking-wide">
-                Products &amp; Services → Total Revenue → Net Value &amp; Human Capital Costs
-            </p>
-            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Human Capital ROI Calculator</h1>
-            <p class="text-gray-600 mb-6 max-w-3xl">
-                Estimate Fitz-enz human capital metrics from organizational financials and workforce costs.
-                Enter values below, then calculate. Nothing is uploaded or stored.
-            </p>
+      <p class="flow-label" style="margin-top:1.25rem;">3 · Required value to clear the hurdle</p>
+      <div class="hero-result" id="heroResult" aria-live="polite">
+        <div class="label">Minimum value the program must generate</div>
+        <div class="amount" id="heroAmount">$48,400</div>
+        <div class="sub" id="heroSub">gross savings / benefits to clear a 10% hurdle</div>
+      </div>
 
-            <form id="roiForm" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <section class="space-y-4">
-                        <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">Financial parameters</h2>
-                        <div>
-                            <label for="totalRevenue" class="block text-sm font-medium text-gray-700 mb-1">Total revenue ($)</label>
-                            <input type="number" id="totalRevenue" min="0" step="1000" value="100000000"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                        </div>
-                        <div>
-                            <label for="totalExpenses" class="block text-sm font-medium text-gray-700 mb-1">Total expenses ($)</label>
-                            <input type="number" id="totalExpenses" min="0" step="1000" value="80000000"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                        </div>
-                        <div>
-                            <label for="payrollBenefits" class="block text-sm font-medium text-gray-700 mb-1">Payroll and benefits ($)</label>
-                            <input type="number" id="payrollBenefits" min="0" step="1000" value="24000000"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                        </div>
-                        <div>
-                            <label for="contingentCosts" class="block text-sm font-medium text-gray-700 mb-1">Contingent costs ($)</label>
-                            <input type="number" id="contingentCosts" min="0" step="1000" value="3750000"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                        </div>
-                    </section>
-
-                    <section class="space-y-4">
-                        <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">Workforce parameters</h2>
-                        <div>
-                            <label for="totalEmployees" class="block text-sm font-medium text-gray-700 mb-1">Total employees (FTEs)</label>
-                            <input type="number" id="totalEmployees" min="0" step="1" value="500"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                        </div>
-                        <div>
-                            <label for="contingentFtes" class="block text-sm font-medium text-gray-700 mb-1">Contingent workers (FTEs)</label>
-                            <input type="number" id="contingentFtes" min="0" step="1" value="100"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                        </div>
-                        <div>
-                            <label for="absenceCosts" class="block text-sm font-medium text-gray-700 mb-1">Absence costs ($)</label>
-                            <input type="number" id="absenceCosts" min="0" step="1000" value="200000"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                        </div>
-                        <div>
-                            <label for="turnoverCosts" class="block text-sm font-medium text-gray-700 mb-1">Turnover costs ($)</label>
-                            <input type="number" id="turnoverCosts" min="0" step="1000" value="3600000"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                        </div>
-                    </section>
-                </div>
-
-                <div class="flex flex-col sm:flex-row gap-3 no-print">
-                    <button type="submit" class="flex-1 nicholls-red text-white font-medium px-6 py-3 rounded-lg hover:opacity-90 transition-opacity">
-                        Calculate Human Capital ROI
-                    </button>
-                    <button type="button" id="resetDefaults" class="px-6 py-3 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50">
-                        Reset example defaults
-                    </button>
-                    <button type="button" id="clearAll" class="px-6 py-3 rounded-lg border border-amber-300 text-amber-800 font-medium hover:bg-amber-50">
-                        Clear all
-                    </button>
-                </div>
-                <p id="formError" class="hidden text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-4 py-3"></p>
-            </form>
+      <div class="chart-panel visible" id="singleChartPanel">
+        <div class="chart-container">
+          <canvas id="singleChart" aria-label="Selected program cost vs required value"></canvas>
         </div>
+      </div>
 
-        <div id="resultsPanel" class="results-hidden space-y-6">
-            <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6 sm:p-8">
-                <h2 class="text-xl font-bold text-gray-900 mb-1">Value flow</h2>
-                <p class="text-sm text-gray-600 mb-4">
-                    How total revenue splits into adjusted human-capital value and human-capital costs.
-                </p>
-                <div class="relative w-full overflow-hidden rounded-xl border border-gray-100 bg-gradient-to-br from-slate-50 to-white p-4">
-                    <svg id="flowSvg" viewBox="0 0 920 220" class="w-full h-auto" role="img" aria-label="Revenue flow into value and human capital costs">
-                        <defs>
-                            <linearGradient id="gradRevenue" x1="0" y1="0" x2="1" y2="0">
-                                <stop offset="0%" stop-color="#94a3b8"/>
-                                <stop offset="100%" stop-color="#64748b"/>
-                            </linearGradient>
-                            <linearGradient id="gradValue" x1="0" y1="0" x2="1" y2="0">
-                                <stop offset="0%" stop-color="#22c55e"/>
-                                <stop offset="100%" stop-color="#15803d"/>
-                            </linearGradient>
-                            <linearGradient id="gradCost" x1="0" y1="0" x2="1" y2="0">
-                                <stop offset="0%" stop-color="#f87171"/>
-                                <stop offset="100%" stop-color="#b91c1c"/>
-                            </linearGradient>
-                        </defs>
-                        <path id="flowRevenue" class="flow-stage" fill="url(#gradRevenue)" d=""></path>
-                        <path id="flowValue" class="flow-stage" fill="url(#gradValue)" d=""></path>
-                        <path id="flowCost" class="flow-stage" fill="url(#gradCost)" d=""></path>
-                        <text x="40" y="28" fill="#334155" font-size="14" font-family="system-ui,sans-serif" font-weight="600">Total revenue</text>
-                        <text id="labelRevenue" x="40" y="48" fill="#0f172a" font-size="18" font-family="system-ui,sans-serif" font-weight="700"></text>
-                        <text x="620" y="40" fill="#166534" font-size="14" font-family="system-ui,sans-serif" font-weight="600">Adjusted HC value</text>
-                        <text id="labelValue" x="620" y="60" fill="#14532d" font-size="16" font-family="system-ui,sans-serif" font-weight="700"></text>
-                        <text x="620" y="150" fill="#991b1b" font-size="14" font-family="system-ui,sans-serif" font-weight="600">Human capital costs (HCCF)</text>
-                        <text id="labelCost" x="620" y="170" fill="#7f1d1d" font-size="16" font-family="system-ui,sans-serif" font-weight="700"></text>
-                    </svg>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6 sm:p-8">
-                <h2 class="text-xl font-bold text-gray-900 mb-4">Human Capital Metrics Results</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                    <div class="metric-card metric-hcrf enter">
-                        <p id="outHcrf" class="text-2xl sm:text-3xl font-bold tracking-tight"></p>
-                        <p class="mt-2 text-sm font-medium text-white/90">Human Capital Revenue Factor (HCRF)</p>
-                    </div>
-                    <div class="metric-card metric-hccf enter" style="animation-delay: 0.08s">
-                        <p id="outHccf" class="text-2xl sm:text-3xl font-bold tracking-tight"></p>
-                        <p class="mt-2 text-sm font-medium text-white/90">Human Capital Cost Factor (HCCF)</p>
-                    </div>
-                    <div class="metric-card metric-hcva enter" style="animation-delay: 0.16s">
-                        <p id="outHcva" class="text-2xl sm:text-3xl font-bold tracking-tight"></p>
-                        <p class="mt-2 text-sm font-medium text-white/90">Human Capital Value Add (HCVA)</p>
-                    </div>
-                    <div class="metric-card metric-hcroi enter" style="animation-delay: 0.24s">
-                        <p id="outHcroi" class="text-2xl sm:text-3xl font-bold tracking-tight"></p>
-                        <p class="mt-2 text-sm font-medium text-white/90">Human Capital Return on Investment (HCROI)</p>
-                    </div>
-                </div>
-                <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-4">
-                    <p class="text-sm text-emerald-800 font-medium">HCROI dollar per employee (Fitz-enz)</p>
-                    <p id="outHcroiDollar" class="text-2xl font-bold text-emerald-900 mt-1"></p>
-                    <p class="text-sm text-emerald-800/80 mt-1">Adjusted profit attributable to human capital, per FTE.</p>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6 sm:p-8">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div>
-                        <h2 class="text-xl font-bold text-gray-900 mb-3">HCCF cost mix</h2>
-                        <div class="relative h-64">
-                            <canvas id="costChart" aria-label="HCCF cost breakdown chart"></canvas>
-                        </div>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-gray-900 mb-3">Calculation detail</h2>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full text-sm">
-                                <thead>
-                                    <tr class="border-b border-gray-200 text-left text-gray-600">
-                                        <th class="py-2 pr-3 font-semibold">Metric</th>
-                                        <th class="py-2 pr-3 font-semibold">Formula</th>
-                                        <th class="py-2 font-semibold">Result</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="calcTableBody" class="divide-y divide-gray-100 text-gray-800"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 flex flex-wrap gap-3 no-print">
-                    <button type="button" id="copySummary" class="px-4 py-2 rounded-lg nicholls-red text-white text-sm font-medium hover:opacity-90">
-                        Copy summary
-                    </button>
-                    <button type="button" id="downloadJson" class="px-4 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50">
-                        Download JSON
-                    </button>
-                    <button type="button" onclick="window.print()" class="px-4 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50">
-                        Print / Save PDF
-                    </button>
-                </div>
-                <p id="copyStatus" class="mt-2 text-sm text-green-700 hidden">Summary copied.</p>
-            </div>
-
-            <p class="text-xs text-gray-500 text-center">
-                Formulas follow Fitz-enz human capital metrics as used in the People Analytics Lab teaching materials.
-                Defaults match the Bayou Energy / classroom example (HCRF ≈ $166,666.67; HCCF = $31,550,000; HCVA ≈ $85,916.67; HCROI ≈ 1.63).
-            </p>
+      <div class="mode-toggle">
+        <label>
+          <input type="checkbox" id="compareToggle">
+          Compare all six programs at this hurdle
+        </label>
+      </div>
+      <div class="chart-panel" id="compareChartPanel">
+        <p style="font-size: 0.9rem; color: var(--text-muted);">Same horizon and rate — which programs need more evidence of benefits?</p>
+        <div class="chart-container wide">
+          <canvas id="programChart"></canvas>
         </div>
+      </div>
+
+      <p class="flow-label" style="margin-top:1.5rem;">4 · Before you purchase — questions to consider</p>
+      <details class="advanced">
+        <summary>Show program questions</summary>
+        <div class="details-body">
+          <div class="prompts-box" id="promptsBox">
+            <h4 id="promptsTitle">HRIS</h4>
+            <p class="lede" id="promptsLede"></p>
+            <ul id="promptsList"></ul>
+            <p class="note" id="promptsNote"></p>
+          </div>
+        </div>
+      </details>
+
+      <div class="calc-output" id="calcOutput"></div>
+
+      <p class="caution-note">
+        Classroom default is one program (or a simple cost compare across programs).
+        Bundle-vs-bundle logic gets complex fast—any set of practices can be compared to any other set.
+        This tool does not optimize full HPWS bundles.
+      </p>
     </div>
 
-    <script>
-        (function () {
-            var DEFAULTS = {
-                totalRevenue: 100000000,
-                totalExpenses: 80000000,
-                payrollBenefits: 24000000,
-                contingentCosts: 3750000,
-                totalEmployees: 500,
-                contingentFtes: 100,
-                absenceCosts: 200000,
-                turnoverCosts: 3600000
-            };
+    <!-- EXPLANATIONS AT THE BOTTOM -->
+    <div class="card">
+      <h2>Explanations</h2>
+      <details class="advanced">
+        <summary>How the one-year math works</summary>
+        <div class="details-body">
+          <div class="steps">
+            <div class="step">
+              <strong>Cost → period cost</strong>
+              <p>Quarterly cost × quarters in place = total cost over the horizon. Example HRIS at 4 quarters:</p>
+              <p class="formula">$11,000 × 4 = $44,000</p>
+            </div>
+            <div class="step">
+              <strong>Hurdle → required value</strong>
+              <p>At a 10% interest / hurdle rate:</p>
+              <p class="formula">Gross value needed = Cost × (1 + 0.10) = $48,400</p>
+              <p><em>Gross</em> = total benefits before subtracting program cost. Equivalently, <em>net</em> surplus must be at least cost × hurdle.</p>
+            </div>
+            <div class="step">
+              <strong>Judgment comes next</strong>
+              <p>The number above is a bar, not proof. Use the program prompts to ask whether benefits can plausibly clear it—without inventing false precision.</p>
+            </div>
+          </div>
+          <div class="portfolio-box">
+            <strong>Portfolio note:</strong> The sim HR budget is $1.4M. At 10%, the department needs ~$1.54M in gross savings overall. Each program’s minimum contributes to that portfolio target.
+          </div>
+        </div>
+      </details>
 
-            var lastResult = null;
-            var costChart = null;
+      <details class="advanced" style="margin-top:1rem;">
+        <summary>Multi-year check (NPV · IRR)</summary>
+        <div class="details-body">
+          <p>The hero answer uses a one-year teaching frame. Use this when cash flows span several years—IRR accounts for the <strong>time value of money</strong> vs. opportunity cost.</p>
+          <div class="steps" style="margin-top:0.75rem;">
+            <div class="step">
+              <strong>Cost of capital</strong>
+              <p>What the company pays to finance operations. If a program returns less than that hurdle, capital would earn more elsewhere.</p>
+            </div>
+            <div class="step">
+              <strong>Time value of money</strong>
+              <p>$1 today beats $1 next year. IRR is the rate that makes NPV = 0. <strong>Invest if IRR ≥ hurdle</strong> (equivalently NPV ≥ 0 at the hurdle).</p>
+            </div>
+          </div>
 
-            function num(id) {
-                var el = document.getElementById(id);
-                var v = parseFloat(el.value);
-                return Number.isFinite(v) ? v : NaN;
+          <h3>IRR Calculator</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">Programs are charged each year they’re in place. Net cash flow per year = Savings − Annual cost.</p>
+          <div class="calc-inputs">
+            <label>
+              Annual cost (recurring) ($)
+              <input type="number" id="irrCost" min="0" value="44000" placeholder="e.g., 44000">
+            </label>
+            <label>
+              Annual savings ($)
+              <input type="number" id="irrSavings" min="0" value="50000" placeholder="e.g., 50000">
+            </label>
+            <label>
+              Years
+              <input type="number" id="irrYears" min="1" max="10" value="4">
+            </label>
+            <label>
+              Hurdle rate (%)
+              <input type="number" id="irrHurdle" min="0" max="100" value="10" step="0.5">
+            </label>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; margin-top:0.5rem;">
+            <button type="button" class="btn" onclick="calcIRR()">Calculate IRR</button>
+            <button type="button" class="btn btn-secondary" onclick="findBreakEvenSavings()">Find break-even annual savings</button>
+            <span id="breakEvenResult" style="display:none; margin-left:0.5rem; padding:0.5rem 0.75rem; background:rgba(34,197,94,0.2); border-radius:6px; font-size:0.95rem; color:var(--success);"></span>
+          </div>
+          <div class="calc-output" id="irrOutput">
+            <p style="color: var(--text-muted);">Click Calculate IRR to see results.</p>
+          </div>
+          <div class="portfolio-box" id="budgetBreakEvenBox" style="margin-top: 1rem;">
+            <h4 style="margin-bottom: 0.5rem;">Full HR budget break-even</h4>
+            <p>Sim HR budget <strong>$1.4M</strong> — minimum gross annual savings to clear the hurdle:</p>
+            <p class="formula" id="budgetBreakEvenFormula">$1.4M × (1 + 10%) = $1,540,000</p>
+          </div>
+          <h3>NPV vs. Discount Rate</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">Where the line crosses zero = IRR. Invest if IRR is at or above your hurdle.</p>
+          <div class="chart-container">
+            <canvas id="npvChart"></canvas>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- Discussion Questions -->
+    <div class="card">
+      <h2>Discussion Questions</h2>
+      <details class="advanced">
+        <summary>Show discussion questions</summary>
+        <div class="details-body">
+          <p>Answer each question below. <strong>Submit your answer first</strong> to unlock the hint. You may revise your answer after viewing the hint.</p>
+          <ol style="margin-left: 1.25rem; margin-top: 1rem; list-style-position: outside;">
+            <li style="margin-bottom: 1.5rem;">
+              <strong>Why might Finance require a minimum ROI (e.g., 10%) before approving HR program investments?</strong>
+              <textarea id="essay1" rows="3" placeholder="Type your answer here..." style="width:100%; margin-top:0.5rem; padding:0.75rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:inherit; resize:vertical;"></textarea>
+              <button type="button" class="btn btn-secondary" onclick="submitEssay(1)" style="margin-top:0.5rem;">Submit answer</button>
+              <span id="hint1-toggle" class="hint-toggle" style="display:none; margin-left:0.5rem;" onclick="toggleHint(1)">Show hint</span>
+              <div id="hint1" class="hint-box" style="display:none;">
+                <strong>Hint:</strong> Finance must ensure capital earns at least its cost. The hurdle rate reflects the firm’s cost of capital (WACC). If an investment returns less, it destroys value.
+              </div>
+            </li>
+            <li style="margin-bottom: 1.5rem;">
+              <strong>How does the time value of money affect the decision to invest in a program that pays off over several years?</strong>
+              <textarea id="essay2" rows="3" placeholder="Type your answer here..." style="width:100%; margin-top:0.5rem; padding:0.75rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:inherit; resize:vertical;"></textarea>
+              <button type="button" class="btn btn-secondary" onclick="submitEssay(2)" style="margin-top:0.5rem;">Submit answer</button>
+              <span id="hint2-toggle" class="hint-toggle" style="display:none; margin-left:0.5rem;" onclick="toggleHint(2)">Show hint</span>
+              <div id="hint2" class="hint-box" style="display:none;">
+                <strong>Hint:</strong> A dollar today is worth more than a dollar next year. IRR discounts future cash flows—so late savings are worth less in today’s terms.
+              </div>
+            </li>
+            <li style="margin-bottom: 1.5rem;">
+              <strong>If your program’s IRR is below the hurdle rate, what options do you have?</strong>
+              <textarea id="essay3" rows="3" placeholder="Type your answer here..." style="width:100%; margin-top:0.5rem; padding:0.75rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:inherit; resize:vertical;"></textarea>
+              <button type="button" class="btn btn-secondary" onclick="submitEssay(3)" style="margin-top:0.5rem;">Submit answer</button>
+              <span id="hint3-toggle" class="hint-toggle" style="display:none; margin-left:0.5rem;" onclick="toggleHint(3)">Show hint</span>
+              <div id="hint3" class="hint-box" style="display:none;">
+                <strong>Hint:</strong> Increase benefits, reduce costs, extend the benefit period, or argue strategic/compliance value. For HRIS, strengthen the case that freed capacity goes to high-value strategic work.
+              </div>
+            </li>
+            <li style="margin-bottom: 1.5rem;">
+              <strong>How would you communicate the minimum required savings to Finance during an audit?</strong>
+              <textarea id="essay4" rows="3" placeholder="Type your answer here..." style="width:100%; margin-top:0.5rem; padding:0.75rem; background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:inherit; resize:vertical;"></textarea>
+              <button type="button" class="btn btn-secondary" onclick="submitEssay(4)" style="margin-top:0.5rem;">Submit answer</button>
+              <span id="hint4-toggle" class="hint-toggle" style="display:none; margin-left:0.5rem;" onclick="toggleHint(4)">Show hint</span>
+              <div id="hint4" class="hint-box" style="display:none;">
+                <strong>Hint:</strong> State cost, hurdle rate, and minimum gross value needed (Cost × (1 + hurdle)). Then link credible mechanisms (for HRIS: transactional → strategic effort shift) to that bar.
+              </div>
+            </li>
+          </ol>
+        </div>
+      </details>
+    </div>
+
+    <!-- Excel Download & Canvas -->
+    <div class="card">
+      <h2>Complete the Exercise</h2>
+      <p>Download the Excel template. <strong>HRIS has formulas as an example</strong>; supply formulas for the other programs yourself. Complete the practice section and submit via Canvas.</p>
+      <a href="program-roi-template.xlsx" class="btn">
+        Download Excel Template
+      </a>
+      <button type="button" class="btn" onclick="openPrintPreview(); return false;" style="margin-left: 0.5rem;">
+        Print to PDF
+      </button>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.75rem;">Generate your Candidate ID first, complete the discussion questions, then Print to PDF (browser print → Save as PDF).</p>
+
+      <div id="candidateIdCard" style="margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border);">
+        <h3 style="margin-top:0;">Candidate ID</h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Enter your name to generate an anonymized ID. Your name is <strong>not stored</strong>—only the ID appears on your PDF.</p>
+        <div class="calc-inputs">
+          <label>
+            First name
+            <input type="text" id="firstName" placeholder="First name" autocomplete="given-name">
+          </label>
+          <label>
+            Last name
+            <input type="text" id="lastName" placeholder="Last name" autocomplete="family-name">
+          </label>
+        </div>
+        <button type="button" class="btn" onclick="generateCandidateId()" style="margin-top: 0.5rem;">Generate Candidate ID</button>
+        <div id="candidateIdDisplay" style="display:none; margin-top: 1rem; padding: 1rem; background: rgba(59,130,246,0.15); border-radius: 8px; border: 1px solid var(--accent);">
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Your Candidate ID (use for PDF):</p>
+          <p id="candidateIdValue" style="font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 600; color: var(--accent);"></p>
+        </div>
+        <p id="candidateIdError" style="display:none; color: #ef4444; font-size: 0.9rem; margin-top: 0.5rem;"></p>
+      </div>
+
+      <div class="canvas-instructions">
+        <h4>Canvas Submission</h4>
+        <ul>
+          <li>Complete the Excel worksheet: add formulas for all programs (use HRIS as example) + your custom program</li>
+          <li><strong>Submit both:</strong> (1) the anonymized PDF from Print to PDF, and (2) the completed Excel file</li>
+          <li>Share the Excel file with <strong>editor access</strong> (Google Sheets) or upload the .xlsx</li>
+          <li>Submit the PDF and Excel (or links) in the assigned Canvas assignment</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const programs = [{"name": "Employee Participation", "quarterly_cost": 12000}, {"name": "Grievance Procedure", "quarterly_cost": 6000}, {"name": "Orientation Program", "quarterly_cost": 3000}, {"name": "HR Information System", "quarterly_cost": 11000}, {"name": "Performance Appraisal System", "quarterly_cost": 5000}, {"name": "DEI Initiative", "quarterly_cost": 7000}];
+
+    const PROGRAM_PROMPTS = {
+      "HR Information System": {
+        title: "Before you buy — HRIS",
+        lede: "Benefits are not “the software itself.” Value comes from shifting effort away from transactional HR admin toward strategic firm work.",
+        questions: [
+          "Which transactional tasks (data entry, chasing forms, manual reports) would shrink—and by roughly how many hours?",
+          "Where does that freed capacity go (workforce planning, talent decisions, manager analytics)—and is that work actually higher value?",
+          "What error reduction or faster decisions would Finance accept as credible, without fake precision?"
+        ],
+        note: "You need a credible story that those benefits clear the required value above—not a made-up spreadsheet to three decimals."
+      },
+      "Employee Participation": {
+        title: "Before you buy — Employee Participation",
+        lede: "Participation programs usually pay off through voice, engagement, and better shop-floor problem solving—not from the meeting cost alone.",
+        questions: [
+          "What decisions or process improvements would employee input change—and how would that show up in productivity or quality?",
+          "Could participation reduce turnover or grievances enough to matter at this cost?",
+          "What would “success” look like in the sim’s scoreboard within your horizon?"
+        ],
+        note: "Estimate directionally: which cost drivers move, and is the lift plausible vs. the required value?"
+      },
+      "Grievance Procedure": {
+        title: "Before you buy — Grievance Procedure",
+        lede: "Formal voice and dispute channels often create value by avoiding unmanaged conflict—not by “processing more grievances.”",
+        questions: [
+          "What disputes, walkouts, or legal exposure might a credible procedure prevent?",
+          "How might unresolved conflict show up as turnover, absenteeism, or lost productivity?",
+          "Is the procedure designed so employees trust it—or is it paperwork that won’t change behavior?"
+        ],
+        note: "Frame benefits as avoided losses and retained people. Rough ranges beat invented certainty."
+      },
+      "Orientation Program": {
+        title: "Before you buy — Orientation",
+        lede: "Orientation value usually sits in time-to-productivity and early retention—small ticket, same hurdle logic.",
+        questions: [
+          "How many weeks of “new hire fog” might shrink, and what is that time worth?",
+          "Would better onboarding cut early quit rates enough to clear the bar?",
+          "What errors or safety issues does a solid start reduce in this firm’s context?"
+        ],
+        note: "Keep estimates educational: link mechanisms to the required-value number, then decide."
+      },
+      "Performance Appraisal System": {
+        title: "Before you buy — Performance Appraisal",
+        lede: "Appraisal systems create value when they improve decisions and alignment—not when they merely fill forms.",
+        questions: [
+          "Would better ratings improve promotion, pay, or development decisions that move performance?",
+          "Does documentation reduce legal/compliance risk in a way Finance would recognize?",
+          "Will managers use the system—or will it become annual theater with no behavior change?"
+        ],
+        note: "Ask whether the system changes who stays, who develops, and who improves—within your horizon."
+      },
+      "DEI Initiative": {
+        title: "Before you buy — DEI Initiative",
+        lede: "DEI investments may create value through talent access, retention, climate, and risk management—effects that are real but hard to fake-precision.",
+        questions: [
+          "Which talent-pool or retention outcomes are plausible for this firm in the sim window?",
+          "What climate or conflict costs might improve—and how would you notice?",
+          "Are you treating this as compliance theater, or as a practice that changes hiring/promotion behavior?"
+        ],
+        note: "Stay educational: name mechanisms and whether they could clear the hurdle—don’t invent false ROI decimals."
+      }
+    };
+
+    const btns = document.querySelectorAll('.program-btn');
+    const quartersInput = document.getElementById('quarters');
+    const hurdleInput = document.getElementById('hurdle');
+    const hurdleDisplay = document.getElementById('hurdleDisplay');
+    const output = document.getElementById('calcOutput');
+    const displayCost = document.getElementById('displayCost');
+    const heroAmount = document.getElementById('heroAmount');
+    const heroSub = document.getElementById('heroSub');
+    const compareToggle = document.getElementById('compareToggle');
+    const singleChartPanel = document.getElementById('singleChartPanel');
+    const compareChartPanel = document.getElementById('compareChartPanel');
+
+    let candidateId = null;
+    const essayAnswers = { 1: { initial: '', revised: '' }, 2: { initial: '', revised: '' }, 3: { initial: '', revised: '' }, 4: { initial: '', revised: '' } };
+    const essaySubmitted = { 1: false, 2: false, 3: false, 4: false };
+    let singleChart = null, programChart = null, npvChart = null;
+    let lastIrrResult = { irr: 'N/A', npv: 0 };
+
+    function generateCandidateIdFromName(firstName, lastName) {
+      const nameParts = [firstName, lastName].filter(n => n && n.trim()).map(n => n.trim());
+      const fullName = nameParts.join(' ').trim();
+      if (!fullName) return null;
+      const normalized = fullName.toLowerCase().replace(/\s+/g, ' ');
+      let hash = 0;
+      for (let i = 0; i < normalized.length; i++) {
+        hash = ((hash << 5) - hash) + normalized.charCodeAt(i);
+        hash = hash & hash;
+      }
+      const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const segments = [8, 4, 4, 4, 12];
+      let seed = Math.abs(hash);
+      const seededRandom = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+      return segments.map(len => Array.from({ length: len }, () => chars[Math.floor(seededRandom() * chars.length)]).join('')).join('-');
+    }
+
+    function generateCandidateId() {
+      const first = (document.getElementById('firstName').value || '').trim();
+      const last = (document.getElementById('lastName').value || '').trim();
+      const errEl = document.getElementById('candidateIdError');
+      const displayEl = document.getElementById('candidateIdDisplay');
+      const valueEl = document.getElementById('candidateIdValue');
+      if (!first || !last) {
+        errEl.textContent = 'Please enter both first and last name.';
+        errEl.style.display = 'block';
+        displayEl.style.display = 'none';
+        return;
+      }
+      candidateId = generateCandidateIdFromName(first, last);
+      valueEl.textContent = candidateId;
+      displayEl.style.display = 'block';
+      errEl.style.display = 'none';
+    }
+
+    function submitEssay(n) {
+      const textarea = document.getElementById('essay' + n);
+      const val = (textarea.value || '').trim();
+      if (!val) return;
+      if (!essaySubmitted[n]) {
+        essayAnswers[n].initial = val;
+        essaySubmitted[n] = true;
+        document.getElementById('hint' + n + '-toggle').style.display = 'inline';
+      }
+      essayAnswers[n].revised = val;
+    }
+
+    function renderPrompts(name) {
+      const p = PROGRAM_PROMPTS[name] || {
+        title: 'Before you purchase',
+        lede: 'Ask how this program creates value before treating the required-dollar figure as automatic.',
+        questions: ['What mechanism creates value?', 'Within this horizon, is that plausible?'],
+        note: 'Educational judgment—not fake precision.'
+      };
+      document.getElementById('promptsTitle').textContent = p.title;
+      document.getElementById('promptsLede').textContent = p.lede;
+      document.getElementById('promptsList').innerHTML = p.questions.map(q => '<li>' + q + '</li>').join('');
+      document.getElementById('promptsNote').textContent = p.note;
+    }
+
+    function updateCalc() {
+      const active = document.querySelector('.program-btn.active');
+      if (!active) return;
+      const name = active.dataset.name;
+      const cost = parseInt(active.dataset.cost, 10);
+      const quarters = parseInt(quartersInput.value, 10) || 4;
+      const hurdlePct = parseFloat(hurdleInput.value);
+      const hurdle = (isNaN(hurdlePct) ? 10 : hurdlePct) / 100;
+      const annualCost = cost * quarters;
+      const minSavings = annualCost * (1 + hurdle);
+      const netNeeded = annualCost * hurdle;
+
+      if (hurdleDisplay) hurdleDisplay.textContent = (hurdle * 100).toFixed(1) + '%';
+      if (hurdleInput) hurdleInput.setAttribute('aria-valuenow', String(hurdle * 100));
+      if (displayCost) displayCost.textContent = '$' + cost.toLocaleString();
+      if (heroAmount) heroAmount.textContent = '$' + Math.round(minSavings).toLocaleString();
+      if (heroSub) {
+        heroSub.textContent =
+          'gross value / savings / benefits over ' + quarters + ' quarter' + (quarters === 1 ? '' : 's') +
+          ' to clear a ' + (hurdle * 100).toFixed(1) +
+          '% hurdle · program cost $' + annualCost.toLocaleString();
+      }
+
+      renderPrompts(name);
+
+      const auditLine = name === 'HR Information System'
+        ? 'Value is not the software—it is capacity moved from transactional HR admin to strategic firm work (plus fewer errors / faster decisions). We need credible evidence that those benefits reach at least $' +
+          Math.round(minSavings).toLocaleString() +
+          ' gross.'
+        : 'We need a credible case that benefits reach at least $' +
+          Math.round(minSavings).toLocaleString() +
+          ' gross within this horizon.';
+
+      output.innerHTML = `
+        <div class="result-box">
+          <strong>If audited by Finance:</strong> "We invested $${annualCost.toLocaleString()} in ${name} at a ${(hurdle * 100).toFixed(1)}% cost of capital. ${auditLine}"
+        </div>
+        <p style="font-size:0.9rem;color:var(--text-muted);">Net surplus needed ≈ $${Math.round(netNeeded).toLocaleString()} (cost × hurdle).</p>
+      `;
+
+      const irrCostEl = document.getElementById('irrCost');
+      if (irrCostEl && document.activeElement !== irrCostEl) {
+        irrCostEl.value = annualCost;
+      }
+
+      updateSingleChart(name, annualCost, minSavings);
+      if (compareToggle && compareToggle.checked) updateProgramChart();
+    }
+
+    function updateSingleChart(name, annualCost, minSavings) {
+      const canvas = document.getElementById('singleChart');
+      if (!canvas) return;
+      const short = name.replace(/ Program| Initiative| Procedure| System/g, '');
+      const ctx = canvas.getContext('2d');
+      if (singleChart) singleChart.destroy();
+      singleChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: [short],
+          datasets: [
+            { label: 'Program cost', data: [annualCost], backgroundColor: 'rgba(59, 130, 246, 0.65)', borderColor: '#3b82f6', borderWidth: 1 },
+            { label: 'Min. value required', data: [minSavings], backgroundColor: 'rgba(34, 197, 94, 0.55)', borderColor: '#22c55e', borderWidth: 1 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#94a3b8' } },
+            title: {
+              display: true,
+              text: 'Break-even view — selected program only',
+              color: '#94a3b8',
+              font: { size: 13, weight: '500' }
             }
+          },
+          scales: {
+            x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(148,163,184,0.15)' } },
+            y: { ticks: { color: '#94a3b8', callback: v => '$' + (v / 1000) + 'k' }, grid: { color: 'rgba(148,163,184,0.15)' } }
+          }
+        }
+      });
+    }
 
-            function money(n, digits) {
-                if (!Number.isFinite(n)) return "—";
-                return "$" + n.toLocaleString("en-US", {
-                    minimumFractionDigits: digits,
-                    maximumFractionDigits: digits
-                });
+    function updateProgramChart() {
+      const quarters = parseInt(quartersInput.value, 10) || 4;
+      const hurdle = (parseFloat(hurdleInput.value) || 10) / 100;
+      const labels = programs.map(p => p.name.replace(/ Program| Initiative| Procedure| System/g, ''));
+      const annualCosts = programs.map(p => p.quarterly_cost * quarters);
+      const minSavings = annualCosts.map(c => c * (1 + hurdle));
+      const ctx = document.getElementById('programChart').getContext('2d');
+      if (programChart) programChart.destroy();
+      programChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            { label: 'Program cost', data: annualCosts, backgroundColor: 'rgba(59, 130, 246, 0.6)', borderColor: '#3b82f6', borderWidth: 1 },
+            { label: 'Min. value required (at hurdle)', data: minSavings, backgroundColor: 'rgba(34, 197, 94, 0.5)', borderColor: '#22c55e', borderWidth: 1 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { ticks: { color: '#94a3b8', maxRotation: 45 }, grid: { color: 'rgba(148,163,184,0.15)' } },
+            y: { ticks: { color: '#94a3b8', callback: v => '$' + (v / 1000) + 'k' }, grid: { color: 'rgba(148,163,184,0.15)' } }
+          },
+          plugins: { legend: { labels: { color: '#94a3b8' } } }
+        }
+      });
+    }
+
+    function setCompareMode(on) {
+      if (singleChartPanel) singleChartPanel.classList.toggle('visible', !on);
+      if (compareChartPanel) compareChartPanel.classList.toggle('visible', on);
+      if (on) updateProgramChart();
+      else updateCalc();
+    }
+
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        updateCalc();
+      });
+    });
+    quartersInput.addEventListener('change', updateCalc);
+    quartersInput.addEventListener('input', updateCalc);
+    hurdleInput.addEventListener('input', updateCalc);
+    if (compareToggle) {
+      compareToggle.addEventListener('change', () => setCompareMode(compareToggle.checked));
+    }
+    if (document.querySelector('.program-btn.active')) updateCalc();
+
+    function toggleHint(n) {
+      const el = document.getElementById('hint' + n);
+      const toggle = document.getElementById('hint' + n + '-toggle');
+      if (!toggle || !el) return;
+      if (el.style.display === 'none') {
+        el.style.display = 'block';
+        toggle.textContent = 'Hide hint';
+      } else {
+        el.style.display = 'none';
+        toggle.textContent = 'Show hint';
+      }
+    }
+
+    function findBreakEvenSavings() {
+      try {
+        const cost = parseFloat(document.getElementById('irrCost').value) || 44000;
+        const years = parseInt(document.getElementById('irrYears').value, 10) || 4;
+        const hurdle = (parseFloat(document.getElementById('irrHurdle').value) || 10) / 100;
+        if (hurdle <= 0) {
+          alert('Please enter a hurdle rate greater than 0.');
+          return;
+        }
+        let pvAnnuity = 0;
+        for (let t = 1; t <= years; t++) pvAnnuity += 1 / Math.pow(1 + hurdle, t);
+        const breakEven = cost * (1 + 1 / pvAnnuity);
+        const rounded = Math.round(breakEven);
+        document.getElementById('irrSavings').value = rounded;
+        const resultEl = document.getElementById('breakEvenResult');
+        if (resultEl) {
+          resultEl.textContent = 'Break-even: $' + rounded.toLocaleString() + '/year';
+          resultEl.style.display = 'inline';
+          resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        calcIRR();
+      } catch (e) {
+        console.error('findBreakEvenSavings:', e);
+        alert('Error calculating break-even. Check the console for details.');
+      }
+    }
+
+    function updateBudgetBreakEven() {
+      const el = document.getElementById('budgetBreakEvenFormula');
+      const irrHurdleEl = document.getElementById('irrHurdle');
+      if (!el || !irrHurdleEl) return;
+      const hurdle = (parseFloat(irrHurdleEl.value) || 10) / 100;
+      const budget = 1400000;
+      const breakEven = Math.round(budget * (1 + hurdle));
+      el.textContent = '$1.4M × (1 + ' + (hurdle * 100).toFixed(1) + '%) = $' + breakEven.toLocaleString();
+    }
+
+    function calcIRR() {
+      const cost = parseFloat(document.getElementById('irrCost').value) || 44000;
+      const savings = parseFloat(document.getElementById('irrSavings').value) || 50000;
+      const years = parseInt(document.getElementById('irrYears').value, 10) || 4;
+      const hurdle = (parseFloat(document.getElementById('irrHurdle').value) || 10) / 100;
+      const netPerYear = savings - cost;
+
+      function npv(r) {
+        let sum = -cost;
+        for (let t = 1; t <= years; t++) sum += netPerYear / Math.pow(1 + r, t);
+        return sum;
+      }
+      function npvDerivative(r) {
+        let sum = 0;
+        for (let t = 1; t <= years; t++) sum -= netPerYear * t / Math.pow(1 + r, t + 1);
+        return sum;
+      }
+
+      let r = 0.1;
+      for (let i = 0; i < 50; i++) {
+        const f = npv(r);
+        if (Math.abs(f) < 1) break;
+        const fp = npvDerivative(r);
+        r = r - f / fp;
+        if (r <= -0.99 || r > 10) { r = NaN; break; }
+      }
+
+      const irrPct = (r * 100).toFixed(1);
+      const meetsHurdle = !isNaN(r) && r >= hurdle;
+      const npvAtHurdle = npv(hurdle);
+      const beatsOpportunityCost = npvAtHurdle >= 0;
+
+      let html = `<p><strong>IRR ≈ ${isNaN(r) ? 'N/A' : irrPct + '%'}</strong></p>`;
+      if (!isNaN(r)) {
+        html += `<p>At your ${(hurdle * 100).toFixed(1)}% hurdle rate: `;
+        html += meetsHurdle
+          ? `<span style="color: var(--success);">IRR ≥ hurdle → Invest</span>`
+          : `<span style="color: #ef4444;">IRR &lt; hurdle → Do not invest</span>`;
+        html += `</p>`;
+      } else {
+        html += `<p>IRR could not be computed (e.g., very negative return).</p>`;
+      }
+      html += `<p>NPV at hurdle rate: $${npvAtHurdle.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>`;
+      html += `<div class="result-box">`;
+      html += beatsOpportunityCost
+        ? `<strong>This program beats your opportunity cost.</strong> The return exceeds what you could earn elsewhere.`
+        : `<strong>This program does not beat your opportunity cost.</strong> You need higher savings, lower cost, or a longer benefit period.`;
+      html += `</div>`;
+      document.getElementById('irrOutput').innerHTML = html;
+      lastIrrResult = { irr: isNaN(r) ? 'N/A' : irrPct + '%', npv: npvAtHurdle, cost, savings, years, hurdle };
+
+      const rates = [];
+      const npvs = [];
+      for (let i = 0; i <= 30; i++) {
+        const rate = i / 100;
+        rates.push((rate * 100).toFixed(0) + '%');
+        npvs.push(npv(rate));
+      }
+      const zeroLine = rates.map(() => 0);
+      const irrIndex = !isNaN(r) && r >= 0 && r <= 0.3 ? r * 100 : null;
+      const ctx = document.getElementById('npvChart').getContext('2d');
+      if (npvChart) npvChart.destroy();
+      const annotationConfig = {};
+      if (irrIndex !== null) {
+        annotationConfig.irrLine = {
+          type: 'line',
+          xMin: irrIndex,
+          xMax: irrIndex,
+          borderColor: '#ef4444',
+          borderWidth: 2,
+          label: {
+            display: true,
+            content: 'IRR ' + irrPct + '%',
+            position: 'start',
+            backgroundColor: '#ef4444',
+            color: 'white',
+            font: { size: 10 }
+          }
+        };
+      }
+      npvChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: rates,
+          datasets: [
+            {
+              label: 'NPV',
+              data: npvs,
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59, 130, 246, 0.1)',
+              fill: true,
+              tension: 0.2
+            },
+            {
+              label: 'NPV = 0',
+              data: zeroLine,
+              borderColor: '#94a3b8',
+              borderWidth: 1.5,
+              borderDash: [4, 4],
+              pointRadius: 0,
+              fill: false
             }
-
-            function ratio(n) {
-                if (!Number.isFinite(n)) return "—";
-                return n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { intersect: false, mode: 'index' },
+          plugins: {
+            legend: { labels: { color: '#94a3b8' } },
+            annotation: { annotations: annotationConfig }
+          },
+          scales: {
+            x: {
+              title: { display: true, text: 'Discount rate', color: '#94a3b8' },
+              ticks: { color: '#94a3b8', maxTicksLimit: 15 },
+              grid: { color: 'rgba(148,163,184,0.15)' }
+            },
+            y: {
+              title: { display: true, text: 'NPV ($)', color: '#94a3b8' },
+              ticks: { color: '#94a3b8', callback: v => '$' + (v / 1000).toFixed(0) + 'k' },
+              grid: { color: 'rgba(148,163,184,0.15)' }
             }
+          }
+        }
+      });
+    }
 
-            function pct(n) {
-                if (!Number.isFinite(n)) return "—";
-                return (n * 100).toLocaleString("en-US", {
-                    minimumFractionDigits: 1,
-                    maximumFractionDigits: 1
-                }) + "%";
-            }
+    const irrHurdleEl = document.getElementById('irrHurdle');
+    if (irrHurdleEl) irrHurdleEl.addEventListener('input', updateBudgetBreakEven);
+    updateBudgetBreakEven();
 
-            function setInputs(values) {
-                Object.keys(values).forEach(function (key) {
-                    var el = document.getElementById(key);
-                    if (el) el.value = values[key] === "" ? "" : values[key];
-                });
-            }
+    function openPrintPreview() {
+      if (!candidateId) {
+        alert('Please generate your Candidate ID first (enter first and last name, then click Generate Candidate ID).');
+        return;
+      }
+      calcIRR();
+      const active = document.querySelector('.program-btn.active');
+      const progName = active ? active.dataset.name : '—';
+      const cost = parseInt(active ? active.dataset.cost : 0, 10);
+      const quarters = parseInt(quartersInput.value, 10) || 4;
+      const hurdle = (parseFloat(hurdleInput.value) || 10) / 100;
+      const irrHurdle = (parseFloat(document.getElementById('irrHurdle').value) || 10) / 100;
+      const annualCost = cost * quarters;
+      const minSavings = annualCost * (1 + hurdle);
+      const budgetBreakEven = Math.round(1400000 * (1 + irrHurdle));
 
-            function calculate() {
-                var totalRevenue = num("totalRevenue");
-                var totalExpenses = num("totalExpenses");
-                var payrollBenefits = num("payrollBenefits");
-                var contingentCosts = num("contingentCosts");
-                var totalEmployees = num("totalEmployees");
-                var contingentFtes = num("contingentFtes");
-                var absenceCosts = num("absenceCosts");
-                var turnoverCosts = num("turnoverCosts");
+      const chart1Img = (compareToggle && compareToggle.checked && programChart)
+        ? programChart.toBase64Image()
+        : (singleChart ? singleChart.toBase64Image() : '');
+      const chart2Img = npvChart ? npvChart.toBase64Image() : '';
 
-                var err = document.getElementById("formError");
-                var inputs = [
-                    totalRevenue, totalExpenses, payrollBenefits, contingentCosts,
-                    totalEmployees, contingentFtes, absenceCosts, turnoverCosts
-                ];
-                if (inputs.some(function (v) { return !Number.isFinite(v) || v < 0; })) {
-                    err.textContent = "Enter non-negative numbers for every field.";
-                    err.classList.remove("hidden");
-                    return null;
-                }
+      const questions = [
+        'Why might Finance require a minimum ROI (e.g., 10%) before approving HR program investments?',
+        'How does the time value of money affect the decision to invest in a program that pays off over several years?',
+        'If your program\'s IRR is below the hurdle rate, what options do you have?',
+        'How would you communicate the minimum required savings to Finance during an audit?'
+      ];
 
-                var totalFtes = totalEmployees + contingentFtes;
-                if (totalFtes <= 0) {
-                    err.textContent = "Total FTEs (employees + contingent) must be greater than zero.";
-                    err.classList.remove("hidden");
-                    return null;
-                }
+      let essayHtml = '';
+      for (let i = 1; i <= 4; i++) {
+        const a = essayAnswers[i];
+        const display = a.revised || a.initial || '(No answer submitted)';
+        essayHtml += `<div style="margin-bottom:1rem;"><strong>Q${i}: ${questions[i - 1]}</strong><p style="margin:0.5rem 0 0 1rem; white-space:pre-wrap;">${display.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p></div>`;
+      }
 
-                var hccf = payrollBenefits + contingentCosts + absenceCosts + turnoverCosts;
-                if (hccf <= 0) {
-                    err.textContent = "Human Capital Cost Factor (HCCF) must be greater than zero.";
-                    err.classList.remove("hidden");
-                    return null;
-                }
-                err.classList.add("hidden");
+      const printHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Program ROI - Print</title>
+<style>body{font-family:system-ui,sans-serif;max-width:700px;margin:2rem auto;padding:1rem;color:#333;}
+h1{font-size:1.25rem;} .section{margin-top:1.5rem;padding-top:1rem;border-top:1px solid #ccc;}
+table{border-collapse:collapse;width:100%;} th,td{border:1px solid #ccc;padding:0.5rem;text-align:left;}
+th{background:#f0f0f0;} img{max-width:100%;height:auto;}</style></head><body>
+<h1>Program ROI Calculator – MNGT 425</h1>
+<p><strong>Candidate ID:</strong> ${candidateId}</p>
+<p><em>Teaching question:</em> Given program cost and hurdle rate, how much value must the program generate?</p>
+<div class="section">
+<h2>Calculator Inputs & Outputs</h2>
+<table>
+<tr><th>Program</th><td>${progName}</td></tr>
+<tr><th>Investment horizon (quarters)</th><td>${quarters}</td></tr>
+<tr><th>Annual hurdle rate</th><td>${(hurdle * 100).toFixed(1)}%</td></tr>
+<tr><th>Program cost (horizon)</th><td>$${annualCost.toLocaleString()}</td></tr>
+<tr><th>Min. gross value required (at hurdle)</th><td>$${Math.round(minSavings).toLocaleString()}</td></tr>
+<tr><th>IRR inputs: cost / savings / years</th><td>$${lastIrrResult.cost?.toLocaleString() || 0} / $${lastIrrResult.savings?.toLocaleString() || 0} / ${lastIrrResult.years || 0}</td></tr>
+<tr><th>IRR result</th><td>${lastIrrResult.irr}</td></tr>
+<tr><th>NPV at hurdle</th><td>$${lastIrrResult.npv?.toLocaleString(undefined, { maximumFractionDigits: 0 }) || 0}</td></tr>
+<tr><th>Full HR budget break-even ($1.4M at hurdle)</th><td>$${budgetBreakEven.toLocaleString()}</td></tr>
+</table>
+</div>
+${chart1Img ? `<div class="section"><h2>Required value visual</h2><img src="${chart1Img}" alt="Bar chart" style="max-width:600px;"></div>` : ''}
+${chart2Img ? `<div class="section"><h2>NPV vs. Discount Rate</h2><img src="${chart2Img}" alt="NPV chart" style="max-width:600px;"></div>` : ''}
+<div class="section"><h2>Discussion Answers</h2>${essayHtml}</div>
+<p style="margin-top:2rem;font-size:0.85rem;color:#666;">Use your browser's Print (Ctrl/Cmd+P) and choose "Save as PDF" to save this document.</p>
+</body></html>`;
 
-                var hcrf = totalRevenue / totalFtes;
-                var adjustedExpenses = totalExpenses - payrollBenefits - contingentCosts - absenceCosts - turnoverCosts;
-                var adjustedProfit = totalRevenue - adjustedExpenses;
-                var hcva = adjustedProfit / totalFtes;
-                var adjustedExpensesForRoi = totalExpenses - hccf;
-                var adjustedProfitForRoi = totalRevenue - adjustedExpensesForRoi;
-                var hcroi = adjustedProfitForRoi / hccf;
-                var hcroiDollar = adjustedProfitForRoi / totalFtes;
-
-                return {
-                    totalRevenue: totalRevenue,
-                    totalExpenses: totalExpenses,
-                    payrollBenefits: payrollBenefits,
-                    contingentCosts: contingentCosts,
-                    totalEmployees: totalEmployees,
-                    contingentFtes: contingentFtes,
-                    absenceCosts: absenceCosts,
-                    turnoverCosts: turnoverCosts,
-                    totalFtes: totalFtes,
-                    hcrf: hcrf,
-                    hccf: hccf,
-                    hcva: hcva,
-                    hcroi: hcroi,
-                    hcroiDollar: hcroiDollar,
-                    adjustedExpenses: adjustedExpenses,
-                    adjustedProfit: adjustedProfit,
-                    adjustedProfitForRoi: adjustedProfitForRoi
-                };
-            }
-
-            function bandPath(x0, x1, y0Top, y0Bot, y1Top, y1Bot) {
-                var mx = (x0 + x1) / 2;
-                return [
-                    "M", x0, y0Top,
-                    "C", mx, y0Top, mx, y1Top, x1, y1Top,
-                    "L", x1, y1Bot,
-                    "C", mx, y1Bot, mx, y0Bot, x0, y0Bot,
-                    "Z"
-                ].join(" ");
-            }
-
-            function renderFlow(r) {
-                var total = r.totalRevenue;
-                var valueShare = Math.max(0, Math.min(1, r.adjustedProfitForRoi / total));
-                var costShare = Math.max(0, Math.min(1, r.hccf / total));
-                // If value+cost exceed revenue (unusual inputs), normalize for visual only.
-                var visualSum = valueShare + costShare;
-                if (visualSum > 1 && visualSum > 0) {
-                    valueShare /= visualSum;
-                    costShare /= visualSum;
-                }
-
-                var leftTop = 70;
-                var leftHeight = 120;
-                var leftBot = leftTop + leftHeight;
-                var rightTop = 70;
-                var gap = 10;
-                var valueHeight = Math.max(18, leftHeight * valueShare);
-                var costHeight = Math.max(18, leftHeight * costShare);
-                var valueBot = rightTop + valueHeight;
-                var costTop = valueBot + gap;
-                var costBot = costTop + costHeight;
-
-                document.getElementById("flowRevenue").setAttribute(
-                    "d",
-                    bandPath(30, 280, leftTop, leftBot, leftTop, leftBot)
-                );
-                document.getElementById("flowValue").setAttribute(
-                    "d",
-                    bandPath(280, 600, leftTop, leftTop + valueHeight, rightTop, valueBot)
-                );
-                document.getElementById("flowCost").setAttribute(
-                    "d",
-                    bandPath(280, 600, leftBot - costHeight, leftBot, costTop, costBot)
-                );
-                document.getElementById("labelRevenue").textContent = money(r.totalRevenue, 0);
-                document.getElementById("labelValue").textContent = money(r.adjustedProfitForRoi, 0);
-                document.getElementById("labelCost").textContent = money(r.hccf, 0);
-
-                ["flowRevenue", "flowValue", "flowCost"].forEach(function (id) {
-                    var el = document.getElementById(id);
-                    el.classList.remove("enter");
-                    void el.offsetWidth;
-                    el.classList.add("enter");
-                });
-            }
-
-            function renderMetrics(r) {
-                document.getElementById("outHcrf").textContent = money(r.hcrf, 1);
-                document.getElementById("outHccf").textContent = money(r.hccf, 0);
-                document.getElementById("outHcva").textContent = money(r.hcva, 2);
-                document.getElementById("outHcroi").textContent = ratio(r.hcroi) + " (" + pct(r.hcroi) + ")";
-                document.getElementById("outHcroiDollar").textContent = money(r.hcroiDollar, 2);
-
-                var rows = [
-                    {
-                        metric: "HCRF",
-                        formula: "Revenue / Total FTEs",
-                        result: money(r.hcrf, 2)
-                    },
-                    {
-                        metric: "HCCF",
-                        formula: "Pay & Benefits + Contingents + Absence + Turnover",
-                        result: money(r.hccf, 2)
-                    },
-                    {
-                        metric: "HCVA",
-                        formula: "(Revenue − Adjusted Expenses) / Total FTEs",
-                        result: money(r.hcva, 2)
-                    },
-                    {
-                        metric: "HCROI",
-                        formula: "(Revenue − (Expenses − HCCF)) / HCCF",
-                        result: ratio(r.hcroi) + " per $ invested"
-                    },
-                    {
-                        metric: "HCROI $/FTE",
-                        formula: "Adjusted HC profit / Total FTEs",
-                        result: money(r.hcroiDollar, 2)
-                    }
-                ];
-
-                document.getElementById("calcTableBody").innerHTML = rows.map(function (row) {
-                    return "<tr><td class='py-2 pr-3 font-medium'>" + row.metric +
-                        "</td><td class='py-2 pr-3 text-gray-600'>" + row.formula +
-                        "</td><td class='py-2 font-semibold'>" + row.result + "</td></tr>";
-                }).join("");
-
-                var chartData = {
-                    labels: ["Pay & Benefits", "Contingent Costs", "Absence Costs", "Turnover Costs"],
-                    datasets: [{
-                        data: [r.payrollBenefits, r.contingentCosts, r.absenceCosts, r.turnoverCosts],
-                        backgroundColor: ["#AE132A", "#f59e0b", "#3b82f6", "#64748b"],
-                        borderWidth: 0
-                    }]
-                };
-
-                if (costChart) {
-                    costChart.data = chartData;
-                    costChart.update();
-                } else {
-                    costChart = new Chart(document.getElementById("costChart"), {
-                        type: "doughnut",
-                        data: chartData,
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: { position: "bottom" },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function (ctx) {
-                                            var value = ctx.raw || 0;
-                                            var share = r.hccf ? (value / r.hccf) * 100 : 0;
-                                            return ctx.label + ": " + money(value, 0) +
-                                                " (" + share.toFixed(1) + "%)";
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-
-            function showResults(r) {
-                lastResult = r;
-                var panel = document.getElementById("resultsPanel");
-                panel.classList.remove("results-hidden");
-                renderFlow(r);
-                renderMetrics(r);
-                panel.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-
-            function summaryText(r) {
-                return [
-                    "Human Capital ROI Calculator — People Analytics Lab",
-                    "Total revenue: " + money(r.totalRevenue, 0),
-                    "Total expenses: " + money(r.totalExpenses, 0),
-                    "Total FTEs: " + r.totalFtes,
-                    "HCRF: " + money(r.hcrf, 2),
-                    "HCCF: " + money(r.hccf, 2),
-                    "HCVA: " + money(r.hcva, 2),
-                    "HCROI: " + ratio(r.hcroi) + " (" + pct(r.hcroi) + ")",
-                    "HCROI $/FTE: " + money(r.hcroiDollar, 2)
-                ].join("\n");
-            }
-
-            document.getElementById("roiForm").addEventListener("submit", function (e) {
-                e.preventDefault();
-                var r = calculate();
-                if (r) showResults(r);
-            });
-
-            document.getElementById("resetDefaults").addEventListener("click", function () {
-                setInputs(DEFAULTS);
-                document.getElementById("formError").classList.add("hidden");
-            });
-
-            document.getElementById("clearAll").addEventListener("click", function () {
-                setInputs({
-                    totalRevenue: "",
-                    totalExpenses: "",
-                    payrollBenefits: "",
-                    contingentCosts: "",
-                    totalEmployees: "",
-                    contingentFtes: "",
-                    absenceCosts: "",
-                    turnoverCosts: ""
-                });
-                document.getElementById("resultsPanel").classList.add("results-hidden");
-                document.getElementById("formError").classList.add("hidden");
-                lastResult = null;
-            });
-
-            document.getElementById("copySummary").addEventListener("click", function () {
-                if (!lastResult) return;
-                var text = summaryText(lastResult);
-                var status = document.getElementById("copyStatus");
-                function ok() {
-                    status.classList.remove("hidden");
-                    setTimeout(function () { status.classList.add("hidden"); }, 2000);
-                }
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(ok);
-                } else {
-                    var ta = document.createElement("textarea");
-                    ta.value = text;
-                    document.body.appendChild(ta);
-                    ta.select();
-                    document.execCommand("copy");
-                    document.body.removeChild(ta);
-                    ok();
-                }
-            });
-
-            document.getElementById("downloadJson").addEventListener("click", function () {
-                if (!lastResult) return;
-                var blob = new Blob([JSON.stringify(lastResult, null, 2)], { type: "application/json" });
-                var url = URL.createObjectURL(blob);
-                var a = document.createElement("a");
-                a.href = url;
-                a.download = "hcroi-results.json";
-                a.click();
-                URL.revokeObjectURL(url);
-            });
-        })();
-    </script>
+      const blob = new Blob([printHtml], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const w = window.open(url, '_blank', 'noopener,noreferrer,width=800,height=900');
+      if (w) {
+        setTimeout(() => URL.revokeObjectURL(url), 5000);
+      } else {
+        window.location.href = url;
+      }
+    }
+  </script>
 </body>
 </html>

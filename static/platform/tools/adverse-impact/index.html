@@ -1,0 +1,1475 @@
+<!--
+File location: static/platform/tools/adverse-impact/index.html
+What this file does: Classroom adverse-impact calculator — 4/5ths (impact ratio),
+  chi-square, Fisher exact, two-proportion Z, plus an educational Bayes factor for
+  evidence for/against selection-rate parity (Courey & Oswald, 2024 communication frame).
+Why this file exists: MNGT 502 / HR Analytics teaching beat; replaces external
+  adverseimpact.org link with a Bayou PAL–hosted synthetic-data tool.
+Tech stack: Static HTML + CSS + vanilla JS (client-side only; no backend; no uploads)
+RELEVANT FILES:
+  - Teaching/.../frontend_slides/decks/05_hris_eeo.html
+  - static/platform/tools/hris-demo/index.html
+  - Courey & Oswald (2024), J Bus Psychol — Bayesian communication of AI analyses
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adverse Impact Analyzer (Teaching) | People Analytics Lab</title>
+  <meta name="description" content="Classroom adverse-impact calculator: 4/5ths, chi-square, Fisher, Z, and educational Bayes factors. Synthetic data only — not legal advice.">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #e8edf2;
+      --surface: #ffffff;
+      --border: #d0d7de;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent: #0f766e;
+      --accent-soft: #ccfbf1;
+      --warn: #b45309;
+      --warn-bg: #fff7ed;
+      --danger: #b91c1c;
+      --danger-bg: #fef2f2;
+      --ok: #15803d;
+      --ok-bg: #f0fdf4;
+      --info: #1d4ed8;
+      --info-bg: #eff6ff;
+      --shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.04);
+      --radius: 10px;
+      --font: "IBM Plex Sans", system-ui, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    button, input, select { font: inherit; }
+    a { color: var(--accent); }
+
+    .mock-banner {
+      background: linear-gradient(90deg, #7f1d1d, #991b1b 40%, #b45309);
+      color: #fff;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.55rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.25rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mock-banner strong { font-weight: 700; }
+    .mock-banner .tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 999px;
+      padding: 0.15rem 0.55rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .wrap { max-width: 980px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+    header.page {
+      margin: 1rem 0 1.25rem;
+    }
+    header.page h1 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+    }
+    header.page .sub {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.35rem;
+      max-width: 46rem;
+    }
+    .crumbs {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.65rem;
+    }
+    .crumbs a { text-decoration: none; }
+    .crumbs a:hover { text-decoration: underline; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 820px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.15rem 1.2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 1rem;
+    }
+    .card h2 {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 0.85rem;
+    }
+    .card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin: 0.85rem 0 0.4rem;
+    }
+
+    .presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+    .preset-btn, .btn {
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 0.45rem 0.75rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .preset-btn:hover, .btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .preset-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .mode-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.85rem;
+    }
+    .mode-tab {
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 0.5rem 0.85rem;
+      cursor: pointer;
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+    .mode-tab:hover { border-color: var(--accent); background: var(--accent-soft); }
+    .mode-tab.active {
+      background: #1a365d;
+      color: #fff;
+      border-color: #1a365d;
+    }
+    .mode-tab .sublabel {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 500;
+      opacity: 0.85;
+      margin-top: 0.1rem;
+    }
+    .preset-group-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin: 0.35rem 0 0.35rem;
+      width: 100%;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      font-weight: 600;
+      padding: 0.6rem 1.1rem;
+    }
+    .btn-primary:hover { background: #0d9488; }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 0.55rem;
+      align-items: end;
+    }
+    @media (max-width: 560px) {
+      .field-grid { grid-template-columns: 1fr; }
+    }
+    label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+    input[type="number"], input[type="text"], select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 0.65rem;
+      background: #fff;
+    }
+    input:focus, select:focus {
+      outline: 2px solid rgba(15, 118, 110, 0.35);
+      border-color: var(--accent);
+    }
+    .group-block {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin-bottom: 0.65rem;
+    }
+    .group-block .title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.65rem;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.65rem;
+      margin: 0.75rem 0;
+    }
+    .metric {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.75rem;
+    }
+    .metric .k {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .metric .v {
+      font-family: var(--mono);
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-top: 0.15rem;
+    }
+
+    .flag {
+      border-radius: 8px;
+      padding: 0.75rem 0.9rem;
+      font-size: 0.9rem;
+      margin: 0.55rem 0;
+      border: 1px solid transparent;
+    }
+    .flag.warn { background: var(--warn-bg); border-color: #fdba74; color: #9a3412; }
+    .flag.ok { background: var(--ok-bg); border-color: #86efac; color: #166534; }
+    .flag.info { background: var(--info-bg); border-color: #93c5fd; color: #1e40af; }
+    .flag.danger { background: var(--danger-bg); border-color: #fca5a5; color: #991b1b; }
+    .flag strong { font-weight: 700; }
+
+    .comm-box {
+      background: linear-gradient(165deg, #1a365d 0%, #2c5282 55%, #2b6cb0 100%);
+      color: #ebf8ff;
+      border-radius: 12px;
+      padding: 1rem 1.1rem 1.05rem;
+      box-shadow: 0 10px 28px rgba(26, 54, 93, 0.18);
+    }
+    .comm-box .kicker {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #bee3f8;
+      margin: 0 0 0.35rem;
+    }
+    .comm-box h2 {
+      color: #fff;
+      font-size: 1.25rem;
+      margin: 0 0 0.65rem;
+      border: none;
+      padding: 0;
+    }
+    .comm-box ol {
+      margin: 0;
+      padding-left: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .comm-box li {
+      font-size: 0.92rem;
+      line-height: 1.35;
+    }
+    .comm-box li strong { color: #fff; }
+    .comm-box .rule {
+      margin: 0.85rem 0 0;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(190, 227, 248, 0.35);
+      font-size: 0.88rem;
+      color: #bee3f8;
+      line-height: 1.4;
+    }
+    .comm-box .rule strong { color: #fefcbf; }
+    .sim-why {
+      background: #fff7ed;
+      border: 1px solid #fdba74;
+      border-radius: 8px;
+      padding: 0.65rem 0.8rem;
+      font-size: 0.85rem;
+      color: #9a3412;
+      margin: 0 0 0.85rem;
+      line-height: 1.4;
+    }
+    .sim-why strong { color: #7c2d12; }
+
+    .formula {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 0.65rem 0.8rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 0.5rem 0;
+    }
+    .table-2x2 {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin: 0.5rem 0 0.75rem;
+    }
+    .table-2x2 th, .table-2x2 td {
+      border: 1px solid var(--border);
+      padding: 0.45rem 0.6rem;
+      text-align: right;
+    }
+    .table-2x2 th { background: #f1f5f9; text-align: left; font-weight: 600; }
+    .table-2x2 td.mono, .table-2x2 .mono { font-family: var(--mono); }
+
+    .bf-hero {
+      background: linear-gradient(135deg, rgba(15, 118, 110, 0.12), rgba(29, 78, 216, 0.08));
+      border: 1px solid rgba(15, 118, 110, 0.35);
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      margin: 0.75rem 0;
+    }
+    .bf-hero .label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+    .bf-hero .category {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 0.25rem;
+      line-height: 1.3;
+    }
+    .bf-hero .amount {
+      font-family: var(--mono);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-top: 0.35rem;
+    }
+    .bf-hero .sub { font-size: 0.85rem; margin-top: 0.4rem; color: var(--text-muted); }
+
+    .comm-strip {
+      background: linear-gradient(165deg, #1a365d 0%, #2c5282 100%);
+      color: #ebf8ff;
+      border-radius: 12px;
+      padding: 0.95rem 1.05rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 8px 22px rgba(26, 54, 93, 0.14);
+    }
+    .comm-strip .kicker {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #bee3f8;
+      margin: 0 0 0.4rem;
+    }
+    .comm-strip .line {
+      font-size: 0.98rem;
+      line-height: 1.45;
+      margin: 0.2rem 0;
+    }
+    .comm-strip .line strong { color: #fff; }
+    .comm-strip .bf-line {
+      margin-top: 0.55rem;
+      padding-top: 0.55rem;
+      border-top: 1px solid rgba(190, 227, 248, 0.35);
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    .comm-strip .bf-line .cat { color: #fefcbf; font-weight: 700; }
+
+    details.quiet {
+      margin-top: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.55rem 0.75rem;
+      background: #f8fafc;
+    }
+    details.quiet summary {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--accent);
+    }
+    details.quiet .inner { margin-top: 0.55rem; }
+    .chi-walk-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      align-items: center;
+      margin-bottom: 0.65rem;
+    }
+    .chi-walk-controls label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .chi-walk-controls select {
+      flex: 1 1 16rem;
+      min-width: 12rem;
+      padding: 0.4rem 0.55rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+    }
+    .chi-walk-body {
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .chi-walk-body h4 {
+      font-size: 0.95rem;
+      margin: 0 0 0.4rem;
+      color: var(--text);
+    }
+    .chi-walk-body .step-num {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 0.25rem;
+    }
+    .chi-walk-body table.table-2x2 { font-size: 0.82rem; }
+    .chi-walk-body .nav-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .chi-walk-body .nav-row .btn { padding: 0.35rem 0.7rem; font-size: 0.82rem; }
+    details.quiet p, details.quiet li {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0.4rem 0;
+    }
+    details.quiet ul { margin-left: 1.1rem; }
+
+    details.method {
+      margin-top: 0.75rem;
+      border-top: 1px solid var(--border);
+      padding-top: 0.65rem;
+    }
+    details.method summary {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--accent);
+    }
+    details.method p, details.method li {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0.4rem 0;
+    }
+    details.method ul { margin-left: 1.1rem; }
+
+    footer.page {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    footer.page cite { font-style: normal; }
+  </style>
+</head>
+<body>
+  <div class="mock-banner">
+    <div>
+      <strong>TEACHING TOOL</strong> — Synthetic classroom data only. Not legal advice. Not UGESP compliance certification.
+    </div>
+    <span class="tag">Bayou PAL · MNGT 502</span>
+  </div>
+
+  <div class="wrap">
+    <header class="page">
+      <div class="crumbs">
+        <a href="/resources/">Resources</a> ·
+        <a href="/platform/">Platform</a> ·
+        Adverse impact
+      </div>
+      <h1>Adverse Impact Analyzer</h1>
+      <p class="sub">
+        Primary classroom screen: <strong>firm composition vs community availability</strong> (χ² goodness-of-fit).
+        Follow-on: applicant→hire selection rates (4/5ths, association tests, educational Bayes factor —
+        Courey &amp; Oswald, 2024). Synthetic data only — not legal advice.
+      </p>
+    </header>
+
+    <div class="grid-2">
+      <section class="card">
+        <h2>Inputs</h2>
+        <div class="mode-tabs" role="tablist" aria-label="Analysis mode">
+          <button type="button" class="mode-tab active" data-mode="gof" id="mode-gof">
+            Firm vs community
+            <span class="sublabel">Primary · composition GOF</span>
+          </button>
+          <button type="button" class="mode-tab" data-mode="hire" id="mode-hire">
+            Hiring funnel
+            <span class="sublabel">Follow-on · 4/5ths + BF</span>
+          </button>
+        </div>
+
+        <div id="presets-gof" class="presets" role="group" aria-label="Firm vs community presets">
+          <span class="preset-group-label">Simulation · start-of-sim demographics</span>
+          <button type="button" class="preset-btn active" data-preset="sim-gof-l1-women" id="preset-gof-l1w">Sim L1 · women vs community</button>
+          <button type="button" class="preset-btn" data-preset="sim-gof-l1-min">Sim L1 · minority vs community</button>
+          <button type="button" class="preset-btn" data-preset="sim-gof-l5-women">Sim L5 · women vs community</button>
+          <button type="button" class="preset-btn" data-preset="sim-gof-l5-min">Sim L5 · minority vs community</button>
+          <button type="button" class="preset-btn" data-preset="custom-gof">Custom GOF</button>
+        </div>
+        <div id="presets-hire" class="presets" role="group" aria-label="Hiring funnel presets" hidden>
+          <span class="preset-group-label">Secondary · how hiring might sustain the gap</span>
+          <button type="button" class="preset-btn" data-preset="sim-hire-l1">Sim L1 · hiring AI (illustrative)</button>
+          <button type="button" class="preset-btn" data-preset="sim-hire-l5">Sim L5 · hiring AI (illustrative)</button>
+          <button type="button" class="preset-btn" data-preset="courey-ai">Courey vignette · AI present</button>
+          <button type="button" class="preset-btn" data-preset="courey-parity">Courey vignette · parity</button>
+          <button type="button" class="preset-btn" data-preset="borderline">Borderline IR ≈ 0.80</button>
+          <button type="button" class="preset-btn" data-preset="small-n">Small-n caution</button>
+          <button type="button" class="preset-btn" data-preset="custom-hire">Custom</button>
+        </div>
+
+        <p class="hint" id="mode-hint" style="margin:-0.35rem 0 0.85rem;">
+          Default = <strong>Sim L1 · women vs community</strong> (N=500 bulk headcount). H₀: if the firm matched the community, composition would look like community %.
+        </p>
+        <div class="sim-why" id="sim-why">
+          <strong>Why these counts (L1 women)?</strong>
+          Screenshot SoT: Level&nbsp;1 = 500 employees, 60 women (12%). Community women = 40% → expected 200 women / 300 men if firm matched community. χ² GOF screens the gap — then ask how hiring works.
+        </div>
+
+        <!-- GOF inputs -->
+        <div id="panel-gof">
+          <div class="group-block">
+            <div class="title">Observed firm composition (one level)</div>
+            <div class="field-grid">
+              <div>
+                <label for="gof-focal-label">Focal group</label>
+                <input id="gof-focal-label" type="text" value="Women" autocomplete="off">
+              </div>
+              <div>
+                <label for="gof-focal-n">Observed count</label>
+                <input id="gof-focal-n" type="number" min="0" step="1" value="60">
+              </div>
+              <div>
+                <label for="gof-total-n">Total N (level)</label>
+                <input id="gof-total-n" type="number" min="1" step="1" value="500">
+              </div>
+            </div>
+            <div class="field-grid" style="margin-top:0.55rem; grid-template-columns: 1.2fr 1fr;">
+              <div>
+                <label for="gof-other-label">Other group label</label>
+                <input id="gof-other-label" type="text" value="Men" autocomplete="off">
+              </div>
+              <div>
+                <label for="gof-comm-pct">Community % (focal)</label>
+                <input id="gof-comm-pct" type="number" min="0" max="100" step="0.1" value="40">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hiring funnel inputs -->
+        <div id="panel-hire" hidden>
+          <div class="group-block">
+            <div class="title">Reference group (higher selection rate expected as baseline)</div>
+            <div class="field-grid">
+              <div>
+                <label for="ref-label">Label</label>
+                <input id="ref-label" type="text" value="Men" autocomplete="off">
+              </div>
+              <div>
+                <label for="ref-applied">Applied (N)</label>
+                <input id="ref-applied" type="number" min="1" step="1" value="60">
+              </div>
+              <div>
+                <label for="ref-hired">Selected / hired</label>
+                <input id="ref-hired" type="number" min="0" step="1" value="45">
+              </div>
+            </div>
+          </div>
+
+          <div class="group-block">
+            <div class="title">Comparison group (focal / protected class in classroom example)</div>
+            <div class="field-grid">
+              <div>
+                <label for="cmp-label">Label</label>
+                <input id="cmp-label" type="text" value="Women" autocomplete="off">
+              </div>
+              <div>
+                <label for="cmp-applied">Applied (N)</label>
+                <input id="cmp-applied" type="number" min="1" step="1" value="40">
+              </div>
+              <div>
+                <label for="cmp-hired">Selected / hired</label>
+                <input id="cmp-hired" type="number" min="0" step="1" value="6">
+              </div>
+            </div>
+          </div>
+
+          <div class="field-grid" style="grid-template-columns: 1fr; margin-top: 0.5rem;">
+            <div>
+              <label for="prior">BF prior (Beta α = β)</label>
+              <select id="prior">
+                <option value="0.5" selected>Jeffreys · Beta(0.5, 0.5)</option>
+                <option value="1">Uniform · Beta(1, 1)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 0.75rem;">
+          <button type="button" class="btn btn-primary" id="analyze-btn" style="width:100%;">Analyze</button>
+        </div>
+        <p class="hint">All calculation runs in your browser. Nothing is uploaded or stored. Use synthetic counts only (FERPA / classroom policy).</p>
+      </section>
+
+      <aside class="comm-box" aria-label="How you communicate this" id="comm-box">
+        <p class="kicker">Classroom script · firm vs community</p>
+        <h2>How you communicate this</h2>
+        <ol id="comm-box-list">
+          <li><strong>Rates first.</strong> “At Level 1, the firm is 12% women; the community is 40%.”</li>
+          <li><strong>H₀.</strong> “If we looked like the community, we’d expect ~200 women of 500 — not 60.”</li>
+          <li><strong>χ² screen.</strong> “GOF rejects ‘firm matches community’ — a statistical flag, not a guilt finding.”</li>
+          <li><strong>Ask why.</strong> “How does hiring / promotion work here?” → optional hiring-funnel follow-on.</li>
+          <li><strong>Next moves.</strong> Openings from turnover · hiring targets · ER — not training alone.</li>
+        </ol>
+        <p class="rule">
+          <strong>Do not say:</strong> “We’re guilty” or “We’re lawsuit-proof.”
+          Say: <strong>composition flag → ask about the process → document.</strong>
+          Do not confuse this GOF screen with a 4/5ths test on applicants.
+        </p>
+      </aside>
+    </div>
+
+    <section class="card" id="results" hidden>
+      <h2>Results</h2>
+
+      <div class="comm-strip" id="comm-strip" aria-label="How to say this out loud"></div>
+
+      <div id="table-out"></div>
+
+      <div id="gof-block">
+        <h3>Firm vs community (goodness-of-fit)</h3>
+        <div class="metric-row" id="gof-metrics"></div>
+        <div id="gof-flag"></div>
+      </div>
+
+      <div id="hire-block" hidden>
+        <h3>Impact ratio (4/5ths)</h3>
+        <div class="metric-row" id="ir-metrics"></div>
+        <div id="ir-flag"></div>
+
+        <h3>Bayes factor · say this</h3>
+        <div class="bf-hero" id="bf-hero"></div>
+        <div id="bf-detail"></div>
+      </div>
+
+      <details class="quiet" id="chi-walk-details">
+        <summary>Walk through the chi-square</summary>
+        <div class="inner">
+          <div class="chi-walk-controls">
+            <label for="chi-step">Step</label>
+            <select id="chi-step" aria-label="Chi-square walkthrough step">
+              <option value="0">1 · H₀ framing</option>
+              <option value="1">2 · Observed counts</option>
+              <option value="2">3 · Expected from community %</option>
+              <option value="3">4 · χ² statistic</option>
+              <option value="4">5 · df / p as screen, not guilt</option>
+              <option value="5">6 · Ask about hiring · communicate</option>
+            </select>
+          </div>
+          <div class="chi-walk-body" id="chi-walk-body" aria-live="polite"></div>
+        </div>
+      </details>
+
+      <details class="quiet" id="freq-details" hidden>
+        <summary>Association tests (χ² · Fisher · Z) — details</summary>
+        <div class="inner">
+          <div class="metric-row" id="freq-metrics"></div>
+          <div id="freq-notes"></div>
+        </div>
+      </details>
+
+      <details class="quiet" id="posterior-details" hidden>
+        <summary>Optional · posterior on rate gap (educational)</summary>
+        <div class="inner" id="posterior-out"></div>
+      </details>
+
+      <details class="method">
+        <summary>Method notes · GOF vs hiring funnel</summary>
+        <p>
+          <strong>Primary (this class):</strong> One-way χ² goodness-of-fit. Observed headcount in a focal category
+          vs expected counts if the firm matched community availability % at that level.
+          H₀: firm composition = community %. Rejecting H₀ flags underutilization for further review — not a finding of unlawful discrimination.
+        </p>
+        <p>
+          <strong>Follow-on:</strong> Impact ratio = comparison selection rate ÷ reference selection rate.
+          UGESP 4/5ths rule of thumb flags when IR &lt; 0.80. Chi-square (Yates when any expected cell &lt; 5),
+          Fisher’s exact, two-proportion Z, and an educational Beta–binomial BF (Courey &amp; Oswald communication frame)
+          apply to applicant→hire tables — a different question than firm-vs-community composition.
+        </p>
+        <div class="formula">GOF: χ² = Σ (O − E)² / E · E_focal = N × community% · df = 1 (two categories)</div>
+        <div class="formula">BF₁₀ = [B(α+h₁, α+n₁−h₁) · B(α+h₂, α+n₂−h₂)] / [B(α+h₁+h₂, α+(n₁−h₁)+(n₂−h₂)) · B(α,α)]</div>
+        <ul>
+          <li><strong>Screenshot SoT:</strong> Interpretive HRDepartment Quarter Start Demographics (L1 N=500; L5 women 0/20).</li>
+          <li>Do not overclaim courtroom or UGESP certification.</li>
+          <li>Small expected counts: prefer exact / caution language; sampling noise dominates.</li>
+        </ul>
+      </details>
+    </section>
+
+    <footer class="page">
+      <p>
+        <cite>Courey, K. A., &amp; Oswald, F. L. (2024). Communicating adverse impact analyses clearly: A Bayesian approach.
+        <em>Journal of Business and Psychology, 39</em>(1), 137–157. https://doi.org/10.1007/s10869-022-09862-8</cite>
+      </p>
+      <p style="margin-top:0.4rem;">
+        Uniform Guidelines on Employee Selection Procedures, 29 C.F.R. § 1607 (4/5ths rule of thumb).
+        People Analytics Lab of the Bayou · Nicholls State University · Educational use only.
+      </p>
+      <p style="margin-top:0.4rem;">
+        Related: <a href="/platform/tools/hris-demo/">HRIS Desk Tour</a> ·
+        <a href="/resources/">Resources</a>
+      </p>
+    </footer>
+  </div>
+
+  <script>
+(function () {
+  "use strict";
+
+  // Screenshot SoT: Interpretive HRDepartment Quarter Start Demographics
+  const GOF_PRESETS = {
+    "sim-gof-l1-women": {
+      focalLabel: "Women", otherLabel: "Men", focalN: 60, totalN: 500, commPct: 40,
+      whyTitle: "Why these counts (L1 women)?",
+      whyBody: "Screenshot SoT: Level&nbsp;1 = 500 employees, 60 women (12%). Community women = 40% → expected 200 women / 300 men if firm matched community. χ² GOF screens the gap — then ask how hiring works."
+    },
+    "sim-gof-l1-min": {
+      focalLabel: "Racially minoritized", otherLabel: "Other", focalN: 40, totalN: 500, commPct: 30,
+      whyTitle: "Why these counts (L1 minority)?",
+      whyBody: "Level&nbsp;1 = 500, 40 racially minoritized (8%). Community = 30% → expected 150 / 350 if firm matched community."
+    },
+    "sim-gof-l5-women": {
+      focalLabel: "Women", otherLabel: "Men", focalN: 0, totalN: 20, commPct: 25,
+      whyTitle: "Why these counts (L5 women)?",
+      whyBody: "Screenshot SoT: Level&nbsp;5 = 20 employees, 0 women (0%). Community women = 25% → expected 5 / 15. Small N — treat as a teaching contrast to L1 bulk headcount."
+    },
+    "sim-gof-l5-min": {
+      focalLabel: "Racially minoritized", otherLabel: "Other", focalN: 0, totalN: 20, commPct: 20,
+      whyTitle: "Why these counts (L5 minority)?",
+      whyBody: "Level&nbsp;5 = 20, 0 racially minoritized (0%). Community = 20% → expected 4 / 16."
+    }
+  };
+
+  const HIRE_PRESETS = {
+    "sim-hire-l1": {
+      refLabel: "Men", refN: 60, refH: 45, cmpLabel: "Women", cmpN: 40, cmpH: 6,
+      whyTitle: "Why these counts (L1 hiring funnel — illustrative)?",
+      whyBody: "Follow-on story only: applicant mix ≈ community ♀ (40%). Hire pattern sustains firm ~12% ♀ among hires (6 of 51). Men 60/45 · Women 40/6 · IR = 0.20. Not the primary firm-vs-community screen."
+    },
+    "sim-hire-l5": {
+      refLabel: "Men", refN: 75, refH: 19, cmpLabel: "Women", cmpN: 25, cmpH: 1,
+      whyTitle: "Why these counts (L5 hiring funnel — illustrative)?",
+      whyBody: "Follow-on: applicant mix ≈ community 25% ♀; hire pattern extreme underutilization. Men 75/19 · Women 25/1 · IR ≈ 0.16."
+    },
+    "courey-ai": {
+      refLabel: "Men", refN: 40, refH: 23, cmpLabel: "Women", cmpN: 20, cmpH: 2
+    },
+    "courey-parity": {
+      refLabel: "Men", refN: 157, refH: 2, cmpLabel: "Women", cmpN: 158, cmpH: 2
+    },
+    borderline: {
+      refLabel: "Majority", refN: 200, refH: 100, cmpLabel: "Minority", cmpN: 100, cmpH: 40
+    },
+    "small-n": {
+      refLabel: "Group A", refN: 12, refH: 6, cmpLabel: "Group B", cmpN: 8, cmpH: 2
+    }
+  };
+
+  let mode = "gof";
+  let chiWalkState = null;
+
+  const els = {
+    gofFocalLabel: document.getElementById("gof-focal-label"),
+    gofFocalN: document.getElementById("gof-focal-n"),
+    gofTotalN: document.getElementById("gof-total-n"),
+    gofOtherLabel: document.getElementById("gof-other-label"),
+    gofCommPct: document.getElementById("gof-comm-pct"),
+    refLabel: document.getElementById("ref-label"),
+    refN: document.getElementById("ref-applied"),
+    refH: document.getElementById("ref-hired"),
+    cmpLabel: document.getElementById("cmp-label"),
+    cmpN: document.getElementById("cmp-applied"),
+    cmpH: document.getElementById("cmp-hired"),
+    prior: document.getElementById("prior"),
+    results: document.getElementById("results"),
+    commStrip: document.getElementById("comm-strip"),
+    tableOut: document.getElementById("table-out"),
+    gofBlock: document.getElementById("gof-block"),
+    gofMetrics: document.getElementById("gof-metrics"),
+    gofFlag: document.getElementById("gof-flag"),
+    hireBlock: document.getElementById("hire-block"),
+    irMetrics: document.getElementById("ir-metrics"),
+    irFlag: document.getElementById("ir-flag"),
+    freqDetails: document.getElementById("freq-details"),
+    freqMetrics: document.getElementById("freq-metrics"),
+    freqNotes: document.getElementById("freq-notes"),
+    bfHero: document.getElementById("bf-hero"),
+    bfDetail: document.getElementById("bf-detail"),
+    posteriorDetails: document.getElementById("posterior-details"),
+    posteriorOut: document.getElementById("posterior-out"),
+    chiStep: document.getElementById("chi-step"),
+    chiWalkBody: document.getElementById("chi-walk-body"),
+    panelGof: document.getElementById("panel-gof"),
+    panelHire: document.getElementById("panel-hire"),
+    presetsGof: document.getElementById("presets-gof"),
+    presetsHire: document.getElementById("presets-hire"),
+    modeHint: document.getElementById("mode-hint"),
+    simWhy: document.getElementById("sim-why"),
+    commBoxList: document.getElementById("comm-box-list")
+  };
+
+  // ---- Math helpers ----
+  function logGamma(z) {
+    const g = 7;
+    const p = [
+      0.99999999999980993, 676.5203681218851, -1259.1392167224028,
+      771.32342877765313, -176.61502916214059, 12.507343278686905,
+      -0.13857109526572012, 9.984369654078761e-6, 1.5056327351493116e-7
+    ];
+    if (z < 0.5) {
+      return Math.log(Math.PI) - Math.log(Math.sin(Math.PI * z)) - logGamma(1 - z);
+    }
+    z -= 1;
+    let x = p[0];
+    for (let i = 1; i < g + 2; i++) x += p[i] / (z + i);
+    const t = z + g + 0.5;
+    return 0.5 * Math.log(2 * Math.PI) + (z + 0.5) * Math.log(t) - t + Math.log(x);
+  }
+  function logBeta(a, b) { return logGamma(a) + logGamma(b) - logGamma(a + b); }
+  function erfc(x) {
+    const z = Math.abs(x);
+    const t = 1 / (1 + 0.5 * z);
+    const ans = t * Math.exp(-z * z - 1.26551223 +
+      t * (1.00002368 + t * (0.37409196 + t * (0.09678418 +
+      t * (-0.18628806 + t * (0.27886807 + t * (-1.13520398 +
+      t * (1.48851587 + t * (-0.82215223 + t * 0.17087277)))))))));
+    return x >= 0 ? ans : 2 - ans;
+  }
+  function normalCdf(z) { return 0.5 * erfc(-z / Math.SQRT2); }
+  function chiSquarePvalue(x, df) {
+    if (x <= 0) return 1;
+    return gammaQ(df / 2, x / 2);
+  }
+  function gammaQ(a, x) {
+    if (x < 0 || a <= 0) return NaN;
+    if (x === 0) return 1;
+    if (x < a + 1) return 1 - gammaPSeries(a, x);
+    return gammaQContinued(a, x);
+  }
+  function gammaPSeries(a, x) {
+    const EPS = 1e-12;
+    let ap = a, sum = 1 / a, del = sum;
+    for (let n = 0; n < 200; n++) {
+      ap += 1; del *= x / ap; sum += del;
+      if (Math.abs(del) < Math.abs(sum) * EPS) break;
+    }
+    return sum * Math.exp(-x + a * Math.log(x) - logGamma(a));
+  }
+  function gammaQContinued(a, x) {
+    const EPS = 1e-12, FPMIN = 1e-300;
+    let b = x + 1 - a, c = 1 / FPMIN, d = 1 / b, h = d;
+    for (let i = 1; i <= 200; i++) {
+      const an = -i * (i - a);
+      b += 2; d = an * d + b; if (Math.abs(d) < FPMIN) d = FPMIN;
+      c = b + an / c; if (Math.abs(c) < FPMIN) c = FPMIN;
+      d = 1 / d; const del = d * c; h *= del;
+      if (Math.abs(del - 1) < EPS) break;
+    }
+    return Math.exp(-x + a * Math.log(x) - logGamma(a)) * h;
+  }
+  function logFactorial(n) { return logGamma(n + 1); }
+  function fisherExactTwoSided(a, b, c, d) {
+    const row1 = a + b, row2 = c + d, col1 = a + c, n = a + b + c + d;
+    function hyperLogProb(k) {
+      return logFactorial(row1) + logFactorial(row2) + logFactorial(col1) + logFactorial(n - col1)
+        - logFactorial(k) - logFactorial(row1 - k) - logFactorial(col1 - k) - logFactorial(row2 - (col1 - k))
+        - logFactorial(n);
+    }
+    const lo = Math.max(0, col1 - row2), hi = Math.min(col1, row1);
+    const observed = Math.exp(hyperLogProb(a));
+    let p = 0;
+    for (let k = lo; k <= hi; k++) {
+      const pk = Math.exp(hyperLogProb(k));
+      if (pk <= observed + 1e-12) p += pk;
+    }
+    return Math.min(1, p);
+  }
+  function bfCategoryShort(bf) {
+    const favorH1 = bf > 1;
+    const x = favorH1 ? bf : 1 / bf;
+    let strength = "anecdotal";
+    if (x >= 100) strength = "extreme";
+    else if (x >= 30) strength = "very strong";
+    else if (x >= 10) strength = "strong";
+    else if (x >= 3) strength = "moderate";
+    else if (bf === 1) return "no preference";
+    return favorH1 ? strength + " for unequal rates" : strength + " for parity";
+  }
+  function computeBF10(n1, h1, n2, h2, alpha) {
+    const logNum = logBeta(alpha + h1, alpha + (n1 - h1)) + logBeta(alpha + h2, alpha + (n2 - h2));
+    const logDen = logBeta(alpha + h1 + h2, alpha + (n1 - h1) + (n2 - h2)) + logBeta(alpha, alpha);
+    return Math.exp(logNum - logDen);
+  }
+  function sampleGamma(shape) {
+    if (shape < 1) return sampleGamma(shape + 1) * Math.pow(Math.random(), 1 / shape);
+    const d = shape - 1 / 3, c = 1 / Math.sqrt(9 * d);
+    for (;;) {
+      let x, v;
+      do { x = randn(); v = 1 + c * x; } while (v <= 0);
+      v = v * v * v;
+      const u = Math.random();
+      if (u < 1 - 0.0331 * (x * x) * (x * x)) return d * v;
+      if (Math.log(u) < 0.5 * x * x + d * (1 - v + Math.log(v))) return d * v;
+    }
+  }
+  function randn() {
+    const u = 1 - Math.random(), v = 1 - Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+  function sampleBeta(a, b) {
+    const x = sampleGamma(a), y = sampleGamma(b);
+    return x / (x + y);
+  }
+  function rateGapPosterior(n1, h1, n2, h2, alpha, draws) {
+    const a1 = alpha + h1, b1 = alpha + (n1 - h1);
+    const a2 = alpha + h2, b2 = alpha + (n2 - h2);
+    const diffs = new Array(draws);
+    for (let i = 0; i < draws; i++) diffs[i] = sampleBeta(a1, b1) - sampleBeta(a2, b2);
+    diffs.sort((x, y) => x - y);
+    const mean = diffs.reduce((s, v) => s + v, 0) / draws;
+    return {
+      mean, lo: diffs[Math.floor(0.025 * draws)], hi: diffs[Math.floor(0.975 * draws)],
+      pNeg: diffs.filter(v => v < 0).length / draws
+    };
+  }
+  function fmt(x, digits) {
+    if (!Number.isFinite(x)) return "—";
+    if (Math.abs(x) >= 1000 || (Math.abs(x) > 0 && Math.abs(x) < 0.001)) return x.toExponential(2);
+    return x.toFixed(digits);
+  }
+  function fmtP(p) {
+    if (!Number.isFinite(p)) return "—";
+    if (p < 0.001) return "< .001";
+    return p.toFixed(3).replace(/^0/, "");
+  }
+  function metricHTML(k, v) {
+    return `<div class="metric"><div class="k">${k}</div><div class="v">${v}</div></div>`;
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function setCommBoxGof() {
+    if (!els.commBoxList) return;
+    els.commBoxList.innerHTML = `
+      <li><strong>Rates first.</strong> “At Level 1, the firm is 12% women; the community is 40%.”</li>
+      <li><strong>H₀.</strong> “If we looked like the community, we’d expect ~200 women of 500 — not 60.”</li>
+      <li><strong>χ² screen.</strong> “GOF rejects ‘firm matches community’ — a statistical flag, not a guilt finding.”</li>
+      <li><strong>Ask why.</strong> “How does hiring / promotion work here?” → optional hiring-funnel follow-on.</li>
+      <li><strong>Next moves.</strong> Openings from turnover · hiring targets · ER — not training alone.</li>`;
+  }
+  function setCommBoxHire() {
+    if (!els.commBoxList) return;
+    els.commBoxList.innerHTML = `
+      <li><strong>Rates first.</strong> “Women were selected at X%; men at Y%.”</li>
+      <li><strong>Impact ratio.</strong> “IR = … — below / above the 0.80 screen.”</li>
+      <li><strong>χ² / BF.</strong> “Association test flags the pattern; BF + category for evidence for/against parity.”</li>
+      <li><strong>Frame.</strong> “Screen for review — not unlawful discrimination.”</li>
+      <li><strong>Next moves.</strong> Job-relatedness · alternatives · documentation.</li>`;
+  }
+
+  function setMode(next) {
+    mode = next;
+    document.querySelectorAll(".mode-tab").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.mode === mode);
+    });
+    const isGof = mode === "gof";
+    els.panelGof.hidden = !isGof;
+    els.panelHire.hidden = isGof;
+    els.presetsGof.hidden = !isGof;
+    els.presetsHire.hidden = isGof;
+    els.gofBlock.hidden = !isGof;
+    els.hireBlock.hidden = isGof;
+    if (els.freqDetails) els.freqDetails.hidden = isGof;
+    if (els.posteriorDetails) els.posteriorDetails.hidden = isGof;
+    if (els.modeHint) {
+      els.modeHint.innerHTML = isGof
+        ? `Default = <strong>Sim L1 · women vs community</strong> (N=500 bulk headcount). H₀: if the firm matched the community, composition would look like community %.`
+        : `Hiring-funnel follow-on (4/5ths + BF). Do <em>not</em> confuse with the firm-vs-community GOF screen.`;
+    }
+    if (isGof) setCommBoxGof(); else setCommBoxHire();
+    // Reset walkthrough steps labels slightly via select options already GOF-oriented
+    if (isGof) applyGofPreset("sim-gof-l1-women");
+    else applyHirePreset("sim-hire-l1");
+  }
+
+  function updateSimWhy(title, body) {
+    if (!els.simWhy) return;
+    if (!title) { els.simWhy.hidden = true; return; }
+    els.simWhy.hidden = false;
+    els.simWhy.innerHTML = `<strong>${title}</strong> ${body}`;
+  }
+
+  function applyGofPreset(key) {
+    document.querySelectorAll("#presets-gof .preset-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.preset === key);
+    });
+    if (key === "custom-gof") {
+      updateSimWhy(null);
+      return;
+    }
+    const p = GOF_PRESETS[key];
+    if (!p) return;
+    els.gofFocalLabel.value = p.focalLabel;
+    els.gofOtherLabel.value = p.otherLabel;
+    els.gofFocalN.value = p.focalN;
+    els.gofTotalN.value = p.totalN;
+    els.gofCommPct.value = p.commPct;
+    updateSimWhy(p.whyTitle, p.whyBody);
+    analyze({ scroll: false });
+  }
+
+  function applyHirePreset(key) {
+    document.querySelectorAll("#presets-hire .preset-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.preset === key);
+    });
+    if (key === "custom-hire") {
+      updateSimWhy(null);
+      return;
+    }
+    const p = HIRE_PRESETS[key];
+    if (!p) return;
+    els.refLabel.value = p.refLabel;
+    els.refN.value = p.refN;
+    els.refH.value = p.refH;
+    els.cmpLabel.value = p.cmpLabel;
+    els.cmpN.value = p.cmpN;
+    els.cmpH.value = p.cmpH;
+    if (p.whyTitle) updateSimWhy(p.whyTitle, p.whyBody);
+    else updateSimWhy(null);
+    analyze({ scroll: false });
+  }
+
+  function readGof() {
+    const focalN = Math.floor(Number(els.gofFocalN.value));
+    const totalN = Math.floor(Number(els.gofTotalN.value));
+    const commPct = Number(els.gofCommPct.value);
+    return {
+      focalLabel: (els.gofFocalLabel.value || "Focal").trim(),
+      otherLabel: (els.gofOtherLabel.value || "Other").trim(),
+      focalN, totalN, commPct,
+      otherN: totalN - focalN,
+      pComm: commPct / 100
+    };
+  }
+  function validateGof(d) {
+    if (![d.focalN, d.totalN, d.commPct].every(Number.isFinite)) return "Enter valid numbers.";
+    if (d.totalN < 1) return "Total N must be at least 1.";
+    if (d.focalN < 0 || d.focalN > d.totalN) return "Observed count must be between 0 and Total N.";
+    if (d.commPct < 0 || d.commPct > 100) return "Community % must be between 0 and 100.";
+    if (d.pComm <= 0 || d.pComm >= 1) return "Community % must be strictly between 0 and 100 for GOF.";
+    return null;
+  }
+
+  function readHire() {
+    return {
+      refLabel: (els.refLabel.value || "Reference").trim(),
+      cmpLabel: (els.cmpLabel.value || "Comparison").trim(),
+      refN: Math.floor(Number(els.refN.value)),
+      refH: Math.floor(Number(els.refH.value)),
+      cmpN: Math.floor(Number(els.cmpN.value)),
+      cmpH: Math.floor(Number(els.cmpH.value)),
+      alpha: Number(els.prior.value)
+    };
+  }
+  function validateHire(d) {
+    if (![d.refN, d.refH, d.cmpN, d.cmpH].every(Number.isFinite)) return "Enter valid non-negative integers.";
+    if (d.refN < 1 || d.cmpN < 1) return "Each group needs at least 1 applicant.";
+    if (d.refH < 0 || d.cmpH < 0) return "Hired counts cannot be negative.";
+    if (d.refH > d.refN || d.cmpH > d.cmpN) return "Hired cannot exceed applied in either group.";
+    return null;
+  }
+
+  function renderChiWalkStep() {
+    if (!els.chiWalkBody) return;
+    if (!chiWalkState) {
+      els.chiWalkBody.innerHTML = `<p class="hint">Analyze to walk through χ².</p>`;
+      return;
+    }
+    const s = chiWalkState;
+    const step = Math.max(0, Math.min(5, Number(els.chiStep ? els.chiStep.value : 0) || 0));
+    if (els.chiStep) els.chiStep.value = String(step);
+    const nav = `
+      <div class="nav-row">
+        <button type="button" class="btn" id="chi-prev" ${step === 0 ? "disabled" : ""}>← Prev</button>
+        <button type="button" class="btn btn-primary" id="chi-next" ${step === 5 ? "disabled" : ""}>Next →</button>
+      </div>`;
+
+    let html = "";
+    if (s.kind === "gof") {
+      if (step === 0) {
+        html = `<p class="step-num">Step 1 of 6</p><h4>H₀ framing</h4>
+          <p><strong>H₀:</strong> If the firm represented the community at this level, the share of ${escapeHtml(s.focalLabel)} would match community availability (${fmt(100 * s.pComm, 1)}%).</p>
+          <p><strong>H₁:</strong> Firm composition differs from community availability (underutilization / overrepresentation screen).</p>
+          <p>This is a <em>composition</em> screen — not a 4/5ths test on applicants. Rejecting H₀ leads to: <em>how does hiring work here?</em></p>`;
+      } else if (step === 1) {
+        html = `<p class="step-num">Step 2 of 6</p><h4>Observed counts</h4>
+          <table class="table-2x2"><thead><tr><th>Category</th><th>Observed</th><th>Firm %</th></tr></thead>
+          <tbody>
+            <tr><th>${escapeHtml(s.focalLabel)}</th><td class="mono">${s.oFocal}</td><td class="mono">${fmt(100 * s.pFirm, 1)}%</td></tr>
+            <tr><th>${escapeHtml(s.otherLabel)}</th><td class="mono">${s.oOther}</td><td class="mono">${fmt(100 * (1 - s.pFirm), 1)}%</td></tr>
+            <tr><th>Total N</th><td class="mono">${s.n}</td><td class="mono">100%</td></tr>
+          </tbody></table>`;
+      } else if (step === 2) {
+        html = `<p class="step-num">Step 3 of 6</p><h4>Expected from community %</h4>
+          <p>E(${escapeHtml(s.focalLabel)}) = N × community% = <span class="mono">${s.n} × ${fmt(s.pComm, 3)} = ${fmt(s.eFocal, 2)}</span></p>
+          <p>E(${escapeHtml(s.otherLabel)}) = <span class="mono">${fmt(s.eOther, 2)}</span></p>
+          <table class="table-2x2"><thead><tr><th></th><th>Observed</th><th>Expected</th></tr></thead>
+          <tbody>
+            <tr><th>${escapeHtml(s.focalLabel)}</th><td class="mono">${s.oFocal}</td><td class="mono">${fmt(s.eFocal, 2)}</td></tr>
+            <tr><th>${escapeHtml(s.otherLabel)}</th><td class="mono">${s.oOther}</td><td class="mono">${fmt(s.eOther, 2)}</td></tr>
+          </tbody></table>
+          <p class="hint">Gap: firm ${fmt(100 * s.pFirm, 1)}% vs community ${fmt(100 * s.pComm, 1)}% (${fmt(100 * (s.pFirm - s.pComm), 1)} pts).</p>`;
+      } else if (step === 3) {
+        html = `<p class="step-num">Step 4 of 6</p><h4>χ² statistic</h4>
+          <p>Pearson GOF (df = 1): Σ (O − E)² / E</p>
+          <div class="formula">χ² = (${s.oFocal} − ${fmt(s.eFocal, 2)})² / ${fmt(s.eFocal, 2)} + (${s.oOther} − ${fmt(s.eOther, 2)})² / ${fmt(s.eOther, 2)} = ${fmt(s.chi2, 3)}</div>
+          <p>Contributions: <span class="mono">${fmt(s.c1, 2)}</span> + <span class="mono">${fmt(s.c2, 2)}</span></p>`;
+      } else if (step === 4) {
+        html = `<p class="step-num">Step 5 of 6</p><h4>df / p — screen, not guilt</h4>
+          <div class="formula">χ² = ${fmt(s.chi2, 3)} · df = 1 · p ${fmtP(s.chiP)}</div>
+          <p>${s.chiP < 0.05
+            ? "p &lt; .05 → reject H₀ at conventional classroom α: firm composition does <em>not</em> look like the community."
+            : "p ≥ .05 → fail to reject H₀ — not proof the firm matches the community."}</p>
+          <div class="flag warn"><strong>Frame:</strong> statistical flag for further review — not a finding of unlawful discrimination.</div>`;
+      } else {
+        html = `<p class="step-num">Step 6 of 6</p><h4>Ask about hiring · communicate</h4>
+          <ol>
+            <li><strong>Rates.</strong> Firm ${fmt(100 * s.pFirm, 1)}% ${escapeHtml(s.focalLabel)} vs community ${fmt(100 * s.pComm, 1)}%.</li>
+            <li><strong>Expected.</strong> Under H₀ we’d see ~${fmt(s.eFocal, 0)} of ${s.n}, not ${s.oFocal}.</li>
+            <li><strong>χ².</strong> ${fmt(s.chi2, 1)}, p ${fmtP(s.chiP)} — reject / fail to reject “firm matches community.”</li>
+            <li><strong>Why?</strong> Switch to <em>Hiring funnel</em> mode to explore how selection rates could sustain the gap.</li>
+            <li><strong>Levers.</strong> Turnover openings · hiring targets · ER — not training alone.</li>
+          </ol>`;
+      }
+    } else {
+      // hire walkthrough (association)
+      if (step === 0) {
+        html = `<p class="step-num">Step 1 of 6</p><h4>H₀ framing (hiring funnel)</h4>
+          <p><strong>H₀:</strong> selection rate does not depend on group.</p>
+          <p>This is the follow-on question after firm-vs-community GOF flags a composition gap.</p>`;
+      } else if (step === 1) {
+        html = `<p class="step-num">Step 2 of 6</p><h4>Observed cells</h4>
+          <table class="table-2x2"><thead><tr><th></th><th>Selected</th><th>Not</th><th>N</th></tr></thead>
+          <tbody>
+            <tr><th>${escapeHtml(s.refLabel)}</th><td class="mono">${s.a}</td><td class="mono">${s.b}</td><td class="mono">${s.refN}</td></tr>
+            <tr><th>${escapeHtml(s.cmpLabel)}</th><td class="mono">${s.c}</td><td class="mono">${s.e}</td><td class="mono">${s.cmpN}</td></tr>
+          </tbody></table>`;
+      } else if (step === 2) {
+        html = `<p class="step-num">Step 3 of 6</p><h4>Expected under independence</h4>
+          <p>E = (row × column) / N. Example E(${escapeHtml(s.cmpLabel)} hired) = ${fmt(s.exp[2], 2)} vs observed ${s.c}.</p>`;
+      } else if (step === 3) {
+        html = `<p class="step-num">Step 4 of 6</p><h4>χ²</h4>
+          <div class="formula">χ² = ${fmt(s.chi2, 3)}${s.anySmallExp ? " (Yates)" : ""}</div>`;
+      } else if (step === 4) {
+        html = `<p class="step-num">Step 5 of 6</p><h4>df / p</h4>
+          <div class="formula">p ${fmtP(s.chiP)} · Fisher ${fmtP(s.fisherP)}</div>
+          <div class="flag warn">Screen for review — not guilt.</div>`;
+      } else {
+        const irLine = Number.isFinite(s.ir) ? `IR = ${fmt(s.ir, 3)}` : "IR undefined";
+        html = `<p class="step-num">Step 6 of 6</p><h4>Communicate</h4>
+          <p>Rates → ${irLine} → χ²/BF → frame → document.</p>`;
+      }
+    }
+
+    els.chiWalkBody.innerHTML = html + nav;
+    const prev = document.getElementById("chi-prev");
+    const next = document.getElementById("chi-next");
+    if (prev) prev.addEventListener("click", () => { els.chiStep.value = String(step - 1); renderChiWalkStep(); });
+    if (next) next.addEventListener("click", () => { els.chiStep.value = String(step + 1); renderChiWalkStep(); });
+  }
+
+  function analyzeGof(opts) {
+    const scroll = !opts || opts.scroll !== false;
+    const d = readGof();
+    const err = validateGof(d);
+    els.results.hidden = false;
+    if (err) {
+      els.commStrip.innerHTML = "";
+      els.tableOut.innerHTML = `<div class="flag danger"><strong>Check inputs:</strong> ${err}</div>`;
+      els.gofMetrics.innerHTML = "";
+      els.gofFlag.innerHTML = "";
+      chiWalkState = null;
+      renderChiWalkStep();
+      return;
+    }
+    const oFocal = d.focalN, oOther = d.otherN, n = d.totalN;
+    const eFocal = n * d.pComm, eOther = n * (1 - d.pComm);
+    const c1 = ((oFocal - eFocal) ** 2) / eFocal;
+    const c2 = ((oOther - eOther) ** 2) / eOther;
+    const chi2 = c1 + c2;
+    const chiP = chiSquarePvalue(chi2, 1);
+    const pFirm = oFocal / n;
+    const reject = chiP < 0.05;
+
+    chiWalkState = {
+      kind: "gof",
+      focalLabel: d.focalLabel, otherLabel: d.otherLabel,
+      oFocal, oOther, n, eFocal, eOther, pComm: d.pComm, pFirm,
+      c1, c2, chi2, chiP
+    };
+    if (els.chiStep) els.chiStep.value = "0";
+    renderChiWalkStep();
+
+    els.tableOut.innerHTML = `
+      <table class="table-2x2" aria-label="Firm vs community goodness of fit">
+        <thead><tr><th>Category</th><th>Observed</th><th>Expected (community %)</th><th>Firm %</th><th>Community %</th></tr></thead>
+        <tbody>
+          <tr>
+            <th>${escapeHtml(d.focalLabel)}</th>
+            <td class="mono">${oFocal}</td>
+            <td class="mono">${fmt(eFocal, 1)}</td>
+            <td class="mono">${fmt(100 * pFirm, 1)}%</td>
+            <td class="mono">${fmt(100 * d.pComm, 1)}%</td>
+          </tr>
+          <tr>
+            <th>${escapeHtml(d.otherLabel)}</th>
+            <td class="mono">${oOther}</td>
+            <td class="mono">${fmt(eOther, 1)}</td>
+            <td class="mono">${fmt(100 * (1 - pFirm), 1)}%</td>
+            <td class="mono">${fmt(100 * (1 - d.pComm), 1)}%</td>
+          </tr>
+          <tr><th>Total</th><td class="mono">${n}</td><td class="mono">${n}</td><td colspan="2"></td></tr>
+        </tbody>
+      </table>`;
+
+    els.gofMetrics.innerHTML = [
+      metricHTML("Firm % (focal)", fmt(100 * pFirm, 1) + "%"),
+      metricHTML("Community %", fmt(100 * d.pComm, 1) + "%"),
+      metricHTML("Expected focal", fmt(eFocal, 1)),
+      metricHTML("χ² (1 df)", fmt(chi2, 2)),
+      metricHTML("p-value", fmtP(chiP))
+    ].join("");
+
+    if (reject) {
+      els.gofFlag.innerHTML = `<div class="flag warn"><strong>Reject H₀ (classroom α = .05):</strong> firm composition does not look like community availability (χ² = ${fmt(chi2, 1)}, p ${fmtP(chiP)}). Flag for review — ask how hiring / promotion works. Not a guilt finding.</div>`;
+    } else {
+      els.gofFlag.innerHTML = `<div class="flag ok"><strong>Fail to reject H₀:</strong> at this N, data are not surprising under “firm matches community.” Still inspect rates and process — not lawsuit-proof.</div>`;
+    }
+
+    els.commStrip.innerHTML = `
+      <p class="kicker">Say this · firm vs community</p>
+      <p class="line"><strong>Rates.</strong> Firm ${fmt(100 * pFirm, 1)}% ${escapeHtml(d.focalLabel)}; community ${fmt(100 * d.pComm, 1)}%.</p>
+      <p class="line"><strong>H₀ expectation.</strong> If we matched the community: ~${fmt(eFocal, 0)} of ${n} — observed ${oFocal}.</p>
+      <p class="bf-line"><strong>χ² GOF.</strong> ${fmt(chi2, 1)}, p ${fmtP(chiP)} —
+        ${reject ? "reject “firm looks like community.”" : "fail to reject at .05."}
+        Next: ask why (hiring funnel mode).</p>`;
+
+    if (scroll) els.results.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  function analyzeHire(opts) {
+    const scroll = !opts || opts.scroll !== false;
+    const d = readHire();
+    const err = validateHire(d);
+    els.results.hidden = false;
+    if (err) {
+      els.commStrip.innerHTML = "";
+      els.tableOut.innerHTML = `<div class="flag danger"><strong>Check inputs:</strong> ${err}</div>`;
+      chiWalkState = null;
+      renderChiWalkStep();
+      return;
+    }
+    const a = d.refH, b = d.refN - d.refH, c = d.cmpH, e = d.cmpN - d.cmpH;
+    const n = d.refN + d.cmpN;
+    const pRef = d.refH / d.refN, pCmp = d.cmpH / d.cmpN;
+    const ir = pRef > 0 ? pCmp / pRef : NaN;
+    const irFlag = Number.isFinite(ir) && ir < 0.8;
+    const col1 = d.refH + d.cmpH, col2 = n - col1;
+    const exp = [(d.refN * col1) / n, (d.refN * col2) / n, (d.cmpN * col1) / n, (d.cmpN * col2) / n];
+    const obs = [a, b, c, e];
+    const anySmallExp = exp.some(x => x < 5);
+    let chi2 = 0;
+    const contrib = [0, 0, 0, 0];
+    for (let i = 0; i < 4; i++) {
+      const diff = anySmallExp ? Math.max(0, Math.abs(obs[i] - exp[i]) - 0.5) : (obs[i] - exp[i]);
+      contrib[i] = (diff * diff) / exp[i];
+      chi2 += contrib[i];
+    }
+    const chiP = chiSquarePvalue(chi2, 1);
+    const fisherP = fisherExactTwoSided(a, b, c, e);
+    const pPool = (d.refH + d.cmpH) / n;
+    const se = Math.sqrt(pPool * (1 - pPool) * (1 / d.refN + 1 / d.cmpN));
+    const z = se > 0 ? (pRef - pCmp) / se : 0;
+    const zP = 2 * (1 - normalCdf(Math.abs(z)));
+    const bf10 = computeBF10(d.refN, d.refH, d.cmpN, d.cmpH, d.alpha);
+    const bf01 = 1 / bf10;
+
+    chiWalkState = {
+      kind: "hire", refLabel: d.refLabel, cmpLabel: d.cmpLabel,
+      refN: d.refN, cmpN: d.cmpN, a, b, c, e, n, exp, anySmallExp, chi2, chiP, fisherP, ir, pRef, pCmp
+    };
+    if (els.chiStep) els.chiStep.value = "0";
+    renderChiWalkStep();
+
+    els.tableOut.innerHTML = `
+      <table class="table-2x2"><thead><tr><th></th><th>Selected</th><th>Not</th><th>Total</th><th>Rate</th></tr></thead>
+      <tbody>
+        <tr><th>${escapeHtml(d.refLabel)}</th><td class="mono">${a}</td><td class="mono">${b}</td><td class="mono">${d.refN}</td><td class="mono">${fmt(100 * pRef, 1)}%</td></tr>
+        <tr><th>${escapeHtml(d.cmpLabel)}</th><td class="mono">${c}</td><td class="mono">${e}</td><td class="mono">${d.cmpN}</td><td class="mono">${fmt(100 * pCmp, 1)}%</td></tr>
+      </tbody></table>`;
+
+    els.irMetrics.innerHTML = [
+      metricHTML("Impact ratio", Number.isFinite(ir) ? fmt(ir, 3) : "—"),
+      metricHTML(`${escapeHtml(d.refLabel)} rate`, fmt(100 * pRef, 1) + "%"),
+      metricHTML(`${escapeHtml(d.cmpLabel)} rate`, fmt(100 * pCmp, 1) + "%"),
+      metricHTML("4/5ths", "0.80")
+    ].join("");
+    els.irFlag.innerHTML = irFlag
+      ? `<div class="flag warn"><strong>4/5ths flag:</strong> IR = ${fmt(ir, 3)} &lt; 0.80. Screen — not guilt.</div>`
+      : `<div class="flag ok"><strong>No 4/5ths flag:</strong> IR = ${fmt(ir, 3)} ≥ 0.80.</div>`;
+
+    els.freqMetrics.innerHTML = [
+      metricHTML(anySmallExp ? "χ² (Yates)" : "χ²", fmt(chi2, 3)),
+      metricHTML("χ² p", fmtP(chiP)),
+      metricHTML("Fisher p", fmtP(fisherP)),
+      metricHTML("Z", fmt(z, 3)),
+      metricHTML("Z p", fmtP(zP))
+    ].join("");
+    els.freqNotes.innerHTML = (chiP < 0.05 || fisherP < 0.05)
+      ? `<div class="flag warn"><strong>Association signal</strong> — combine with IR; not a legal conclusion.</div>`
+      : `<div class="flag ok"><strong>Fail to reject independence</strong> — see BF for evidence favoring parity.</div>`;
+
+    const favorsParity = bf01 > bf10;
+    const catShort = bfCategoryShort(bf10);
+    const primaryBf = favorsParity ? bf01 : bf10;
+    const primaryLabel = favorsParity ? "BF₀₁" : "BF₁₀";
+    els.bfHero.innerHTML = `
+      <div class="label">Educational Bayes factor · evidence category</div>
+      <div class="category">${catShort}</div>
+      <div class="amount">${primaryLabel} = ${fmt(primaryBf, 2)}
+        <span style="font-weight:500;color:var(--text-muted);font-size:0.9rem;">(BF₀₁ ${fmt(bf01, 2)} · BF₁₀ ${fmt(bf10, 2)})</span>
+      </div>
+      <div class="sub">Educational Beta–binomial — not JASP Gunel–Dickey. Courey &amp; Oswald (2024) categories.</div>`;
+    els.bfDetail.innerHTML = favorsParity
+      ? `<div class="flag ok"><strong>Evidence for parity:</strong> ~${fmt(bf01, 1)}× vs unequal rates.</div>`
+      : `<div class="flag warn"><strong>Evidence for unequal rates:</strong> ~${fmt(bf10, 1)}× vs parity.</div>`;
+
+    const gap = rateGapPosterior(d.refN, d.refH, d.cmpN, d.cmpH, d.alpha, 4000);
+    els.posteriorOut.innerHTML = `
+      <div class="metric-row">
+        ${metricHTML("Posterior mean gap", fmt(100 * gap.mean, 1) + " pts")}
+        ${metricHTML("95% CrI", fmt(100 * gap.lo, 1) + " to " + fmt(100 * gap.hi, 1) + " pts")}
+      </div>`;
+
+    els.commStrip.innerHTML = `
+      <p class="kicker">Say this · hiring funnel (follow-on)</p>
+      <p class="line"><strong>Rates.</strong> ${escapeHtml(d.cmpLabel)} ${fmt(100 * pCmp, 1)}%; ${escapeHtml(d.refLabel)} ${fmt(100 * pRef, 1)}%.</p>
+      <p class="line"><strong>IR.</strong> ${Number.isFinite(ir) ? fmt(ir, 3) : "—"} ${irFlag ? "(below 0.80)" : "(≥ 0.80)"}.</p>
+      <p class="bf-line"><strong>BF.</strong> ${catShort} (${primaryLabel} = ${fmt(primaryBf, 2)}).</p>`;
+
+    if (scroll) els.results.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  function analyze(opts) {
+    if (mode === "gof") analyzeGof(opts);
+    else analyzeHire(opts);
+  }
+
+  document.querySelectorAll(".mode-tab").forEach(btn => {
+    btn.addEventListener("click", () => setMode(btn.dataset.mode));
+  });
+  document.querySelectorAll("#presets-gof .preset-btn").forEach(btn => {
+    btn.addEventListener("click", () => applyGofPreset(btn.dataset.preset));
+  });
+  document.querySelectorAll("#presets-hire .preset-btn").forEach(btn => {
+    btn.addEventListener("click", () => applyHirePreset(btn.dataset.preset));
+  });
+  ["gof-focal-label","gof-focal-n","gof-total-n","gof-other-label","gof-comm-pct"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("change", () => {
+      document.querySelectorAll("#presets-gof .preset-btn").forEach(b => b.classList.toggle("active", b.dataset.preset === "custom-gof"));
+      updateSimWhy(null);
+      if (!els.results.hidden) analyze({ scroll: false });
+    });
+  });
+  ["ref-label","ref-applied","ref-hired","cmp-label","cmp-applied","cmp-hired","prior"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("change", () => {
+      document.querySelectorAll("#presets-hire .preset-btn").forEach(b => b.classList.toggle("active", b.dataset.preset === "custom-hire"));
+      updateSimWhy(null);
+      if (!els.results.hidden && mode === "hire") analyze({ scroll: false });
+    });
+  });
+  if (els.chiStep) els.chiStep.addEventListener("change", renderChiWalkStep);
+  document.getElementById("analyze-btn").addEventListener("click", () => analyze());
+
+  setCommBoxGof();
+  applyGofPreset("sim-gof-l1-women");
+})();
+  </script>
+</body>
+</html>

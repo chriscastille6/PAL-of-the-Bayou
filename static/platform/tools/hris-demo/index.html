@@ -1,0 +1,1482 @@
+<!--
+File location: static/platform/tools/hris-demo/index.html
+What this file does: Static classroom mock of an HRIS desk (Employees, Attendance,
+  Leave, Recruitment, Performance, Forms) with synthetic records and teaching callouts.
+Why this file exists: MNGT 502 / HR Analytics teaching beat — show life-cycle data
+  capture without a live ERPNext/Frappe stack or Shiny app_hris.
+  Forms tab teaches "forms maintain the record" (Bauer Fig. 3.13): UI writes the row.
+Tech stack: Static HTML + CSS + vanilla JS (client-side only; no backend)
+RELEVANT FILES:
+  - Teaching/.../frontend_slides/decks/05_hris_eeo.html
+  - static/platform/tools/roi-calculator/index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HRIS Desk Tour (Teaching Mock) | People Analytics Lab</title>
+  <meta name="description" content="Classroom mock of an HRIS desk with synthetic employee data. Teaching only — not a live production system.">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #e8edf2;
+      --desk: #f4f7fa;
+      --sidebar: #1e293b;
+      --sidebar-hover: #334155;
+      --sidebar-active: #0f766e;
+      --surface: #ffffff;
+      --border: #d0d7de;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent: #0f766e;
+      --accent-soft: #ccfbf1;
+      --warn: #b45309;
+      --warn-bg: #fff7ed;
+      --danger: #b91c1c;
+      --danger-bg: #fef2f2;
+      --ok: #15803d;
+      --ok-bg: #f0fdf4;
+      --shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.04);
+      --drawer-w: min(440px, 94vw);
+      --radius: 8px;
+      --font: "IBM Plex Sans", system-ui, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    button, input, select { font: inherit; }
+    a { color: var(--accent); }
+
+    /* Teaching banner */
+    .mock-banner {
+      background: linear-gradient(90deg, #7f1d1d, #991b1b 40%, #b45309);
+      color: #fff;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.55rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.25rem;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 50;
+    }
+    .mock-banner strong { font-weight: 700; letter-spacing: 0.02em; }
+    .mock-banner .tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 999px;
+      padding: 0.15rem 0.55rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .shell { display: flex; flex: 1; min-height: 0; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--sidebar);
+      color: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      padding: 0.75rem 0;
+    }
+    .brand {
+      padding: 0.75rem 1rem 1.1rem;
+      border-bottom: 1px solid rgba(148,163,184,0.2);
+      margin-bottom: 0.5rem;
+    }
+    .brand .name { font-weight: 700; font-size: 0.95rem; color: #f8fafc; }
+    .brand .sub { font-size: 0.7rem; color: #94a3b8; margin-top: 0.2rem; }
+    .nav-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      padding: 0.75rem 1rem 0.35rem;
+      font-weight: 600;
+    }
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: #cbd5e1;
+      text-align: left;
+      padding: 0.55rem 1rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-left: 3px solid transparent;
+    }
+    .nav-btn:hover { background: var(--sidebar-hover); color: #fff; }
+    .nav-btn.active {
+      background: rgba(15, 118, 110, 0.35);
+      color: #fff;
+      border-left-color: #2dd4bf;
+    }
+    .nav-btn .ico {
+      width: 1.35rem;
+      text-align: center;
+      opacity: 0.85;
+      font-size: 0.95rem;
+    }
+    .sidebar-foot {
+      margin-top: auto;
+      padding: 1rem;
+      font-size: 0.7rem;
+      color: #94a3b8;
+      line-height: 1.4;
+      border-top: 1px solid rgba(148,163,184,0.15);
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--desk);
+    }
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.65rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .topbar h1 {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+    .topbar .meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--mono);
+    }
+    .badge-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .pill {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background: var(--warn-bg);
+      color: var(--warn);
+      border: 1px solid #fed7aa;
+    }
+    .pill.teal {
+      background: var(--accent-soft);
+      color: #115e59;
+      border-color: #99f6e4;
+    }
+
+    .content {
+      flex: 1;
+      overflow: auto;
+      padding: 1.15rem 1.25rem 2rem;
+    }
+
+    .callout {
+      background: var(--warn-bg);
+      border: 1px solid #fdba74;
+      border-left: 4px solid var(--warn);
+      border-radius: var(--radius);
+      padding: 0.85rem 1rem;
+      margin-bottom: 1.1rem;
+      font-size: 0.875rem;
+    }
+    .callout strong { color: #9a3412; }
+    .callout.teal {
+      background: #f0fdfa;
+      border-color: #99f6e4;
+      border-left-color: var(--accent);
+    }
+    .callout.teal strong { color: #115e59; }
+
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.9rem 1rem;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s;
+      text-align: left;
+      width: 100%;
+    }
+    .stat-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .stat-card .label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+    .stat-card .value { font-size: 1.55rem; font-weight: 700; margin: 0.25rem 0 0.1rem; color: var(--text); }
+    .stat-card .hint { font-size: 0.7rem; color: var(--text-muted); }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 1.1rem;
+      overflow: hidden;
+    }
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: #fafbfc;
+    }
+    .panel-head h2 { font-size: 0.95rem; font-weight: 600; }
+    .toolbar { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+    .toolbar input, .toolbar select {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+      font-size: 0.8125rem;
+      background: #fff;
+      min-width: 140px;
+    }
+    .btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.8125rem;
+      font-weight: 550;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .btn:hover { background: #f1f5f9; }
+    .btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .btn.primary:hover { background: #0d9488; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    table.data {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+    }
+    table.data th {
+      text-align: left;
+      padding: 0.55rem 0.85rem;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    table.data td {
+      padding: 0.6rem 0.85rem;
+      border-bottom: 1px solid #eef2f6;
+      vertical-align: middle;
+    }
+    table.data tbody tr { cursor: pointer; transition: background 0.1s; }
+    table.data tbody tr:hover { background: #f0fdfa; }
+    table.data tbody tr:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+    .mono { font-family: var(--mono); font-size: 0.78rem; }
+    .status {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 650;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .status.active { background: var(--ok-bg); color: var(--ok); }
+    .status.leave { background: #eff6ff; color: #1d4ed8; }
+    .status.probation { background: var(--warn-bg); color: var(--warn); }
+    .status.open { background: var(--accent-soft); color: #115e59; }
+    .status.closed { background: #f1f5f9; color: #475569; }
+    .status.pending { background: var(--warn-bg); color: var(--warn); }
+    .status.approved { background: var(--ok-bg); color: var(--ok); }
+    .status.rejected { background: var(--danger-bg); color: var(--danger); }
+
+    .lifecycle {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.4rem;
+      margin: 0.75rem 0 0;
+    }
+    .lifecycle .stage {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.55rem 0.4rem;
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #334155;
+    }
+    .lifecycle .stage span {
+      display: block;
+      font-size: 0.62rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+    .lifecycle .stage.on { border-color: #2dd4bf; background: #f0fdfa; color: #115e59; }
+
+    .empty-hint {
+      padding: 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    /* Drawer */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      z-index: 80;
+    }
+    .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: var(--drawer-w);
+      height: 100%;
+      background: var(--surface);
+      box-shadow: -8px 0 32px rgba(15, 23, 42, 0.18);
+      transform: translateX(100%);
+      transition: transform 0.22s ease;
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-head {
+      padding: 1rem 1.15rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .drawer-head h3 { font-size: 1.05rem; font-weight: 650; }
+    .drawer-body { flex: 1; overflow: auto; padding: 1rem 1.15rem 1.5rem; }
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .field label {
+      display: block;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    .field .val {
+      font-size: 0.875rem;
+      padding: 0.4rem 0.55rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      min-height: 2rem;
+    }
+    .field.full { grid-column: 1 / -1; }
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin: 1.1rem 0 0.55rem;
+    }
+
+    .module[hidden] { display: none !important; }
+
+    .list-cards {
+      display: grid;
+      gap: 0.65rem;
+      padding: 0.85rem;
+    }
+    .list-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem 0.9rem;
+      background: #fff;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.35rem 1rem;
+      cursor: pointer;
+    }
+    .list-card:hover { border-color: var(--accent); background: #f0fdfa; }
+    .list-card .title { font-weight: 600; font-size: 0.875rem; }
+    .list-card .sub { font-size: 0.75rem; color: var(--text-muted); grid-column: 1; }
+
+    .funnel {
+      display: flex;
+      gap: 0.5rem;
+      padding: 1rem;
+      flex-wrap: wrap;
+    }
+    .funnel .step {
+      flex: 1;
+      min-width: 100px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      text-align: center;
+    }
+    .funnel .step .n { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+    .funnel .step .l { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+
+    .form-type-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.65rem;
+      padding: 0.85rem;
+    }
+    .form-type-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem 0.85rem;
+      background: #fff;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      width: 100%;
+    }
+    .form-type-card:hover { border-color: var(--accent); background: #f0fdfa; }
+    .form-type-card.active {
+      border-color: var(--accent);
+      background: #f0fdfa;
+      box-shadow: inset 0 0 0 1px var(--accent);
+    }
+    .form-type-card .ft-title { font-weight: 650; font-size: 0.85rem; }
+    .form-type-card .ft-sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.35; }
+    .form-workspace {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 900px) {
+      .form-workspace { grid-template-columns: 1fr; }
+    }
+    .form-pane, .record-pane {
+      padding: 1rem;
+    }
+    .form-pane { border-right: 1px solid var(--border); background: #fafbfc; }
+    @media (max-width: 900px) {
+      .form-pane { border-right: 0; border-bottom: 1px solid var(--border); }
+    }
+    .form-pane h3, .record-pane h3 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .form-fields label {
+      display: block;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin: 0.55rem 0 0.2rem;
+    }
+    .form-fields input, .form-fields select, .form-fields textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.45rem 0.6rem;
+      font-size: 0.8125rem;
+      background: #fff;
+    }
+    .form-fields textarea { min-height: 4rem; resize: vertical; }
+    .form-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+      align-items: center;
+    }
+    .flash-ok {
+      font-size: 0.75rem;
+      color: var(--ok);
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .flash-ok.show { opacity: 1; }
+    .record-pane .val.highlight {
+      background: #ccfbf1;
+      border-color: #5eead4;
+      transition: background 0.4s;
+    }
+    .mock-legal {
+      font-size: 0.72rem;
+      color: var(--warn);
+      background: var(--warn-bg);
+      border: 1px solid #fed7aa;
+      border-radius: 6px;
+      padding: 0.55rem 0.7rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.4;
+    }
+
+    .mobile-nav-toggle {
+      display: none;
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 860px) {
+      .sidebar {
+        position: fixed;
+        left: 0; top: 0; bottom: 0;
+        z-index: 70;
+        transform: translateX(-100%);
+        transition: transform 0.2s;
+      }
+      .sidebar.open { transform: translateX(0); }
+      .mobile-nav-toggle { display: inline-flex; }
+      .lifecycle { grid-template-columns: repeat(3, 1fr); }
+      .field-grid { grid-template-columns: 1fr; }
+    }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); border: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="mock-banner" role="status">
+    <div>
+      <span class="tag">MOCK</span>
+      <strong> Teaching mock</strong> — synthetic classroom data only. Not a live HRIS · FERPA-safe · no student PII
+    </div>
+    <div>Inspired by open-source HRIS desks (layout patterns only — not affiliated with any vendor)</div>
+  </div>
+
+  <div class="shell">
+    <aside class="sidebar" id="sidebar" aria-label="HRIS modules">
+      <div class="brand">
+        <div class="name">Bayou Desk</div>
+        <div class="sub">Classroom HRIS tour · synthetic</div>
+      </div>
+      <div class="nav-label">Modules</div>
+      <button type="button" class="nav-btn active" data-module="desk" aria-current="page">
+        <span class="ico" aria-hidden="true">⌂</span> Desk
+      </button>
+      <button type="button" class="nav-btn" data-module="employees">
+        <span class="ico" aria-hidden="true">👥</span> Employees
+      </button>
+      <button type="button" class="nav-btn" data-module="attendance">
+        <span class="ico" aria-hidden="true">◷</span> Attendance
+      </button>
+      <button type="button" class="nav-btn" data-module="leave">
+        <span class="ico" aria-hidden="true">☰</span> Leave
+      </button>
+      <button type="button" class="nav-btn" data-module="recruitment">
+        <span class="ico" aria-hidden="true">✉</span> Recruitment
+      </button>
+      <button type="button" class="nav-btn" data-module="performance">
+        <span class="ico" aria-hidden="true">★</span> Performance
+      </button>
+      <button type="button" class="nav-btn" data-module="forms">
+        <span class="ico" aria-hidden="true">▭</span> Forms
+      </button>
+      <div class="sidebar-foot">
+        Client-side only. Nothing is saved or uploaded. Close the tab when done.
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:0.65rem;">
+          <button type="button" class="mobile-nav-toggle" id="navToggle" aria-label="Open modules">Modules</button>
+          <div>
+            <h1 id="moduleTitle">Desk</h1>
+            <div class="meta">Company: Bayou Manufacturing LLC (FICTIONAL)</div>
+          </div>
+        </div>
+        <div class="badge-row">
+          <span class="pill">Synthetic data</span>
+          <span class="pill teal">Teaching only</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- DESK -->
+        <section class="module" id="mod-desk" aria-labelledby="moduleTitle">
+          <div class="callout teal">
+            <strong>Why an HRIS matters:</strong> It captures the employee life cycle in one system so HR can report, audit, and analyze without stitching together five spreadsheets. This tour shows <em>where</em> data lives — not a production login.
+          </div>
+          <div class="grid-cards">
+            <button type="button" class="stat-card" data-goto="employees">
+              <div class="label">Active employees</div>
+              <div class="value" id="statEmp">12</div>
+              <div class="hint">Open Employees →</div>
+            </button>
+            <button type="button" class="stat-card" data-goto="attendance">
+              <div class="label">Present today</div>
+              <div class="value">10</div>
+              <div class="hint">Attendance log →</div>
+            </button>
+            <button type="button" class="stat-card" data-goto="leave">
+              <div class="label">Leave pending</div>
+              <div class="value">3</div>
+              <div class="hint">Leave requests →</div>
+            </button>
+            <button type="button" class="stat-card" data-goto="recruitment">
+              <div class="label">Open applicants</div>
+              <div class="value">5</div>
+              <div class="hint">Recruitment →</div>
+            </button>
+            <button type="button" class="stat-card" data-goto="performance">
+              <div class="label">Reviews open</div>
+              <div class="value">4</div>
+              <div class="hint">Performance →</div>
+            </button>
+            <button type="button" class="stat-card" data-goto="forms">
+              <div class="label">Forms → records</div>
+              <div class="value">3</div>
+              <div class="hint">Forms maintain the row →</div>
+            </button>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h2>Employee life cycle — what an HRIS can capture</h2></div>
+            <div style="padding: 0.85rem 1rem 1.1rem;">
+              <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:0.35rem;">
+                Click a stage to jump to the module that typically stores that decision trail.
+              </p>
+              <div class="lifecycle" role="list">
+                <button type="button" class="stage on" data-goto="recruitment" role="listitem">Attract<span>Job openings</span></button>
+                <button type="button" class="stage on" data-goto="recruitment" role="listitem">Select<span>Applicants</span></button>
+                <button type="button" class="stage on" data-goto="forms" role="listitem">Onboard<span>Forms → record</span></button>
+                <button type="button" class="stage on" data-goto="performance" role="listitem">Develop<span>Appraisals</span></button>
+                <button type="button" class="stage on" data-goto="attendance" role="listitem">Retain<span>Time &amp; leave</span></button>
+                <button type="button" class="stage" data-goto="employees" role="listitem">Exit<span>Status change</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="callout">
+            <strong>Classroom note:</strong> Real systems also hold payroll, benefits, and compliance exports. We omit those here so the tour stays about <em>people data structure</em> for analytics — the 80/20 of cleaning and joining starts with knowing which module owns which fields.
+          </div>
+        </section>
+
+        <!-- EMPLOYEES -->
+        <section class="module" id="mod-employees" hidden>
+          <div class="callout teal">
+            <strong>Employees module:</strong> Master person record — job, department, hire date, status. Analytics joins usually start here (employee_id as the key).
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Employee list <span class="pill" style="margin-left:0.4rem;vertical-align:middle;">MOCK</span></h2>
+              <div class="toolbar">
+                <label class="sr-only" for="empSearch">Search employees</label>
+                <input type="search" id="empSearch" placeholder="Search name, job, dept…">
+                <label class="sr-only" for="empDept">Filter department</label>
+                <select id="empDept">
+                  <option value="">All departments</option>
+                </select>
+              </div>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="data" id="empTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Job title</th>
+                    <th>Department</th>
+                    <th>Hire date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ATTENDANCE -->
+        <section class="module" id="mod-attendance" hidden>
+          <div class="callout teal">
+            <strong>Attendance:</strong> Daily presence / absence events. Useful for absenteeism cost models — but only after you trust the clock source.
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Attendance log · sample week <span class="pill" style="margin-left:0.4rem;vertical-align:middle;">MOCK</span></h2>
+              <span class="meta" style="font-size:0.75rem;color:var(--text-muted);">Synthetic dates (classroom)</span>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="data" id="attTable">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Employee</th>
+                    <th>In</th>
+                    <th>Out</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- LEAVE -->
+        <section class="module" id="mod-leave" hidden>
+          <div class="callout teal">
+            <strong>Leave:</strong> Requests, balances, and approvals. Links employee → absence reason → manager decision (audit trail for analytics &amp; fairness checks).
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h2>Leave applications <span class="pill" style="margin-left:0.4rem;vertical-align:middle;">MOCK</span></h2></div>
+            <div class="list-cards" id="leaveList"></div>
+          </div>
+        </section>
+
+        <!-- RECRUITMENT -->
+        <section class="module" id="mod-recruitment" hidden>
+          <div class="callout teal">
+            <strong>Recruitment / Applicants:</strong> Pipeline before the employee record exists. Selection analytics (funnel, time-to-hire, adverse impact) live here — keep applicant IDs distinct from employee IDs until hire.
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h2>Hiring funnel · Ops Analyst opening</h2></div>
+            <div class="funnel" id="funnel"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h2>Applicants <span class="pill" style="margin-left:0.4rem;vertical-align:middle;">MOCK</span></h2></div>
+            <div style="overflow-x:auto;">
+              <table class="data" id="appTable">
+                <thead>
+                  <tr>
+                    <th>Applicant ID</th>
+                    <th>Name</th>
+                    <th>Stage</th>
+                    <th>Source</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- PERFORMANCE -->
+        <section class="module" id="mod-performance" hidden>
+          <div class="callout teal">
+            <strong>Performance:</strong> Goals and appraisal cycles. For analytics, treat ratings as decisions with a date, rater, and rubric — not as “truth” about the person.
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h2>Appraisal cycle · FY2026 Mid-year <span class="pill" style="margin-left:0.4rem;vertical-align:middle;">MOCK</span></h2></div>
+            <div class="list-cards" id="perfList"></div>
+          </div>
+        </section>
+
+        <!-- FORMS — forms maintain the record (Bauer Fig. 3.13 teaching beat) -->
+        <section class="module" id="mod-forms" hidden>
+          <div class="callout teal">
+            <strong>Forms maintain the record:</strong> The user-facing form writes the <em>same row</em> the table stores (Bauer Fig. 3.13). Analytics later exports that row — not a separate “form PDF pile.” All examples below are <span class="pill" style="vertical-align:middle;">MOCK</span> classroom props — not real compliance, I-9, or legal filings.
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Form catalog <span class="pill" style="margin-left:0.4rem;vertical-align:middle;">MOCK</span></h2>
+              <span class="meta" style="font-size:0.75rem;color:var(--text-muted);">Pick a form → edit → write to record</span>
+            </div>
+            <div class="form-type-grid" id="formTypeGrid" role="listbox" aria-label="Mock form types"></div>
+            <div class="form-workspace">
+              <div class="form-pane">
+                <h3 id="formPaneTitle">Form (user-facing)</h3>
+                <div id="formLegalNote" class="mock-legal" hidden></div>
+                <form id="liveForm" class="form-fields" autocomplete="off"></form>
+                <div class="form-actions">
+                  <button type="button" class="btn primary" id="btnWriteRecord">Write to record</button>
+                  <button type="button" class="btn" id="btnResetForm">Reset fields</button>
+                  <span class="flash-ok" id="writeFlash" aria-live="polite">Record updated — same fields, same row.</span>
+                </div>
+              </div>
+              <div class="record-pane">
+                <h3>Stored record (table row)</h3>
+                <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.75rem;">
+                  What HR analytics would join on later. Editing the form and clicking <strong>Write to record</strong> updates this row in memory (nothing is uploaded).
+                </p>
+                <div class="field-grid" id="recordPreview"></div>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h2>Form instances on file <span class="pill" style="margin-left:0.4rem;vertical-align:middle;">MOCK</span></h2></div>
+            <div style="overflow-x:auto;">
+              <table class="data" id="formsTable">
+                <thead>
+                  <tr>
+                    <th>Form ID</th>
+                    <th>Type</th>
+                    <th>Linked person</th>
+                    <th>Updated</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+  <aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="drawerTitle">
+    <div class="drawer-head">
+      <div>
+        <div class="pill" style="margin-bottom:0.35rem;">Synthetic record</div>
+        <h3 id="drawerTitle">Record</h3>
+      </div>
+      <button type="button" class="btn" id="drawerClose">Close</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+  </aside>
+
+  <script>
+(function () {
+  "use strict";
+
+  /* ---- Synthetic classroom data (fictional names & org) ---- */
+  const EMPLOYEES = [
+    { id: "EMP-1001", name: "Avery Chen", job: "HR Generalist", dept: "People Ops", hire: "2022-03-14", status: "active", email: "avery.chen@bayou-mfg.example", manager: "Jordan Blake", location: "Thibodaux, LA", payBand: "P3", lifecycle: "Retain" },
+    { id: "EMP-1002", name: "Jordan Blake", job: "People Ops Manager", dept: "People Ops", hire: "2019-08-01", status: "active", email: "jordan.blake@bayou-mfg.example", manager: "Sam Rivera", location: "Thibodaux, LA", payBand: "M2", lifecycle: "Retain" },
+    { id: "EMP-1003", name: "Morgan Ellis", job: "Production Supervisor", dept: "Operations", hire: "2020-01-20", status: "active", email: "morgan.ellis@bayou-mfg.example", manager: "Casey Nguyen", location: "Houma, LA", payBand: "M1", lifecycle: "Retain" },
+    { id: "EMP-1004", name: "Riley Patel", job: "Machine Operator", dept: "Operations", hire: "2023-06-05", status: "active", email: "riley.patel@bayou-mfg.example", manager: "Morgan Ellis", location: "Houma, LA", payBand: "O2", lifecycle: "Retain" },
+    { id: "EMP-1005", name: "Taylor Brooks", job: "Quality Analyst", dept: "Quality", hire: "2021-11-08", status: "leave", email: "taylor.brooks@bayou-mfg.example", manager: "Quinn Morales", location: "Thibodaux, LA", payBand: "P2", lifecycle: "Retain" },
+    { id: "EMP-1006", name: "Casey Nguyen", job: "Plant Manager", dept: "Operations", hire: "2017-04-12", status: "active", email: "casey.nguyen@bayou-mfg.example", manager: "Sam Rivera", location: "Houma, LA", payBand: "M3", lifecycle: "Retain" },
+    { id: "EMP-1007", name: "Quinn Morales", job: "Quality Lead", dept: "Quality", hire: "2018-09-17", status: "active", email: "quinn.morales@bayou-mfg.example", manager: "Casey Nguyen", location: "Thibodaux, LA", payBand: "M1", lifecycle: "Retain" },
+    { id: "EMP-1008", name: "Harper Diaz", job: "Payroll Specialist", dept: "Finance", hire: "2024-02-01", status: "probation", email: "harper.diaz@bayou-mfg.example", manager: "Sam Rivera", location: "Thibodaux, LA", payBand: "P2", lifecycle: "Onboard" },
+    { id: "EMP-1009", name: "Reese Okonkwo", job: "Safety Coordinator", dept: "EHS", hire: "2021-05-24", status: "active", email: "reese.okonkwo@bayou-mfg.example", manager: "Casey Nguyen", location: "Houma, LA", payBand: "P3", lifecycle: "Retain" },
+    { id: "EMP-1010", name: "Sam Rivera", job: "VP Operations", dept: "Executive", hire: "2015-02-02", status: "active", email: "sam.rivera@bayou-mfg.example", manager: "— (top of chart)", location: "Thibodaux, LA", payBand: "E1", lifecycle: "Retain" },
+    { id: "EMP-1011", name: "Jamie Soto", job: "Recruiter", dept: "People Ops", hire: "2023-10-16", status: "active", email: "jamie.soto@bayou-mfg.example", manager: "Jordan Blake", location: "Remote (LA)", payBand: "P2", lifecycle: "Develop" },
+    { id: "EMP-1012", name: "Drew Fontaine", job: "Maintenance Tech", dept: "Operations", hire: "2022-07-11", status: "active", email: "drew.fontaine@bayou-mfg.example", manager: "Morgan Ellis", location: "Houma, LA", payBand: "O3", lifecycle: "Retain" }
+  ];
+
+  const ATTENDANCE = [
+    { date: "2026-03-10", empId: "EMP-1001", name: "Avery Chen", inn: "08:02", out: "16:58", status: "Present" },
+    { date: "2026-03-10", empId: "EMP-1003", name: "Morgan Ellis", inn: "06:55", out: "15:30", status: "Present" },
+    { date: "2026-03-10", empId: "EMP-1004", name: "Riley Patel", inn: "07:01", out: "15:32", status: "Present" },
+    { date: "2026-03-10", empId: "EMP-1005", name: "Taylor Brooks", inn: "—", out: "—", status: "On leave" },
+    { date: "2026-03-10", empId: "EMP-1008", name: "Harper Diaz", inn: "08:18", out: "17:05", status: "Present" },
+    { date: "2026-03-11", empId: "EMP-1001", name: "Avery Chen", inn: "08:00", out: "17:02", status: "Present" },
+    { date: "2026-03-11", empId: "EMP-1004", name: "Riley Patel", inn: "—", out: "—", status: "Absent" },
+    { date: "2026-03-11", empId: "EMP-1009", name: "Reese Okonkwo", inn: "07:45", out: "16:40", status: "Present" },
+    { date: "2026-03-12", empId: "EMP-1012", name: "Drew Fontaine", inn: "06:50", out: "15:20", status: "Present" },
+    { date: "2026-03-12", empId: "EMP-1011", name: "Jamie Soto", inn: "09:05", out: "17:30", status: "Present" }
+  ];
+
+  const LEAVE = [
+    { id: "LV-2201", empId: "EMP-1005", name: "Taylor Brooks", type: "Medical leave", from: "2026-03-03", to: "2026-03-14", days: 10, status: "approved", reason: "Scheduled procedure (synthetic)" },
+    { id: "LV-2202", empId: "EMP-1004", name: "Riley Patel", type: "Personal", from: "2026-03-18", to: "2026-03-18", days: 1, status: "pending", reason: "Family appointment" },
+    { id: "LV-2203", empId: "EMP-1011", name: "Jamie Soto", type: "Vacation", from: "2026-04-07", to: "2026-04-11", days: 5, status: "pending", reason: "Spring break travel" },
+    { id: "LV-2204", empId: "EMP-1001", name: "Avery Chen", type: "Vacation", from: "2026-05-12", to: "2026-05-16", days: 5, status: "pending", reason: "Conference + PTO" },
+    { id: "LV-2190", empId: "EMP-1012", name: "Drew Fontaine", type: "Sick", from: "2026-02-20", to: "2026-02-20", days: 1, status: "approved", reason: "Illness" }
+  ];
+
+  const APPLICANTS = [
+    { id: "APP-501", name: "Alex Kim", stage: "Offer", source: "Referral", status: "open", role: "Ops Analyst", score: "4.2 / 5" },
+    { id: "APP-502", name: "Blake Torres", stage: "Interview", source: "Job board", status: "open", role: "Ops Analyst", score: "3.8 / 5" },
+    { id: "APP-503", name: "Cameron Lee", stage: "Screen", source: "Campus fair", status: "open", role: "Ops Analyst", score: "—" },
+    { id: "APP-504", name: "Dana Wright", stage: "Interview", source: "Agency", status: "open", role: "Ops Analyst", score: "3.5 / 5" },
+    { id: "APP-505", name: "Eden Park", stage: "Applied", source: "Careers page", status: "open", role: "Ops Analyst", score: "—" },
+    { id: "APP-480", name: "Finley Cruz", stage: "Hired → EMP-1008", source: "Referral", status: "closed", role: "Payroll Specialist", score: "4.5 / 5" }
+  ];
+
+  const PERFORMANCE = [
+    { id: "APR-301", empId: "EMP-1001", name: "Avery Chen", cycle: "FY2026 Mid-year", rating: "Meets expectations", status: "pending", goals: "Reduce time-to-fill for plant roles by 15%" },
+    { id: "APR-302", empId: "EMP-1003", name: "Morgan Ellis", cycle: "FY2026 Mid-year", rating: "Exceeds expectations", status: "approved", goals: "Cut scrap rate 8%; coach two operators" },
+    { id: "APR-303", empId: "EMP-1004", name: "Riley Patel", cycle: "FY2026 Mid-year", rating: "Needs development", status: "pending", goals: "Complete safety certification; attendance improvement" },
+    { id: "APR-304", empId: "EMP-1011", name: "Jamie Soto", cycle: "FY2026 Mid-year", rating: "Meets expectations", status: "pending", goals: "Fill Ops Analyst slate; improve candidate NPS" },
+    { id: "APR-305", empId: "EMP-1007", name: "Quinn Morales", cycle: "FY2026 Mid-year", rating: "Exceeds expectations", status: "approved", goals: "ISO audit readiness; mentor Quality Analyst" }
+  ];
+
+  /* Forms catalog — teaching mocks only (not real compliance instruments) */
+  const FORM_TYPES = {
+    empinfo: {
+      id: "empinfo",
+      title: "Employee Info",
+      sub: "Master person fields → employee row (Fig. 3.13 pattern)",
+      legal: "",
+      fields: [
+        { key: "empId", label: "Employee ID", type: "text" },
+        { key: "fullName", label: "Full name", type: "text" },
+        { key: "jobTitle", label: "Job title", type: "text" },
+        { key: "department", label: "Department", type: "text" },
+        { key: "hireDate", label: "Hire date", type: "text" },
+        { key: "workEmail", label: "Work email (synthetic)", type: "text" }
+      ]
+    },
+    application: {
+      id: "application",
+      title: "Job application",
+      sub: "Applicant form → applicant pipeline row",
+      legal: "MOCK application — fictional candidates only. Not a real hiring system.",
+      fields: [
+        { key: "appId", label: "Applicant ID", type: "text" },
+        { key: "fullName", label: "Applicant name", type: "text" },
+        { key: "role", label: "Role applied", type: "text" },
+        { key: "source", label: "Source", type: "text" },
+        { key: "stage", label: "Pipeline stage", type: "select", options: ["Applied", "Screen", "Interview", "Offer"] },
+        { key: "notes", label: "Screener notes (synthetic)", type: "textarea" }
+      ]
+    },
+    i9: {
+      id: "i9",
+      title: "I-9 Section 1 (MOCK)",
+      sub: "Onboarding attestation shape — teaching layout only",
+      legal: "MOCK ONLY — Not a real Form I-9, not USCIS, not employment eligibility verification. Classroom prop to show how onboarding forms write employee fields. Do not use for compliance.",
+      fields: [
+        { key: "empId", label: "Employee ID", type: "text" },
+        { key: "fullName", label: "Employee full name", type: "text" },
+        { key: "attestation", label: "Citizenship / work auth (mock choice)", type: "select", options: ["U.S. citizen (mock)", "Permanent resident (mock)", "Authorized to work (mock)"] },
+        { key: "docType", label: "Document type presented (mock)", type: "text" },
+        { key: "completedOn", label: "Section 1 completed (date)", type: "text" },
+        { key: "status", label: "Form status", type: "select", options: ["draft", "submitted", "on file"] }
+      ]
+    },
+    perf: {
+      id: "perf",
+      title: "Performance appraisal",
+      sub: "Rater form → appraisal cycle row",
+      legal: "MOCK appraisal form — synthetic ratings for classroom discussion only.",
+      fields: [
+        { key: "aprId", label: "Appraisal ID", type: "text" },
+        { key: "empId", label: "Employee ID", type: "text" },
+        { key: "fullName", label: "Employee name", type: "text" },
+        { key: "cycle", label: "Cycle", type: "text" },
+        { key: "rating", label: "Overall rating", type: "select", options: ["Exceeds expectations", "Meets expectations", "Needs development"] },
+        { key: "goals", label: "Goals / comments", type: "textarea" }
+      ]
+    }
+  };
+
+  const FORM_RECORDS = {
+    empinfo: {
+      formId: "FRM-EMP-1008",
+      typeLabel: "Employee Info",
+      person: "Harper Diaz",
+      updated: "2026-02-01",
+      status: "on file",
+      data: {
+        empId: "EMP-1008",
+        fullName: "Harper Diaz",
+        jobTitle: "Payroll Specialist",
+        department: "Finance",
+        hireDate: "2024-02-01",
+        workEmail: "harper.diaz@bayou-mfg.example"
+      }
+    },
+    application: {
+      formId: "FRM-APP-501",
+      typeLabel: "Job application",
+      person: "Alex Kim",
+      updated: "2026-03-08",
+      status: "submitted",
+      data: {
+        appId: "APP-501",
+        fullName: "Alex Kim",
+        role: "Ops Analyst",
+        source: "Referral",
+        stage: "Offer",
+        notes: "Strong ops internship; plant tour scheduled (synthetic)."
+      }
+    },
+    i9: {
+      formId: "FRM-I9-1008",
+      typeLabel: "I-9 Section 1 (MOCK)",
+      person: "Harper Diaz",
+      updated: "2024-02-01",
+      status: "on file",
+      data: {
+        empId: "EMP-1008",
+        fullName: "Harper Diaz",
+        attestation: "U.S. citizen (mock)",
+        docType: "List A — Passport (mock)",
+        completedOn: "2024-02-01",
+        status: "on file"
+      }
+    },
+    perf: {
+      formId: "FRM-APR-301",
+      typeLabel: "Performance appraisal",
+      person: "Avery Chen",
+      updated: "2026-03-01",
+      status: "draft",
+      data: {
+        aprId: "APR-301",
+        empId: "EMP-1001",
+        fullName: "Avery Chen",
+        cycle: "FY2026 Mid-year",
+        rating: "Meets expectations",
+        goals: "Reduce time-to-fill for plant roles by 15%"
+      }
+    }
+  };
+
+  let activeFormType = "empinfo";
+  let formDraft = {};
+
+  const TITLES = {
+    desk: "Desk",
+    employees: "Employees",
+    attendance: "Attendance",
+    leave: "Leave",
+    recruitment: "Recruitment",
+    performance: "Performance",
+    forms: "Forms"
+  };
+
+  const $ = (sel, root) => (root || document).querySelector(sel);
+  const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+
+  function statusClass(s) {
+    const k = String(s).toLowerCase();
+    if (k === "active" || k === "present" || k === "approved" || k === "on file") return k === "present" || k === "on file" ? "active" : k;
+    if (k === "leave" || k === "on leave") return "leave";
+    if (k === "probation" || k === "pending" || k === "absent" || k === "draft") return "pending";
+    if (k === "open" || k === "submitted") return "open";
+    if (k === "closed" || k === "rejected") return "closed";
+    return "closed";
+  }
+
+  function showModule(name) {
+    $$(".module").forEach((el) => { el.hidden = el.id !== "mod-" + name; });
+    $$(".nav-btn").forEach((btn) => {
+      const on = btn.dataset.module === name;
+      btn.classList.toggle("active", on);
+      if (on) btn.setAttribute("aria-current", "page");
+      else btn.removeAttribute("aria-current");
+    });
+    $("#moduleTitle").textContent = TITLES[name] || name;
+    $("#sidebar").classList.remove("open");
+    try { history.replaceState(null, "", "#" + name); } catch (e) { /* ignore */ }
+  }
+
+  function openDrawer(title, html) {
+    $("#drawerTitle").textContent = title;
+    $("#drawerBody").innerHTML = html;
+    const drawer = $("#drawer");
+    const backdrop = $("#drawerBackdrop");
+    backdrop.hidden = false;
+    requestAnimationFrame(() => {
+      drawer.classList.add("open");
+      backdrop.classList.add("open");
+    });
+    drawer.setAttribute("aria-hidden", "false");
+    $("#drawerClose").focus();
+  }
+
+  function closeDrawer() {
+    const drawer = $("#drawer");
+    const backdrop = $("#drawerBackdrop");
+    drawer.classList.remove("open");
+    backdrop.classList.remove("open");
+    drawer.setAttribute("aria-hidden", "true");
+    setTimeout(() => { backdrop.hidden = true; }, 220);
+  }
+
+  function empDetailHtml(emp) {
+    return `
+      <div class="callout" style="margin-bottom:1rem;font-size:0.8rem;">
+        <strong>Teaching point:</strong> This drawer is the “system of record” view. Analytics usually exports these fields (or joins on <span class="mono">${emp.id}</span>), then cleans elsewhere.
+      </div>
+      <div class="section-title">Identity</div>
+      <div class="field-grid">
+        <div class="field"><label>Employee ID</label><div class="val mono">${emp.id}</div></div>
+        <div class="field"><label>Status</label><div class="val"><span class="status ${statusClass(emp.status)}">${emp.status}</span></div></div>
+        <div class="field full"><label>Full name</label><div class="val">${emp.name}</div></div>
+        <div class="field full"><label>Work email (synthetic)</label><div class="val mono">${emp.email}</div></div>
+      </div>
+      <div class="section-title">Job</div>
+      <div class="field-grid">
+        <div class="field"><label>Job title</label><div class="val">${emp.job}</div></div>
+        <div class="field"><label>Department</label><div class="val">${emp.dept}</div></div>
+        <div class="field"><label>Hire date</label><div class="val mono">${emp.hire}</div></div>
+        <div class="field"><label>Pay band</label><div class="val mono">${emp.payBand}</div></div>
+        <div class="field"><label>Manager</label><div class="val">${emp.manager}</div></div>
+        <div class="field"><label>Location</label><div class="val">${emp.location}</div></div>
+        <div class="field full"><label>Life-cycle stage (illustrative)</label><div class="val">${emp.lifecycle}</div></div>
+      </div>
+      <p style="margin-top:1rem;font-size:0.75rem;color:var(--text-muted);">
+        Fictional employee at fictional Bayou Manufacturing LLC. No real person is represented.
+      </p>`;
+  }
+
+  function renderEmployees() {
+    const q = ($("#empSearch").value || "").trim().toLowerCase();
+    const dept = $("#empDept").value;
+    const rows = EMPLOYEES.filter((e) => {
+      if (dept && e.dept !== dept) return false;
+      if (!q) return true;
+      return [e.id, e.name, e.job, e.dept, e.status].join(" ").toLowerCase().includes(q);
+    });
+    const tb = $("#empTable tbody");
+    tb.innerHTML = rows.map((e) => `
+      <tr tabindex="0" data-emp="${e.id}">
+        <td class="mono">${e.id}</td>
+        <td>${e.name}</td>
+        <td>${e.job}</td>
+        <td>${e.dept}</td>
+        <td class="mono">${e.hire}</td>
+        <td><span class="status ${statusClass(e.status)}">${e.status}</span></td>
+      </tr>`).join("");
+    if (!rows.length) {
+      tb.innerHTML = `<tr><td colspan="6" class="empty-hint">No matches in synthetic roster.</td></tr>`;
+    }
+  }
+
+  function renderAttendance() {
+    $("#attTable tbody").innerHTML = ATTENDANCE.map((a) => `
+      <tr tabindex="0" data-emp="${a.empId}">
+        <td class="mono">${a.date}</td>
+        <td>${a.name}</td>
+        <td class="mono">${a.inn}</td>
+        <td class="mono">${a.out}</td>
+        <td><span class="status ${statusClass(a.status)}">${a.status}</span></td>
+      </tr>`).join("");
+  }
+
+  function renderLeave() {
+    $("#leaveList").innerHTML = LEAVE.map((l) => `
+      <div class="list-card" tabindex="0" data-leave="${l.id}" role="button">
+        <div class="title">${l.name} · ${l.type}</div>
+        <span class="status ${statusClass(l.status)}">${l.status}</span>
+        <div class="sub">${l.from} → ${l.to} · ${l.days} day(s) · ${l.id}</div>
+      </div>`).join("");
+  }
+
+  function renderRecruitment() {
+    const stages = ["Applied", "Screen", "Interview", "Offer", "Hired"];
+    const counts = { Applied: 1, Screen: 1, Interview: 2, Offer: 1, Hired: 1 };
+    $("#funnel").innerHTML = stages.map((s) => `
+      <div class="step"><div class="n">${counts[s] || 0}</div><div class="l">${s}</div></div>`).join("");
+    $("#appTable tbody").innerHTML = APPLICANTS.map((a) => `
+      <tr tabindex="0" data-app="${a.id}">
+        <td class="mono">${a.id}</td>
+        <td>${a.name}</td>
+        <td>${a.stage}</td>
+        <td>${a.source}</td>
+        <td><span class="status ${statusClass(a.status)}">${a.status}</span></td>
+      </tr>`).join("");
+  }
+
+  function renderPerformance() {
+    $("#perfList").innerHTML = PERFORMANCE.map((p) => `
+      <div class="list-card" tabindex="0" data-apr="${p.id}" role="button">
+        <div class="title">${p.name}</div>
+        <span class="status ${statusClass(p.status)}">${p.status}</span>
+        <div class="sub">${p.rating} · ${p.cycle} · ${p.id}</div>
+      </div>`).join("");
+  }
+
+  function escapeAttr(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+  }
+
+  function loadFormDraft(typeId) {
+    const rec = FORM_RECORDS[typeId];
+    formDraft = Object.assign({}, rec.data);
+  }
+
+  function renderFormTypeGrid() {
+    $("#formTypeGrid").innerHTML = Object.values(FORM_TYPES).map((ft) => `
+      <button type="button" class="form-type-card${ft.id === activeFormType ? " active" : ""}"
+        data-form-type="${ft.id}" role="option" aria-selected="${ft.id === activeFormType}">
+        <div class="ft-title">${ft.title}</div>
+        <div class="ft-sub">${ft.sub}</div>
+      </button>`).join("");
+  }
+
+  function renderLiveForm() {
+    const ft = FORM_TYPES[activeFormType];
+    $("#formPaneTitle").textContent = ft.title + " (user-facing)";
+    const note = $("#formLegalNote");
+    if (ft.legal) {
+      note.hidden = false;
+      note.textContent = ft.legal;
+    } else {
+      note.hidden = true;
+      note.textContent = "";
+    }
+    const form = $("#liveForm");
+    form.innerHTML = ft.fields.map((f) => {
+      const val = formDraft[f.key] != null ? formDraft[f.key] : "";
+      if (f.type === "select") {
+        const opts = (f.options || []).map((o) =>
+          `<option value="${escapeAttr(o)}"${o === val ? " selected" : ""}>${escapeAttr(o)}</option>`
+        ).join("");
+        return `<label for="ff-${f.key}">${f.label}</label><select id="ff-${f.key}" name="${f.key}">${opts}</select>`;
+      }
+      if (f.type === "textarea") {
+        return `<label for="ff-${f.key}">${f.label}</label><textarea id="ff-${f.key}" name="${f.key}">${escapeAttr(val)}</textarea>`;
+      }
+      return `<label for="ff-${f.key}">${f.label}</label><input id="ff-${f.key}" name="${f.key}" type="text" value="${escapeAttr(val)}">`;
+    }).join("");
+  }
+
+  function renderRecordPreview(highlight) {
+    const ft = FORM_TYPES[activeFormType];
+    const data = FORM_RECORDS[activeFormType].data;
+    $("#recordPreview").innerHTML = ft.fields.map((f) => `
+      <div class="field${f.type === "textarea" ? " full" : ""}">
+        <label>${f.label}</label>
+        <div class="val${highlight ? " highlight" : ""}" data-rk="${f.key}">${escapeAttr(data[f.key] != null ? data[f.key] : "—")}</div>
+      </div>`).join("");
+    if (highlight) {
+      setTimeout(() => {
+        $$("#recordPreview .val.highlight").forEach((el) => el.classList.remove("highlight"));
+      }, 900);
+    }
+  }
+
+  function renderFormsTable() {
+    const rows = Object.keys(FORM_RECORDS).map((k) => {
+      const r = FORM_RECORDS[k];
+      return `
+        <tr tabindex="0" data-form-row="${k}">
+          <td class="mono">${r.formId}</td>
+          <td>${r.typeLabel}</td>
+          <td>${r.person}</td>
+          <td class="mono">${r.updated}</td>
+          <td><span class="status ${statusClass(r.status)}">${r.status}</span></td>
+        </tr>`;
+    });
+    $("#formsTable tbody").innerHTML = rows.join("");
+  }
+
+  function selectFormType(typeId) {
+    if (!FORM_TYPES[typeId]) return;
+    activeFormType = typeId;
+    loadFormDraft(typeId);
+    renderFormTypeGrid();
+    renderLiveForm();
+    renderRecordPreview(false);
+    $("#writeFlash").classList.remove("show");
+  }
+
+  function readFormIntoDraft() {
+    const ft = FORM_TYPES[activeFormType];
+    ft.fields.forEach((f) => {
+      const el = $("#ff-" + f.key);
+      if (el) formDraft[f.key] = el.value;
+    });
+  }
+
+  function writeFormToRecord() {
+    readFormIntoDraft();
+    const rec = FORM_RECORDS[activeFormType];
+    Object.assign(rec.data, formDraft);
+    if (formDraft.fullName) rec.person = formDraft.fullName;
+    if (formDraft.status) rec.status = formDraft.status;
+    else if (activeFormType === "application") rec.status = "submitted";
+    else if (activeFormType === "perf") rec.status = "draft";
+    const today = "2026-03-15";
+    rec.updated = today;
+    renderRecordPreview(true);
+    renderFormsTable();
+    const flash = $("#writeFlash");
+    flash.classList.add("show");
+    setTimeout(() => flash.classList.remove("show"), 2200);
+  }
+
+  function fillDeptFilter() {
+    const depts = [...new Set(EMPLOYEES.map((e) => e.dept))].sort();
+    const sel = $("#empDept");
+    depts.forEach((d) => {
+      const opt = document.createElement("option");
+      opt.value = d;
+      opt.textContent = d;
+      sel.appendChild(opt);
+    });
+  }
+
+  /* Events */
+  $$(".nav-btn").forEach((btn) => {
+    btn.addEventListener("click", () => showModule(btn.dataset.module));
+  });
+  $$("[data-goto]").forEach((el) => {
+    el.addEventListener("click", () => showModule(el.dataset.goto));
+  });
+  $("#navToggle").addEventListener("click", () => $("#sidebar").classList.toggle("open"));
+  $("#drawerClose").addEventListener("click", closeDrawer);
+  $("#drawerBackdrop").addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeDrawer();
+  });
+
+  $("#empSearch").addEventListener("input", renderEmployees);
+  $("#empDept").addEventListener("change", renderEmployees);
+
+  $("#empTable").addEventListener("click", (e) => {
+    const tr = e.target.closest("tr[data-emp]");
+    if (!tr) return;
+    const emp = EMPLOYEES.find((x) => x.id === tr.dataset.emp);
+    if (emp) openDrawer(emp.name, empDetailHtml(emp));
+  });
+  $("#empTable").addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const tr = e.target.closest("tr[data-emp]");
+    if (!tr) return;
+    e.preventDefault();
+    tr.click();
+  });
+
+  $("#attTable").addEventListener("click", (e) => {
+    const tr = e.target.closest("tr[data-emp]");
+    if (!tr) return;
+    const emp = EMPLOYEES.find((x) => x.id === tr.dataset.emp);
+    if (emp) openDrawer(emp.name, empDetailHtml(emp));
+  });
+
+  $("#leaveList").addEventListener("click", (e) => {
+    const card = e.target.closest("[data-leave]");
+    if (!card) return;
+    const l = LEAVE.find((x) => x.id === card.dataset.leave);
+    if (!l) return;
+    openDrawer(l.id, `
+      <div class="field-grid">
+        <div class="field"><label>Employee</label><div class="val">${l.name}</div></div>
+        <div class="field"><label>Employee ID</label><div class="val mono">${l.empId}</div></div>
+        <div class="field"><label>Type</label><div class="val">${l.type}</div></div>
+        <div class="field"><label>Status</label><div class="val"><span class="status ${statusClass(l.status)}">${l.status}</span></div></div>
+        <div class="field"><label>From</label><div class="val mono">${l.from}</div></div>
+        <div class="field"><label>To</label><div class="val mono">${l.to}</div></div>
+        <div class="field full"><label>Reason (synthetic)</label><div class="val">${l.reason}</div></div>
+      </div>
+      <p style="margin-top:1rem;font-size:0.8rem;color:var(--text-muted);">Approvals create an audit trail — who decided, when, and under which policy.</p>`);
+  });
+
+  $("#appTable").addEventListener("click", (e) => {
+    const tr = e.target.closest("tr[data-app]");
+    if (!tr) return;
+    const a = APPLICANTS.find((x) => x.id === tr.dataset.app);
+    if (!a) return;
+    openDrawer(a.name, `
+      <div class="callout teal" style="margin-bottom:1rem;font-size:0.8rem;">
+        <strong>Select → Onboard:</strong> Until hired, this person is an <em>applicant</em>, not an employee. EMP-1008 shows the handoff after hire.
+      </div>
+      <div class="field-grid">
+        <div class="field"><label>Applicant ID</label><div class="val mono">${a.id}</div></div>
+        <div class="field"><label>Status</label><div class="val"><span class="status ${statusClass(a.status)}">${a.status}</span></div></div>
+        <div class="field"><label>Role</label><div class="val">${a.role}</div></div>
+        <div class="field"><label>Stage</label><div class="val">${a.stage}</div></div>
+        <div class="field"><label>Source</label><div class="val">${a.source}</div></div>
+        <div class="field"><label>Interview score</label><div class="val">${a.score}</div></div>
+      </div>`);
+  });
+
+  $("#perfList").addEventListener("click", (e) => {
+    const card = e.target.closest("[data-apr]");
+    if (!card) return;
+    const p = PERFORMANCE.find((x) => x.id === card.dataset.apr);
+    if (!p) return;
+    openDrawer(p.name + " · appraisal", `
+      <div class="field-grid">
+        <div class="field"><label>Appraisal ID</label><div class="val mono">${p.id}</div></div>
+        <div class="field"><label>Employee ID</label><div class="val mono">${p.empId}</div></div>
+        <div class="field"><label>Cycle</label><div class="val">${p.cycle}</div></div>
+        <div class="field"><label>Status</label><div class="val"><span class="status ${statusClass(p.status)}">${p.status}</span></div></div>
+        <div class="field full"><label>Overall rating</label><div class="val">${p.rating}</div></div>
+        <div class="field full"><label>Goals (synthetic blurb)</label><div class="val">${p.goals}</div></div>
+      </div>
+      <p style="margin-top:1rem;font-size:0.8rem;color:var(--text-muted);">For analytics: pair ratings with rater ID, date, and job context before modeling “performance.”</p>`);
+  });
+
+  $("#formTypeGrid").addEventListener("click", (e) => {
+    const card = e.target.closest("[data-form-type]");
+    if (!card) return;
+    selectFormType(card.dataset.formType);
+  });
+  $("#btnWriteRecord").addEventListener("click", writeFormToRecord);
+  $("#btnResetForm").addEventListener("click", () => {
+    loadFormDraft(activeFormType);
+    renderLiveForm();
+    $("#writeFlash").classList.remove("show");
+  });
+  $("#liveForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    writeFormToRecord();
+  });
+  $("#formsTable").addEventListener("click", (e) => {
+    const tr = e.target.closest("tr[data-form-row]");
+    if (!tr) return;
+    selectFormType(tr.dataset.formRow);
+  });
+
+  /* Init */
+  fillDeptFilter();
+  renderEmployees();
+  renderAttendance();
+  renderLeave();
+  renderRecruitment();
+  renderPerformance();
+  selectFormType("empinfo");
+  renderFormsTable();
+  $("#statEmp").textContent = String(EMPLOYEES.filter((e) => e.status !== "terminated").length);
+
+  const hash = (location.hash || "").replace(/^#/, "");
+  if (TITLES[hash]) showModule(hash);
+  else showModule("desk");
+})();
+  </script>
+</body>
+</html>
