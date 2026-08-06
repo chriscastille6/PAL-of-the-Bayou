@@ -106,12 +106,20 @@ RELEVANT FILES:
 
     .grid-2 {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 1rem;
+      align-items: start;
     }
     @media (max-width: 820px) {
       .grid-2 { grid-template-columns: 1fr; }
     }
+    .right-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .bf-fixture { margin-bottom: 0; }
+    .bf-fixture > h2 { margin-bottom: 0.5rem; }
 
     .card {
       background: var(--surface);
@@ -620,30 +628,24 @@ RELEVANT FILES:
         </div>
 
         <div id="presets-gof" class="presets" role="group" aria-label="Firm vs community presets">
-          <span class="preset-group-label">Simulation · start-of-sim demographics</span>
-          <button type="button" class="preset-btn active" data-preset="sim-gof-l1-women" id="preset-gof-l1w">Sim L1 · women vs community</button>
-          <button type="button" class="preset-btn" data-preset="sim-gof-l1-min">Sim L1 · minority vs community</button>
-          <button type="button" class="preset-btn" data-preset="sim-gof-l5-women">Sim L5 · women vs community</button>
-          <button type="button" class="preset-btn" data-preset="sim-gof-l5-min">Sim L5 · minority vs community</button>
-          <button type="button" class="preset-btn" data-preset="custom-gof">Custom GOF</button>
+          <span class="preset-group-label">Examples</span>
+          <button type="button" class="preset-btn active" data-preset="sim-gof-l1-women" id="preset-gof-l1w">L1 firm vs community</button>
+          <button type="button" class="preset-btn" data-preset="custom-gof">Custom</button>
         </div>
         <div id="presets-hire" class="presets" role="group" aria-label="Hiring funnel presets" hidden>
-          <span class="preset-group-label">Secondary · how hiring might sustain the gap</span>
-          <button type="button" class="preset-btn" data-preset="sim-hire-l1">Sim L1 · hiring AI (illustrative)</button>
-          <button type="button" class="preset-btn" data-preset="sim-hire-l5">Sim L5 · hiring AI (illustrative)</button>
-          <button type="button" class="preset-btn" data-preset="courey-ai">Courey vignette · AI present</button>
-          <button type="button" class="preset-btn" data-preset="courey-parity">Courey vignette · parity</button>
-          <button type="button" class="preset-btn" data-preset="borderline">Borderline IR ≈ 0.80</button>
-          <button type="button" class="preset-btn" data-preset="small-n">Small-n caution</button>
+          <span class="preset-group-label">Examples</span>
+          <button type="button" class="preset-btn" data-preset="sim-hire-l1">L1 hires (simulation)</button>
+          <button type="button" class="preset-btn" data-preset="courey-ai">Courey · AI present</button>
+          <button type="button" class="preset-btn" data-preset="courey-parity">Courey · parity</button>
           <button type="button" class="preset-btn" data-preset="custom-hire">Custom</button>
         </div>
 
         <p class="hint" id="mode-hint" style="margin:-0.35rem 0 0.85rem;">
-          Default = <strong>Sim L1 · women vs community</strong> (N=500 bulk headcount). H₀: if the firm matched the community, composition would look like community %.
+          Start with <strong>L1 firm vs community</strong>. Then switch to Hiring funnel → <strong>L1 hires (simulation)</strong>.
         </p>
         <div class="sim-why" id="sim-why">
-          <strong>Why these counts (L1 women)?</strong>
-          Screenshot SoT: Level&nbsp;1 = 500 employees, 60 women (12%). Community women = 40% → expected 200 women / 300 men if firm matched community. χ² GOF screens the gap — then ask how hiring works.
+          <strong>L1 firm vs community</strong>
+          Level&nbsp;1 = 500 employees, 60 women (12%). Community = 40% → expected 200 / 300 if firm matched community.
         </div>
 
         <!-- GOF inputs -->
@@ -732,6 +734,7 @@ RELEVANT FILES:
         <p class="hint">All calculation runs in your browser. Nothing is uploaded or stored. Use synthetic counts only (FERPA / classroom policy).</p>
       </section>
 
+      <div class="right-stack">
       <aside class="comm-box" aria-label="How you communicate this" id="comm-box">
         <p class="kicker">Classroom script · firm vs community</p>
         <h2>How you communicate this</h2>
@@ -739,7 +742,7 @@ RELEVANT FILES:
           <li><strong>Rates first.</strong> “At Level 1, the firm is 12% women; the community is 40%.”</li>
           <li><strong>H₀.</strong> “If we looked like the community, we’d expect ~200 women of 500 — not 60.”</li>
           <li><strong>χ² screen.</strong> “GOF rejects ‘firm matches community’ — a statistical flag, not a guilt finding.”</li>
-          <li><strong>Ask why.</strong> “How does hiring / promotion work here?” → optional hiring-funnel follow-on.</li>
+          <li><strong>Ask why.</strong> “How does hiring work here?” → <em>L1 hires (simulation)</em>.</li>
           <li><strong>Next moves.</strong> Openings from turnover · hiring targets · ER — not training alone.</li>
         </ol>
         <p class="rule">
@@ -748,6 +751,12 @@ RELEVANT FILES:
           Do not confuse this GOF screen with a 4/5ths test on applicants.
         </p>
       </aside>
+
+      <aside class="card bf-fixture" aria-label="Bayes factor evidence categories">
+        <h2>Bayes factor evidence (fixture)</h2>
+        <div class="bf-scale-wrap" id="bf-scale" style="margin:0;"></div>
+      </aside>
+      </div>
     </div>
 
     <section class="card" id="results" hidden>
@@ -771,7 +780,6 @@ RELEVANT FILES:
         <h3>Bayes factor · say this</h3>
         <div class="bf-hero" id="bf-hero"></div>
         <div id="bf-detail"></div>
-        <div class="bf-scale-wrap" id="bf-scale" aria-label="Bayes factor strength of evidence table"></div>
       </div>
 
       <details class="quiet" id="chi-walk-details">
@@ -852,48 +860,26 @@ RELEVANT FILES:
   const GOF_PRESETS = {
     "sim-gof-l1-women": {
       focalLabel: "Women", otherLabel: "Men", focalN: 60, totalN: 500, commPct: 40,
-      whyTitle: "Why these counts (L1 women)?",
-      whyBody: "Screenshot SoT: Level&nbsp;1 = 500 employees, 60 women (12%). Community women = 40% → expected 200 women / 300 men if firm matched community. χ² GOF screens the gap — then ask how hiring works."
-    },
-    "sim-gof-l1-min": {
-      focalLabel: "Racially minoritized", otherLabel: "Other", focalN: 40, totalN: 500, commPct: 30,
-      whyTitle: "Why these counts (L1 minority)?",
-      whyBody: "Level&nbsp;1 = 500, 40 racially minoritized (8%). Community = 30% → expected 150 / 350 if firm matched community."
-    },
-    "sim-gof-l5-women": {
-      focalLabel: "Women", otherLabel: "Men", focalN: 0, totalN: 20, commPct: 25,
-      whyTitle: "Why these counts (L5 women)?",
-      whyBody: "Screenshot SoT: Level&nbsp;5 = 20 employees, 0 women (0%). Community women = 25% → expected 5 / 15. Small N — treat as a teaching contrast to L1 bulk headcount."
-    },
-    "sim-gof-l5-min": {
-      focalLabel: "Racially minoritized", otherLabel: "Other", focalN: 0, totalN: 20, commPct: 20,
-      whyTitle: "Why these counts (L5 minority)?",
-      whyBody: "Level&nbsp;5 = 20, 0 racially minoritized (0%). Community = 20% → expected 4 / 16."
+      whyTitle: "L1 firm vs community",
+      whyBody: "Level&nbsp;1 = 500 employees, 60 women (12%). Community = 40% → expected 200 / 300 if firm matched community. Then open <em>L1 hires (simulation)</em>."
     }
   };
 
   const HIRE_PRESETS = {
     "sim-hire-l1": {
       refLabel: "Men", refN: 60, refH: 45, cmpLabel: "Women", cmpN: 40, cmpH: 6,
-      whyTitle: "Why these counts (L1 hiring funnel — illustrative)?",
-      whyBody: "Follow-on story only: applicant mix ≈ community ♀ (40%). Hire pattern sustains firm ~12% ♀ among hires (6 of 51). Men 60/45 · Women 40/6 · IR = 0.20. Not the primary firm-vs-community screen."
-    },
-    "sim-hire-l5": {
-      refLabel: "Men", refN: 75, refH: 19, cmpLabel: "Women", cmpN: 25, cmpH: 1,
-      whyTitle: "Why these counts (L5 hiring funnel — illustrative)?",
-      whyBody: "Follow-on: applicant mix ≈ community 25% ♀; hire pattern extreme underutilization. Men 75/19 · Women 25/1 · IR ≈ 0.16."
+      whyTitle: "L1 hires (simulation)",
+      whyBody: "Applicant mix ≈ community ♀ (40%). Hire pattern sustains firm ~12% ♀ among hires (6 of 51). Men 60/45 · Women 40/6 · IR = 0.20."
     },
     "courey-ai": {
-      refLabel: "Men", refN: 40, refH: 23, cmpLabel: "Women", cmpN: 20, cmpH: 2
+      refLabel: "Men", refN: 40, refH: 23, cmpLabel: "Women", cmpN: 20, cmpH: 2,
+      whyTitle: "Courey · AI present",
+      whyBody: "Courey &amp; Oswald (2024) vignette with clear adverse-impact pattern (IR ≈ 0.17)."
     },
     "courey-parity": {
-      refLabel: "Men", refN: 157, refH: 2, cmpLabel: "Women", cmpN: 158, cmpH: 2
-    },
-    borderline: {
-      refLabel: "Majority", refN: 200, refH: 100, cmpLabel: "Minority", cmpN: 100, cmpH: 40
-    },
-    "small-n": {
-      refLabel: "Group A", refN: 12, refH: 6, cmpLabel: "Group B", cmpN: 8, cmpH: 2
+      refLabel: "Men", refN: 157, refH: 2, cmpLabel: "Women", cmpN: 158, cmpH: 2,
+      whyTitle: "Courey · parity",
+      whyBody: "Near-parity selection rates (IR ≈ 0.99) — useful for evidence <em>for</em> H₀ / against AI."
     }
   };
 
@@ -1047,8 +1033,7 @@ RELEVANT FILES:
 
   function renderBfScale(bf10) {
     if (!els.bfScale) return;
-    const active = bfScaleRowKey(bf10);
-    // SPSS-style Jeffreys ladder: two columns only (IBM SPSS Bayesian Inference docs)
+    const active = (bf10 == null || !Number.isFinite(bf10)) ? null : bfScaleRowKey(bf10);
     const rows = [
       { key: "h1-extreme", bf: "> 100", evidence: "Extreme Evidence for H₁" },
       { key: "h1-vstrong", bf: "30 – 100", evidence: "Very Strong Evidence for H₁" },
@@ -1063,33 +1048,31 @@ RELEVANT FILES:
       { key: "h0-extreme", bf: "< 1/100", evidence: "Extreme Evidence for H₀" }
     ];
     const body = rows.map(r => {
-      const cls = [
-        r.key === active ? "active" : "",
-        r.neutral ? "neutral" : ""
-      ].filter(Boolean).join(" ");
+      const cls = [r.key === active ? "active" : "", r.neutral ? "neutral" : ""].filter(Boolean).join(" ");
       return `<tr class="${cls}"${r.key === active ? ' aria-current="true"' : ""}>
         <td class="bf">${r.bf}</td>
         <td class="evidence">${r.evidence}</td>
       </tr>`;
     }).join("");
-    const bfShown = Number.isFinite(bf10) ? fmt(bf10, 2) : "—";
+    const note = (bf10 == null || !Number.isFinite(bf10))
+      ? "Fixture for every analysis (Jeffreys / IBM SPSS style). Matching row highlights when a Bayes factor is computed."
+      : `Highlighted row matches BF₁₀ = ${fmt(bf10, 2)} for this analysis. H₁ / H₀ as labeled; approximate verbal categories — not a legal bright line.`;
     els.bfScale.innerHTML = `
-      <p class="scale-title">Bayes factor evidence (Jeffreys)</p>
       <table class="bf-scale">
-        <thead>
-          <tr>
-            <th scope="col">Bayes Factor</th>
-            <th scope="col">Evidence Category</th>
-          </tr>
-        </thead>
+        <thead><tr><th scope="col">Bayes Factor</th><th scope="col">Evidence Category</th></tr></thead>
         <tbody>${body}</tbody>
       </table>
-      <p class="bf-scale-note">
-        Highlighted row matches BF₁₀ = ${bfShown} for this analysis.
-        H₁ = unequal selection rates; H₀ = parity. Thresholds as in IBM SPSS / Jeffreys (1961)
-        (also Lee &amp; Wagenmakers, 2013; Courey &amp; Oswald, 2024). Approximate labels — not a legal bright line.
-      </p>`;
+      <p class="bf-scale-note">${note}</p>`;
   }
+
+  /** Educational BF: firm count vs fixed community % (point-null binomial). */
+  function computePropBF10(n, k, p0, alpha) {
+    if (!(n > 0) || k < 0 || k > n || !(p0 > 0 && p0 < 1)) return NaN;
+    const logLik0 = k * Math.log(p0) + (n - k) * Math.log(1 - p0);
+    const logLik1 = logBeta(alpha + k, alpha + (n - k)) - logBeta(alpha, alpha);
+    return Math.exp(logLik1 - logLik0);
+  }
+
   function computeBF10(n1, h1, n2, h2, alpha) {
     const logNum = logBeta(alpha + h1, alpha + (n1 - h1)) + logBeta(alpha + h2, alpha + (n2 - h2));
     const logDen = logBeta(alpha + h1 + h2, alpha + (n1 - h1) + (n2 - h2)) + logBeta(alpha, alpha);
@@ -1183,7 +1166,6 @@ RELEVANT FILES:
         : `Hiring-funnel follow-on (4/5ths + BF). Do <em>not</em> confuse with the firm-vs-community GOF screen.`;
     }
     if (isGof) setCommBoxGof(); else setCommBoxHire();
-    // Reset walkthrough steps labels slightly via select options already GOF-oriented
     if (isGof) applyGofPreset("sim-gof-l1-women");
     else applyHirePreset("sim-hire-l1");
   }
@@ -1396,6 +1378,9 @@ RELEVANT FILES:
     const chiP = chiSquarePvalue(chi2, 1);
     const pFirm = oFocal / n;
     const reject = chiP < 0.05;
+    const alpha = Number(els.prior ? els.prior.value : 0.5) || 0.5;
+    const bf10 = computePropBF10(n, oFocal, d.pComm, alpha);
+    const bf01 = Number.isFinite(bf10) && bf10 > 0 ? 1 / bf10 : NaN;
 
     chiWalkState = {
       kind: "gof",
@@ -1433,8 +1418,11 @@ RELEVANT FILES:
       metricHTML("Community %", fmt(100 * d.pComm, 1) + "%"),
       metricHTML("Expected focal", fmt(eFocal, 1)),
       metricHTML("χ² (1 df)", fmt(chi2, 2)),
-      metricHTML("p-value", fmtP(chiP))
+      metricHTML("p-value", fmtP(chiP)),
+      metricHTML("BF₁₀", Number.isFinite(bf10) ? fmt(bf10, 2) : "—"),
+      metricHTML("BF₀₁", Number.isFinite(bf01) ? fmt(bf01, 2) : "—")
     ].join("");
+    renderBfScale(bf10);
 
     if (reject) {
       els.gofFlag.innerHTML = `<div class="flag warn"><strong>Reject H₀ (classroom α = .05):</strong> firm composition does not look like community availability (χ² = ${fmt(chi2, 1)}, p ${fmtP(chiP)}). Flag for review — ask how hiring / promotion works. Not a guilt finding.</div>`;
@@ -1591,6 +1579,7 @@ RELEVANT FILES:
   document.getElementById("analyze-btn").addEventListener("click", () => analyze());
 
   setCommBoxGof();
+  renderBfScale(null);
   applyGofPreset("sim-gof-l1-women");
 })();
   </script>
