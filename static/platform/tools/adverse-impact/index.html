@@ -413,37 +413,48 @@ RELEVANT FILES:
     }
     table.bf-scale {
       width: 100%;
+      max-width: 32rem;
       border-collapse: collapse;
-      font-size: 0.84rem;
+      font-size: 0.9rem;
       line-height: 1.3;
     }
     table.bf-scale th, table.bf-scale td {
       border: 1px solid var(--border);
-      padding: 0.4rem 0.55rem;
-      text-align: center;
+      padding: 0.45rem 0.65rem;
     }
     table.bf-scale th {
       background: #f1f5f9;
       font-weight: 700;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--text-muted);
+      font-size: 0.78rem;
+      text-align: left;
+      color: var(--text);
     }
-    table.bf-scale td.evidence { text-align: left; font-weight: 600; color: var(--text); }
-    table.bf-scale td.mono { font-family: var(--mono); font-size: 0.8rem; }
+    table.bf-scale td.bf {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      width: 7.5rem;
+      white-space: nowrap;
+      text-align: left;
+    }
+    table.bf-scale td.evidence {
+      text-align: left;
+      color: var(--text);
+    }
     table.bf-scale tr.active {
-      background: rgba(15, 118, 110, 0.14);
-      outline: 2px solid rgba(15, 118, 110, 0.45);
-      outline-offset: -2px;
+      background: #ccfbf1;
+      box-shadow: inset 3px 0 0 var(--accent);
     }
-    table.bf-scale tr.active td.evidence { color: var(--accent); }
+    table.bf-scale tr.active td {
+      font-weight: 700;
+      color: #115e59;
+    }
     table.bf-scale tr.neutral td { color: var(--text-muted); }
     .bf-scale-note {
       font-size: 0.78rem;
       color: var(--text-muted);
       margin: 0.4rem 0 0;
       line-height: 1.35;
+      max-width: 32rem;
     }
 
     .comm-strip {
@@ -1037,18 +1048,19 @@ RELEVANT FILES:
   function renderBfScale(bf10) {
     if (!els.bfScale) return;
     const active = bfScaleRowKey(bf10);
+    // SPSS-style Jeffreys ladder: two columns only (IBM SPSS Bayesian Inference docs)
     const rows = [
-      { key: "h1-extreme", bf10: "> 100", evidence: "Extreme evidence for H₁ (unequal rates)", bf01: "< 1/100" },
-      { key: "h1-vstrong", bf10: "30 – 100", evidence: "Very strong evidence for H₁", bf01: "1/100 – 1/30" },
-      { key: "h1-strong", bf10: "10 – 30", evidence: "Strong evidence for H₁", bf01: "1/30 – 1/10" },
-      { key: "h1-moderate", bf10: "3 – 10", evidence: "Moderate evidence for H₁", bf01: "1/10 – 1/3" },
-      { key: "h1-anecdotal", bf10: "1 – 3", evidence: "Anecdotal evidence for H₁", bf01: "1/3 – 1" },
-      { key: "eq", bf10: "1", evidence: "No preference", bf01: "1", neutral: true },
-      { key: "h0-anecdotal", bf10: "1/3 – 1", evidence: "Anecdotal evidence for H₀ (parity)", bf01: "1 – 3" },
-      { key: "h0-moderate", bf10: "1/10 – 1/3", evidence: "Moderate evidence for H₀", bf01: "3 – 10" },
-      { key: "h0-strong", bf10: "1/30 – 1/10", evidence: "Strong evidence for H₀", bf01: "10 – 30" },
-      { key: "h0-vstrong", bf10: "1/100 – 1/30", evidence: "Very strong evidence for H₀", bf01: "30 – 100" },
-      { key: "h0-extreme", bf10: "< 1/100", evidence: "Extreme evidence for H₀ (parity)", bf01: "> 100" }
+      { key: "h1-extreme", bf: "> 100", evidence: "Extreme Evidence for H₁" },
+      { key: "h1-vstrong", bf: "30 – 100", evidence: "Very Strong Evidence for H₁" },
+      { key: "h1-strong", bf: "10 – 30", evidence: "Strong Evidence for H₁" },
+      { key: "h1-moderate", bf: "3 – 10", evidence: "Moderate Evidence for H₁" },
+      { key: "h1-anecdotal", bf: "1 – 3", evidence: "Anecdotal Evidence for H₁" },
+      { key: "eq", bf: "1", evidence: "No Evidence", neutral: true },
+      { key: "h0-anecdotal", bf: "1/3 – 1", evidence: "Anecdotal Evidence for H₀" },
+      { key: "h0-moderate", bf: "1/10 – 1/3", evidence: "Moderate Evidence for H₀" },
+      { key: "h0-strong", bf: "1/30 – 1/10", evidence: "Strong Evidence for H₀" },
+      { key: "h0-vstrong", bf: "1/100 – 1/30", evidence: "Very Strong Evidence for H₀" },
+      { key: "h0-extreme", bf: "< 1/100", evidence: "Extreme Evidence for H₀" }
     ];
     const body = rows.map(r => {
       const cls = [
@@ -1056,27 +1068,26 @@ RELEVANT FILES:
         r.neutral ? "neutral" : ""
       ].filter(Boolean).join(" ");
       return `<tr class="${cls}"${r.key === active ? ' aria-current="true"' : ""}>
-        <td class="mono">${r.bf10}</td>
-        <td class="evidence">${r.evidence}${r.key === active ? " ← your result" : ""}</td>
-        <td class="mono">${r.bf01}</td>
+        <td class="bf">${r.bf}</td>
+        <td class="evidence">${r.evidence}</td>
       </tr>`;
     }).join("");
+    const bfShown = Number.isFinite(bf10) ? fmt(bf10, 2) : "—";
     els.bfScale.innerHTML = `
-      <p class="scale-title">Strength of evidence · Jeffreys / Lee &amp; Wagenmakers</p>
+      <p class="scale-title">Bayes factor evidence (Jeffreys)</p>
       <table class="bf-scale">
         <thead>
           <tr>
-            <th scope="col">BF₁₀</th>
-            <th scope="col">Evidence category</th>
-            <th scope="col">BF₀₁</th>
+            <th scope="col">Bayes Factor</th>
+            <th scope="col">Evidence Category</th>
           </tr>
         </thead>
         <tbody>${body}</tbody>
       </table>
       <p class="bf-scale-note">
-        BF₁₀ favors unequal selection rates (H₁); BF₀₁ = 1/BF₁₀ favors parity (H₀).
-        Labels adapted from Lee &amp; Wagenmakers (2013) / Jeffreys (1961) as used in Courey &amp; Oswald (2024).
-        Approximate verbal labels — not a bright legal line.
+        Highlighted row matches BF₁₀ = ${bfShown} for this analysis.
+        H₁ = unequal selection rates; H₀ = parity. Thresholds as in IBM SPSS / Jeffreys (1961)
+        (also Lee &amp; Wagenmakers, 2013; Courey &amp; Oswald, 2024). Approximate labels — not a legal bright line.
       </p>`;
   }
   function computeBF10(n1, h1, n2, h2, alpha) {
