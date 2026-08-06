@@ -616,36 +616,26 @@ RELEVANT FILES:
     <div class="grid-2">
       <section class="card">
         <h2>Inputs</h2>
-        <div class="mode-tabs" role="tablist" aria-label="Analysis mode">
-          <button type="button" class="mode-tab active" data-mode="gof" id="mode-gof">
-            Firm vs community
-            <span class="sublabel">Primary · composition GOF</span>
-          </button>
-          <button type="button" class="mode-tab" data-mode="hire" id="mode-hire">
-            Hiring funnel
-            <span class="sublabel">Follow-on · 4/5ths + BF</span>
-          </button>
-        </div>
-
-        <div id="presets-gof" class="presets" role="group" aria-label="Firm vs community presets">
+        <div class="presets" id="presets-all" role="group" aria-label="Classroom examples">
           <span class="preset-group-label">Examples</span>
-          <button type="button" class="preset-btn active" data-preset="sim-gof-l1-women" id="preset-gof-l1w">L1 firm vs community</button>
-          <button type="button" class="preset-btn" data-preset="custom-gof">Custom</button>
-        </div>
-        <div id="presets-hire" class="presets" role="group" aria-label="Hiring funnel presets" hidden>
-          <span class="preset-group-label">Examples</span>
-          <button type="button" class="preset-btn" data-preset="sim-hire-l1">L1 hires (simulation)</button>
-          <button type="button" class="preset-btn" data-preset="courey-ai">Courey · AI present</button>
-          <button type="button" class="preset-btn" data-preset="courey-parity">Courey · parity</button>
-          <button type="button" class="preset-btn" data-preset="custom-hire">Custom</button>
+          <button type="button" class="preset-btn active" data-example="gof-l1">Sim · L1 firm vs community</button>
+          <button type="button" class="preset-btn" data-example="hire-l1">Sim · L1 hires</button>
+          <button type="button" class="preset-btn" data-example="courey-ai">Courey · AI present</button>
+          <button type="button" class="preset-btn" data-example="courey-parity">Courey · parity</button>
+          <button type="button" class="preset-btn" data-example="custom">Custom</button>
         </div>
 
         <p class="hint" id="mode-hint" style="margin:-0.35rem 0 0.85rem;">
-          Start with <strong>L1 firm vs community</strong>. Then switch to Hiring funnel → <strong>L1 hires (simulation)</strong>.
+          Sim examples use Interpretive start-of-sim demographics. Courey examples are from the manuscript vignettes.
         </p>
         <div class="sim-why" id="sim-why">
-          <strong>L1 firm vs community</strong>
-          Level&nbsp;1 = 500 employees, 60 women (12%). Community = 40% → expected 200 / 300 if firm matched community.
+          <strong>Sim · L1 firm vs community</strong>
+          Level&nbsp;1 = 500, 60 women (12%). Community = 40% → expected 200 / 300 if firm matched community.
+        </div>
+
+        <div class="mode-tabs" role="tablist" aria-label="Analysis mode" hidden>
+          <button type="button" class="mode-tab active" data-mode="gof" id="mode-gof">Firm vs community</button>
+          <button type="button" class="mode-tab" data-mode="hire" id="mode-hire">Hiring funnel</button>
         </div>
 
         <!-- GOF inputs -->
@@ -857,29 +847,30 @@ RELEVANT FILES:
   "use strict";
 
   // Screenshot SoT: Interpretive HRDepartment Quarter Start Demographics
-  const GOF_PRESETS = {
-    "sim-gof-l1-women": {
+  const EXAMPLES = {
+    "gof-l1": {
+      mode: "gof",
       focalLabel: "Women", otherLabel: "Men", focalN: 60, totalN: 500, commPct: 40,
-      whyTitle: "L1 firm vs community",
-      whyBody: "Level&nbsp;1 = 500 employees, 60 women (12%). Community = 40% → expected 200 / 300 if firm matched community. Then open <em>L1 hires (simulation)</em>."
-    }
-  };
-
-  const HIRE_PRESETS = {
-    "sim-hire-l1": {
+      whyTitle: "Sim · L1 firm vs community",
+      whyBody: "Level&nbsp;1 = 500, 60 women (12%). Community = 40% → expected 200 / 300 if firm matched community."
+    },
+    "hire-l1": {
+      mode: "hire",
       refLabel: "Men", refN: 60, refH: 45, cmpLabel: "Women", cmpN: 40, cmpH: 6,
-      whyTitle: "L1 hires (simulation)",
+      whyTitle: "Sim · L1 hires",
       whyBody: "Applicant mix ≈ community ♀ (40%). Hire pattern sustains firm ~12% ♀ among hires (6 of 51). Men 60/45 · Women 40/6 · IR = 0.20."
     },
     "courey-ai": {
+      mode: "hire",
       refLabel: "Men", refN: 40, refH: 23, cmpLabel: "Women", cmpN: 20, cmpH: 2,
       whyTitle: "Courey · AI present",
-      whyBody: "Courey &amp; Oswald (2024) vignette with clear adverse-impact pattern (IR ≈ 0.17)."
+      whyBody: "Manuscript vignette (Courey &amp; Oswald, 2024) with clear adverse-impact pattern (IR ≈ 0.17)."
     },
     "courey-parity": {
+      mode: "hire",
       refLabel: "Men", refN: 157, refH: 2, cmpLabel: "Women", cmpN: 158, cmpH: 2,
       whyTitle: "Courey · parity",
-      whyBody: "Near-parity selection rates (IR ≈ 0.99) — useful for evidence <em>for</em> H₀ / against AI."
+      whyBody: "Manuscript vignette with near-parity selection rates (IR ≈ 0.99) — evidence for H₀ / against AI."
     }
   };
 
@@ -920,11 +911,10 @@ RELEVANT FILES:
     chiWalkBody: document.getElementById("chi-walk-body"),
     panelGof: document.getElementById("panel-gof"),
     panelHire: document.getElementById("panel-hire"),
-    presetsGof: document.getElementById("presets-gof"),
-    presetsHire: document.getElementById("presets-hire"),
     modeHint: document.getElementById("mode-hint"),
     simWhy: document.getElementById("sim-why"),
-    commBoxList: document.getElementById("comm-box-list")
+    commBoxList: document.getElementById("comm-box-list"),
+    commBoxKicker: document.querySelector("#comm-box .kicker")
   };
 
   // ---- Math helpers ----
@@ -1128,25 +1118,27 @@ RELEVANT FILES:
   }
 
   function setCommBoxGof() {
+    if (els.commBoxKicker) els.commBoxKicker.textContent = "Classroom script · firm vs community";
     if (!els.commBoxList) return;
     els.commBoxList.innerHTML = `
       <li><strong>Rates first.</strong> “At Level 1, the firm is 12% women; the community is 40%.”</li>
       <li><strong>H₀.</strong> “If we looked like the community, we’d expect ~200 women of 500 — not 60.”</li>
       <li><strong>χ² screen.</strong> “GOF rejects ‘firm matches community’ — a statistical flag, not a guilt finding.”</li>
-      <li><strong>Ask why.</strong> “How does hiring / promotion work here?” → optional hiring-funnel follow-on.</li>
+      <li><strong>Ask why.</strong> “How does hiring work here?” → <em>Sim · L1 hires</em>.</li>
       <li><strong>Next moves.</strong> Openings from turnover · hiring targets · ER — not training alone.</li>`;
   }
   function setCommBoxHire() {
+    if (els.commBoxKicker) els.commBoxKicker.textContent = "Classroom script · hiring funnel";
     if (!els.commBoxList) return;
     els.commBoxList.innerHTML = `
       <li><strong>Rates first.</strong> “Women were selected at X%; men at Y%.”</li>
       <li><strong>Impact ratio.</strong> “IR = … — below / above the 0.80 screen.”</li>
-      <li><strong>χ² / BF.</strong> “Association test flags the pattern; BF + category for evidence for/against parity.”</li>
+      <li><strong>χ² / BF.</strong> “Association test + BF category (Jeffreys table).”</li>
       <li><strong>Frame.</strong> “Screen for review — not unlawful discrimination.”</li>
       <li><strong>Next moves.</strong> Job-relatedness · alternatives · documentation.</li>`;
   }
 
-  function setMode(next) {
+  function setModeUI(next) {
     mode = next;
     document.querySelectorAll(".mode-tab").forEach(btn => {
       btn.classList.toggle("active", btn.dataset.mode === mode);
@@ -1154,20 +1146,11 @@ RELEVANT FILES:
     const isGof = mode === "gof";
     els.panelGof.hidden = !isGof;
     els.panelHire.hidden = isGof;
-    els.presetsGof.hidden = !isGof;
-    els.presetsHire.hidden = isGof;
     els.gofBlock.hidden = !isGof;
     els.hireBlock.hidden = isGof;
     if (els.freqDetails) els.freqDetails.hidden = isGof;
     if (els.posteriorDetails) els.posteriorDetails.hidden = isGof;
-    if (els.modeHint) {
-      els.modeHint.innerHTML = isGof
-        ? `Default = <strong>Sim L1 · women vs community</strong> (N=500 bulk headcount). H₀: if the firm matched the community, composition would look like community %.`
-        : `Hiring-funnel follow-on (4/5ths + BF). Do <em>not</em> confuse with the firm-vs-community GOF screen.`;
-    }
     if (isGof) setCommBoxGof(); else setCommBoxHire();
-    if (isGof) applyGofPreset("sim-gof-l1-women");
-    else applyHirePreset("sim-hire-l1");
   }
 
   function updateSimWhy(title, body) {
@@ -1177,43 +1160,32 @@ RELEVANT FILES:
     els.simWhy.innerHTML = `<strong>${title}</strong> ${body}`;
   }
 
-  function applyGofPreset(key) {
-    document.querySelectorAll("#presets-gof .preset-btn").forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.preset === key);
+  function applyExample(key) {
+    document.querySelectorAll("#presets-all .preset-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.example === key);
     });
-    if (key === "custom-gof") {
+    if (key === "custom") {
       updateSimWhy(null);
       return;
     }
-    const p = GOF_PRESETS[key];
+    const p = EXAMPLES[key];
     if (!p) return;
-    els.gofFocalLabel.value = p.focalLabel;
-    els.gofOtherLabel.value = p.otherLabel;
-    els.gofFocalN.value = p.focalN;
-    els.gofTotalN.value = p.totalN;
-    els.gofCommPct.value = p.commPct;
+    setModeUI(p.mode);
+    if (p.mode === "gof") {
+      els.gofFocalLabel.value = p.focalLabel;
+      els.gofOtherLabel.value = p.otherLabel;
+      els.gofFocalN.value = p.focalN;
+      els.gofTotalN.value = p.totalN;
+      els.gofCommPct.value = p.commPct;
+    } else {
+      els.refLabel.value = p.refLabel;
+      els.refN.value = p.refN;
+      els.refH.value = p.refH;
+      els.cmpLabel.value = p.cmpLabel;
+      els.cmpN.value = p.cmpN;
+      els.cmpH.value = p.cmpH;
+    }
     updateSimWhy(p.whyTitle, p.whyBody);
-    analyze({ scroll: false });
-  }
-
-  function applyHirePreset(key) {
-    document.querySelectorAll("#presets-hire .preset-btn").forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.preset === key);
-    });
-    if (key === "custom-hire") {
-      updateSimWhy(null);
-      return;
-    }
-    const p = HIRE_PRESETS[key];
-    if (!p) return;
-    els.refLabel.value = p.refLabel;
-    els.refN.value = p.refN;
-    els.refH.value = p.refH;
-    els.cmpLabel.value = p.cmpLabel;
-    els.cmpN.value = p.cmpN;
-    els.cmpH.value = p.cmpH;
-    if (p.whyTitle) updateSimWhy(p.whyTitle, p.whyBody);
-    else updateSimWhy(null);
     analyze({ scroll: false });
   }
 
@@ -1550,29 +1522,16 @@ RELEVANT FILES:
     else analyzeHire(opts);
   }
 
-  document.querySelectorAll(".mode-tab").forEach(btn => {
-    btn.addEventListener("click", () => setMode(btn.dataset.mode));
+  document.querySelectorAll("#presets-all .preset-btn").forEach(btn => {
+    btn.addEventListener("click", () => applyExample(btn.dataset.example));
   });
-  document.querySelectorAll("#presets-gof .preset-btn").forEach(btn => {
-    btn.addEventListener("click", () => applyGofPreset(btn.dataset.preset));
-  });
-  document.querySelectorAll("#presets-hire .preset-btn").forEach(btn => {
-    btn.addEventListener("click", () => applyHirePreset(btn.dataset.preset));
-  });
-  ["gof-focal-label","gof-focal-n","gof-total-n","gof-other-label","gof-comm-pct"].forEach(id => {
+  ["gof-focal-label","gof-focal-n","gof-total-n","gof-other-label","gof-comm-pct",
+   "ref-label","ref-applied","ref-hired","cmp-label","cmp-applied","cmp-hired","prior"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener("change", () => {
-      document.querySelectorAll("#presets-gof .preset-btn").forEach(b => b.classList.toggle("active", b.dataset.preset === "custom-gof"));
+      document.querySelectorAll("#presets-all .preset-btn").forEach(b => b.classList.toggle("active", b.dataset.example === "custom"));
       updateSimWhy(null);
       if (!els.results.hidden) analyze({ scroll: false });
-    });
-  });
-  ["ref-label","ref-applied","ref-hired","cmp-label","cmp-applied","cmp-hired","prior"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener("change", () => {
-      document.querySelectorAll("#presets-hire .preset-btn").forEach(b => b.classList.toggle("active", b.dataset.preset === "custom-hire"));
-      updateSimWhy(null);
-      if (!els.results.hidden && mode === "hire") analyze({ scroll: false });
     });
   });
   if (els.chiStep) els.chiStep.addEventListener("change", renderChiWalkStep);
@@ -1580,7 +1539,7 @@ RELEVANT FILES:
 
   setCommBoxGof();
   renderBfScale(null);
-  applyGofPreset("sim-gof-l1-women");
+  applyExample("gof-l1");
 })();
   </script>
 </body>
