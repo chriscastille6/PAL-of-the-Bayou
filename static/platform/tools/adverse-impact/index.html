@@ -399,6 +399,53 @@ RELEVANT FILES:
     }
     .bf-hero .sub { font-size: 0.85rem; margin-top: 0.4rem; color: var(--text-muted); }
 
+    .bf-scale-wrap {
+      margin: 0.85rem 0 0.5rem;
+      overflow-x: auto;
+    }
+    .bf-scale-wrap .scale-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin: 0 0 0.45rem;
+    }
+    table.bf-scale {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      line-height: 1.3;
+    }
+    table.bf-scale th, table.bf-scale td {
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.55rem;
+      text-align: center;
+    }
+    table.bf-scale th {
+      background: #f1f5f9;
+      font-weight: 700;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+    }
+    table.bf-scale td.evidence { text-align: left; font-weight: 600; color: var(--text); }
+    table.bf-scale td.mono { font-family: var(--mono); font-size: 0.8rem; }
+    table.bf-scale tr.active {
+      background: rgba(15, 118, 110, 0.14);
+      outline: 2px solid rgba(15, 118, 110, 0.45);
+      outline-offset: -2px;
+    }
+    table.bf-scale tr.active td.evidence { color: var(--accent); }
+    table.bf-scale tr.neutral td { color: var(--text-muted); }
+    .bf-scale-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin: 0.4rem 0 0;
+      line-height: 1.35;
+    }
+
     .comm-strip {
       background: linear-gradient(165deg, #1a365d 0%, #2c5282 100%);
       color: #ebf8ff;
@@ -713,6 +760,7 @@ RELEVANT FILES:
         <h3>Bayes factor · say this</h3>
         <div class="bf-hero" id="bf-hero"></div>
         <div id="bf-detail"></div>
+        <div class="bf-scale-wrap" id="bf-scale" aria-label="Bayes factor strength of evidence table"></div>
       </div>
 
       <details class="quiet" id="chi-walk-details">
@@ -868,6 +916,7 @@ RELEVANT FILES:
     freqNotes: document.getElementById("freq-notes"),
     bfHero: document.getElementById("bf-hero"),
     bfDetail: document.getElementById("bf-detail"),
+    bfScale: document.getElementById("bf-scale"),
     posteriorDetails: document.getElementById("posterior-details"),
     posteriorOut: document.getElementById("posterior-out"),
     chiStep: document.getElementById("chi-step"),
@@ -967,6 +1016,68 @@ RELEVANT FILES:
     else if (x >= 3) strength = "moderate";
     else if (bf === 1) return "no preference";
     return favorH1 ? strength + " for unequal rates" : strength + " for parity";
+  }
+
+  /** Lee & Wagenmakers (2013) / Jeffreys ladder as used in Courey & Oswald (2024). */
+  function bfScaleRowKey(bf10) {
+    if (!Number.isFinite(bf10) || bf10 <= 0) return null;
+    if (bf10 === 1) return "eq";
+    if (bf10 > 100) return "h1-extreme";
+    if (bf10 >= 30) return "h1-vstrong";
+    if (bf10 >= 10) return "h1-strong";
+    if (bf10 >= 3) return "h1-moderate";
+    if (bf10 > 1) return "h1-anecdotal";
+    if (bf10 > 1 / 3) return "h0-anecdotal";
+    if (bf10 > 1 / 10) return "h0-moderate";
+    if (bf10 > 1 / 30) return "h0-strong";
+    if (bf10 > 1 / 100) return "h0-vstrong";
+    return "h0-extreme";
+  }
+
+  function renderBfScale(bf10) {
+    if (!els.bfScale) return;
+    const active = bfScaleRowKey(bf10);
+    const rows = [
+      { key: "h1-extreme", bf10: "> 100", evidence: "Extreme evidence for H₁ (unequal rates)", bf01: "< 1/100" },
+      { key: "h1-vstrong", bf10: "30 – 100", evidence: "Very strong evidence for H₁", bf01: "1/100 – 1/30" },
+      { key: "h1-strong", bf10: "10 – 30", evidence: "Strong evidence for H₁", bf01: "1/30 – 1/10" },
+      { key: "h1-moderate", bf10: "3 – 10", evidence: "Moderate evidence for H₁", bf01: "1/10 – 1/3" },
+      { key: "h1-anecdotal", bf10: "1 – 3", evidence: "Anecdotal evidence for H₁", bf01: "1/3 – 1" },
+      { key: "eq", bf10: "1", evidence: "No preference", bf01: "1", neutral: true },
+      { key: "h0-anecdotal", bf10: "1/3 – 1", evidence: "Anecdotal evidence for H₀ (parity)", bf01: "1 – 3" },
+      { key: "h0-moderate", bf10: "1/10 – 1/3", evidence: "Moderate evidence for H₀", bf01: "3 – 10" },
+      { key: "h0-strong", bf10: "1/30 – 1/10", evidence: "Strong evidence for H₀", bf01: "10 – 30" },
+      { key: "h0-vstrong", bf10: "1/100 – 1/30", evidence: "Very strong evidence for H₀", bf01: "30 – 100" },
+      { key: "h0-extreme", bf10: "< 1/100", evidence: "Extreme evidence for H₀ (parity)", bf01: "> 100" }
+    ];
+    const body = rows.map(r => {
+      const cls = [
+        r.key === active ? "active" : "",
+        r.neutral ? "neutral" : ""
+      ].filter(Boolean).join(" ");
+      return `<tr class="${cls}"${r.key === active ? ' aria-current="true"' : ""}>
+        <td class="mono">${r.bf10}</td>
+        <td class="evidence">${r.evidence}${r.key === active ? " ← your result" : ""}</td>
+        <td class="mono">${r.bf01}</td>
+      </tr>`;
+    }).join("");
+    els.bfScale.innerHTML = `
+      <p class="scale-title">Strength of evidence · Jeffreys / Lee &amp; Wagenmakers</p>
+      <table class="bf-scale">
+        <thead>
+          <tr>
+            <th scope="col">BF₁₀</th>
+            <th scope="col">Evidence category</th>
+            <th scope="col">BF₀₁</th>
+          </tr>
+        </thead>
+        <tbody>${body}</tbody>
+      </table>
+      <p class="bf-scale-note">
+        BF₁₀ favors unequal selection rates (H₁); BF₀₁ = 1/BF₁₀ favors parity (H₀).
+        Labels adapted from Lee &amp; Wagenmakers (2013) / Jeffreys (1961) as used in Courey &amp; Oswald (2024).
+        Approximate verbal labels — not a bright legal line.
+      </p>`;
   }
   function computeBF10(n1, h1, n2, h2, alpha) {
     const logNum = logBeta(alpha + h1, alpha + (n1 - h1)) + logBeta(alpha + h2, alpha + (n2 - h2));
@@ -1413,10 +1524,11 @@ RELEVANT FILES:
       <div class="amount">${primaryLabel} = ${fmt(primaryBf, 2)}
         <span style="font-weight:500;color:var(--text-muted);font-size:0.9rem;">(BF₀₁ ${fmt(bf01, 2)} · BF₁₀ ${fmt(bf10, 2)})</span>
       </div>
-      <div class="sub">Educational Beta–binomial — not JASP Gunel–Dickey. Courey &amp; Oswald (2024) categories.</div>`;
+      <div class="sub">Educational Beta–binomial — not JASP Gunel–Dickey. Highlighted row below = your result on the Jeffreys scale.</div>`;
     els.bfDetail.innerHTML = favorsParity
       ? `<div class="flag ok"><strong>Evidence for parity:</strong> ~${fmt(bf01, 1)}× vs unequal rates.</div>`
       : `<div class="flag warn"><strong>Evidence for unequal rates:</strong> ~${fmt(bf10, 1)}× vs parity.</div>`;
+    renderBfScale(bf10);
 
     const gap = rateGapPosterior(d.refN, d.refH, d.cmpN, d.cmpH, d.alpha, 4000);
     els.posteriorOut.innerHTML = `
