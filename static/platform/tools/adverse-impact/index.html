@@ -510,6 +510,55 @@ RELEVANT FILES:
       color: var(--accent);
     }
     details.quiet .inner { margin-top: 0.55rem; }
+    .posterior-density {
+      margin: 0.15rem 0 0.85rem;
+    }
+    .posterior-density .plot-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 0 0 0.4rem;
+    }
+    .posterior-density svg {
+      display: block;
+      width: 100%;
+      max-width: 640px;
+      height: auto;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .posterior-density .caption {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin: 0.5rem 0 0;
+      max-width: 40rem;
+      line-height: 1.45;
+    }
+    .posterior-density .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem 1rem;
+      margin: 0.45rem 0 0;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+    .posterior-density .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .posterior-density .swatch {
+      width: 0.85rem;
+      height: 0.55rem;
+      border-radius: 2px;
+      display: inline-block;
+    }
+    .posterior-density .swatch.cri { background: rgba(15, 118, 110, 0.22); border: 1px solid rgba(15, 118, 110, 0.45); }
+    .posterior-density .swatch.zero { width: 2px; height: 0.7rem; background: #94a3b8; }
+    .posterior-density .swatch.mean { width: 2px; height: 0.7rem; background: var(--accent); }
     .chi-walk-controls {
       display: flex;
       flex-wrap: wrap;
@@ -1091,14 +1140,131 @@ RELEVANT FILES:
   function rateGapPosterior(n1, h1, n2, h2, alpha, draws) {
     const a1 = alpha + h1, b1 = alpha + (n1 - h1);
     const a2 = alpha + h2, b2 = alpha + (n2 - h2);
-    const diffs = new Array(draws);
-    for (let i = 0; i < draws; i++) diffs[i] = sampleBeta(a1, b1) - sampleBeta(a2, b2);
-    diffs.sort((x, y) => x - y);
-    const mean = diffs.reduce((s, v) => s + v, 0) / draws;
+    const samples = new Array(draws);
+    for (let i = 0; i < draws; i++) samples[i] = sampleBeta(a1, b1) - sampleBeta(a2, b2);
+    const sorted = samples.slice().sort((x, y) => x - y);
+    const mean = samples.reduce((s, v) => s + v, 0) / draws;
     return {
-      mean, lo: diffs[Math.floor(0.025 * draws)], hi: diffs[Math.floor(0.975 * draws)],
-      pNeg: diffs.filter(v => v < 0).length / draws
+      mean,
+      lo: sorted[Math.floor(0.025 * draws)],
+      hi: sorted[Math.floor(0.975 * draws)],
+      pNeg: samples.filter(v => v < 0).length / draws,
+      samples
     };
+  }
+
+  /** Gaussian KDE on a 1-D sample (Silverman rule-of-thumb bandwidth). */
+  function kde1d(samples, grid) {
+    const n = samples.length;
+    if (!n) return grid.map(() => 0);
+    const mean = samples.reduce((s, v) => s + v, 0) / n;
+    let varSum = 0;
+    for (let i = 0; i < n; i++) {
+      const d = samples[i] - mean;
+      varSum += d * d;
+    }
+    const sd = Math.sqrt(varSum / Math.max(1, n - 1)) || 0.01;
+    const h = Math.max(0.008, 1.06 * sd * Math.pow(n, -0.2));
+    const inv = 1 / (n * h * Math.SQRT2 * Math.sqrt(Math.PI));
+    const dens = new Array(grid.length);
+    for (let g = 0; g < grid.length; g++) {
+      let s = 0;
+      const x = grid[g];
+      for (let i = 0; i < n; i++) {
+        const u = (x - samples[i]) / h;
+        s += Math.exp(-0.5 * u * u);
+      }
+      dens[g] = s * inv;
+    }
+    return dens;
+  }
+
+  function posteriorDensitySVG(gap) {
+    const samples = gap.samples;
+    const W = 640, H = 228;
+    const pad = { t: 16, r: 16, b: 42, l: 16 };
+    const iw = W - pad.l - pad.r, ih = H - pad.t - pad.b;
+    let xmin = gap.lo, xmax = gap.hi;
+    for (let i = 0; i < samples.length; i++) {
+      if (samples[i] < xmin) xmin = samples[i];
+      if (samples[i] > xmax) xmax = samples[i];
+    }
+    if (xmin > -0.02) xmin = -0.02;
+    if (xmax < 0.02) xmax = 0.02;
+    const padX = 0.08 * (xmax - xmin || 0.1);
+    xmin -= padX;
+    xmax += padX;
+    const nGrid = 160;
+    const grid = new Array(nGrid);
+    for (let i = 0; i < nGrid; i++) grid[i] = xmin + (i / (nGrid - 1)) * (xmax - xmin);
+    const dens = kde1d(samples, grid);
+    let dMax = 1e-9;
+    for (let i = 0; i < dens.length; i++) if (dens[i] > dMax) dMax = dens[i];
+    const xScale = (x) => pad.l + ((x - xmin) / (xmax - xmin)) * iw;
+    const yScale = (d) => pad.t + ih - (d / dMax) * ih;
+
+    const curvePts = grid.map((x, i) => `${xScale(x).toFixed(1)},${yScale(dens[i]).toFixed(1)}`).join(" ");
+
+    const criSeg = [];
+    for (let i = 0; i < nGrid; i++) {
+      if (grid[i] >= gap.lo && grid[i] <= gap.hi) criSeg.push({ x: grid[i], d: dens[i] });
+    }
+    let criPoly = "";
+    if (criSeg.length) {
+      const top = criSeg.map(p => `${xScale(p.x).toFixed(1)},${yScale(p.d).toFixed(1)}`);
+      const bot = [
+        `${xScale(criSeg[criSeg.length - 1].x).toFixed(1)},${yScale(0).toFixed(1)}`,
+        `${xScale(criSeg[0].x).toFixed(1)},${yScale(0).toFixed(1)}`
+      ];
+      criPoly = `<polygon points="${[...top, ...bot].join(" ")}" fill="rgba(15,118,110,0.22)" stroke="none"/>`;
+    }
+
+    const x0 = xScale(0);
+    const xMean = xScale(gap.mean);
+    const nTicks = 5;
+    const ticks = [];
+    for (let i = 0; i < nTicks; i++) {
+      const xv = xmin + (i / (nTicks - 1)) * (xmax - xmin);
+      ticks.push(`
+        <line x1="${xScale(xv).toFixed(1)}" y1="${(pad.t + ih).toFixed(1)}" x2="${xScale(xv).toFixed(1)}" y2="${(pad.t + ih + 4).toFixed(1)}" stroke="#94a3b8"/>
+        <text x="${xScale(xv).toFixed(1)}" y="${(pad.t + ih + 16).toFixed(1)}" text-anchor="middle" font-size="10" fill="#64748b" font-family="IBM Plex Mono, monospace">${(100 * xv).toFixed(0)}</text>`);
+    }
+
+    return `
+      <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Posterior density of selection-rate gap">
+        <title>Posterior density of rate gap (reference − comparison)</title>
+        ${criPoly}
+        <polyline points="${curvePts}" fill="none" stroke="#0f766e" stroke-width="2" stroke-linejoin="round"/>
+        <line x1="${x0.toFixed(1)}" y1="${pad.t}" x2="${x0.toFixed(1)}" y2="${(pad.t + ih).toFixed(1)}" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="${xMean.toFixed(1)}" y1="${pad.t}" x2="${xMean.toFixed(1)}" y2="${(pad.t + ih).toFixed(1)}" stroke="#0f766e" stroke-width="1.75"/>
+        <line x1="${pad.l}" y1="${(pad.t + ih).toFixed(1)}" x2="${(pad.l + iw).toFixed(1)}" y2="${(pad.t + ih).toFixed(1)}" stroke="#cbd5e1"/>
+        ${ticks.join("")}
+        <text x="${(pad.l + iw / 2).toFixed(1)}" y="${(H - 4).toFixed(1)}" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="IBM Plex Sans, sans-serif">Gap (pts) · reference − comparison</text>
+      </svg>`;
+  }
+
+  function renderPosteriorGap(gap) {
+    const pAdv = 1 - gap.pNeg; // mass with gap > 0 ≈ adverse direction for comparison group
+    const pParitySide = gap.pNeg;
+    const capt = pAdv >= 0.5
+      ? `About <strong>${fmt(100 * pAdv, 0)}%</strong> of the posterior mass sits above 0 (reference rate higher than comparison — the adverse-impact direction for the comparison group). `
+      : `About <strong>${fmt(100 * pParitySide, 0)}%</strong> of the posterior mass sits at or below 0 (comparison rate ≥ reference — toward parity or the other way). `;
+    return `
+      <div class="posterior-density">
+        <p class="plot-title">Posterior density · rate gap</p>
+        ${posteriorDensitySVG(gap)}
+        <div class="legend">
+          <span><i class="swatch cri"></i> 95% CrI</span>
+          <span><i class="swatch zero"></i> 0 (parity)</span>
+          <span><i class="swatch mean"></i> Posterior mean</span>
+        </div>
+        <p class="caption">${capt}Educational Beta posteriors on rates — not a courtroom finding.</p>
+      </div>
+      <div class="metric-row">
+        ${metricHTML("Posterior mean gap", fmt(100 * gap.mean, 1) + " pts")}
+        ${metricHTML("95% CrI", fmt(100 * gap.lo, 1) + " to " + fmt(100 * gap.hi, 1) + " pts")}
+        ${metricHTML("P(gap &lt; 0)", fmt(100 * gap.pNeg, 0) + "%")}
+      </div>`;
   }
   function fmt(x, digits) {
     if (!Number.isFinite(x)) return "—";
@@ -1502,11 +1668,7 @@ RELEVANT FILES:
     renderBfScale(bf10);
 
     const gap = rateGapPosterior(d.refN, d.refH, d.cmpN, d.cmpH, d.alpha, 4000);
-    els.posteriorOut.innerHTML = `
-      <div class="metric-row">
-        ${metricHTML("Posterior mean gap", fmt(100 * gap.mean, 1) + " pts")}
-        ${metricHTML("95% CrI", fmt(100 * gap.lo, 1) + " to " + fmt(100 * gap.hi, 1) + " pts")}
-      </div>`;
+    els.posteriorOut.innerHTML = renderPosteriorGap(gap);
 
     els.commStrip.innerHTML = `
       <p class="kicker">Say this · hiring funnel (follow-on)</p>
