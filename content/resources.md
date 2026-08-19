@@ -49,7 +49,7 @@ Primary classroom screen: firm composition vs community availability (χ² goodn
 
 ### [Utility Analysis (UA)](/ua/home/)
 
-BayouPAL-hosted interactive tools for training, staffing, and business case analysis. Open the Utility Analysis apps portal to choose a calculator.
+Interactive tools for training, staffing, and business case analysis. The contingent / part-time worker calculator (Fisher &amp; Connelly, 2017) runs on this site; open the portal to choose a calculator.
 
 ---
 

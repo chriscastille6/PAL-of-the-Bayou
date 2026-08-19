@@ -1,0 +1,406 @@
+<!--
+File location: static/ua/fisher-2017/index.html
+What this file does: Browser-side Fisher & Connelly (2017) contingent/part-time worker utility calculator
+Why this file exists: Host the part-time UA tool on Netlify after the campus Shiny host went away
+RELEVANT FILES: static/ua/home/index.html, Utility Analysis Research/fisher_connelly_2017_app.R, content/resources.md
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contingent Workers Utility | People Analytics Lab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root { --nicholls-red: #AE132A; --nicholls-gray: #72808A; }
+    .nicholls-red { background-color: var(--nicholls-red); }
+    .nicholls-red-text { color: var(--nicholls-red); }
+    .nicholls-gray-text { color: var(--nicholls-gray); }
+    .brand-gradient { background: linear-gradient(135deg, #AE132A 0%, #dc2626 100%); }
+    input[type="range"] { accent-color: #AE132A; }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="max-w-5xl mx-auto px-4 py-10">
+    <div class="text-center mb-8 no-print">
+      <a href="/ua/home/" class="inline-flex items-center text-gray-700 hover:text-gray-900">
+        <div class="w-10 h-10 brand-gradient rounded-xl flex items-center justify-center mr-3 shadow-md">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-join="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <div class="text-left">
+          <span class="text-xl font-bold nicholls-red-text block">People Analytics Lab</span>
+          <span class="text-sm nicholls-gray-text block">of the Bayou</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6 sm:p-8 mb-6">
+      <p class="text-xs text-gray-500 mb-2 uppercase tracking-wide">Utility Analysis · Fisher &amp; Connelly (2017)</p>
+      <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Part-time / contingent worker utility</h1>
+      <p class="text-gray-600 mb-4 max-w-3xl">
+        Compare annual <strong>net value</strong> of permanent employees, independent contractors (direct or agent-of-record), and temporary workers.
+        Defaults follow Fisher and Connelly (2017). Nothing is uploaded or stored.
+      </p>
+      <p class="text-sm text-gray-500 mb-6">
+        Net value = service value − (wages + benefits + training + turnover).
+        Classroom model only — not legal, tax, or staffing advice.
+      </p>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6" id="headlineCards"></div>
+
+      <nav class="flex flex-wrap gap-2 mb-6 no-print text-sm" aria-label="Sections">
+        <a class="px-3 py-1 rounded-full border border-gray-300 hover:bg-gray-50" href="#paper">Paper baseline</a>
+        <a class="px-3 py-1 rounded-full border border-gray-300 hover:bg-gray-50" href="#strategies">Six strategies</a>
+        <a class="px-3 py-1 rounded-full border border-gray-300 hover:bg-gray-50" href="#scenario">Your scenario</a>
+      </nav>
+
+      <section id="paper" class="mb-10">
+        <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 mb-3">Paper baseline (with turnover)</h2>
+        <p class="text-sm text-gray-600 mb-4">Published comparison used in the original Shiny app. Direct ICs have the highest net value; temporary workers go negative once turnover is counted.</p>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm" id="paperTable"></table>
+        </div>
+      </section>
+
+      <section id="strategies" class="mb-10">
+        <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 mb-3">Six organizational strategies</h2>
+        <label for="strategySelect" class="block text-sm font-medium text-gray-700 mb-1">Strategy</label>
+        <select id="strategySelect" class="w-full sm:w-96 px-3 py-2 border border-gray-300 rounded-lg mb-4"></select>
+        <div id="strategyCopy" class="text-sm text-gray-700 mb-4 space-y-2"></div>
+        <div class="relative h-64 mb-3"><canvas id="strategyChart"></canvas></div>
+        <p class="text-sm font-medium text-gray-900" id="strategyTotal"></p>
+      </section>
+
+      <section id="scenario">
+        <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 mb-4">Custom scenario</h2>
+        <p class="text-sm text-gray-600 mb-4">
+          Permanent salary is fixed at $47,295 (paper). Sliders scale contingent wages, benefits, and a shared turnover rate.
+          Service value for contingent roles uses the paper multiplier 1.754 × wage.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label for="tempWage" class="flex justify-between text-sm font-medium text-gray-700">
+              <span>Temporary wage (% of permanent)</span><span id="tempWageLbl">84%</span>
+            </label>
+            <input type="range" id="tempWage" min="60" max="120" step="5" value="84" class="w-full">
+          </div>
+          <div>
+            <label for="icWage" class="flex justify-between text-sm font-medium text-gray-700">
+              <span>IC wage (% of permanent)</span><span id="icWageLbl">127%</span>
+            </label>
+            <input type="range" id="icWage" min="100" max="150" step="5" value="127" class="w-full">
+          </div>
+          <div>
+            <label for="turnover" class="flex justify-between text-sm font-medium text-gray-700">
+              <span>Annual turnover rate</span><span id="turnoverLbl">30%</span>
+            </label>
+            <input type="range" id="turnover" min="10" max="50" step="5" value="30" class="w-full">
+          </div>
+          <div>
+            <label for="tempBen" class="flex justify-between text-sm font-medium text-gray-700">
+              <span>Temporary benefits (% of wage)</span><span id="tempBenLbl">27%</span>
+            </label>
+            <input type="range" id="tempBen" min="0" max="30" step="5" value="27" class="w-full">
+          </div>
+          <div>
+            <label for="icBen" class="flex justify-between text-sm font-medium text-gray-700">
+              <span>IC benefits (% of wage)</span><span id="icBenLbl">5%</span>
+            </label>
+            <input type="range" id="icBen" min="0" max="10" step="1" value="5" class="w-full">
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 no-print mb-6">
+          <button type="button" id="resetBtn" class="px-6 py-3 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50">Reset to paper values</button>
+          <button type="button" class="px-6 py-3 rounded-lg nicholls-red text-white font-medium hover:opacity-90" onclick="window.print()">Print / save PDF</button>
+        </div>
+        <div class="relative h-72 mb-4"><canvas id="scenarioChart"></canvas></div>
+        <p class="text-sm text-gray-800 mb-4" id="scenarioNote"></p>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm" id="scenarioTable"></table>
+        </div>
+      </section>
+    </div>
+
+    <p class="text-xs text-gray-500 max-w-3xl">
+      Fisher, S. L., &amp; Connelly, C. E. (2017). Lower cost or just lower value? Modeling the organizational costs and benefits of contingent work.
+      <em>Academy of Management Discoveries, 3</em>(2), 165–186.
+      <a class="underline" href="https://doi.org/10.5465/amd.2015.0119">https://doi.org/10.5465/amd.2015.0119</a>
+    </p>
+    <p class="text-xs text-gray-400 mt-2 no-print"><a class="underline" href="/ua/home/">← UA apps portal</a> · <a class="underline" href="/resources/">Resources</a></p>
+  </div>
+
+  <script>
+    const PERM_SALARY = 47295;
+    const PERM_VALUE = 82955;
+    const PERM_BENEFITS = 13999;
+    const VALUE_MULT = 1.754;
+    const TRAINING = { perm: 1887, icDirect: 201, icAgent: 201, temp: 172 };
+
+    const PAPER = [
+      { type: "Permanent", value: 82955, costsNoTo: 63181, netNoTo: 19774, turnover: 13243, costsTo: 76424, netTo: 6532 },
+      { type: "IC, direct", value: 105768, costsNoTo: 60502, netNoTo: 45266, turnover: 18090, costsTo: 78592, netTo: 27176 },
+      { type: "IC, AOR", value: 105768, costsNoTo: 63518, netNoTo: 42250, turnover: 19899, costsTo: 83417, netTo: 22351 },
+      { type: "Temporary", value: 69683, costsNoTo: 50969, netNoTo: 18714, turnover: 23837, costsTo: 74806, netTo: -5093 }
+    ];
+
+    const STRATEGIES = {
+      NormalCo: {
+        title: "NormalCo: Baseline",
+        description: "Uses contingent workers as needed for staffing fluctuations (core–periphery). Average wages, benefits, and training; all ICs require an agent of record. Average performance, OCBs, and turnover.",
+        traits: ["Average wages and benefits", "AOR for all ICs", "Responds to demand swings"],
+        rows: [
+          { type: "Permanent", n: 27, per: 6532, total: 176353 },
+          { type: "IC", n: 3, per: 22351, total: 67054 },
+          { type: "Temporary", n: 3, per: -4779, total: -14338 }
+        ],
+        workforce: 229068
+      },
+      MegaCo: {
+        title: "MegaCo: Low-cost",
+        description: "Uses contingent workers wherever possible to save money. Low wages, benefits, and training for everyone. Low performance and OCBs; high turnover in all groups.",
+        traits: ["Cost minimization", "Minimal training", "High turnover accepted"],
+        rows: [
+          { type: "Permanent", n: 25, per: -26819, total: -670482 },
+          { type: "IC", n: 1, per: 10275, total: 10274 },
+          { type: "Temporary", n: 7, per: -33592, total: -235145 }
+        ],
+        workforce: -895352
+      },
+      "Temp-to-PermCo": {
+        title: "Temp-to-PermCo: Extended screening",
+        description: "Contingent work as a probationary path into permanent jobs (common where skilled workers are scarce). High investment, performance, and OCBs for permanents; low turnover.",
+        traits: ["High investment in permanents", "Temp-to-perm pipeline", "Low turnover"],
+        rows: [
+          { type: "Permanent", n: 26, per: 42163, total: 1096232 },
+          { type: "IC", n: 1, per: 80607, total: 80607 },
+          { type: "Temporary", n: 6, per: 15473, total: 92839 }
+        ],
+        workforce: 1269678
+      },
+      "CoreCompCo-A": {
+        title: "CoreCompCo-A: Direct IC core–periphery",
+        description: "Noncore roles staffed mainly with direct ICs. Core employees keep average conditions and job security; contingents have lower wages, training, performance, and OCBs, with high turnover.",
+        traits: ["Direct-hire ICs", "Job security for core", "Lower investment in contingents"],
+        rows: [
+          { type: "Permanent", n: 3, per: 6532, total: 19595 },
+          { type: "IC", n: 7, per: 20103, total: 140722 },
+          { type: "Temporary", n: 23, per: -32147, total: -739382 }
+        ],
+        workforce: -579065
+      },
+      "CoreCompCo-B": {
+        title: "CoreCompCo-B: Agent IC core–periphery",
+        description: "Same mix as CoreCompCo-A, but all contractors go through an agent of record — showing the cost of AOR fees versus direct IC hire.",
+        traits: ["AOR for all ICs", "Higher IC costs from fees", "Same performance pattern as A"],
+        rows: [
+          { type: "Permanent", n: 3, per: 6532, total: 19595 },
+          { type: "IC", n: 7, per: 33953, total: 237671 },
+          { type: "Temporary", n: 23, per: -32147, total: -739382 }
+        ],
+        workforce: -481860
+      },
+      BlendedCo: {
+        title: "BlendedCo: No strategy",
+        description: "No planned contingent strategy; mixed workforce. Permanents feel less job security, so OCBs and performance fall. Average pay and training for everyone.",
+        traits: ["No a priori strategy", "Mixed staffing", "Lower OCBs from insecurity"],
+        rows: [
+          { type: "Permanent", n: 24, per: -24170, total: -580081 },
+          { type: "IC", n: 3, per: 54559, total: 163676 },
+          { type: "Temporary", n: 6, per: 4130, total: 24779 }
+        ],
+        workforce: -391726
+      }
+    };
+
+    const money = (n) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+    const moneyK = (n) => "$" + (n / 1000).toFixed(0) + "K";
+
+    function scenarioRows() {
+      const tempM = +document.getElementById("tempWage").value / 100;
+      const icM = +document.getElementById("icWage").value / 100;
+      const to = +document.getElementById("turnover").value / 100;
+      const tempB = +document.getElementById("tempBen").value / 100;
+      const icB = +document.getElementById("icBen").value / 100;
+      const tempWage = PERM_SALARY * tempM;
+      const icWage = PERM_SALARY * icM;
+      const tempValue = tempWage * VALUE_MULT;
+      const icValue = icWage * VALUE_MULT;
+      const icBen = icWage * icB;
+      const rows = [
+        {
+          type: "Permanent",
+          value: PERM_VALUE,
+          wages: PERM_SALARY,
+          benefits: PERM_BENEFITS,
+          training: TRAINING.perm,
+          turnover: PERM_SALARY * to
+        },
+        {
+          type: "IC Direct",
+          value: icValue,
+          wages: icWage,
+          benefits: icBen,
+          training: TRAINING.icDirect,
+          turnover: icWage * to * 0.3
+        },
+        {
+          type: "IC Agent",
+          value: icValue,
+          wages: icWage,
+          benefits: icBen * 1.05,
+          training: TRAINING.icAgent,
+          turnover: icWage * to * 0.3 * 1.1
+        },
+        {
+          type: "Temporary",
+          value: tempValue,
+          wages: tempWage,
+          benefits: tempWage * tempB,
+          training: TRAINING.temp,
+          turnover: tempWage * to * 2
+        }
+      ];
+      return rows.map((r) => {
+        const total = r.wages + r.benefits + r.training + r.turnover;
+        return { ...r, total, net: r.value - total };
+      });
+    }
+
+    function renderTable(el, headers, rows) {
+      el.innerHTML = "<thead><tr>" + headers.map((h) =>
+        "<th class='text-left py-2 pr-4 border-b font-semibold text-gray-700'>" + h + "</th>"
+      ).join("") + "</tr></thead><tbody>" + rows.map((cells) =>
+        "<tr>" + cells.map((c, i) =>
+          "<td class='py-2 pr-4 border-b border-gray-100 " + (i === 0 ? "font-medium" : "tabular-nums") + "'>" + c + "</td>"
+        ).join("") + "</tr>"
+      ).join("") + "</tbody>";
+    }
+
+    const paperTable = document.getElementById("paperTable");
+    renderTable(paperTable,
+      ["Worker type", "Service value", "Costs (no TO)", "Turnover", "Total costs", "Net value"],
+      PAPER.map((r) => [r.type, money(r.value), money(r.costsNoTo), money(r.turnover), money(r.costsTo), money(r.netTo)])
+    );
+
+    document.getElementById("headlineCards").innerHTML = PAPER.map((r) => {
+      const pos = r.netTo >= 0;
+      return "<div class='rounded-lg p-3 text-white " + (pos ? "bg-emerald-700" : "bg-red-700") + "'>" +
+        "<p class='text-xs opacity-90'>" + r.type + "</p>" +
+        "<p class='text-lg font-bold tabular-nums'>" + money(r.netTo) + "</p>" +
+        "<p class='text-[11px] opacity-80'>net with turnover</p></div>";
+    }).join("");
+
+    const strategySelect = document.getElementById("strategySelect");
+    Object.keys(STRATEGIES).forEach((k) => {
+      const opt = document.createElement("option");
+      opt.value = k;
+      opt.textContent = STRATEGIES[k].title;
+      strategySelect.appendChild(opt);
+    });
+
+    let strategyChart, scenarioChart;
+
+    function renderStrategy() {
+      const s = STRATEGIES[strategySelect.value];
+      document.getElementById("strategyCopy").innerHTML =
+        "<p>" + s.description + "</p><ul class='list-disc pl-5'>" +
+        s.traits.map((t) => "<li>" + t + "</li>").join("") + "</ul>";
+      document.getElementById("strategyTotal").textContent =
+        "Workforce total net value: " + money(s.workforce) + " (paper Table 8 simulation).";
+      const data = {
+        labels: s.rows.map((r) => r.type + " (n=" + r.n + ")"),
+        datasets: [{
+          label: "Total net value",
+          data: s.rows.map((r) => r.total),
+          backgroundColor: s.rows.map((r) => r.total >= 0 ? "rgba(5,150,105,0.75)" : "rgba(185,28,28,0.75)")
+        }]
+      };
+      if (strategyChart) {
+        strategyChart.data = data;
+        strategyChart.update();
+      } else {
+        strategyChart = new Chart(document.getElementById("strategyChart"), {
+          type: "bar",
+          data,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { ticks: { callback: (v) => moneyK(v) } } }
+          }
+        });
+      }
+    }
+
+    function renderScenario() {
+      document.getElementById("tempWageLbl").textContent = document.getElementById("tempWage").value + "%";
+      document.getElementById("icWageLbl").textContent = document.getElementById("icWage").value + "%";
+      document.getElementById("turnoverLbl").textContent = document.getElementById("turnover").value + "%";
+      document.getElementById("tempBenLbl").textContent = document.getElementById("tempBen").value + "%";
+      document.getElementById("icBenLbl").textContent = document.getElementById("icBen").value + "%";
+
+      const rows = scenarioRows();
+      const best = rows.reduce((a, b) => a.net > b.net ? a : b);
+      const worst = rows.reduce((a, b) => a.net < b.net ? a : b);
+      document.getElementById("scenarioNote").innerHTML =
+        "<strong>Best:</strong> " + best.type + " at " + money(Math.round(best.net)) +
+        ". <strong>Worst:</strong> " + worst.type + " at " + money(Math.round(worst.net)) +
+        ". Gap: " + money(Math.round(best.net - worst.net)) + ".";
+
+      renderTable(document.getElementById("scenarioTable"),
+        ["Worker type", "Service value", "Wages", "Benefits", "Training", "Turnover", "Total costs", "Net value"],
+        rows.map((r) => [r.type, money(Math.round(r.value)), money(Math.round(r.wages)), money(Math.round(r.benefits)),
+          money(Math.round(r.training)), money(Math.round(r.turnover)), money(Math.round(r.total)), money(Math.round(r.net))])
+      );
+
+      const data = {
+        labels: rows.map((r) => r.type),
+        datasets: [{
+          label: "Net value",
+          data: rows.map((r) => Math.round(r.net)),
+          backgroundColor: rows.map((r) => r.net >= 0 ? "rgba(5,150,105,0.75)" : "rgba(185,28,28,0.75)")
+        }]
+      };
+      if (scenarioChart) {
+        scenarioChart.data = data;
+        scenarioChart.update();
+      } else {
+        scenarioChart = new Chart(document.getElementById("scenarioChart"), {
+          type: "bar",
+          data,
+          options: {
+            indexAxis: "y",
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { x: { ticks: { callback: (v) => money(v) } } }
+          }
+        });
+      }
+    }
+
+    strategySelect.addEventListener("change", renderStrategy);
+    ["tempWage", "icWage", "turnover", "tempBen", "icBen"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", renderScenario);
+    });
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      document.getElementById("tempWage").value = 84;
+      document.getElementById("icWage").value = 127;
+      document.getElementById("turnover").value = 30;
+      document.getElementById("tempBen").value = 27;
+      document.getElementById("icBen").value = 5;
+      renderScenario();
+    });
+
+    renderStrategy();
+    renderScenario();
+  </script>
+</body>
+</html>
