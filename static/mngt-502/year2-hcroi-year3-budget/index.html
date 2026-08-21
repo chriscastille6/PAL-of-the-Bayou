@@ -1,0 +1,973 @@
+<!--
+File location: Simulation/HCROI_Year2_Year3/index.html
+What this file does: EMBA Year 3 budget pitch — drop Year 1 + Year 2 HCROI HTML, preload the two-year story, shop a zero-based Year 3 ask
+Why this file exists: Final presentation is Years 1–2 descriptive + Year 3 goals + Year 3 budget ask (not a Year 2 budget exercise)
+Tech stack: HTML + vanilla JS — FileReader only; nothing is uploaded or stored on a server
+RELEVANT FILES:
+  - Simulation/HCROI_After_Year1/scripts/build_hcroi_draft_reports.py (starter JSON in Canvas briefs)
+  - Website/static/mngt-502/year2-hcroi-year3-budget/
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Year 3 budget pitch | MNGT 502 | People Analytics Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #AE132A;
+      --ink: #1e293b;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --paper: #f8fafc;
+      --panel: #fff;
+      --soft: #fef2f2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Source Sans 3", "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #f1f5f9 0%, var(--paper) 40%);
+      color: var(--ink);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 1.5rem 1.15rem 4rem; }
+    h1 { font-size: 1.75rem; color: var(--red); line-height: 1.25; }
+    h2 { font-size: 1.12rem; margin-bottom: .3rem; }
+    h3 { font-size: .95rem; margin: .7rem 0 .3rem; }
+    .kicker { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+    .lede { color: var(--muted); margin: .4rem 0 1rem; max-width: 44rem; }
+    .card {
+      background: var(--panel); border: 1px solid var(--line); border-radius: .75rem;
+      padding: 1.15rem 1.25rem; margin-bottom: 1rem;
+    }
+    .note { font-size: .86rem; color: var(--muted); margin: .3rem 0 .65rem; }
+    .warn { font-size: .86rem; color: #92400e; background: #fffbeb; border: 1px solid #fde68a; border-radius: .5rem; padding: .55rem .7rem; margin: .5rem 0; }
+    .ok { color: #047857; }
+    .over { color: #b91c1c; font-weight: 700; }
+    .disclaimer {
+      background: #fff7ed; border: 1px solid #fdba74; border-left: 4px solid var(--red);
+      border-radius: .6rem; padding: .85rem 1rem; margin-bottom: 1rem;
+    }
+    .disclaimer h2 { font-size: 1rem; color: var(--red); }
+    .drop {
+      border: 2px dashed #cbd5e1; border-radius: .7rem; padding: 1.1rem 1rem; text-align: center;
+      background: #f8fafc; margin: .5rem 0;
+    }
+    .drop.hot { border-color: var(--red); background: var(--soft); }
+    .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin: .5rem 0; }
+    .chip {
+      font-size: .78rem; font-weight: 600; padding: .2rem .55rem; border-radius: 999px;
+      border: 1px solid var(--line); background: #fff; color: var(--muted);
+    }
+    .chip.on { border-color: #047857; color: #047857; background: #ecfdf5; }
+    label { display: block; font-size: .85rem; font-weight: 600; margin: .4rem 0 .15rem; }
+    input[type=number], input[type=text], select, textarea {
+      width: 100%; border: 1px solid #cbd5e1; border-radius: .5rem; padding: .45rem .65rem; font: inherit; background: #fff;
+    }
+    textarea { min-height: 4.2rem; resize: vertical; }
+    input:focus, textarea:focus, select:focus { outline: 2px solid rgba(174,19,42,.35); border-color: var(--red); }
+    table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    th, td { padding: .4rem .45rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+    th { color: #475569; font-size: .72rem; text-transform: uppercase; letter-spacing: .03em; }
+    td.num, th.num { text-align: right; font-family: "JetBrains Mono", monospace; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; }
+    .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: .5rem; margin: .55rem 0; }
+    .kpi { border-left: 4px solid var(--red); background: var(--soft); border-radius: 0 .5rem .5rem 0; padding: .6rem .75rem; }
+    .kpi .lbl { font-size: .68rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+    .kpi .val { font-size: 1.15rem; font-weight: 700; }
+    .btn {
+      background: var(--red); color: #fff; border: 0; border-radius: .5rem; padding: .5rem .9rem;
+      font-weight: 600; cursor: pointer; margin: .2rem .3rem .2rem 0;
+    }
+    .btn.ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+    .choice { display: flex; gap: .5rem; align-items: flex-start; margin: .22rem 0; font-size: .88rem; font-weight: 400; }
+    .choice input { width: auto; margin-top: .2rem; }
+    .how { font-size: .75rem; color: var(--muted); font-weight: 400; }
+    details { margin-top: .55rem; }
+    summary { cursor: pointer; font-weight: 600; }
+    .bars { display: flex; height: 22px; border-radius: .35rem; overflow: hidden; background: #e2e8f0; margin: .4rem 0 .2rem; }
+    .bars span { display: block; height: 100%; }
+    .legend { display: flex; flex-wrap: wrap; gap: .45rem .8rem; font-size: .75rem; color: var(--muted); }
+    .swatch { display: inline-block; width: .7rem; height: .7rem; border-radius: .15rem; margin-right: .25rem; vertical-align: -1px; }
+    @media (max-width: 800px) {
+      .grid-2, .grid-4 { grid-template-columns: 1fr 1fr; }
+    }
+    @media print {
+      .btn, .no-print, .drop { display: none !important; }
+      body { background: #fff; }
+      .card, .disclaimer { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kicker">MNGT 502 · Executive MBA · Year 3 budget pitch</p>
+  <h1>Two-year story → Year 3 ask</h1>
+  <p class="lede">Drop your Canvas Year 1 and Year 2 HCROI HTML. Both stay in this browser. The two-year record preloads so you can name Year 3 targets and ask only for the staffing, pay, training, and programs those targets require.</p>
+
+  <aside class="disclaimer">
+    <h2>Do not pitch HCROI alone</h2>
+    <p>HCROI is one language for the ask. Short-term HCROI can trade off against advantage in the talent marketplace (Wright, 2008; HPWS / fit). Cutting training or programs to inflate the ratio can make you worse at hiring, keeping, and developing people.</p>
+  </aside>
+
+  <section class="card" id="upload">
+    <h2>1 · Load Year 1 and Year 2</h2>
+    <p class="note">Use the Canvas HTML briefs for your sim firm (group-restricted). Parsing is local — nothing is sent to a server. Firm nickname is kept; the original filename is ignored.</p>
+    <div class="drop no-print" id="dropzone">
+      <p><strong>Drop both HTML files here</strong>, or choose them together.</p>
+      <p class="note" style="margin:.35rem 0 0">Year 1 = Q1–Q4 brief · Year 2 = Q5–Q8 brief. We sort them automatically.</p>
+      <input type="file" id="starterFiles" accept=".html,.htm,.json,text/html,application/json" multiple style="margin-top:.55rem">
+    </div>
+    <div class="chips">
+      <span class="chip" id="chipY1">Year 1 not loaded</span>
+      <span class="chip" id="chipY2">Year 2 not loaded</span>
+    </div>
+    <div id="starterStatus" class="note">No reports yet. You can still load the synthetic demo.</div>
+    <p class="no-print">
+      <button class="btn" type="button" id="btnDemo">Load synthetic demo</button>
+      <button class="btn ghost" type="button" id="btnClear">Clear</button>
+    </p>
+    <div id="story"></div>
+  </section>
+
+  <section class="card" id="goals">
+    <h2>2 · Year 3 targets</h2>
+    <p class="note">Zero-based budgeting starts here, not with the $1.4M ceiling. Write what you are trying to do. The shopping list below should only pay for these targets.</p>
+    <div class="grid-2">
+      <div>
+        <label for="goalStaff">Staffing / production</label>
+        <textarea id="goalStaff" placeholder="e.g. Staff Q9–Q12 from the internal pipeline; keep Year 2 promotion rates; no freeze that forces outside L3+ hires."></textarea>
+      </div>
+      <div>
+        <label for="goalPay">Compensation and benefits</label>
+        <textarea id="goalPay" placeholder="e.g. Close the benefits gap vs rivals. No new across-the-board wage round if Year 1–2 already bought wages."></textarea>
+      </div>
+      <div>
+        <label for="goalTrain">Training and development</label>
+        <textarea id="goalTrain" placeholder="e.g. Hold quality and safety. Pay the NH/P floor on every hire/promote, plus safety / quality / manager lines."></textarea>
+      </div>
+      <div>
+        <label for="goalOther">Talent marketplace / HCROI stance</label>
+        <textarea id="goalOther" placeholder="e.g. Do not maximize HCROI. Accept a held-rate ratio near $1.00 if the package helps us compete for talent."></textarea>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="shop">
+    <h2>3 · What you will pay for in Year 3</h2>
+    <p class="note">Hiring is computed from your loaded staffing strategy × Year 3 units. Everything else is opt-in. Default is off — that is the zero-based starting point, including programs you already ran in Years 1–2 if you mean to keep them.</p>
+
+    <h3>Production (sets the staffing ask)</h3>
+    <p class="how">Replace these units with this year’s production message when it posts. L1 need = units ÷ productivity. L2–L5 default to end-of-Year-2 headcount.</p>
+    <div class="grid-4" id="y3Demand"></div>
+    <div class="grid-2" style="margin-top:.5rem">
+      <div>
+        <label for="y3prod">Year 3 productivity (units / employee)</label>
+        <input type="number" id="y3prod" value="225" min="1" step="1">
+      </div>
+      <div>
+        <label>L5–L2 Year 3 targets</label>
+        <div class="grid-4" id="targetL25"></div>
+      </div>
+    </div>
+    <div class="kpis" id="projKpis"></div>
+    <div id="projTable" style="overflow-x:auto"></div>
+    <details>
+      <summary>Staffing rates used for Year 3 (average of Year 2 quarters)</summary>
+      <p class="how">P(exit) = resignations ÷ beginning · P(promote) = promotions out ÷ beginning · P(stay) = the rest. Edit only if Year 3 policy will differ.</p>
+      <div id="tpmAvg"></div>
+      <div id="tpmEdit" style="margin-top:.5rem"></div>
+    </details>
+
+    <h3>Compensation and benefits</h3>
+    <p class="how">The increment hits the HR budget <strong>once</strong>, in the quarter it takes effect (× that quarter’s payroll). After that it lives in unit labor cost, not as a repeating HR line.</p>
+    <div class="grid-2">
+      <div>
+        <label for="benStart">Benefits take effect in</label>
+        <select id="benStart">
+          <option value="Q9" selected>Q9</option>
+          <option value="Q10">Q10</option>
+          <option value="Q11">Q11</option>
+          <option value="Q12">Q12</option>
+        </select>
+      </div>
+      <div>
+        <label for="wageBumpQ">Wage-increase charge (optional)</label>
+        <select id="wageBumpQ">
+          <option value="Q9" selected>Q9</option>
+          <option value="Q10">Q10</option>
+          <option value="Q11">Q11</option>
+          <option value="Q12">Q12</option>
+        </select>
+        <input type="number" id="wageBump" value="0" min="0" step="1000" placeholder="Dollar charge that quarter" style="margin-top:.35rem">
+      </div>
+    </div>
+    <div class="grid-2">
+      <div>
+        <h3>Additional days</h3>
+        <div id="benDays"></div>
+        <h3>Retirement</h3>
+        <div id="benRetire"></div>
+      </div>
+      <div>
+        <h3>Health</h3>
+        <div id="benHealth"></div>
+        <h3>Add-ons</h3>
+        <div id="benAdd"></div>
+      </div>
+    </div>
+
+    <h3>Training (annual amounts, split across Q9–Q12)</h3>
+    <p class="how">NH/P training is the floor from hires + promotions and cannot go below that. Each extra line caps at $80,000 per quarter. Enter the Year 3 total; we split it evenly so you can see ceiling pressure. Open the details if you need to time a quarter differently.</p>
+    <div class="grid-2">
+      <div>
+        <label for="mgrYear">Manager / supervisor training, Year 3 total ($)</label>
+        <input type="number" id="mgrYear" value="0" min="0" step="1000">
+      </div>
+      <div>
+        <label for="safetyYear">Safety training, Year 3 total ($)</label>
+        <input type="number" id="safetyYear" value="0" min="0" step="1000">
+      </div>
+      <div>
+        <label for="qualityYear">Quality training, Year 3 total ($)</label>
+        <input type="number" id="qualityYear" value="0" min="0" step="1000">
+      </div>
+      <div>
+        <label for="nhpExtraYear">Extra above the NH/P floor, Year 3 total ($)</label>
+        <input type="number" id="nhpExtraYear" value="0" min="0" step="1000">
+      </div>
+    </div>
+
+    <h3>Programs (on for all of Year 3, or off)</h3>
+    <p class="how">Charged every quarter the program is on. Check only what a Year 3 target requires — including programs you intend to keep.</p>
+    <p class="no-print">
+      <button class="btn ghost" type="button" id="btnHpws">Turn on participation, grievance, orientation, and PA</button>
+    </p>
+    <div id="progInputs"></div>
+  </section>
+
+  <section class="card" id="ask">
+    <h2>4 · Year 3 budget ask</h2>
+    <p class="note">This is the number you take to the presentation. Headroom under the ceiling is allowed — you are not required to spend $1.4M. Red means over the sim constraint ($1,000 over in a quarter → 1 project point).</p>
+    <div class="grid-2">
+      <div>
+        <label for="qBudgetCap">Quarterly HR ceiling ($)</label>
+        <input type="number" id="qBudgetCap" value="350000" min="0" step="1000">
+      </div>
+      <div>
+        <label for="yBudgetCap">Annual HR ceiling ($)</label>
+        <input type="number" id="yBudgetCap" value="1400000" min="0" step="1000">
+      </div>
+    </div>
+    <div class="kpis" id="budgetKpis"></div>
+    <div id="mixBar"></div>
+    <div id="budgetTable"></div>
+    <div id="constraintNotes"></div>
+    <label for="talentPitch">Talent marketplace argument (prints with the proposal)</label>
+    <textarea id="talentPitch" placeholder="How does this package help you compete for talent — not just move HCROI? Who are you trying to attract or keep?"></textarea>
+    <p class="no-print" style="margin-top:.7rem">
+      <button class="btn" type="button" id="btnPrint">Print / save PDF</button>
+      <button class="btn ghost" type="button" id="btnJson">Download JSON (local file)</button>
+    </p>
+  </section>
+</div>
+
+<script>
+(function () {
+  var LEVELS = ["5", "4", "3", "2", "1"];
+  var Y1Q = ["Q1", "Q2", "Q3", "Q4"];
+  var Y2Q = ["Q5", "Q6", "Q7", "Q8"];
+  var Y3Q = ["Q9", "Q10", "Q11", "Q12"];
+  var HIRE_COST = { "5": 15000, "4": 12000, "3": 10000, "2": 7000, "1": 2000 };
+  var TRAIN_MIN = { "5": 3000, "4": 2000, "3": 2000, "2": 1000, "1": 200 };
+  var DEFAULT_DEMAND = { Q9: 95000, Q10: 98000, Q11: 104000, Q12: 103000 };
+  var DEFAULT_WAGES = { "5": 18000, "4": 14000, "3": 12000, "2": 10000, "1": 15.38 };
+  var DAYS = [
+    { id: "d0", label: "No additional days", pct: 0 },
+    { id: "d1", label: "1 additional Vacation/Personal/Sick day", pct: 0.016 },
+    { id: "d2", label: "2 additional days", pct: 0.0321 },
+    { id: "d3", label: "3 additional days", pct: 0.0483 },
+    { id: "d4", label: "4 additional days", pct: 0.0646 },
+    { id: "d5", label: "5 additional days", pct: 0.081 }
+  ];
+  var RETIRE = [
+    { id: "r0", label: "No retirement plan", pct: 0 },
+    { id: "r1", label: "Employee-funded plan", pct: 0.004 },
+    { id: "r2", label: "Employer sponsored — low", pct: 0.034 },
+    { id: "r3", label: "Employer sponsored — moderate", pct: 0.0415 },
+    { id: "r4", label: "Employer sponsored — high", pct: 0.068 }
+  ];
+  var HEALTH = [
+    { id: "h1", label: "Tier 1 — lowest coverage / high deductible (base)", pct: 0 },
+    { id: "h2", label: "Tier 2 — low coverage / moderate deductible", pct: 0.0327 },
+    { id: "h3", label: "Tier 3 — moderate coverage / low deductible", pct: 0.0681 },
+    { id: "h4", label: "Tier 4 — high coverage / no deductible", pct: 0.0966 }
+  ];
+  var ADDONS = [
+    { id: "dental", label: "Dental and eye care", pct: 0.002 },
+    { id: "rx", label: "Prescription drug plan", pct: 0.032 },
+    { id: "life", label: "Term life and legal services", pct: 0.001 },
+    { id: "tuition", label: "Tuition reimbursement", pct: 0.008 },
+    { id: "incentive", label: "Incentive plan", pct: 0.0326 }
+  ];
+  var PROGRAMS = [
+    { id: "part", label: "Employee Participation", cost: 12000 },
+    { id: "griev", label: "Grievance Procedure", cost: 6000 },
+    { id: "orient", label: "Orientation Program", cost: 3000 },
+    { id: "hris", label: "HR Information System", cost: 11000 },
+    { id: "pa", label: "Performance Appraisal System", cost: 5000 },
+    { id: "dei", label: "DEI Program", cost: 10000 }
+  ];
+
+  var packs = { year1: null, year2: null };
+  var wages = Object.assign({}, DEFAULT_WAGES);
+  var fillingEdits = false;
+
+  function el(id) { return document.getElementById(id); }
+  function num(id) { var n = parseFloat(el(id).value); return isFinite(n) ? n : 0; }
+  function money(x) { return "$" + Math.round(x).toLocaleString("en-US"); }
+  function pct(x) { return (Number(x) * 100).toFixed(1) + "%"; }
+  function fmtN(x) { return x == null || !isFinite(x) ? "—" : Number(x).toLocaleString("en-US"); }
+  function fmtH(x) { return x == null || !isFinite(x) ? "—" : "$" + Number(x).toFixed(2); }
+  function fmtPctOps(x) { return x == null || !isFinite(x) ? "—" : (x <= 1 ? pct(x) : x.toFixed(1) + "%"); }
+
+  function staffAt(pack, q, lv, kind) {
+    var b = pack && pack.staffing && pack.staffing[q];
+    if (!b || !b[kind]) return 0;
+    var v = Number(b[kind][lv]);
+    return isFinite(v) ? v : 0;
+  }
+
+  function packHasStaffing(pack) {
+    if (!pack || !pack.staffing || pack.storyOnly) return false;
+    var qs = pack.quarters || [];
+    return qs.some(function (q) {
+      return LEVELS.some(function (lv) { return staffAt(pack, q, lv, "begin") > 0; });
+    });
+  }
+
+  function qWage(lv) {
+    var w = Number(wages[lv]);
+    if (!isFinite(w) || w <= 0) w = DEFAULT_WAGES[lv];
+    return lv === "1" ? w * 520 : w;
+  }
+
+  function tpmFromBlock(block) {
+    var M = { _warn: [] };
+    LEVELS.forEach(function (lv) {
+      var begin = Number((block.begin && block.begin[lv]) || 0);
+      var resign = Number((block.resign && block.resign[lv]) || 0);
+      var promo = lv === "5" ? 0 : Number((block.promo && block.promo[lv]) || 0);
+      var exit = begin > 0 ? resign / begin : 0;
+      var pr = begin > 0 ? promo / begin : 0;
+      var stay = 1 - exit - pr;
+      if (stay < -0.001) M._warn.push("L" + lv + " rates exceed 100%");
+      if (stay < 0) stay = 0;
+      M[lv] = { stay: stay, promo: pr, exit: exit, begin: begin };
+    });
+    return M;
+  }
+
+  function tpmFromPack(pack) {
+    if (!packHasStaffing(pack)) return null;
+    var qs = pack.quarters || [];
+    var matrices = qs.map(function (q) { return tpmFromBlock(pack.staffing[q] || {}); });
+    var avg = {};
+    LEVELS.forEach(function (lv) {
+      avg[lv] = { stay: 0, promo: 0, exit: 0 };
+      matrices.forEach(function (M) {
+        avg[lv].stay += M[lv].stay;
+        avg[lv].promo += M[lv].promo;
+        avg[lv].exit += M[lv].exit;
+      });
+      var n = matrices.length || 1;
+      avg[lv].stay /= n;
+      avg[lv].promo /= n;
+      avg[lv].exit /= n;
+    });
+    return avg;
+  }
+
+  function endFromPack(pack) {
+    var end = { "5": 0, "4": 0, "3": 0, "2": 0, "1": 0 };
+    if (!packHasStaffing(pack)) return end;
+    var qs = pack.quarters || [];
+    var q = qs[qs.length - 1];
+    LEVELS.forEach(function (lv) {
+      end[lv] = staffAt(pack, q, lv, "begin") - staffAt(pack, q, lv, "resign") - staffAt(pack, q, lv, "promo") + staffAt(pack, q, lv, "hire");
+      if (end[lv] < 0) end[lv] = 0;
+    });
+    return end;
+  }
+
+  function editedAvg(base) {
+    var out = {};
+    LEVELS.forEach(function (lv) {
+      var stay = parseFloat(el("editStay" + lv).value) / 100;
+      var promo = lv === "5" ? 0 : parseFloat(el("editPromo" + lv).value) / 100;
+      var exit = parseFloat(el("editExit" + lv).value) / 100;
+      if (!isFinite(stay)) stay = base[lv].stay;
+      if (!isFinite(promo)) promo = base[lv].promo;
+      if (!isFinite(exit)) exit = base[lv].exit;
+      out[lv] = { stay: stay, promo: promo, exit: exit };
+    });
+    return out;
+  }
+
+  function project(avg, end0) {
+    var rows = [];
+    var stock = {};
+    LEVELS.forEach(function (lv) { stock[lv] = end0[lv] || 0; });
+    var targets = {};
+    ["5", "4", "3", "2"].forEach(function (lv) {
+      var t = parseFloat(el("tgt" + lv).value);
+      targets[lv] = isFinite(t) ? t : stock[lv];
+    });
+    var prod = num("y3prod") || 225;
+    Y3Q.forEach(function (q) {
+      var units = num("dem" + q);
+      var begin = {};
+      LEVELS.forEach(function (lv) { begin[lv] = stock[lv]; });
+      var resign = {}, promoOut = {}, promoIn = { "5": 0, "4": 0, "3": 0, "2": 0, "1": 0 };
+      LEVELS.forEach(function (lv) {
+        resign[lv] = begin[lv] * avg[lv].exit;
+        promoOut[lv] = begin[lv] * avg[lv].promo;
+      });
+      ["5", "4", "3", "2"].forEach(function (lv, i) {
+        var below = ["4", "3", "2", "1"][i];
+        promoIn[lv] = promoOut[below] || 0;
+      });
+      var hires = {}, end = {}, hireCost = 0, trainFloor = 0, payroll = 0, fte = 0;
+      var l1Need = units / prod;
+      var want = { "5": targets["5"], "4": targets["4"], "3": targets["3"], "2": targets["2"], "1": l1Need };
+      LEVELS.forEach(function (lv) {
+        var stay = begin[lv] - resign[lv] - promoOut[lv];
+        var need = Math.max(0, (want[lv] || 0) - stay - (promoIn[lv] || 0));
+        hires[lv] = Math.round(need);
+        end[lv] = stay + (promoIn[lv] || 0) + hires[lv];
+        hireCost += hires[lv] * HIRE_COST[lv];
+        trainFloor += (hires[lv] + (promoIn[lv] || 0)) * TRAIN_MIN[lv];
+        payroll += end[lv] * qWage(lv);
+        fte += end[lv];
+        stock[lv] = end[lv];
+      });
+      rows.push({ q: q, target: { "1": l1Need }, hires: hires, promoIn: promoIn, resign: resign, hireCost: hireCost, trainFloor: trainFloor, payroll: payroll, fte: fte, end: end });
+    });
+    return rows;
+  }
+
+  function radioPct(name) {
+    var n = document.querySelector("input[name='" + name + "']:checked");
+    return n ? parseFloat(n.value) || 0 : 0;
+  }
+  function addonPct() {
+    return ADDONS.reduce(function (s, it) {
+      return s + (el("add_" + it.id) && el("add_" + it.id).checked ? it.pct : 0);
+    }, 0);
+  }
+  function programCostQ() {
+    return PROGRAMS.reduce(function (s, p) {
+      return s + (el("prog_" + p.id) && el("prog_" + p.id).checked ? p.cost : 0);
+    }, 0);
+  }
+  function trainSplit(id) {
+    return Math.min(80000, Math.max(0, num(id) / 4));
+  }
+  function qIndex(q) { return Y3Q.indexOf(q); }
+
+  function matrixTable(M) {
+    var html = "<table><thead><tr><th>From</th><th class='num'>Stay</th><th class='num'>Promote</th><th class='num'>Exit</th></tr></thead><tbody>";
+    LEVELS.forEach(function (lv) {
+      html += "<tr><td>L" + lv + "</td><td class='num'>" + pct(M[lv].stay) + "</td><td class='num'>" + pct(M[lv].promo) + "</td><td class='num'>" + pct(M[lv].exit) + "</td></tr>";
+    });
+    return html + "</tbody></table>";
+  }
+
+  function radios(name, items, wrapId, defaultId) {
+    el(wrapId).innerHTML = items.map(function (it) {
+      var checked = it.id === defaultId ? " checked" : "";
+      return "<label class='choice'><input type='radio' name='" + name + "' value='" + it.pct + "' data-id='" + it.id + "'" + checked + "> " + it.label + " <span class='how'>(" + pct(it.pct) + ")</span></label>";
+    }).join("");
+  }
+
+  function buildStatic() {
+    el("y3Demand").innerHTML = Y3Q.map(function (q) {
+      return "<div><label>" + q + " units</label><input type='number' id='dem" + q + "' value='" + DEFAULT_DEMAND[q] + "' step='100'></div>";
+    }).join("");
+    el("targetL25").innerHTML = ["5", "4", "3", "2"].map(function (lv) {
+      return "<div><label>L" + lv + "</label><input type='number' id='tgt" + lv + "' min='0' step='1'></div>";
+    }).join("");
+    radios("days", DAYS, "benDays", "d0");
+    radios("retire", RETIRE, "benRetire", "r0");
+    radios("health", HEALTH, "benHealth", "h1");
+    el("benAdd").innerHTML = ADDONS.map(function (it) {
+      return "<label class='choice'><input type='checkbox' id='add_" + it.id + "' data-pct='" + it.pct + "'> " + it.label + " <span class='how'>(" + pct(it.pct) + ")</span></label>";
+    }).join("");
+    el("progInputs").innerHTML = PROGRAMS.map(function (p) {
+      return "<label class='choice'><input type='checkbox' id='prog_" + p.id + "'> " + p.label + " <span class='how'>" + money(p.cost) + " / quarter</span></label>";
+    }).join("");
+    el("tpmEdit").innerHTML = "<table><thead><tr><th>Level</th><th class='num'>Stay %</th><th class='num'>Promote %</th><th class='num'>Exit %</th></tr></thead><tbody>" +
+      LEVELS.map(function (lv) {
+        return "<tr><td>L" + lv + "</td>" +
+          "<td class='num'><input type='number' id='editStay" + lv + "' step='0.1'></td>" +
+          "<td class='num'><input type='number' id='editPromo" + lv + "' step='0.1'" + (lv === "5" ? " disabled value='0'" : "") + "></td>" +
+          "<td class='num'><input type='number' id='editExit" + lv + "' step='0.1'></td></tr>";
+      }).join("") + "</tbody></table>";
+  }
+
+  function fillEdits(avg) {
+    fillingEdits = true;
+    LEVELS.forEach(function (lv) {
+      el("editStay" + lv).value = (avg[lv].stay * 100).toFixed(2);
+      if (lv !== "5") el("editPromo" + lv).value = (avg[lv].promo * 100).toFixed(2);
+      el("editExit" + lv).value = (avg[lv].exit * 100).toFixed(2);
+    });
+    fillingEdits = false;
+  }
+
+  function classifyWindow(data) {
+    var w = String(data.window || "").toLowerCase();
+    var qs = data.quarters || [];
+    var first = String(qs[0] || "");
+    if (w === "year1" || first === "Q1") return "year1";
+    if (w === "year2" || first === "Q5") return "year2";
+    if (first === "Q9") return "year3";
+    return w || "unknown";
+  }
+
+  function extractStarter(text) {
+    var trimmed = String(text || "").replace(/^\uFEFF/, "");
+    try {
+      var j = JSON.parse(trimmed);
+      if (j && j.kind === "mngt502-hcroi-starter") return j;
+    } catch (e1) { /* HTML path */ }
+    var m = trimmed.match(/<script[^>]*id=["']mngt502-hcroi-starter["'][^>]*>([\s\S]*?)<\/script>/i);
+    if (m) {
+      var j2 = JSON.parse(m[1].trim());
+      if (!j2 || j2.kind !== "mngt502-hcroi-starter") throw new Error("Starter pack in this HTML is not recognized.");
+      return j2;
+    }
+    return parseLegacyReport(trimmed);
+  }
+
+  function lastCell(rowHtml) {
+    var cells = [];
+    var re = /<td class=['"]num['"]>([^<]+)<\/td>/gi;
+    var m;
+    while ((m = re.exec(rowHtml))) cells.push(m[1].replace(/,/g, "").trim());
+    return cells.length ? cells[cells.length - 1] : "";
+  }
+
+  function parseLegacyReport(html) {
+    var title = html.match(/<title>\s*HCROI Year\s*([12])\s*[—–-]\s*([^<]+)<\/title>/i);
+    if (!title) {
+      throw new Error("This file is not a Canvas HCROI brief with a starter pack. Use the Year 1 or Year 2 HTML from Canvas — not a PDF and not a sim spreadsheet.");
+    }
+    var window = title[1] === "2" ? "year2" : "year1";
+    function card(label) {
+      var re = new RegExp("<div class=\"lbl\">" + label + "<\\/div>\\s*<div class=\"val\">\\$?([0-9.,]+)", "i");
+      var m = html.match(re);
+      return m ? parseFloat(m[1].replace(/,/g, "")) : null;
+    }
+    function ops(label) {
+      var re = new RegExp("<tr><td>" + label + "<\\/td>([\\s\\S]*?)<\\/tr>", "i");
+      var m = html.match(re);
+      if (!m) return null;
+      var raw = lastCell(m[1]);
+      if (!raw) return null;
+      if (/%/.test(raw)) return parseFloat(raw) / 100;
+      return parseFloat(raw.replace(/[^0-9.-]/g, ""));
+    }
+    var ytdH = card("YTD HCROI");
+    var lastH = card("Q4 HCROI") || card("Q8 HCROI");
+    var hccf = card("YTD HCCF");
+    return {
+      kind: "mngt502-hcroi-starter",
+      version: 0,
+      window: window,
+      storyOnly: true,
+      quarters: window === "year2" ? Y2Q.slice() : Y1Q.slice(),
+      firm: title[2].trim(),
+      ytd: { hcroi: ytdH, hccf: hccf },
+      ops: {
+        hcroi_last: lastH,
+        turnover_last: ops("Turnover"),
+        morale_last: ops("Morale"),
+        quality_last: ops("Quality"),
+        productivity: ops("Productivity"),
+        ulc_last: ops("Unit labor cost"),
+        absence_days_last: ops("Absenteeism \\(days\\)"),
+        fte_last: (function () {
+          var m = html.match(/<tr><th>FTE<\/th>([\s\S]*?)<\/tr>/i);
+          if (!m) return null;
+          var raw = lastCell(m[1]);
+          return raw ? parseFloat(raw.replace(/[^0-9.-]/g, "")) : null;
+        })()
+      },
+      staffing: {}
+    };
+  }
+
+  function applyPack(data) {
+    var which = classifyWindow(data);
+    if (which !== "year1" && which !== "year2") {
+      throw new Error("That pack is not a Year 1 or Year 2 brief.");
+    }
+    if (data.quarters && data.quarters.length && data.quarters.length !== 4 && !data.storyOnly) {
+      throw new Error("Starter pack must have four quarters.");
+    }
+    packs[which] = data;
+    var other = which === "year1" ? packs.year2 : packs.year1;
+    if (other && other.firm && data.firm && String(other.firm).toLowerCase() !== String(data.firm).toLowerCase()) {
+      el("starterStatus").innerHTML = "<p class='warn'>The two files name different firms (" + other.firm + " vs " + data.firm + "). Confirm you dropped the same sim team.</p>";
+    }
+    var source = packs.year2 || packs.year1;
+    if (source && source.productivity) el("y3prod").value = source.productivity;
+    if (source && source.wages) {
+      LEVELS.forEach(function (lv) {
+        if (source.wages[lv] != null) wages[lv] = Number(source.wages[lv]);
+      });
+    }
+    var endPack = packHasStaffing(packs.year2) ? packs.year2 : packs.year1;
+    if (packHasStaffing(endPack)) {
+      var end0 = endFromPack(endPack);
+      ["5", "4", "3", "2"].forEach(function (lv) {
+        el("tgt" + lv).value = Math.round(end0[lv] || 0);
+      });
+    }
+    renderStory();
+    recalc(true);
+  }
+
+  function renderStory() {
+    var y1 = packs.year1, y2 = packs.year2;
+    el("chipY1").className = "chip" + (y1 ? " on" : "");
+    el("chipY1").textContent = y1 ? ("Year 1 loaded" + (y1.storyOnly ? " (story only)" : "")) : "Year 1 not loaded";
+    el("chipY2").className = "chip" + (y2 ? " on" : "");
+    el("chipY2").textContent = y2 ? ("Year 2 loaded" + (y2.storyOnly ? " (story only)" : "")) : "Year 2 not loaded";
+    if (!y1 && !y2) {
+      el("story").innerHTML = "";
+      return;
+    }
+    var firm = (y2 && y2.firm) || (y1 && y1.firm) || "Your firm";
+    function cell(pack, getter) {
+      if (!pack) return "—";
+      var v = getter(pack);
+      return v;
+    }
+    var html = "<p class='note' style='margin-top:.6rem'><strong>" + firm + "</strong> — two-year record from the briefs. Use this in the presentation, then the Year 3 ask below.</p>";
+    html += "<table><thead><tr><th></th><th class='num'>Year 1</th><th class='num'>Year 2</th></tr></thead><tbody>";
+    html += "<tr><td>YTD HCROI ($ per $1 HCCF)</td><td class='num'>" + cell(y1, function (p) { return fmtH(p.ytd && p.ytd.hcroi); }) + "</td><td class='num'>" + cell(y2, function (p) { return fmtH(p.ytd && p.ytd.hcroi); }) + "</td></tr>";
+    html += "<tr><td>Last-quarter HCROI</td><td class='num'>" + cell(y1, function (p) { return fmtH(p.ops && p.ops.hcroi_last); }) + "</td><td class='num'>" + cell(y2, function (p) { return fmtH(p.ops && p.ops.hcroi_last); }) + "</td></tr>";
+    html += "<tr><td>YTD HCCF</td><td class='num'>" + cell(y1, function (p) { return p.ytd && p.ytd.hccf != null ? money(p.ytd.hccf) : "—"; }) + "</td><td class='num'>" + cell(y2, function (p) { return p.ytd && p.ytd.hccf != null ? money(p.ytd.hccf) : "—"; }) + "</td></tr>";
+    html += "<tr><td>Ending FTE</td><td class='num'>" + cell(y1, function (p) { return fmtN(p.ops && p.ops.fte_last); }) + "</td><td class='num'>" + cell(y2, function (p) { return fmtN(p.ops && p.ops.fte_last); }) + "</td></tr>";
+    html += "<tr><td>Morale (last quarter)</td><td class='num'>" + cell(y1, function (p) { return fmtN(p.ops && p.ops.morale_last); }) + "</td><td class='num'>" + cell(y2, function (p) { return fmtN(p.ops && p.ops.morale_last); }) + "</td></tr>";
+    html += "<tr><td>Quality (last quarter)</td><td class='num'>" + cell(y1, function (p) { return fmtN(p.ops && p.ops.quality_last); }) + "</td><td class='num'>" + cell(y2, function (p) { return fmtN(p.ops && p.ops.quality_last); }) + "</td></tr>";
+    html += "<tr><td>Turnover (last quarter)</td><td class='num'>" + cell(y1, function (p) { return fmtPctOps(p.ops && p.ops.turnover_last); }) + "</td><td class='num'>" + cell(y2, function (p) { return fmtPctOps(p.ops && p.ops.turnover_last); }) + "</td></tr>";
+    html += "<tr><td>Productivity</td><td class='num'>" + cell(y1, function (p) { return fmtN(p.productivity || (p.ops && p.ops.productivity)); }) + "</td><td class='num'>" + cell(y2, function (p) { return fmtN(p.productivity || (p.ops && p.ops.productivity)); }) + "</td></tr>";
+    function bud(p, k) {
+      if (!p || !p.budget_ytd || p.budget_ytd[k] == null) return "—";
+      return money(p.budget_ytd[k]);
+    }
+    html += "<tr><td>HR spend · staffing</td><td class='num'>" + bud(y1, "staffing") + "</td><td class='num'>" + bud(y2, "staffing") + "</td></tr>";
+    html += "<tr><td>HR spend · wages / benefits</td><td class='num'>" + bud(y1, "wages") + "</td><td class='num'>" + bud(y2, "wages") + "</td></tr>";
+    html += "<tr><td>HR spend · training</td><td class='num'>" + bud(y1, "training") + "</td><td class='num'>" + bud(y2, "training") + "</td></tr>";
+    html += "<tr><td>HR spend · programs / other</td><td class='num'>" + bud(y1, "other") + "</td><td class='num'>" + bud(y2, "other") + "</td></tr>";
+    html += "</tbody></table>";
+    var notes = [];
+    if (y1 && y1.storyOnly) notes.push("Year 1 loaded from the visible brief (no hidden staffing pack). Staffing math waits on Year 2, or an updated Year 1 file with the starter pack.");
+    if (y2 && y2.storyOnly) notes.push("Year 2 loaded from the visible brief (no hidden staffing pack). Hiring cannot be projected until a Year 2 file with the starter pack is used.");
+    if (!packHasStaffing(y2) && !packHasStaffing(y1)) notes.push("Drop the Saturday Year 2 HCROI HTML to lock promotion/exit rates and the NH/P training floor.");
+    if (notes.length) html += "<p class='warn'>" + notes.join(" ") + "</p>";
+    if (y1 && y2 && y1.firm && y2.firm && String(y1.firm).toLowerCase() !== String(y2.firm).toLowerCase()) {
+      html += "<p class='warn'>The two files name different firms (" + y1.firm + " vs " + y2.firm + "). Confirm you dropped the same sim team.</p>";
+    }
+    el("story").innerHTML = html;
+    var statusBits = [];
+    if (y1) statusBits.push("Year 1 · " + (y1.firm || "firm") + " · " + (y1.quarters || Y1Q).join("–"));
+    if (y2) statusBits.push("Year 2 · " + (y2.firm || "firm") + " · " + (y2.quarters || Y2Q).join("–"));
+    el("starterStatus").innerHTML = "<span class='ok'>Loaded locally. Nothing was uploaded or stored. " + statusBits.join(" · ") + "</span>";
+  }
+
+  function readFiles(fileList) {
+    var files = Array.prototype.slice.call(fileList || []).filter(Boolean);
+    if (!files.length) return;
+    var remaining = files.length;
+    files.forEach(function (file) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        try {
+          applyPack(extractStarter(String(reader.result || "")));
+        } catch (err) {
+          el("starterStatus").innerHTML = "<p class='warn'>" + (err && err.message ? err.message : "Could not read that file.") + "</p>";
+        }
+        remaining -= 1;
+      };
+      reader.readAsText(file);
+    });
+  }
+
+  function demoStaff(shift) {
+    var base = {
+      begin: { "5": 20, "4": 25, "3": 50, "2": 58, "1": 490 },
+      resign: { "5": 1, "4": 1, "3": 2, "2": 4, "1": 36 },
+      promo: { "5": 0, "4": 1, "3": 2, "2": 4, "1": 8 },
+      hire: { "5": 0, "4": 0, "3": 0, "2": 0, "1": 44 }
+    };
+    var out = {};
+    ["begin", "resign", "promo", "hire"].forEach(function (k) {
+      out[k] = {};
+      LEVELS.forEach(function (lv) { out[k][lv] = base[k][lv] + (lv === "1" ? shift : 0); });
+    });
+    out.promo["5"] = 0;
+    return out;
+  }
+
+  function loadDemo() {
+    packs.year1 = {
+      kind: "mngt502-hcroi-starter", window: "year1", firm: "Demo Manufacturing (synthetic)",
+      quarters: Y1Q, benefits_rate: 0.2, productivity: 225, wages: Object.assign({}, DEFAULT_WAGES),
+      ytd: { hcroi: 1.00, hccf: 31200000, pay_benefits: 28000000, revenue: 49000000, expenses: 46800000 },
+      ops: { fte_last: 643, hcroi_last: 1.07, morale_last: 83, quality_last: 75, turnover_last: 0.068, productivity: 225 },
+      budget_ytd: { staffing: 459000, wages: 126000, training: 574000, other: 226500 },
+      staffing: { Q1: demoStaff(8), Q2: demoStaff(4), Q3: demoStaff(0), Q4: demoStaff(-2) }
+    };
+    packs.year2 = {
+      kind: "mngt502-hcroi-starter", window: "year2", firm: "Demo Manufacturing (synthetic)",
+      quarters: Y2Q, benefits_rate: 0.2, productivity: 225, wages: Object.assign({}, DEFAULT_WAGES),
+      ytd: { hcroi: 1.04, hccf: 30500000, pay_benefits: 27600000, revenue: 50000000, expenses: 47200000 },
+      ops: { fte_last: 612, hcroi_last: 1.02, morale_last: 78, quality_last: 76, turnover_last: 0.072, productivity: 225 },
+      budget_ytd: { staffing: 448000, wages: 0, training: 503000, other: 220000 },
+      staffing: { Q5: demoStaff(-20), Q6: demoStaff(-8), Q7: demoStaff(6), Q8: demoStaff(0) }
+    };
+    wages = Object.assign({}, DEFAULT_WAGES);
+    el("y3prod").value = 225;
+    var end0 = endFromPack(packs.year2);
+    ["5", "4", "3", "2"].forEach(function (lv) { el("tgt" + lv).value = Math.round(end0[lv] || 0); });
+    renderStory();
+    recalc(true);
+  }
+
+  function clearAll() {
+    packs.year1 = null;
+    packs.year2 = null;
+    ["goalStaff", "goalPay", "goalTrain", "goalOther", "talentPitch"].forEach(function (id) { el(id).value = ""; });
+    ["mgrYear", "safetyYear", "qualityYear", "nhpExtraYear", "wageBump"].forEach(function (id) { el(id).value = 0; });
+    PROGRAMS.forEach(function (p) { if (el("prog_" + p.id)) el("prog_" + p.id).checked = false; });
+    ADDONS.forEach(function (it) { if (el("add_" + it.id)) el("add_" + it.id).checked = false; });
+    renderStory();
+    el("starterStatus").textContent = "Cleared. Nothing was stored.";
+    recalc(true);
+  }
+
+  function recalc(resetEdits) {
+    var tpmPack = packHasStaffing(packs.year2) ? packs.year2 : packs.year1;
+    var base = tpmFromPack(tpmPack);
+    if (!base) {
+      el("projKpis").innerHTML = "";
+      el("projTable").innerHTML = "<p class='note'>Load a Year 2 brief (with the hidden starter pack) to project Year 3 hires.</p>";
+      el("tpmAvg").innerHTML = "";
+      el("budgetKpis").innerHTML = "";
+      el("budgetTable").innerHTML = "";
+      el("mixBar").innerHTML = "";
+      el("constraintNotes").innerHTML = "";
+      return;
+    }
+    if (resetEdits) fillEdits(base);
+    var avg = editedAvg(base);
+    el("tpmAvg").innerHTML = matrixTable(avg);
+    var end0 = endFromPack(tpmPack);
+    var rows = project(avg, end0);
+    var yHires = 0, yHireCost = 0, yFloor = 0;
+    var html = "<table><thead><tr><th></th>";
+    Y3Q.forEach(function (q) { html += "<th class='num'>" + q + "</th>"; });
+    html += "<th class='num'>Year 3</th></tr></thead><tbody>";
+    function line(label, getter, fmt) {
+      fmt = fmt || function (x) { return Math.round(x).toLocaleString("en-US"); };
+      var tot = 0, cells = "";
+      rows.forEach(function (r) { var v = getter(r); tot += v; cells += "<td class='num'>" + fmt(v) + "</td>"; });
+      html += "<tr><td>" + label + "</td>" + cells + "<td class='num'>" + fmt(tot) + "</td></tr>";
+    }
+    html += "<tr><td>L1 target (units ÷ productivity)</td>";
+    rows.forEach(function (r) { html += "<td class='num'>" + Math.round(r.target["1"]).toLocaleString("en-US") + "</td>"; });
+    html += "<td class='num'>—</td></tr>";
+    LEVELS.forEach(function (lv) {
+      line("Hires L" + lv, function (r) { yHires += r.hires[lv]; return r.hires[lv]; });
+    });
+    line("Hiring cost", function (r) { yHireCost += r.hireCost; return r.hireCost; }, money);
+    line("NH/P training floor", function (r) { yFloor += r.trainFloor; return r.trainFloor; }, money);
+    html += "</tbody></table>";
+    el("projTable").innerHTML = html;
+    el("projKpis").innerHTML = [
+      ["Year 3 hires", Math.round(yHires).toLocaleString("en-US")],
+      ["Staffing ask", money(yHireCost)],
+      ["NH/P floor", money(yFloor)],
+      ["Start FTE", Math.round(LEVELS.reduce(function (s, lv) { return s + (end0[lv] || 0); }, 0)).toLocaleString("en-US")]
+    ].map(function (k) {
+      return "<div class='kpi'><div class='lbl'>" + k[0] + "</div><div class='val'>" + k[1] + "</div></div>";
+    }).join("");
+
+    var benStart = el("benStart").value;
+    var wageQ = el("wageBumpQ").value;
+    var benPct = radioPct("days") + radioPct("retire") + radioPct("health") + addonPct();
+    var progQ = programCostQ();
+    var extras = {
+      mgr: trainSplit("mgrYear"),
+      safety: trainSplit("safetyYear"),
+      quality: trainSplit("qualityYear"),
+      nhpExtra: trainSplit("nhpExtraYear")
+    };
+    var totals = [0, 0, 0, 0];
+    var cat = { staff: 0, train: 0, pay: 0, prog: 0 };
+
+    function add(label, how, amounts) {
+      var y = 0, cells = "";
+      amounts.forEach(function (v, i) { totals[i] += v; y += v; cells += "<td class='num'>" + money(v) + "</td>"; });
+      return "<tr><td>" + label + "<div class='how'>" + how + "</div></td>" + cells + "<td class='num'>" + money(y) + "</td></tr>";
+    }
+
+    var bhtml = "<table><thead><tr><th>Line</th>";
+    Y3Q.forEach(function (q) { bhtml += "<th class='num'>" + q + "</th>"; });
+    bhtml += "<th class='num'>Year 3</th></tr></thead><tbody>";
+    var hireAmt = rows.map(function (r) { cat.staff += r.hireCost; return r.hireCost; });
+    bhtml += add("Staffing (hires)", "Charged the quarter you hire", hireAmt);
+    var nhpAmt = rows.map(function (r, i) {
+      var v = r.trainFloor + extras.nhpExtra;
+      if (v > 80000) v = 80000;
+      cat.train += v;
+      return v;
+    });
+    bhtml += add("NH/P training (floor + extra)", "Cannot go below the hire/promote floor; cap $80k", nhpAmt);
+    ["mgr", "safety", "quality"].forEach(function (k) {
+      var lab = { mgr: "Manager training", safety: "Safety training", quality: "Quality training" }[k];
+      var amt = Y3Q.map(function () { cat.train += extras[k]; return extras[k]; });
+      bhtml += add(lab, "Year total split evenly; cap $80k / quarter", amt);
+    });
+    var benAmt = Y3Q.map(function (q, i) {
+      var v = (q === benStart) ? rows[i].payroll * benPct : 0;
+      cat.pay += v;
+      return v;
+    });
+    bhtml += add("Benefits increment", "Once, in " + benStart + " (then ULC)", benAmt);
+    var wageAmt = Y3Q.map(function (q) {
+      var v = (q === wageQ) ? num("wageBump") : 0;
+      cat.pay += v;
+      return v;
+    });
+    bhtml += add("Wage-increase charge", "Once, in " + wageQ, wageAmt);
+    var progAmt = Y3Q.map(function () { cat.prog += progQ; return progQ; });
+    bhtml += add("Programs", "Each quarter a checked program is on", progAmt);
+    bhtml += "<tr><th>Quarterly ask</th>";
+    var yTot = 0;
+    totals.forEach(function (v) { yTot += v; bhtml += "<td class='num'>" + money(v) + "</td>"; });
+    bhtml += "<td class='num'>" + money(yTot) + "</td></tr>";
+    var capQ = num("qBudgetCap"), capY = num("yBudgetCap");
+    bhtml += "<tr><td>Vs quarterly ceiling</td>";
+    var overPts = [];
+    totals.forEach(function (v) {
+      var over = v - capQ;
+      var pts = over >= 1000 ? Math.floor(over / 1000) : 0;
+      overPts.push(pts);
+      bhtml += "<td class='num " + (v > capQ ? "over" : "ok") + "'>" + (v > capQ ? money(over) + " over" : "OK") + "</td>";
+    });
+    bhtml += "<td class='num " + (yTot > capY ? "over" : "ok") + "'>" + (yTot > capY ? money(yTot - capY) + " over" : "OK") + "</td></tr>";
+    bhtml += "</tbody></table>";
+    el("budgetTable").innerHTML = bhtml;
+
+    var room = Math.max(0, capY - yTot);
+    el("budgetKpis").innerHTML = [
+      ["Year 3 ask", money(yTot)],
+      ["Staffing", money(cat.staff)],
+      ["Pay & benefits", money(cat.pay)],
+      ["Training", money(cat.train)],
+      ["Programs", money(cat.prog)],
+      ["Unspent vs ceiling", money(room)]
+    ].map(function (k) {
+      return "<div class='kpi'><div class='lbl'>" + k[0] + "</div><div class='val'>" + k[1] + "</div></div>";
+    }).join("");
+
+    var mixTot = cat.staff + cat.pay + cat.train + cat.prog || 1;
+    el("mixBar").innerHTML = "<div class='bars'>" +
+      "<span style='width:" + (100 * cat.staff / mixTot) + "%;background:#1e293b'></span>" +
+      "<span style='width:" + (100 * cat.pay / mixTot) + "%;background:#AE132A'></span>" +
+      "<span style='width:" + (100 * cat.train / mixTot) + "%;background:#075985'></span>" +
+      "<span style='width:" + (100 * cat.prog / mixTot) + "%;background:#047857'></span>" +
+      "</div><div class='legend'>" +
+      "<span><i class='swatch' style='background:#1e293b'></i>Staffing " + money(cat.staff) + "</span>" +
+      "<span><i class='swatch' style='background:#AE132A'></i>Pay &amp; benefits " + money(cat.pay) + "</span>" +
+      "<span><i class='swatch' style='background:#075985'></i>Training " + money(cat.train) + "</span>" +
+      "<span><i class='swatch' style='background:#047857'></i>Programs " + money(cat.prog) + "</span></div>";
+
+    var anyQ = overPts.some(function (p) { return p > 0; });
+    var ptsY = overPts.reduce(function (s, p) { return s + p; }, 0);
+    el("constraintNotes").innerHTML = anyQ
+      ? "<p class='warn'>Over the quarterly ceiling in at least one quarter (~" + ptsY + " project point" + (ptsY === 1 ? "" : "s") + " if the sim rule still applies). Move benefits to a low-hire quarter, or cut a line that no Year 3 target requires.</p>"
+      : (yTot < capY
+        ? "<p class='note'>Ask is " + money(room) + " under the annual ceiling. That is expected in zero-based budgeting — you are not filling the cap.</p>"
+        : "");
+  }
+
+  function downloadJson() {
+    var blob = new Blob([JSON.stringify({
+      firm: (packs.year2 && packs.year2.firm) || (packs.year1 && packs.year1.firm) || "",
+      created: new Date().toISOString(),
+      note: "Local export only — no student identifiers.",
+      windowsLoaded: { year1: !!packs.year1, year2: !!packs.year2 },
+      goals: {
+        staffing: el("goalStaff").value,
+        pay: el("goalPay").value,
+        training: el("goalTrain").value,
+        talentHcroi: el("goalOther").value
+      },
+      demand: { Q9: num("demQ9"), Q10: num("demQ10"), Q11: num("demQ11"), Q12: num("demQ12") },
+      ceilings: { quarterly: num("qBudgetCap"), annual: num("yBudgetCap") },
+      talentMarketplace: el("talentPitch").value
+    }, null, 2)], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "mngt502-year3-budget-ask.json";
+    a.click();
+  }
+
+  buildStatic();
+  document.querySelectorAll("input, select, textarea").forEach(function (n) {
+    function onChange() {
+      if (fillingEdits) return;
+      if (n.type === "file") return;
+      var isTpm = n.id && n.id.indexOf("edit") === 0;
+      recalc(false);
+      if (isTpm) recalc(false);
+    }
+    n.addEventListener("input", onChange);
+    n.addEventListener("change", onChange);
+  });
+  el("btnDemo").addEventListener("click", loadDemo);
+  el("btnClear").addEventListener("click", clearAll);
+  el("btnPrint").addEventListener("click", function () { window.print(); });
+  el("btnJson").addEventListener("click", downloadJson);
+  el("btnHpws").addEventListener("click", function () {
+    ["part", "griev", "orient", "pa"].forEach(function (id) { el("prog_" + id).checked = true; });
+    recalc(false);
+  });
+  el("starterFiles").addEventListener("change", function (ev) {
+    readFiles(ev.target.files);
+    ev.target.value = "";
+  });
+  var dz = el("dropzone");
+  dz.addEventListener("dragover", function (e) { e.preventDefault(); dz.classList.add("hot"); });
+  dz.addEventListener("dragleave", function () { dz.classList.remove("hot"); });
+  dz.addEventListener("drop", function (e) {
+    e.preventDefault();
+    dz.classList.remove("hot");
+    readFiles(e.dataTransfer.files);
+  });
+  recalc(true);
+})();
+</script>
+</body>
+</html>
