@@ -1,11 +1,12 @@
 <!--
 File location: Simulation/HCROI_Year2_Year3/index.html
-What this file does: EMBA Year 3 budget pitch — drop Year 1 + Year 2 HCROI HTML, preload the two-year story, shop a zero-based Year 3 ask
+What this file does: EMBA Year 3 budget pitch — pick your sim firm (or drop Year 1 + Year 2 HCROI HTML), preload the two-year story, shop a zero-based Year 3 ask
 Why this file exists: Final presentation is Years 1–2 descriptive + Year 3 goals + Year 3 budget ask (not a Year 2 budget exercise)
 Tech stack: HTML + vanilla JS — FileReader only; nothing is uploaded or stored on a server
 RELEVANT FILES:
   - Simulation/HCROI_After_Year1/scripts/build_hcroi_draft_reports.py (starter JSON in Canvas briefs)
   - Website/static/mngt-502/year2-hcroi-year3-budget/
+  Cache-bust: 2026-08-24-firm-picker
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -108,7 +109,7 @@ RELEVANT FILES:
 <div class="wrap">
   <p class="kicker">MNGT 502 · Executive MBA · Year 3 budget pitch</p>
   <h1>Two-year story → Year 3 ask</h1>
-  <p class="lede">Drop your Canvas Year 1 and Year 2 HCROI HTML. Both stay in this browser. The two-year record preloads so you can name Year 3 targets and ask only for the staffing, pay, training, and programs those targets require.</p>
+  <p class="lede">Pick your sim firm — or drop the Canvas Year 1 and Year 2 <strong>HTML</strong> briefs. Numbers stay in this browser. The two-year record preloads so you can name Year 3 targets and ask only for the staffing, pay, training, and programs those targets require. PDFs will not work (print-to-PDF strips the hidden data pack).</p>
 
   <aside class="disclaimer">
     <h2>Do not pitch HCROI alone</h2>
@@ -117,12 +118,23 @@ RELEVANT FILES:
 
   <section class="card" id="upload">
     <h2>1 · Load Year 1 and Year 2</h2>
-    <p class="note">Use the Canvas HTML briefs for your sim firm (group-restricted). Parsing is local — nothing is sent to a server. Firm nickname is kept; the original filename is ignored.</p>
-    <div class="drop no-print" id="dropzone">
-      <p><strong>Drop both HTML files here</strong>, or choose them together.</p>
-      <p class="note" style="margin:.35rem 0 0">Year 1 = Q1–Q4 brief · Year 2 = Q5–Q8 brief. We sort them automatically.</p>
-      <input type="file" id="starterFiles" accept=".html,.htm,.json,text/html,application/json" multiple style="margin-top:.55rem">
+    <p class="note">Fastest path: choose your sim firm. The Year 1 and Year 2 staffing, pay, and HCROI figures from the class briefs fill in locally. Nothing is sent to a server.</p>
+    <label for="firmPick">Your sim firm</label>
+    <div class="grid-2 no-print" style="align-items:end">
+      <select id="firmPick">
+        <option value="">Choose your firm…</option>
+      </select>
+      <p><button class="btn" type="button" id="btnFirm">Load this firm’s Year 1 and Year 2</button></p>
     </div>
+    <details class="no-print" style="margin-top:.85rem">
+      <summary>Or drop Canvas HTML briefs</summary>
+      <p class="note">Use the .html files from Canvas, not the PDF. Parsing is local. Firm nickname is kept; the original filename is ignored.</p>
+      <div class="drop" id="dropzone">
+        <p><strong>Drop both HTML files here</strong>, or choose them together.</p>
+        <p class="note" style="margin:.35rem 0 0">Year 1 = Q1–Q4 brief · Year 2 = Q5–Q8 brief. We sort them automatically.</p>
+        <input type="file" id="starterFiles" accept=".html,.htm,.json,text/html,application/json" multiple style="margin-top:.55rem">
+      </div>
+    </details>
     <div class="chips">
       <span class="chip" id="chipY1">Year 1 not loaded</span>
       <span class="chip" id="chipY2">Year 2 not loaded</span>
@@ -325,6 +337,8 @@ RELEVANT FILES:
   ];
 
   var packs = { year1: null, year2: null };
+  var FIRM_PACKS = {"HR Alliance":{"year1":{"kind":"mngt502-hcroi-starter","version":2,"window":"year1","quarters":["Q1","Q2","Q3","Q4"],"firm":"HR Alliance","benefits_rate":0.203,"productivity":225.0,"wages":{"5":18290.0,"4":14226.0,"3":12224.0,"2":10235.0,"1":15.66},"ytd":{"pay_benefits":28345881.8445,"contingent":0.0,"absence_days":1116.0,"accident_rate":278.0,"revenue":49800000.0,"expenses":49836011.411515385,"hccf":31161011.41151538,"hcroi":0.9988443439450726},"ops":{"fte_last":643.0,"hcroi_last":1.0650793967709802,"morale_last":83.0,"quality_last":75.0,"turnover_last":0.0684,"ulc_last":53.98,"absence_days_last":234.0},"budget_ytd":{"staffing":459000.0,"wages":125755.87999999999,"training":574000.0,"other":226500.0},"staffing":{"Q1":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":500.0},"resign":{"5":1.0,"4":2.0,"3":5.0,"2":6.0,"1":50.0},"promo":{"5":0.0,"4":1.0,"3":3.0,"2":8.0,"1":7.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":57.0}},"Q2":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":53.0,"1":500.0},"resign":{"5":0.0,"4":1.0,"3":3.0,"2":5.0,"1":39.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":2.0,"1":10.0},"hire":{"5":0.0,"4":1.0,"3":1.0,"2":3.0,"1":40.0}},"Q3":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":59.0,"1":491.0},"resign":{"5":1.0,"4":1.0,"3":3.0,"2":4.0,"1":37.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":2.0,"1":3.0},"hire":{"5":1.0,"4":1.0,"3":1.0,"2":2.0,"1":29.0}},"Q4":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":58.0,"1":480.0},"resign":{"5":1.0,"4":2.0,"3":2.0,"2":5.0,"1":34.0},"promo":{"5":0.0,"4":1.0,"3":3.0,"2":5.0,"1":11.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":54.0}}}},"year2":{"kind":"mngt502-hcroi-starter","version":2,"window":"year2","quarters":["Q5","Q6","Q7","Q8"],"firm":"HR Alliance","benefits_rate":0.2329,"productivity":233.0,"wages":{"5":18740.0,"4":14486.0,"3":12504.0,"2":10385.0,"1":16.8},"ytd":{"pay_benefits":27800409.90295,"contingent":0.0,"absence_days":950.0,"accident_rate":159.5,"revenue":49171200.0,"expenses":48413033.41107732,"hccf":29973833.411077324,"hcroi":1.0252942817998876},"ops":{"fte_last":550.0,"hcroi_last":0.9948280450003462,"morale_last":89.0,"quality_last":77.0,"turnover_last":0.0564,"ulc_last":59.11,"absence_days_last":208.0},"budget_ytd":{"staffing":104804.0,"wages":463180.08999999997,"training":723800.0,"other":289295.73},"staffing":{"Q5":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":59.0,"1":489.0},"resign":{"5":1.0,"4":0.0,"3":2.0,"2":3.0,"1":32.0},"promo":{"5":0.0,"4":1.0,"3":1.0,"2":3.0,"1":6.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":34.0}},"Q6":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":59.0,"1":485.0},"resign":{"5":1.0,"4":0.0,"3":1.0,"2":4.0,"1":29.0},"promo":{"5":0.0,"4":1.0,"3":1.0,"2":2.0,"1":2.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":0.0}},"Q7":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":55.0,"1":454.0},"resign":{"5":0.0,"4":1.0,"3":2.0,"2":5.0,"1":33.0},"promo":{"5":0.0,"4":0.0,"3":1.0,"2":3.0,"1":5.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":14.0}},"Q8":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":52.0,"1":430.0},"resign":{"5":0.0,"4":1.0,"3":0.0,"2":4.0,"1":26.0},"promo":{"5":0.0,"4":0.0,"3":1.0,"2":1.0,"1":2.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":4.0}}}}},"Hire Power":{"year1":{"kind":"mngt502-hcroi-starter","version":2,"window":"year1","quarters":["Q1","Q2","Q3","Q4"],"firm":"Hire Power","benefits_rate":0.2,"productivity":218.0,"wages":{"5":18360.0,"4":14280.0,"3":12240.0,"2":10200.0,"1":15.84},"ytd":{"pay_benefits":28611066.6,"contingent":0.0,"absence_days":1305.0,"accident_rate":321.75,"revenue":49800000.0,"expenses":50077155.220228404,"hccf":31402155.220228408,"hcroi":0.9911740064245695},"ops":{"fte_last":661.0,"hcroi_last":1.0328120860896142,"morale_last":76.0,"quality_last":72.0,"turnover_last":0.0681,"ulc_last":55.63,"absence_days_last":267.0},"budget_ytd":{"staffing":495000.0,"wages":153078.4,"training":527422.0,"other":224500.0},"staffing":{"Q1":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":500.0},"resign":{"5":1.0,"4":2.0,"3":5.0,"2":6.0,"1":50.0},"promo":{"5":0.0,"4":1.0,"3":3.0,"2":4.0,"1":7.0},"hire":{"5":0.0,"4":0.0,"3":4.0,"2":3.0,"1":28.0}},"Q2":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":471.0},"resign":{"5":0.0,"4":0.0,"3":3.0,"2":4.0,"1":39.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":3.0,"1":6.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":65.0}},"Q3":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":59.0,"1":491.0},"resign":{"5":0.0,"4":0.0,"3":2.0,"2":4.0,"1":34.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":5.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":42.0}},"Q4":{"begin":{"5":20.0,"4":25.0,"3":48.0,"2":60.0,"1":494.0},"resign":{"5":0.0,"4":2.0,"3":3.0,"2":5.0,"1":35.0},"promo":{"5":0.0,"4":0.0,"3":2.0,"2":5.0,"1":6.0},"hire":{"5":0.0,"4":0.0,"3":2.0,"2":5.0,"1":52.0}}}},"year2":{"kind":"mngt502-hcroi-starter","version":2,"window":"year2","quarters":["Q5","Q6","Q7","Q8"],"firm":"Hire Power","benefits_rate":0.2184,"productivity":222.0,"wages":{"5":18515.0,"4":14398.0,"3":12379.0,"2":10335.0,"1":17.18},"ytd":{"pay_benefits":28154093.5428,"contingent":0.0,"absence_days":1059.0,"accident_rate":225.25,"revenue":49171200.0,"expenses":49054545.59646719,"hccf":30615345.59646719,"hcroi":1.0038103245695933},"ops":{"fte_last":574.0,"hcroi_last":0.9467257563115122,"morale_last":88.0,"quality_last":77.0,"turnover_last":0.0679,"ulc_last":61.13,"absence_days_last":217.0},"budget_ytd":{"staffing":183760.0,"wages":409150.16000000003,"training":719000.0,"other":262387.79000000004},"staffing":{"Q5":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":61.0,"1":505.0},"resign":{"5":1.0,"4":0.0,"3":3.0,"2":4.0,"1":33.0},"promo":{"5":0.0,"4":1.0,"3":1.0,"2":4.0,"1":7.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":11.0}},"Q6":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":476.0},"resign":{"5":0.0,"4":0.0,"3":3.0,"2":3.0,"1":38.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":3.0,"1":3.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":23.0}},"Q7":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":57.0,"1":458.0},"resign":{"5":0.0,"4":0.0,"3":2.0,"2":3.0,"1":36.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":2.0,"1":1.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":4.0}},"Q8":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":53.0,"1":430.0},"resign":{"5":0.0,"4":1.0,"3":2.0,"2":4.0,"1":31.0},"promo":{"5":0.0,"4":0.0,"3":1.0,"2":3.0,"1":6.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":16.0}}}}},"IronLeaf Manufacturing Co.":{"year1":{"kind":"mngt502-hcroi-starter","version":2,"window":"year1","quarters":["Q1","Q2","Q3","Q4"],"firm":"IronLeaf Manufacturing Co.","benefits_rate":0.207,"productivity":223.0,"wages":{"5":18465.0,"4":14354.0,"3":12324.0,"2":10285.0,"1":16.15},"ytd":{"pay_benefits":28956540.7055,"contingent":0.0,"absence_days":1233.0,"accident_rate":298.75,"revenue":49800000.0,"expenses":50411137.73603295,"hccf":31736137.736032944,"hcroi":0.9807431597027932},"ops":{"fte_last":649.0,"hcroi_last":1.034674056975715,"morale_last":84.0,"quality_last":73.0,"turnover_last":0.0616,"ulc_last":55.95,"absence_days_last":268.0},"budget_ytd":{"staffing":409600.0,"wages":289770.29,"training":469800.0,"other":230000.0},"staffing":{"Q1":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":500.0},"resign":{"5":1.0,"4":2.0,"3":5.0,"2":6.0,"1":50.0},"promo":{"5":0.0,"4":1.0,"3":3.0,"2":8.0,"1":10.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":4.0,"1":58.0}},"Q2":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":498.0},"resign":{"5":0.0,"4":1.0,"3":4.0,"2":5.0,"1":42.0},"promo":{"5":0.0,"4":0.0,"3":1.0,"2":5.0,"1":10.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":52.0}},"Q3":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":498.0},"resign":{"5":0.0,"4":0.0,"3":2.0,"2":4.0,"1":33.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":2.0,"1":5.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":27.0}},"Q4":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":59.0,"1":487.0},"resign":{"5":0.0,"4":2.0,"3":2.0,"2":5.0,"1":31.0},"promo":{"5":0.0,"4":0.0,"3":1.0,"2":3.0,"1":9.0},"hire":{"5":0.0,"4":1.0,"3":0.0,"2":0.0,"1":47.0}}}},"year2":{"kind":"mngt502-hcroi-starter","version":2,"window":"year2","quarters":["Q5","Q6","Q7","Q8"],"firm":"IronLeaf Manufacturing Co.","benefits_rate":0.259,"productivity":235.0,"wages":{"5":18600.0,"4":14939.0,"3":13065.0,"2":10600.0,"1":17.05},"ytd":{"pay_benefits":28678012.0564,"contingent":0.0,"absence_days":985.0,"accident_rate":198.5,"revenue":48768000.0,"expenses":49081494.35651408,"hccf":30793494.356514085,"hcroi":0.9898194614458308},"ops":{"fte_last":548.0,"hcroi_last":0.9561790710854717,"morale_last":89.0,"quality_last":75.0,"turnover_last":0.0602,"ulc_last":61.35,"absence_days_last":220.0},"budget_ytd":{"staffing":142700.0,"wages":558686.63,"training":552200.0,"other":300703.26},"staffing":{"Q5":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":494.0},"resign":{"5":1.0,"4":0.0,"3":2.0,"2":4.0,"1":31.0},"promo":{"5":0.0,"4":1.0,"3":1.0,"2":3.0,"1":6.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":31.0}},"Q6":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":59.0,"1":488.0},"resign":{"5":0.0,"4":0.0,"3":0.0,"2":3.0,"1":29.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":0.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":1.0,"1":10.0}},"Q7":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":55.0,"1":449.0},"resign":{"5":0.0,"4":0.0,"3":1.0,"2":4.0,"1":27.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":1.0,"1":2.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":9.0}},"Q8":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":52.0,"1":429.0},"resign":{"5":0.0,"4":1.0,"3":2.0,"2":5.0,"1":25.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":0.0},"hire":{"5":0.0,"4":1.0,"3":2.0,"2":2.0,"1":0.0}}}}},"Tri-Hard Manufacturing":{"year1":{"kind":"mngt502-hcroi-starter","version":2,"window":"year1","quarters":["Q1","Q2","Q3","Q4"],"firm":"Tri-Hard Manufacturing","benefits_rate":0.229,"productivity":218.0,"wages":{"5":18460.0,"4":14210.0,"3":12320.0,"2":10205.0,"1":15.71},"ytd":{"pay_benefits":29235953.7045,"contingent":0.0,"absence_days":1452.0,"accident_rate":344.5,"revenue":49800000.0,"expenses":50728622.1793139,"hccf":32053622.179313898,"hcroi":0.9710291032283649},"ops":{"fte_last":663.0,"hcroi_last":1.016228410423931,"morale_last":77.0,"quality_last":68.0,"turnover_last":0.0643,"ulc_last":56.96,"absence_days_last":316.0},"budget_ytd":{"staffing":404000.0,"wages":301400.5,"training":498100.0,"other":196500.0},"staffing":{"Q1":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":500.0},"resign":{"5":1.0,"4":2.0,"3":5.0,"2":6.0,"1":50.0},"promo":{"5":0.0,"4":1.0,"3":3.0,"2":8.0,"1":14.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":64.0}},"Q2":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":500.0},"resign":{"5":1.0,"4":1.0,"3":4.0,"2":5.0,"1":36.0},"promo":{"5":0.0,"4":1.0,"3":2.0,"2":6.0,"1":10.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":32.0}},"Q3":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":59.0,"1":486.0},"resign":{"5":0.0,"4":0.0,"3":2.0,"2":4.0,"1":33.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":2.0,"1":8.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":58.0}},"Q4":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":61.0,"1":503.0},"resign":{"5":0.0,"4":2.0,"3":2.0,"2":6.0,"1":32.0},"promo":{"5":0.0,"4":0.0,"3":2.0,"2":4.0,"1":10.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":39.0}}}},"year2":{"kind":"mngt502-hcroi-starter","version":2,"window":"year2","quarters":["Q5","Q6","Q7","Q8"],"firm":"Tri-Hard Manufacturing","benefits_rate":0.2632,"productivity":231.0,"wages":{"5":18600.0,"4":14320.0,"3":12430.0,"2":10320.0,"1":16.24},"ytd":{"pay_benefits":28833426.39195,"contingent":0.0,"absence_days":869.0,"accident_rate":175.5,"revenue":49171200.0,"expenses":49513620.61558446,"hccf":31074420.615584463,"hcroi":0.9889806275128833},"ops":{"fte_last":552.0,"hcroi_last":0.9804119656352764,"morale_last":81.0,"quality_last":74.0,"turnover_last":0.0725,"ulc_last":59.71,"absence_days_last":158.0},"budget_ytd":{"staffing":149860.0,"wages":334462.41,"training":822500.0,"other":292955.45999999996},"staffing":{"Q5":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":61.0,"1":503.0},"resign":{"5":1.0,"4":0.0,"3":2.0,"2":4.0,"1":32.0},"promo":{"5":0.0,"4":1.0,"3":1.0,"2":3.0,"1":6.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":27.0}},"Q6":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":496.0},"resign":{"5":0.0,"4":1.0,"3":2.0,"2":5.0,"1":31.0},"promo":{"5":0.0,"4":0.0,"3":1.0,"2":3.0,"1":8.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":2.0}},"Q7":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":463.0},"resign":{"5":0.0,"4":0.0,"3":0.0,"2":4.0,"1":29.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":4.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":26.0}},"Q8":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":456.0},"resign":{"5":0.0,"4":2.0,"3":1.0,"2":6.0,"1":31.0},"promo":{"5":0.0,"4":0.0,"3":2.0,"2":3.0,"1":0.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":2.0,"1":17.0}}}}}};
+
   var wages = Object.assign({}, DEFAULT_WAGES);
   var fillingEdits = false;
 
@@ -534,11 +548,40 @@ RELEVANT FILES:
     var w = String(data.window || "").toLowerCase();
     var qs = data.quarters || [];
     var first = String(qs[0] || "");
+    if (w === "both" || qs.length > 4) return "both";
     if (w === "year1" || first === "Q1") return "year1";
     if (w === "year2" || first === "Q5") return "year2";
     if (first === "Q9") return "year3";
     return w || "unknown";
   }
+
+  function clonePack(data) {
+    return JSON.parse(JSON.stringify(data));
+  }
+
+  function splitCombined(data) {
+    var staffing = data.staffing || {};
+    var y1s = {}, y2s = {};
+    Object.keys(staffing).forEach(function (q) {
+      if (Y1Q.indexOf(q) >= 0) y1s[q] = staffing[q];
+      if (Y2Q.indexOf(q) >= 0) y2s[q] = staffing[q];
+    });
+    var y1 = clonePack(data);
+    var y2 = clonePack(data);
+    y1.window = "year1"; y1.quarters = Y1Q.slice(); y1.staffing = y1s;
+    y2.window = "year2"; y2.quarters = Y2Q.slice(); y2.staffing = y2s;
+    return { year1: y1, year2: y2 };
+  }
+
+  function looksLikePdf(file, text) {
+    var name = (file && file.name) || "";
+    var type = (file && file.type) || "";
+    if (/\.pdf$/i.test(name) || type === "application/pdf") return true;
+    var head = String(text || "").slice(0, 8);
+    return head.indexOf("%PDF") === 0;
+  }
+
+  var PDF_MSG = "PDFs cannot fill the Year 3 budget (print-to-PDF strips the hidden data pack). Choose your sim firm above, or drop the Canvas HTML briefs.";
 
   function extractStarter(text) {
     var trimmed = String(text || "").replace(/^\uFEFF/, "");
@@ -566,7 +609,7 @@ RELEVANT FILES:
   function parseLegacyReport(html) {
     var title = html.match(/<title>\s*HCROI Year\s*([12])\s*[—–-]\s*([^<]+)<\/title>/i);
     if (!title) {
-      throw new Error("This file is not a Canvas HCROI brief with a starter pack. Use the Year 1 or Year 2 HTML from Canvas — not a PDF and not a sim spreadsheet.");
+      throw new Error(PDF_MSG.replace("PDFs cannot", "This file is not a Canvas HCROI HTML brief. PDFs cannot"));
     }
     var window = title[1] === "2" ? "year2" : "year1";
     function card(label) {
@@ -613,7 +656,7 @@ RELEVANT FILES:
     };
   }
 
-  function applyPack(data) {
+  function applyOnePack(data) {
     var which = classifyWindow(data);
     if (which !== "year1" && which !== "year2") {
       throw new Error("That pack is not a Year 1 or Year 2 brief.");
@@ -622,9 +665,12 @@ RELEVANT FILES:
       throw new Error("Starter pack must have four quarters.");
     }
     packs[which] = data;
-    var other = which === "year1" ? packs.year2 : packs.year1;
-    if (other && other.firm && data.firm && String(other.firm).toLowerCase() !== String(data.firm).toLowerCase()) {
-      el("starterStatus").innerHTML = "<p class='warn'>The two files name different firms (" + other.firm + " vs " + data.firm + "). Confirm you dropped the same sim team.</p>";
+  }
+
+  function finishLoad() {
+    var y1 = packs.year1, y2 = packs.year2;
+    if (y1 && y2 && y1.firm && y2.firm && String(y1.firm).toLowerCase() !== String(y2.firm).toLowerCase()) {
+      el("starterStatus").innerHTML = "<p class='warn'>The two files name different firms (" + y1.firm + " vs " + y2.firm + "). Confirm you dropped the same sim team.</p>";
     }
     var source = packs.year2 || packs.year1;
     if (source && source.productivity) el("y3prod").value = source.productivity;
@@ -642,6 +688,30 @@ RELEVANT FILES:
     }
     renderStory();
     recalc(true);
+  }
+
+  function applyPack(data) {
+    var which = classifyWindow(data);
+    if (which === "both") {
+      var split = splitCombined(data);
+      applyOnePack(split.year1);
+      applyOnePack(split.year2);
+      finishLoad();
+      return;
+    }
+    applyOnePack(data);
+    finishLoad();
+  }
+
+  function loadFirm(name) {
+    var pair = FIRM_PACKS[name];
+    if (!pair || !pair.year1 || !pair.year2) {
+      el("starterStatus").innerHTML = "<p class='warn'>That firm is not in this class pack.</p>";
+      return;
+    }
+    packs.year1 = clonePack(pair.year1);
+    packs.year2 = clonePack(pair.year2);
+    finishLoad();
   }
 
   function renderStory() {
@@ -682,7 +752,7 @@ RELEVANT FILES:
     var notes = [];
     if (y1 && y1.storyOnly) notes.push("Year 1 loaded from the visible brief (no hidden staffing pack). Staffing math waits on Year 2, or an updated Year 1 file with the starter pack.");
     if (y2 && y2.storyOnly) notes.push("Year 2 loaded from the visible brief (no hidden staffing pack). Hiring cannot be projected until a Year 2 file with the starter pack is used.");
-    if (!packHasStaffing(y2) && !packHasStaffing(y1)) notes.push("Drop the Saturday Year 2 HCROI HTML to lock promotion/exit rates and the NH/P training floor.");
+    if (!packHasStaffing(y2) && !packHasStaffing(y1)) notes.push("Choose your sim firm (or drop the Year 2 HCROI HTML) to lock promotion/exit rates and the NH/P training floor.");
     if (notes.length) html += "<p class='warn'>" + notes.join(" ") + "</p>";
     if (y1 && y2 && y1.firm && y2.firm && String(y1.firm).toLowerCase() !== String(y2.firm).toLowerCase()) {
       html += "<p class='warn'>The two files name different firms (" + y1.firm + " vs " + y2.firm + "). Confirm you dropped the same sim team.</p>";
@@ -699,10 +769,17 @@ RELEVANT FILES:
     if (!files.length) return;
     var remaining = files.length;
     files.forEach(function (file) {
+      if (looksLikePdf(file, "")) {
+        el("starterStatus").innerHTML = "<p class='warn'>" + PDF_MSG + "</p>";
+        remaining -= 1;
+        return;
+      }
       var reader = new FileReader();
       reader.onload = function () {
         try {
-          applyPack(extractStarter(String(reader.result || "")));
+          var text = String(reader.result || "");
+          if (looksLikePdf(file, text)) throw new Error(PDF_MSG);
+          applyPack(extractStarter(text));
         } catch (err) {
           el("starterStatus").innerHTML = "<p class='warn'>" + (err && err.message ? err.message : "Could not read that file.") + "</p>";
         }
@@ -756,6 +833,7 @@ RELEVANT FILES:
   function clearAll() {
     packs.year1 = null;
     packs.year2 = null;
+    if (el("firmPick")) el("firmPick").value = "";
     ["goalStaff", "goalPay", "goalTrain", "goalOther", "talentPitch"].forEach(function (id) { el(id).value = ""; });
     ["mgrYear", "safetyYear", "qualityYear", "nhpExtraYear", "wageBump"].forEach(function (id) { el(id).value = 0; });
     PROGRAMS.forEach(function (p) { if (el("prog_" + p.id)) el("prog_" + p.id).checked = false; });
@@ -934,7 +1012,19 @@ RELEVANT FILES:
     a.click();
   }
 
+  function fillFirmSelect() {
+    var sel = el("firmPick");
+    if (!sel) return;
+    Object.keys(FIRM_PACKS).sort().forEach(function (name) {
+      var opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name;
+      sel.appendChild(opt);
+    });
+  }
+
   buildStatic();
+  fillFirmSelect();
   document.querySelectorAll("input, select, textarea").forEach(function (n) {
     function onChange() {
       if (fillingEdits) return;
@@ -948,6 +1038,14 @@ RELEVANT FILES:
   });
   el("btnDemo").addEventListener("click", loadDemo);
   el("btnClear").addEventListener("click", clearAll);
+  el("btnFirm").addEventListener("click", function () {
+    var name = el("firmPick").value;
+    if (!name) {
+      el("starterStatus").innerHTML = "<p class='warn'>Choose your sim firm first.</p>";
+      return;
+    }
+    loadFirm(name);
+  });
   el("btnPrint").addEventListener("click", function () { window.print(); });
   el("btnJson").addEventListener("click", downloadJson);
   el("btnHpws").addEventListener("click", function () {
