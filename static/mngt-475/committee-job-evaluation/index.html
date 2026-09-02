@@ -1,0 +1,2093 @@
+<!DOCTYPE html>
+<!--
+Source: Teaching/MNGT 475/Module_6_Internal_Consistency/Data_Exercise/committee_browser/
+Live: Website/static/mngt-475/committee-job-evaluation/
+Client-side committee job evaluation. Ratings stay in the browser. Re-upload the printed PDF to continue. No student names.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Committee job evaluation · MNGT 475 · People Analytics Lab of the Bayou</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style id="pal-css">
+/* People Analytics Lab — print report (no left rail) */
+
+
+:root {
+  --pal-red: #742d35;
+  --pal-navy: #1a1f2b;
+  --pal-body: #3a4250;
+  --pal-muted: #6b7280;
+  --pal-line: #e5e7eb;
+  --pal-wash: #f3f4f6;
+  --pal-wash-warm: #f7f1f2;
+  --pal-ok: #1f6b45;
+  --pal-ok-soft: #e7f3ec;
+  --pal-warn: #9a6700;
+  --pal-friction: #9b3a3a;
+  --pal-friction-soft: #f7e8e8;
+  --ach: #2563eb;
+  --sta: #ca8a04;
+  --com: #16a34a;
+  --aut: #ea580c;
+}
+
+* { box-sizing: border-box; }
+html { font-size: 10pt; }
+
+body {
+  margin: 0;
+  font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--pal-body);
+  line-height: 1.4;
+  background: #fff;
+}
+
+.sheet {
+  width: 8.5in;
+  min-height: 11in;
+  padding: 0.45in 0.55in 0.4in;
+  page-break-after: always;
+  break-after: page;
+  position: relative;
+  overflow: hidden;
+}
+
+.sheet:last-child {
+  page-break-after: auto;
+  break-after: auto;
+}
+
+/* DRAFT watermark on every page */
+.sheet::before {
+  content: "DRAFT";
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%) rotate(-32deg);
+  font-size: 5.2rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: rgba(116, 45, 53, 0.07);
+  z-index: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.sheet > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Top brand header — no accent bars */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--pal-line);
+}
+
+.topbar .logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 0;
+  flex: 0 0 auto;
+}
+
+.topbar .brand {
+  flex: 1 1 auto;
+}
+
+.topbar .brand-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a202c;
+  line-height: 1.2;
+}
+
+.topbar .brand-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #822727;
+  margin-top: 0.08rem;
+}
+
+.topbar .page-meta {
+  text-align: right;
+  font-size: 1rem;
+  color: var(--pal-muted);
+  line-height: 1.35;
+  flex: 0 0 auto;
+}
+
+.kicker {
+  margin: 0 0 0.28rem;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pal-muted);
+}
+
+.cover-title {
+  margin: 0 0 0.45rem;
+  font-size: 1.85rem;
+  line-height: 1.12;
+  color: var(--pal-navy);
+  font-weight: 700;
+}
+
+.cover-lead {
+  margin: 0 0 0.7rem;
+  font-size: 1rem;
+  max-width: 48ch;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.35rem;
+  margin: 0.2rem 0 0.4rem;
+}
+
+.meta-cell {
+  background: var(--pal-wash);
+  border-radius: 8px;
+  padding: 0.35rem 0.45rem;
+}
+
+.meta-label {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pal-muted);
+}
+
+.meta-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--pal-navy);
+  margin-top: 0.08rem;
+}
+
+.sec-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  margin-bottom: 0.45rem;
+  padding-bottom: 0.28rem;
+  border-bottom: 1px solid var(--pal-line);
+}
+
+.sec-num {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--pal-red);
+  line-height: 1;
+}
+
+.sec-head h2 {
+  margin: 0;
+  font-size: 1.12rem;
+  color: var(--pal-navy);
+  font-weight: 700;
+}
+
+.sec-sub {
+  margin: 0.1rem 0 0;
+  font-size: 1rem;
+  color: var(--pal-muted);
+}
+
+h3 {
+  margin: 0.5rem 0 0.22rem;
+  font-size: 1rem;
+  color: var(--pal-navy);
+  font-weight: 700;
+}
+
+p { margin: 0 0 0.4rem; }
+.muted { color: var(--pal-muted); }
+.note { font-size: 1rem; color: var(--pal-muted); margin: 0.1rem 0 0.28rem; }
+.footer-note {
+  margin-top: 0.7rem;
+  padding-top: 0.28rem;
+  border-top: 1px solid var(--pal-line);
+  font-size: 1rem;
+  color: var(--pal-muted);
+}
+
+.panel, .callout, table, .meta-cell, .viz, .sort-col, .need-row, .type-hero, .keep, .keep-block, .attrition {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.keep-block {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.panel {
+  background: var(--pal-wash);
+  border-radius: 9px;
+  padding: 0.5rem 0.6rem;
+  margin: 0.28rem 0 0.4rem;
+}
+
+.panel h3 { margin-top: 0; }
+
+.callout {
+  border-left: 4px solid var(--pal-red);
+  background: var(--pal-wash);
+  border-radius: 0 8px 8px 0;
+  padding: 0.4rem 0.55rem;
+  margin: 0.3rem 0 0.4rem;
+  font-size: 1rem;
+}
+
+.callout.warn { border-left-color: var(--pal-warn); background: #fff8e8; }
+.callout.ok { border-left-color: var(--pal-ok); background: var(--pal-ok-soft); }
+.callout strong { color: var(--pal-navy); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  margin: 0.22rem 0 0.35rem;
+}
+
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.22rem 0.22rem;
+  border-bottom: 1px solid var(--pal-line);
+}
+
+th {
+  background: var(--pal-wash);
+  color: var(--pal-navy);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+td.num, th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.05rem 0.26rem;
+  border-radius: 999px;
+  background: var(--pal-wash-warm);
+  color: var(--pal-red);
+}
+
+.pill {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 0.08rem 0.28rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.pill.hi, .pill.met { background: var(--pal-ok-soft); color: var(--pal-ok); }
+.pill.mid, .pill.partial { background: #fff8e8; color: var(--pal-warn); }
+.pill.lo, .pill.unmet { background: var(--pal-friction-soft); color: var(--pal-friction); }
+
+ul.bullets { margin: 0.18rem 0 0.28rem; padding-left: 1.05rem; }
+ul.bullets li { margin-bottom: 0.2rem; }
+
+ol.refs { padding-left: 1.05rem; font-size: 1rem; margin: 0.12rem 0; }
+ol.refs li { margin-bottom: 0.28rem; }
+
+.viz { margin: 0.28rem 0 0.4rem; }
+.viz-caption {
+  font-size: 1rem;
+  color: var(--pal-muted);
+  margin: 0.12rem 0 0.28rem;
+  font-style: italic;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.85rem;
+  font-size: 1rem;
+  color: var(--pal-muted);
+  margin: 0.12rem 0 0.3rem;
+}
+
+.legend-row .mark {
+  display: inline-block;
+  width: 14px;
+  height: 2px;
+  margin-right: 0.28rem;
+  vertical-align: middle;
+  background: var(--pal-navy);
+}
+
+.legend-row .mark.job {
+  background: transparent;
+  border-top: 2px dashed var(--pal-red);
+  height: 0;
+}
+
+/* Thin need lines */
+.need-row {
+  display: grid;
+  grid-template-columns: 5.4rem 1fr 5.2rem;
+  gap: 0.35rem;
+  align-items: center;
+  margin: 0.32rem 0;
+  font-size: 1rem;
+}
+
+.need-row .label { font-weight: 700; color: var(--pal-navy); }
+.need-line { position: relative; height: 22px; }
+.need-line .rail-line {
+  position: absolute; left: 0; right: 0; top: 10px; height: 1px; background: #d1d5db;
+}
+.need-line .person-line {
+  position: absolute; top: 10px; left: 0; height: 2px; background: var(--pal-navy);
+}
+.need-line .job-line {
+  position: absolute; top: 10px; left: 0; height: 0; border-top: 2px dashed var(--pal-red);
+}
+.need-line .person-dot {
+  position: absolute; top: 5px; width: 10px; height: 10px; border-radius: 50%;
+  margin-left: -5px; background: var(--pal-navy);
+}
+.need-line .job-dot {
+  position: absolute; top: 5px; width: 10px; height: 10px; border-radius: 50%;
+  margin-left: -5px; background: #fff; border: 2px solid var(--pal-red);
+}
+
+.status-flag {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-align: center;
+  padding: 0.22rem 0.28rem;
+  border-radius: 6px;
+  line-height: 1.2;
+}
+
+.status-flag.met { background: var(--pal-ok-soft); color: var(--pal-ok); }
+.status-flag.partial { background: #fff8e8; color: var(--pal-warn); }
+.status-flag.unmet { background: var(--pal-friction-soft); color: var(--pal-friction); }
+
+.sort-board {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  margin: 0.3rem 0 0.4rem;
+}
+
+.sort-col {
+  border-radius: 10px;
+  padding: 0.4rem 0.45rem;
+}
+
+.sort-col.supply { background: var(--pal-ok-soft); border: 1px solid #c5e0d0; }
+.sort-col.friction { background: var(--pal-friction-soft); border: 1px solid #e5c4c4; }
+.sort-col h3 { margin: 0 0 0.12rem; font-size: 1rem; }
+.sort-col .sort-sub { font-size: 1rem; color: var(--pal-muted); margin: 0 0 0.35rem; }
+
+.sort-item {
+  background: rgba(255,255,255,0.72);
+  border-radius: 7px;
+  padding: 0.28rem 0.35rem;
+  margin-bottom: 0.24rem;
+  font-size: 1rem;
+  border-left: 3px solid var(--pal-ok);
+}
+
+.sort-col.friction .sort-item { border-left-color: var(--pal-friction); }
+.sort-item .need-tag {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.06rem;
+  color: var(--pal-ok);
+}
+.sort-col.friction .sort-item .need-tag { color: var(--pal-friction); }
+.sort-item .elem { font-weight: 600; color: var(--pal-navy); }
+.sort-item .why { font-size: 1rem; margin-top: 0.06rem; }
+
+/* Hero type blocks */
+.type-hero {
+  text-align: center;
+  background: var(--pal-navy);
+  color: #fff;
+  border-radius: 12px;
+  padding: 1.1rem 0.8rem 1rem;
+  margin: 0.5rem 0 0.65rem;
+}
+
+.type-hero .type-kicker {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 0.35rem;
+}
+
+.type-hero .type-code {
+  font-size: 3.4rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  color: #fff;
+  margin: 0.15rem 0 0.4rem;
+}
+
+.type-hero .type-sub {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.88);
+  max-width: 36ch;
+  margin: 0 auto;
+  line-height: 1.35;
+}
+
+.type-hero.role {
+  background: linear-gradient(135deg, var(--pal-navy) 0%, #2a3344 100%);
+  border-top: 5px solid var(--pal-red);
+}
+
+.type-hero .type-code.words {
+  font-size: 2.2rem;
+  letter-spacing: 0.06em;
+}
+
+.type-hero.compact {
+  padding: 0.7rem 0.7rem 0.65rem;
+  margin: 0.35rem 0 0.4rem;
+}
+.type-hero.compact .type-code.words { font-size: 1.85rem; }
+.type-hero.compact .type-sub { max-width: 48ch; }
+
+/* Attrition-style contribution board (adds vs contrary) */
+.attrition {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  margin: 0.3rem 0 0.35rem;
+}
+.attrition-col {
+  border-radius: 10px;
+  padding: 0.4rem 0.45rem;
+}
+.attrition-col.adds {
+  background: var(--pal-ok-soft);
+  border: 1px solid #c5e0d0;
+}
+.attrition-col.contrary {
+  background: var(--pal-friction-soft);
+  border: 1px solid #e5c4c4;
+}
+.attrition-col h3 {
+  margin: 0 0 0.1rem;
+  font-size: 1rem;
+}
+.attrition-col .attr-sub {
+  font-size: 1rem;
+  color: var(--pal-muted);
+  margin: 0 0 0.3rem;
+}
+.attr-row {
+  display: grid;
+  grid-template-columns: 7.2rem 1fr 2.6rem;
+  gap: 0.3rem;
+  align-items: center;
+  margin-bottom: 0.22rem;
+  font-size: 1rem;
+}
+.attr-row .trait { font-weight: 600; color: var(--pal-navy); line-height: 1.2; }
+.attr-row .score {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--pal-navy);
+}
+.attr-bar-track {
+  height: 12px;
+  background: rgba(255,255,255,0.65);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.attr-bar {
+  height: 100%;
+  border-radius: 999px;
+}
+.attrition-col.adds .attr-bar { background: var(--pal-ok); }
+.attrition-col.contrary .attr-bar { background: var(--pal-friction); }
+.attrition-foot {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--pal-navy);
+  padding: 0.22rem 0.4rem;
+  background: var(--pal-wash);
+  border-radius: 8px;
+  margin-top: 0.05rem;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+svg.chart { display: block; width: 100%; height: auto; }
+
+/* Compact stage / radar captions */
+.viz + .viz { margin-top: 0.35rem; }
+code { font-size: 0.95em; }
+
+@page {
+  size: Letter;
+  margin: 0.7in;
+}
+
+@media print {
+  body { background: #fff; }
+  .sheet {
+    width: auto;
+    min-height: 0;
+    height: auto;
+    padding: 0;
+    overflow: visible;
+    page-break-after: always;
+    break-after: page;
+  }
+  .sheet:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+}
+
+@media screen {
+  body { background: #e8eaee; padding: 1rem 0; }
+  .sheet {
+    margin: 0 auto 1.1rem;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(26, 31, 43, 0.1);
+  }
+}
+
+
+/* One-page compact sheet (section 04 orphan fix) */
+.sheet-compact {
+  padding-top: 0.38in;
+  padding-bottom: 0.32in;
+}
+.sheet-compact .sec-head { margin-bottom: 0.28rem; }
+.sheet-compact p { margin-bottom: 0.28rem; }
+.sheet-compact table { margin: 0.12rem 0 0.22rem; }
+.sheet-compact th, .sheet-compact td { padding: 0.14rem 0.18rem; }
+.sheet-compact .attrition {
+  margin: 0.18rem 0 0.22rem;
+  gap: 0.3rem;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.sheet-compact .attrition-col { padding: 0.28rem 0.35rem; }
+.sheet-compact .attr-row { margin-bottom: 0.14rem; }
+.sheet-compact .attr-bar-track { height: 9px; }
+.sheet-compact .attrition-foot { padding: 0.16rem 0.3rem; font-size: 0.95rem; }
+.sheet-compact .callout { margin: 0.18rem 0 0; padding: 0.28rem 0.45rem; }
+/* Student briefs are not drafts. */
+.sheet::before { content: none !important; }
+.topbar .logo {
+  background-image: url("data:image/png;base64,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");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: 0;
+  width: 40px;
+  height: 40px;
+}
+.topbar .brand-name { color: #1a202c; }
+.topbar .brand-tag { color: #822727; letter-spacing: 0.12em; }
+.metric-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:0.35rem; margin:0.35rem 0 0.5rem; }
+.metric-card { background:var(--pal-wash); border-radius:9px; padding:0.45rem 0.5rem; }
+.metric-card .lbl { font-size:0.85rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--pal-muted); }
+.metric-card .val { font-size:1.25rem; font-weight:700; color:var(--pal-navy); margin-top:0.15rem; }
+.metric-card .sub { font-size:0.9rem; color:var(--pal-muted); margin-top:0.1rem; }
+.cover-feedback { margin:0.35rem 0 0.55rem; }
+.cover-feedback .sort-item { margin:0.25rem 0; }
+.cover-feedback .sort-item.friction { border-left-color: var(--pal-friction); }
+.cover-feedback .sort-item.friction .need-tag { color: var(--pal-friction); }
+.cover-feedback .sort-item.review { border-left-color: var(--pal-warn); }
+.cover-feedback .sort-item.review .need-tag { color: var(--pal-warn); }
+.econ-fig { margin: 0.4rem 0 0.65rem; padding: 0; break-inside: avoid; page-break-inside: avoid; }
+.econ-fig-rule { display:block; height:3px; width:100%; background:#742d35; margin:0 0 0.28rem; }
+.econ-fig-title { margin:0 0 0.08rem; font-size:1.05rem; font-weight:800; line-height:1.25; color:#1a1f2b; }
+.econ-fig-sub { margin:0 0 0.35rem; font-size:0.9rem; line-height:1.3; color:#6b7280; }
+.econ-fig-body { margin:0; }
+.econ-fig-source { margin:0.28rem 0 0; font-size:0.78rem; line-height:1.3; color:#6b7280; }
+.dec-input, .why-input { min-width: 8rem; font: inherit; padding: 0.15rem; background: #fff8e8; border: 1px solid #e5d3a1; border-radius: 4px; }
+.print-only { display: none; }
+.restore-pre {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.62rem;
+  line-height: 1.25;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: var(--pal-wash);
+  border-radius: 8px;
+  padding: 0.45rem;
+}
+.sheet { overflow: visible; }
+.sheet.degrees { overflow: visible; }
+.structure-line { font-weight: 700; text-decoration: underline; color: var(--pal-navy); margin: 0.35rem 0 0.45rem; }
+.factor-block { break-inside: avoid; page-break-inside: avoid; margin: 0.55rem 0 0.7rem; }
+.factor-name { font-weight: 700; color: var(--pal-navy); margin: 0 0 0.15rem; font-size: 1.02rem; }
+.def-line, .degree-line { margin: 0.08rem 0; overflow-wrap: anywhere; }
+.metric-card .val { overflow-wrap: anywhere; }
+table.matrix { table-layout: fixed; width: 100%; }
+table.matrix th, table.matrix td { overflow-wrap: anywhere; word-break: break-word; }
+@page { size: Letter; margin: 0.45in; }
+@media print {
+  html, body { width: auto !important; margin: 0 !important; padding: 0 !important; background: #fff !important; }
+  .no-print { display: none !important; }
+  .print-only { display: inline; }
+  .sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    page-break-after: always;
+    break-after: page;
+  }
+  .sheet:last-of-type { page-break-after: auto; break-after: auto; }
+  table { width: 100% !important; max-width: 100% !important; table-layout: fixed; font-size: 8.2pt; }
+  th, td { padding: 0.08rem 0.1rem !important; overflow-wrap: anywhere; word-break: break-word; }
+  .col-c6 { display: none !important; }
+  .dec-input, .why-input { min-width: 0 !important; width: 100%; }
+  .metric-grid { grid-template-columns: 1fr 1fr !important; }
+  .meta-grid { grid-template-columns: 1fr 1fr 1fr !important; }
+  svg.chart { max-width: 100%; height: auto; }
+  .restore-pre { max-height: none !important; overflow: visible !important; font-size: 6.5pt; }
+  .topbar .page-meta { max-width: 28ch; overflow-wrap: anywhere; }
+  .cover-title { font-size: 1.45rem; }
+}
+@media (max-width: 900px) {
+  .metric-grid { grid-template-columns: 1fr 1fr; }
+  .meta-grid { grid-template-columns: 1fr 1fr; }
+}
+
+</style>
+<style id="wizard-css">
+/* Wizard chrome (screen). Print uses PAL .sheet rules only. */
+.no-print { }
+.print-only { display: none; }
+@media print {
+  .no-print { display: none !important; }
+  .print-only { display: inline; }
+  #report { display: block !important; }
+  html, body { width: auto !important; margin: 0 !important; padding: 0 !important; background: #fff !important; }
+  .sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+  table.matrix { font-size: 8.2pt; table-layout: fixed; width: 100%; }
+  .col-c6 { display: none !important; }
+  .dec-input, .why-input { min-width: 0 !important; }
+  .restore-pre { max-height: none !important; overflow: visible !important; font-size: 6.5pt; }
+}
+@media screen {
+  #report:empty { display: none; }
+}
+
+.wizard-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #fff;
+  border-bottom: 1px solid var(--pal-line);
+  padding: 0.45rem 0.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+.wizard-bar .spacer { flex: 1 1 auto; }
+.wizard-inner {
+  width: 8.5in;
+  max-width: calc(100% - 1.5rem);
+  margin: 0 auto 1.2rem;
+}
+
+.btn {
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.95rem;
+  background: var(--pal-wash);
+  color: var(--pal-navy);
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}
+.btn:hover { background: #e5e7eb; }
+.btn.primary {
+  background: var(--pal-navy);
+  color: #fff;
+  border-color: var(--pal-navy);
+}
+.btn.primary:hover { background: #2a3344; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+label.field { display: block; font-weight: 700; color: var(--pal-navy); margin: 0.35rem 0 0.15rem; }
+input[type="text"], input[type="number"], textarea, select {
+  font: inherit;
+  width: 100%;
+  padding: 0.35rem 0.45rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #fff;
+}
+textarea { min-height: 4.2rem; }
+input.yellow, textarea.yellow { background: #fff8e8; }
+
+.job-grid {
+  display: grid;
+  grid-template-columns: 1fr 44px 1fr;
+  gap: 0.45rem;
+  align-items: start;
+}
+.job-col {
+  border: 1px solid var(--pal-line);
+  border-radius: 9px;
+  background: var(--pal-wash);
+  padding: 0.4rem;
+  min-height: 14rem;
+}
+.job-col h3 { margin: 0 0 0.3rem; }
+.job-col .pick {
+  display: block;
+  background: #fff;
+  border-radius: 6px;
+  padding: 0.28rem 0.35rem;
+  margin-bottom: 0.22rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.job-col .pick.sel { border-color: var(--pal-red); background: var(--pal-wash-warm); }
+.xfer { display: flex; flex-direction: column; gap: 0.3rem; justify-content: center; padding-top: 2.4rem; }
+
+.factor-nav { display: flex; gap: 0.35rem; flex-wrap: wrap; margin: 0.3rem 0; }
+
+.survey-job {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--pal-navy);
+  margin: 0.2rem 0 0.45rem;
+}
+
+.structure-line {
+  font-weight: 700;
+  text-decoration: underline;
+  color: var(--pal-navy);
+  margin: 0.35rem 0 0.45rem;
+}
+.factor-block {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin: 0.85rem 0 1rem;
+}
+.factor-name {
+  font-weight: 700;
+  color: var(--pal-navy);
+  margin: 0 0 0.2rem;
+  font-size: 1.05rem;
+}
+.def-line, .degree-line {
+  margin: 0.12rem 0;
+}
+.sheet { overflow: visible; }
+.sheet.degrees { overflow: visible; }
+
+.dec-input { min-width: 0; width: 100%; font: inherit; padding: 0.15rem; background: #fff8e8; border: 1px solid #e5d3a1; border-radius: 4px; }
+.why-input { min-width: 0; width: 100%; font: inherit; padding: 0.15rem; background: #fff8e8; border: 1px solid #e5d3a1; border-radius: 4px; }
+
+.restore-pre {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.62rem;
+  line-height: 1.25;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: var(--pal-wash);
+  border-radius: 8px;
+  padding: 0.45rem;
+  max-height: 9in;
+  overflow: hidden;
+}
+
+.msg {
+  margin: 0.35rem 0;
+  padding: 0.4rem 0.55rem;
+  border-radius: 8px;
+  background: #fff8e8;
+  border-left: 4px solid var(--pal-warn);
+}
+.msg.err { background: var(--pal-friction-soft); border-left-color: var(--pal-friction); }
+.msg.ok { background: var(--pal-ok-soft); border-left-color: var(--pal-ok); }
+
+@media (max-width: 900px) {
+  .wizard-inner, .sheet { width: auto; }
+  .job-grid { grid-template-columns: 1fr; }
+  .xfer { flex-direction: row; padding-top: 0; }
+}
+
+</style>
+</head>
+<body>
+<div id="chrome" class="no-print">
+  <div class="wizard-bar">
+    <strong>MNGT 475 · Committee job evaluation</strong>
+    <span class="spacer"></span>
+    <label class="btn" style="margin:0">Re-upload
+      <input type="file" id="barFile" accept=".pdf,application/pdf" style="display:none">
+    </label>
+  </div>
+  <div class="wizard-inner" id="wizardBody"></div>
+</div>
+<div id="report"></div>
+<script>
+/* Appendix II (degree statements) and Appendix IV (yellow degree cells) from the
+   Canvas exemplar Internal Consistency report. Keep wording as published. */
+var EXEMPLAR = {
+  Administrative: {
+    name: "Administrative",
+    jobs: [0, 1, 2],
+    consensus: { "0": [3, 3, 2, 1], "1": [4, 4, 3, 4], "2": [4, 4, 4, 4] },
+    factors: [
+      {
+        label: "Clerical knowledge",
+        definition: "Knowledge of administrative and clerical procedures and systems such as word processing, managing files and records, stenography and transcription, designing forms, and other office procedures and terminology.",
+        nAnchors: 4,
+        a0: "",
+        a1: "Basic knowledge of clerical procedures and systems, such as basic Word processing, filing and recording paperwork, and the operation of office equipment including printer, scanner, copying machine etc.",
+        a2: "Intermediate-level knowledge on administrative and clerical procedures and systems such as using Office Software to record data and file electronic documents and office equipment to exchange information with others such as transferring phone calls to the appropriate line, emailing meeting schedules and memos to others etc.",
+        a3: "Comprehensive knowledge of administrative and clerical procedures and systems such as using Office Software to make social-outreach files, give presentations and conduct research, and answering public request about daily routines within the company.",
+        a4: "Making full use of administrative and clerical procedures and systems to manage and smooth daily routines within the company and supervising as well as assisting others in using such operations.",
+        a5: ""
+      },
+      {
+        label: "Communication and interpersonal skills",
+        definition: "Skills that involve effectively conveying and transferring information and establishing healthy relationships with others.",
+        nAnchors: 4,
+        a0: "",
+        a1: "Able to convey basic ideas and maintain general relationships with others.",
+        a2: "Able to convey complex ideas and establish and maintain general relationships with others.",
+        a3: "Able to initiate a conversation and maintain good relationships with others.",
+        a4: "Able to initiate and hold a fluent conversation and establish and maintain good relationships with others.",
+        a5: ""
+      },
+      {
+        label: "Judgment and decision making skills",
+        definition: "Skills that involves considering the relative costs and benefits of potential actions and choosing the most appropriate among several choices.",
+        nAnchors: 4,
+        a0: "",
+        a1: "Able to make simple decisions with provided information.",
+        a2: "Able to make relatively difficult decisions that can satisfy basic needs of parties involved.",
+        a3: "Able to consider multiple factors that could be affected by certain decisions before making the decision and can make difficult decisions with others' help.",
+        a4: "Able to analyze current situations and make difficult decisions independently that would both satisfy the needs of parties involved and generate interest for the company in the long run.",
+        a5: ""
+      },
+      {
+        label: "Financial analysis skill",
+        definition: "A skill that involves interpreting financial information and organizing it to aid top executives in decision-making processes.",
+        nAnchors: 4,
+        a0: "",
+        a1: "Able to run fundamental software to record financial data with knowledge of finance.",
+        a2: "Able to run most functions on software to conduct simple financial analysis with knowledge of finance.",
+        a3: "Able to run all functions on software and conduct complex financial analysis with knowledge of finance.",
+        a4: "Able to conduct any type of financial analysis with knowledge of finance through running various types of software and interpreting it correctly to assist top executives in decision-making processes.",
+        a5: ""
+      }
+    ]
+  },
+  Marketing: {
+    name: "Marketing",
+    jobs: [3, 4, 5, 12, 13],
+    factors: [
+      {
+        label: "Sales and marketing knowledge",
+        definition: "Knowledge of principles and methods for showing, promotion, and selling products and services related to marketing strategy and tactics, product demonstration, and sale techniques.",
+        nAnchors: 4, a0: "",
+        a1: "Basic knowledge of sales and marketing and understanding of customers' general needs.",
+        a2: "Intermediate-level knowledge of sales and marketing and understanding of customers' special needs.",
+        a3: "High-level knowledge of sales and marketing, with the ability to put them into practice within a specific area.",
+        a4: "Comprehensive knowledge of sales and marketing and able to apply it into any field.",
+        a5: ""
+      },
+      {
+        label: "Company and online music industry knowledge",
+        definition: "Knowledge of e-sonic's specific software and programs that pertain to database management, company resources and online music market.",
+        nAnchors: 4, a0: "",
+        a1: "Basic knowledge of the development and culture of both e-sonic and the online music industry.",
+        a2: "Knowledge of e-sonic's organizational structure and resources and its position within the online music industry.",
+        a3: "Knowledge of e-sonic's business strategy and future trends in the online music industry.",
+        a4: "Knowledge of e-sonic's current status, strategic goals and future trends, and the practical approach of how to lead e-sonic to succeed in the online music industry in future.",
+        a5: ""
+      },
+      {
+        label: "Communication and interpersonal skills",
+        definition: "A skill that involves effectively conveying and transferring information and establishing healthy relationships with others.",
+        nAnchors: 4, a0: "",
+        a1: "Able to convey basic ideas and maintain general relationships with others.",
+        a2: "Able to convey complex ideas and establish and maintain general relationships with others.",
+        a3: "Able to initiate a conversation and maintain good relationships with others.",
+        a4: "Able to initiate and hold a fluent conversation and establish and maintain good relationships with others.",
+        a5: ""
+      },
+      {
+        label: "Critical thinking skills",
+        definition: "The skills of using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions or approaches to problems.",
+        nAnchors: 4, a0: "",
+        a1: "Able to use logic and reasoning skills to analyze simple problems.",
+        a2: "Able to use logic and reasoning skills to analyze relatively complex problems.",
+        a3: "Able to use logic and reasoning skills to analyze complex problems in detail, meanwhile evaluating strengths and weaknesses.",
+        a4: "Able to use advanced logic and reasoning skills to analyze complex problems in detail, evaluating strengths and weaknesses, and providing several alternatives.",
+        a5: ""
+      },
+      {
+        label: "Research and data analysis skills",
+        definition: "Skills of organizing literature reviews, conducting surveys, and summarizing findings with massive data.",
+        nAnchors: 4, a0: "",
+        a1: "Able to conduct small research with limited data analysis included independently.",
+        a2: "Able to conduct large research with massive data analysis with help or under supervision.",
+        a3: "Able to conduct large research with massive date analysis independently.",
+        a4: "Able to conduct large research with massive date analysis independently and mentor others in conducting reliable and valid research.",
+        a5: ""
+      }
+    ]
+  },
+  "Software development": {
+    name: "Software development",
+    jobs: [6, 7, 8, 9],
+    factors: [
+      {
+        label: "Programming skill",
+        definition: "The skill of writing computer programs for various purposes.",
+        nAnchors: 4, a0: "",
+        a1: "Able to write basic functional programs by using one of the basic programming languages such as C.",
+        a2: "Able to write a simple object-oriented program with one of the advanced programming languages such as C++, Java etc.",
+        a3: "Able to design an algorithm to solve a practical problem and implement the algorithm with advanced programming language.",
+        a4: "Able to use advanced debug tools and version control tools to develop a complex program with other team members.",
+        a5: ""
+      },
+      {
+        label: "Software and application design knowledge",
+        definition: "Knowledge of the practical application of software development. This includes applying principles, techniques, procedures, and equipment to the design and production of various goods and services.",
+        nAnchors: 4, a0: "",
+        a1: "Basic knowledge about concepts and various approaches of software development such as UML, agile, DevOp, etc.",
+        a2: "Knowledge of how to fulfill software development tasks by cooperating with other team members or taking orders from supervisors.",
+        a3: "Knowledge of fulfilling and adjusting software development that can meet e-sonic customers' needs.",
+        a4: "Knowledge of leading and mentoring team members to complete and adjust software development at different stages according to customers' needs.",
+        a5: ""
+      },
+      {
+        label: "Problem sensitivity and solving ability",
+        definition: "Ability to sense if something is wrong or is likely to go wrong and identify complex problems and review related information to develop and evaluate options and implement solutions.",
+        nAnchors: 4, a0: "",
+        a1: "Able to sense and identify obvious problems and solve them independently.",
+        a2: "Able to sense and identify short-term problems before they have fully surfaced and solve them with help or under supervision.",
+        a3: "Able to sense and identify problems that may surface in the long term and solve them with help or under supervision.",
+        a4: "Able to sense and identify complex problems that may surface at any time and solve them independently.",
+        a5: ""
+      },
+      {
+        label: "Originality ability",
+        definition: "Ability to be clever and creative with ideas on any given topic or situation.",
+        nAnchors: 4, a0: "",
+        a1: "Able to master basic knowledge of artistic designs and concepts.",
+        a2: "Able to master artistic concepts and business principles and understand how to tailor work for different customers.",
+        a3: "Able to think out of the box and come up with ideas that satisfy the customers' needs.",
+        a4: "Able to be creative with ideas on any given topic or situation and can meet different customer's needs, while going above and beyond expectations.",
+        a5: ""
+      }
+    ]
+  },
+  "Customer Service": {
+    name: "Customer Service",
+    jobs: [10, 11, 14],
+    factors: [
+      {
+        label: "Clerical knowledge",
+        definition: "Knowledge of administrative and clerical procedures and systems such as word processing, managing files and records, stenography and transcription, designing forms, and other office procedures and terminology.",
+        nAnchors: 4, a0: "",
+        a1: "Basic knowledge of clerical procedures and systems, such as basic Word processing, filing and recording paperwork, and the operation of office equipment including printer, scanner, copying machine etc.",
+        a2: "Intermediate-level knowledge on administrative and clerical procedures and systems such as using Office Software to record data and file electronic documents and office equipment to exchange information with others such as transferring phone calls to the appropriate line, emailing meeting schedules and memos to others, etc.",
+        a3: "Comprehensive knowledge of administrative and clerical procedures and systems such as using Office Software to make social-outreach files, giving presentations, conducting research, and answering public requests about daily routines within the company.",
+        a4: "Makes full use of administrative and clerical procedures and systems to manage and smooth daily routines within the company and supervises as well as assists others in using such operations.",
+        a5: ""
+      },
+      {
+        label: "Company and online music industry knowledge",
+        definition: "Knowledge of e-sonic's specific software and programs that pertain to database management, company resources and the online music market.",
+        nAnchors: 4, a0: "",
+        a1: "Basic knowledge of the development and culture of both e-sonic and online music industry.",
+        a2: "Knowledge of e-sonic's organizational structure and resources and its position within the online music industry.",
+        a3: "Knowledge of e-sonic's business strategy and future trends in the online music industry.",
+        a4: "Knowledge of e-sonic's current status, strategic goals and future trends, and the practical approach of how to lead e-sonic to succeed in the online music industry in future.",
+        a5: ""
+      },
+      {
+        label: "Customer and personal service knowledge",
+        definition: "Knowledge of principles and processes for providing customer and personal services, which includes customer needs assessment, meeting quality standards for services, and evaluation of customer satisfaction.",
+        nAnchors: 4, a0: "",
+        a1: "Knowledge of the e-sonic's general information and company profile while greeting and receiving e-sonic customers.",
+        a2: "Knowledge of how to effectively communicate with e-sonic customers while understanding their needs.",
+        a3: "Knowledge of how to respond to e-sonic customer's needs by directing them to the appropriate staff or answering their requests with help.",
+        a4: "Knowledge of how to effectively respond to e-sonic customer's needs or requests and provide them with sufficient information independently.",
+        a5: ""
+      },
+      {
+        label: "Negotiation skills",
+        definition: "The skills of identifying, listening, understanding, and bringing others together to resolve a problem.",
+        nAnchors: 4, a0: "",
+        a1: "Able to convey ideas clearly to others in an appropriate manner.",
+        a2: "Able to identify others' needs and concerns while effectively communicating with them.",
+        a3: "Able to bring others together to resolve a problem through showing empathy and conveying ideas in an appropriate manner.",
+        a4: "Able to form a solid argument in an appropriate manner to persuade others through effective communication, in a manner that brings about mutual benefits for both parties.",
+        a5: ""
+      }
+    ]
+  }
+};
+
+</script>
+<script>
+/* MNGT 475 committee job-evaluation protocol — browser app */
+(function () {
+  "use strict";
+
+  var JOBS = [
+    "Administrative Assistant",
+    "Executive Assistant",
+    "Office Manager",
+    "Copy Writer",
+    "Creative Director",
+    "Marketing Director",
+    "Software Testing Specialist",
+    "Software Engineer",
+    "Software Project Manager",
+    "Director of Software Development",
+    "Customer Service Agent",
+    "Director of Customer Service",
+    "Market Research Analyst",
+    "Director of Market Analysis",
+    "Artist Relationship Manager"
+  ];
+
+  var KIND = "mngt475-committee-state";
+  var MARK_A = "MNGT475STATE";
+  var MARK_B = "ENDMNGT475STATE";
+
+  var DEGREE_WORD = ["First", "Second", "Third", "Fourth", "Fifth"];
+
+  var state = blankState();
+  var ui = { factorEdit: 1, availSel: null, inSel: null, notice: "", preview: null };
+
+  function blankState() {
+    return {
+      kind: KIND,
+      version: 2,
+      structureName: "Administrative",
+      selected: [0, 1, 2],
+      nRaters: 3,
+      factors: [],
+      ratings: {},
+      decisions: {},
+      step: 0,
+      curRater: 1,
+      curJob: 1,
+      finalized: false,
+      factorsLocked: false
+    };
+  }
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function selectedJobs() {
+    return state.selected.slice().sort(function (a, b) { return a - b; });
+  }
+  function nJobs() { return selectedJobs().length; }
+  function jobName(idx) { return JOBS[idx]; }
+  function degreeEntries(fac) {
+    var nA = Number(fac.nAnchors) || 1, out = [], i;
+    if (nA === 1) {
+      out.push({ code: 0, word: "First", text: fac.a0 });
+      out.push({ code: 1, word: "Second", text: fac.a1 });
+      return out;
+    }
+    for (i = 1; i <= nA; i++) {
+      out.push({ code: i, word: DEGREE_WORD[i - 1] || String(i), text: fac["a" + i] });
+    }
+    return out;
+  }
+  function factorBlockHtml(fac) {
+    var entries = degreeEntries(fac), scaleNote, html = "";
+    if (Number(fac.nAnchors) === 1) {
+      scaleNote = "Scale: 0 = First Degree, 1 = Second Degree.";
+    } else {
+      scaleNote = "Scale: " + entries.map(function (e) {
+        return e.code + " = " + e.word + " Degree";
+      }).join("; ") + ".";
+    }
+    html += '<div class="factor-block">';
+    html += '<p class="factor-name">' + esc(fac.label) + "</p>";
+    html += '<p class="def-line"><em>Definition:</em> ' + esc(fac.definition) + "</p>";
+    html += '<p class="note">' + esc(scaleNote) + "</p>";
+    entries.forEach(function (e) {
+      html += '<p class="degree-line"><em>' + esc(e.word) + " Degree:</em> " + esc(e.text) + "</p>";
+    });
+    html += "</div>";
+    return html;
+  }
+  function degreeSheetsHtml(opts) {
+    opts = opts || {};
+    var meta = opts.meta || "Appendix II · Degree statements";
+    var sec = opts.sec || "II";
+    var title = opts.title || "Degree statements";
+    var foot = opts.foot || "Appendix II · People Analytics Lab of the Bayou · MNGT 475";
+    var per = 2, html = "", i, j, jobs = selectedJobs();
+    if (!state.factors.length) return "";
+    for (i = 0; i < state.factors.length; i += per) {
+      html += '<section class="sheet degrees">';
+      html += topbar(meta);
+      html += '<div class="sec-head"><div class="sec-num">' + sec + "</div><div><h2>" + title + "</h2>" +
+        '<p class="sec-sub">Labels, definitions, and degree statements locked for this structure.</p></div></div>';
+      if (i === 0) {
+        html += '<p class="structure-line">Compensable Factors for Job Structure: ' + esc(state.structureName) + "</p>";
+        html += '<p class="note">Jobs in this structure: ' + jobs.map(jobName).map(esc).join(" · ") + "</p>";
+      }
+      for (j = i; j < Math.min(i + per, state.factors.length); j++) {
+        html += factorBlockHtml(state.factors[j]);
+      }
+      html += '<p class="footer-note">' + foot + "</p>";
+      html += "</section>";
+    }
+    return html;
+  }
+  function cloneFactors(list) {
+    return JSON.parse(JSON.stringify(list));
+  }
+  function applyExemplar(key) {
+    var pack = (typeof EXEMPLAR !== "undefined") ? EXEMPLAR[key] : null;
+    if (!pack) return false;
+    state.structureName = pack.name;
+    state.selected = pack.jobs.slice();
+    state.factors = cloneFactors(pack.factors);
+    state.ratings = {};
+    state.decisions = {};
+    state.factorsLocked = false;
+    ui.factorEdit = 1;
+    return true;
+  }
+  function payloadSheet() {
+    return '<section class="sheet">' +
+      topbar("Appendix · Restore payload") +
+      '<div class="sec-head"><div class="sec-num">A</div><div><h2>Session data (keep this page)</h2>' +
+      '<p class="sec-sub">Required to re-upload this PDF and continue editing. Do not delete.</p></div></div>' +
+      '<p class="note">If you print to PDF, this block is extracted when you re-upload the file.</p>' +
+      '<pre class="restore-pre">' + esc(wrapPayload(serialize())) + "</pre>" +
+      '<p class="footer-note">Appendix · People Analytics Lab of the Bayou · MNGT 475 · no student names</p>' +
+      "</section>" +
+      "<scr" + "ipt type=\"application/json\" id=\"mngt475-committee-state\">" +
+      serialize().replace(/</g, "\\u003c") + "</scr" + "ipt>";
+  }
+  function renderInstrument() {
+    if (!factorsComplete()) {
+      $("report").innerHTML = "";
+      return;
+    }
+    var html = "";
+    html += '<section class="sheet">';
+    html += topbar("Degree statements · MNGT 475");
+    html += '<p class="kicker">Appendix II · Degree statements</p>';
+    html += '<h1 class="cover-title">' + esc(state.structureName) + "<br/>Locked degree statements</h1>";
+    html += '<p class="cover-lead">This is the survey. Raters use only these labels, definitions, and degree statements.</p>';
+    html += '<div class="meta-grid">';
+    html += '<div class="meta-cell"><div class="meta-label">Structure</div><div class="meta-value">' + esc(state.structureName) + "</div></div>";
+    html += '<div class="meta-cell"><div class="meta-label">Jobs</div><div class="meta-value">' + nJobs() + "</div></div>";
+    html += '<div class="meta-cell"><div class="meta-label">Factors</div><div class="meta-value">' + state.factors.length + "</div></div>";
+    html += '<div class="meta-cell"><div class="meta-label">Status</div><div class="meta-value"><span class="tag">' +
+      (state.factorsLocked ? "Locked" : "Draft") + "</span></div></div>";
+    html += "</div>";
+    html += '<div class="callout"><strong>Lock.</strong> Print / Save as PDF. Re-upload that PDF to keep the same instrument. Unlocking clears ratings.</div>';
+    html += "</section>";
+    html += degreeSheetsHtml({
+      meta: "Appendix II · Degree statements",
+      sec: "II",
+      title: "Degree statements",
+      foot: "Appendix II · People Analytics Lab of the Bayou · MNGT 475"
+    });
+    html += payloadSheet();
+    $("report").innerHTML = html;
+  }
+  function rk(r, j, f) { return r + "|" + j + "|" + f; }
+  function dk(j, f) { return j + "|" + f; }
+
+  function getRating(r, j, f) {
+    var v = state.ratings[rk(r, j, f)];
+    return (v === 0 || v) ? Number(v) : null;
+  }
+  function putRating(r, j, f, v) { state.ratings[rk(r, j, f)] = v; }
+
+  function facAnchors(f) { return Number(state.factors[f - 1].nAnchors) || 1; }
+  function scaleMin(f) { return facAnchors(f) === 1 ? 0 : 1; }
+  function scaleMax(f) { return facAnchors(f) === 1 ? 1 : facAnchors(f); }
+  function adi(j, f) {
+    var k = state.nRaters, s = 0, n = 0, r, v, m = 0;
+    for (r = 1; r <= k; r++) {
+      v = getRating(r, j, f);
+      if (v == null) return null;
+      m += v; n++;
+    }
+    m /= n;
+    for (r = 1; r <= k; r++) s += Math.abs(getRating(r, j, f) - m);
+    return s / n;
+  }
+
+  function majority(j, f) {
+    var k = state.nRaters, thr = Math.floor(k / 2) + 1, best = 0, bestV = null, r, u, v, c;
+    for (r = 1; r <= k; r++) {
+      v = getRating(r, j, f);
+      if (v == null) return { ok: false, unan: false, val: null };
+      c = 0;
+      for (u = 1; u <= k; u++) if (getRating(u, j, f) === v) c++;
+      if (c > best) { best = c; bestV = v; }
+    }
+    if (best >= thr) return { ok: true, unan: best === k, val: bestV };
+    return { ok: false, unan: false, val: null };
+  }
+
+  function flagOf(j, f) {
+    var m = majority(j, f);
+    if (!m.ok) return { code: "MUST", label: "MUST DISCUSS — no majority" };
+    if (!m.unan) return { code: "REVIEW", label: "REVIEW — majority, not unanimous" };
+    return { code: "OK", label: "OK — unanimous" };
+  }
+
+  function decisionFilled(j, f) {
+    var d = state.decisions[dk(j, f)] || {};
+    return !!(String(d.decision || "").trim() && String(d.why || "").trim());
+  }
+
+  function agendaItem(row) {
+    var tag = row.flag.code === "MUST" ? "Must discuss" : "Review";
+    var cls = row.flag.code === "MUST" ? "friction" : "review";
+    var extra = row.flag.code === "MUST" && decisionFilled(row.job, row.f)
+      ? " Decision and Why are recorded."
+      : "";
+    return '<div class="sort-item ' + cls + '"><span class="need-tag">' + tag + "</span>" +
+      '<div class="why">' + esc(jobName(row.job)) + " × " + esc(state.factors[row.f - 1].label) +
+      " — " + esc(row.flag.label) + "." + extra + "</div></div>";
+  }
+
+  function iccAk(f) {
+    var jobs = selectedJobs(), n = jobs.length, k = state.nRaters, i, r, v, G = 0;
+    var x, mJ, mR, ssJ = 0, ssR = 0, ssT = 0, ssE, msJ, msR, msE, sJ, sR, sE;
+    if (n < 2 || k < 2) return null;
+    x = []; mJ = []; mR = [];
+    for (i = 0; i < n; i++) {
+      x[i] = [];
+      mJ[i] = 0;
+      for (r = 1; r <= k; r++) {
+        v = getRating(r, jobs[i], f);
+        if (v == null) return null;
+        x[i][r] = v;
+        G += v;
+      }
+    }
+    G /= (n * k);
+    for (i = 0; i < n; i++) {
+      for (r = 1; r <= k; r++) mJ[i] += x[i][r];
+      mJ[i] /= k;
+      ssJ += Math.pow(mJ[i] - G, 2);
+    }
+    ssJ *= k;
+    for (r = 1; r <= k; r++) {
+      mR[r] = 0;
+      for (i = 0; i < n; i++) mR[r] += x[i][r];
+      mR[r] /= n;
+      ssR += Math.pow(mR[r] - G, 2);
+    }
+    ssR *= n;
+    for (i = 0; i < n; i++) for (r = 1; r <= k; r++) ssT += Math.pow(x[i][r] - G, 2);
+    ssE = ssT - ssJ - ssR;
+    msJ = ssJ / (n - 1);
+    msR = ssR / (k - 1);
+    msE = ssE / ((n - 1) * (k - 1));
+    if (msE < 0) msE = 0;
+    sE = msE;
+    sJ = (msJ - msE) / k; if (sJ < 0) sJ = 0;
+    sR = (msR - msE) / n; if (sR < 0) sR = 0;
+    if (sJ + sR / k + sE / k === 0) return 0;
+    return sJ / (sJ + sR / k + sE / k);
+  }
+
+  function allRatingsComplete() {
+    var jobs = selectedJobs(), k = state.nRaters, nf = state.factors.length, r, i, f;
+    if (nf < 1 || jobs.length < 2) return false;
+    for (r = 1; r <= k; r++) {
+      for (i = 0; i < jobs.length; i++) {
+        for (f = 1; f <= nf; f++) if (getRating(r, jobs[i], f) == null) return false;
+      }
+    }
+    return true;
+  }
+
+  function ensureFactors(n) {
+    n = Math.max(1, Math.min(8, n | 0));
+    while (state.factors.length < n) {
+      state.factors.push({
+        label: "Factor " + (state.factors.length + 1),
+        definition: "",
+        nAnchors: Math.max(1, nJobs()),
+        a0: "", a1: "", a2: "", a3: "", a4: "", a5: ""
+      });
+    }
+    state.factors = state.factors.slice(0, n);
+  }
+
+  function factorsComplete() {
+    var i, fac, a, need;
+    if (!state.factors.length) return false;
+    for (i = 0; i < state.factors.length; i++) {
+      fac = state.factors[i];
+      if (!String(fac.label).trim() || !String(fac.definition).trim()) return false;
+      a = Number(fac.nAnchors) || 0;
+      if (a < 1 || a > 5) return false;
+      if (a === 1) {
+        if (!String(fac.a0).trim() || !String(fac.a1).trim()) return false;
+      } else {
+        for (need = 1; need <= a; need++) if (!String(fac["a" + need]).trim()) return false;
+      }
+    }
+    return true;
+  }
+
+  function serialize() {
+    return JSON.stringify(state);
+  }
+  function wrapPayload(json) {
+    var b64 = btoa(unescape(encodeURIComponent(json)));
+    var lines = [];
+    for (var i = 0; i < b64.length; i += 80) lines.push(b64.slice(i, i + 80));
+    return MARK_A + "\n" + lines.join("\n") + "\n" + MARK_B;
+  }
+  function parsePayload(text) {
+    var t = String(text || "");
+    var i = t.indexOf(MARK_A), j = t.indexOf(MARK_B);
+    if (i >= 0 && j > i) {
+      var raw = t.slice(i + MARK_A.length, j).replace(/\s+/g, "");
+      try {
+        return JSON.parse(decodeURIComponent(escape(atob(raw))));
+      } catch (e1) { /* fall through */ }
+    }
+    var m = t.match(/\{\s*"kind"\s*:\s*"mngt475-committee-state"[\s\S]*\}\s*$/m);
+    if (m) {
+      try { return JSON.parse(m[0]); } catch (e2) { /* ignore */ }
+    }
+    try {
+      var obj = JSON.parse(t);
+      if (obj && obj.kind === KIND) return obj;
+    } catch (e3) { /* ignore */ }
+    return null;
+  }
+
+  function applyState(obj) {
+    if (!obj || obj.kind !== KIND) throw new Error("Not a committee session file.");
+    state = obj;
+    if (!Array.isArray(state.selected)) state.selected = [0, 1, 2];
+    if (!state.ratings) state.ratings = {};
+    if (!state.decisions) state.decisions = {};
+    if (!state.factors) state.factors = [];
+    state.nRaters = Number(state.nRaters) === 4 ? 4 : 3;
+    state.factorsLocked = !!state.factorsLocked;
+    ui.factorEdit = 1;
+    ui.preview = null;
+    ui.notice = "Session restored. You can change ratings, decisions, or the structure.";
+    if (allRatingsComplete()) state.step = 5;
+    else if (state.step == null) state.step = 1;
+    render();
+  }
+
+  function topbar(meta) {
+    return (
+      '<div class="topbar">' +
+        '<div class="logo" role="img" aria-label="People Analytics Lab of the Bayou emblem"></div>' +
+        '<div class="brand">' +
+          '<div class="brand-name">People Analytics Lab of the Bayou</div>' +
+          '<div class="brand-tag">Using Evidence to Transform Organizations</div>' +
+        "</div>" +
+        '<div class="page-meta">' + esc(meta) + "</div>" +
+      "</div>"
+    );
+  }
+
+  function pill(code) {
+    if (code === "MUST") return '<span class="pill unmet">Must discuss</span>';
+    if (code === "REVIEW") return '<span class="pill partial">Review</span>';
+    return '<span class="pill met">Unanimous</span>';
+  }
+
+  function analysisRows() {
+    var rows = [], jobs = selectedJobs(), f, i, j, fl, m, a;
+    for (i = 0; i < jobs.length; i++) {
+      j = jobs[i];
+      for (f = 1; f <= state.factors.length; f++) {
+        fl = flagOf(j, f);
+        m = majority(j, f);
+        a = adi(j, f);
+        rows.push({ job: j, f: f, flag: fl, maj: m, adi: a });
+      }
+    }
+    return rows;
+  }
+
+  function pruneRatingsToK(k) {
+    var next = {}, key, r;
+    Object.keys(state.ratings).forEach(function (key) {
+      r = Number(String(key).split("|")[0]);
+      if (r >= 1 && r <= k) next[key] = state.ratings[key];
+    });
+    state.ratings = next;
+  }
+
+  function resumeSurveyCursor() {
+    var jobs = selectedJobs(), r, j, f, complete;
+    for (r = 1; r <= state.nRaters; r++) {
+      for (j = 0; j < jobs.length; j++) {
+        complete = true;
+        for (f = 1; f <= state.factors.length; f++) {
+          if (getRating(r, jobs[j], f) == null) { complete = false; break; }
+        }
+        if (!complete) {
+          state.curRater = r;
+          state.curJob = j + 1;
+          return;
+        }
+      }
+    }
+    state.curRater = 1;
+    state.curJob = 1;
+  }
+
+  function renderReport() {
+    if (!allRatingsComplete()) {
+      $("report").innerHTML = "";
+      return;
+    }
+    var rows = analysisRows();
+    var mustRows = rows.filter(function (r) { return r.flag.code === "MUST"; });
+    var revRows = rows.filter(function (r) { return r.flag.code === "REVIEW"; });
+    var mustOpen = mustRows.filter(function (r) { return !decisionFilled(r.job, r.f); });
+    var must = mustRows.length;
+    var rev = revRows.length;
+    var ok = rows.filter(function (r) { return r.flag.code === "OK"; }).length;
+    var canAdvance = mustOpen.length === 0;
+    var f, v, html = "", r, key, dec, agenda = "", statusCall, statusTitle, statusLead;
+
+    if (!canAdvance) {
+      statusCall = "warn";
+      statusTitle = "Discuss before the next job structure";
+      statusLead = "These cells have no majority. Record Decision and Why on S2 after the committee talks. Then print.";
+      mustOpen.forEach(function (row) { agenda += agendaItem(row); });
+    } else if (mustRows.length) {
+      statusCall = "ok";
+      statusTitle = "Ready for the next job structure";
+      statusLead = "Every split now has Decision and Why. Print this brief, then start the next structure.";
+      mustRows.forEach(function (row) { agenda += agendaItem(row); });
+      revRows.forEach(function (row) { agenda += agendaItem(row); });
+    } else if (revRows.length) {
+      statusCall = "ok";
+      statusTitle = "Ready for the next job structure";
+      statusLead = "Every cell has a majority. Reviews below are optional. Print, then start the next structure if the committee is satisfied.";
+      revRows.forEach(function (row) { agenda += agendaItem(row); });
+    } else {
+      statusCall = "ok";
+      statusTitle = "Ready for the next job structure";
+      statusLead = "Every job × factor is unanimous. Print this brief, then start the next structure.";
+      agenda = '<div class="sort-item"><span class="need-tag">Unanimous</span>' +
+        "<div class=\"why\">No cells require discussion.</div></div>";
+    }
+
+    html += '<section class="sheet">';
+    html += topbar("Committee job evaluation · MNGT 475");
+    html += '<p class="kicker">Internal consistency · Discussion agenda</p>';
+    html += '<h1 class="cover-title">' + esc(state.structureName) + "<br/>What to discuss</h1>";
+    html += '<p class="cover-lead">This page is the committee’s agenda for this job structure. The software flags cells. The committee decides.</p>';
+    html += '<div class="callout ' + statusCall + '"><strong>' + statusTitle + ".</strong> " + statusLead + "</div>";
+    html += '<div class="cover-feedback">' + agenda + "</div>";
+    html += '<div class="meta-grid">';
+    html += '<div class="meta-cell"><div class="meta-label">Structure</div><div class="meta-value">' + esc(state.structureName) + "</div></div>";
+    html += '<div class="meta-cell"><div class="meta-label">Jobs</div><div class="meta-value">' + nJobs() + "</div></div>";
+    html += '<div class="meta-cell"><div class="meta-label">Factors</div><div class="meta-value">' + state.factors.length + "</div></div>";
+    html += '<div class="meta-cell"><div class="meta-label">Raters</div><div class="meta-value">' + state.nRaters + " (majority " + (Math.floor(state.nRaters / 2) + 1) + ")</div></div>";
+    html += "</div>";
+    html += '<div class="metric-grid">';
+    html += '<div class="metric-card"><div class="lbl">Must discuss</div><div class="val">' + must + '</div><div class="sub">no majority</div></div>';
+    html += '<div class="metric-card"><div class="lbl">Review</div><div class="val">' + rev + '</div><div class="sub">majority, not unanimous</div></div>';
+    html += '<div class="metric-card"><div class="lbl">Unanimous</div><div class="val">' + ok + '</div><div class="sub">job × factor cells</div></div>';
+    html += '<div class="metric-card"><div class="lbl">Next structure</div><div class="val" style="font-size:1.05rem">' +
+      (canAdvance ? "Yes" : "Not yet") + '</div><div class="sub">' +
+      (canAdvance ? "print, then start the next one" : "discuss the cells above") + "</div></div>";
+    html += "</div>";
+    html += '<div class="callout"><strong>Reliability is not validity.</strong> ' +
+      "This report emphasizes reliability: whether raters assign the same degrees. " +
+      "Validity is whether the jobs, as described by these compensable factors, actually capture the core, meaningful attributes of the work rather than random facets or overly narrow slices of the job. " +
+      "Agreement on a thin or off-target factor is still a weak evaluation.</div>";
+    html += '<p class="note">Job-evaluation points are not computed here. Points require factor weights (the Companalysis / Internal Consistency step). This brief records degrees and rater agreement only.</p>';
+    html += "</section>";
+
+    html += degreeSheetsHtml({
+      meta: "S1 · Appendix II · Degree statements",
+      sec: "S1",
+      title: "Degree statements (this is the survey)",
+      foot: "S1 · Locked labels, definitions, and degree statements for " + esc(state.structureName)
+    });
+
+    html += '<section class="sheet">';
+    html += topbar("S2 · Ratings and flags");
+    html += '<div class="sec-head"><div class="sec-num">S2</div><div><h2>Job × factor matrix</h2>' +
+      '<p class="sec-sub">Majority = ' + (Math.floor(state.nRaters / 2) + 1) + " of " + state.nRaters +
+      ". ADI is how far, on average, each rater sits from the committee mean on that cell. Larger ADI = more spread.</p></div></div>";
+    html += "<table class='matrix'><tr><th>Job</th><th>Factor</th>";
+    for (r = 1; r <= state.nRaters; r++) html += "<th class='num'>R" + r + "</th>";
+    html += "<th class='num'>Maj.</th><th class='num'>ADI</th><th>Flag</th><th>Decision</th><th>Why</th></tr>";
+    rows.forEach(function (row) {
+      key = dk(row.job, row.f);
+      dec = state.decisions[key] || { decision: "", why: "" };
+      html += "<tr><td>" + esc(jobName(row.job)) + "</td><td>" + esc(state.factors[row.f - 1].label) + "</td>";
+      for (r = 1; r <= state.nRaters; r++) {
+        html += "<td class='num'>" + (getRating(r, row.job, row.f) == null ? "—" : getRating(r, row.job, row.f)) + "</td>";
+      }
+      html += "<td class='num'>" + (row.maj.ok ? row.maj.val : "—") + "</td>";
+      html += "<td class='num'>" + (row.adi == null ? "—" : row.adi.toFixed(2)) + "</td>";
+      html += "<td>" + pill(row.flag.code) + "</td>";
+      html += '<td><input class="dec-input no-print" data-dec="' + esc(key) + '" value="' + esc(dec.decision) + '">' +
+        '<span class="print-only">' + esc(dec.decision) + "</span></td>";
+      html += '<td><input class="why-input no-print" data-why="' + esc(key) + '" value="' + esc(dec.why) + '">' +
+        '<span class="print-only">' + esc(dec.why) + "</span></td>";
+      html += "</tr>";
+    });
+    html += "</table>";
+    html += '<p class="footer-note">S2 · Print keeps the typed Decision / Why. Job-evaluation points are not on this sheet.</p>';
+    html += "</section>";
+
+    html += '<section class="sheet">';
+    html += topbar("S3 · How much the jobs separate");
+    html += '<div class="sec-head"><div class="sec-num">S3</div><div><h2>Rater agreement on this structure</h2>' +
+      '<p class="sec-sub">These numbers describe this committee and these jobs only. They are not a grade.</p></div></div>';
+    html += "<table><tr><th>Factor</th><th class='num'>ICC(A,k)</th></tr>";
+    for (f = 1; f <= state.factors.length; f++) {
+      v = iccAk(f);
+      html += "<tr><td>" + esc(state.factors[f - 1].label) + "</td><td class='num'>" +
+        (v == null ? "(not identified)" : v.toFixed(2)) + "</td></tr>";
+    }
+    html += "</table>";
+    html += '<div class="panel"><h3>How to read the numbers</h3><ul class="bullets">' +
+      "<li><strong>Majority</strong> is the discussion rule: 2 of 3, or 3 of 4. A 2–2 split has no majority and must be discussed.</li>" +
+      "<li><strong>ADI</strong> is disagreement. It is the average distance of each rater from the committee mean on that job × factor. Larger means more spread. It is not a reliability coefficient.</li>" +
+      "<li><strong>ICC(A,k)</strong> asks whether jobs still separate after you average the raters on that factor. Closer to 1 means the job hierarchy is clearer on that factor. Closer to 0 means rater differences or leftover noise dominate. Do not treat it as a grade, and do not compare it across structures with different numbers of raters or different degree scales.</li>" +
+      "<li><strong>Points</strong> are not computed. A point total needs factor weights. That conversion is the Companalysis / Internal Consistency step, after this committee record.</li>" +
+      "</ul></div>";
+    html += '<p class="footer-note">S3 · Reliability of ratings is not evidence that the factors describe the job well.</p>';
+    html += "</section>";
+
+    html += payloadSheet();
+
+    $("report").innerHTML = html;
+    $("report").querySelectorAll("[data-dec]").forEach(function (el) {
+      el.addEventListener("input", function () {
+        var k2 = el.getAttribute("data-dec");
+        state.decisions[k2] = state.decisions[k2] || { decision: "", why: "" };
+        state.decisions[k2].decision = el.value;
+      });
+      el.addEventListener("change", function () { render(); });
+    });
+    $("report").querySelectorAll("[data-why]").forEach(function (el) {
+      el.addEventListener("input", function () {
+        var k2 = el.getAttribute("data-why");
+        state.decisions[k2] = state.decisions[k2] || { decision: "", why: "" };
+        state.decisions[k2].why = el.value;
+      });
+      el.addEventListener("change", function () { render(); });
+    });
+  }
+
+  function wizardStep() {
+    var h = "", jobs, i, fac, bin, nA, f, j, r, idx, cbo, code, cap, val, lockDis, entries;
+    if (ui.notice) h += '<div class="msg ok">' + esc(ui.notice) + "</div>";
+
+    if (ui.preview === "instrument") {
+      h += topbar("Locked degree statements");
+      h += '<div class="sec-head"><div class="sec-num">II</div><div><h2>Print the degree statements</h2>' +
+        '<p class="sec-sub">Appendix II format from the exemplar Internal Consistency report. Yellow is not used here.</p></div></div>';
+      h += '<div class="callout ok">The locked instrument is below. Print / Save as PDF, then continue to raters. Re-upload this PDF to keep the same factors.</div>';
+      h += '<p><button class="btn primary" data-act="print">Print / Save as PDF</button> ';
+      h += '<button class="btn primary" data-act="closeInstrument">Continue to raters</button> ';
+      h += '<button class="btn" data-act="unlockFactors">Unlock to edit</button></p>';
+      return h;
+    }
+
+    if (state.step === 0) {
+      h += topbar("MNGT 475 · Committee job evaluation");
+      h += '<p class="kicker">People Analytics Lab of the Bayou</p>';
+      h += '<h1 class="cover-title">Committee job evaluation</h1>';
+      h += '<p class="cover-lead">Define a job structure, generate the survey from compensable-factor anchors, collect ratings one rater at a time, then print a PAL brief. Re-upload that PDF to keep editing.</p>';
+      h += '<div class="callout">Default structure is Administrative (three Appendix 2 jobs). A structure needs at least two jobs. Do not type student names.</div>';
+      h += '<p><button class="btn primary" data-act="start">Start</button> ';
+      h += '<button class="btn" data-act="demo">Classroom demo</button></p>';
+      h += '<label class="field">Re-upload a previous PDF</label>';
+      h += '<input type="file" id="restoreFile" accept=".pdf,application/pdf">';
+      return h;
+    }
+
+    if (state.step === 1) {
+      h += topbar("Step 1 of 5 · Select jobs");
+      h += '<div class="sec-head"><div class="sec-num">1</div><div><h2>Job structure</h2>' +
+        '<p class="sec-sub">Appendix 2 e-Sonic titles. Default = Administrative.</p></div></div>';
+      if (state.factorsLocked) {
+        h += '<div class="callout warn">Degree statements are locked. Unlock before changing which jobs sit in this structure.</div>';
+      }
+      h += '<label class="field">Structure name</label>';
+      h += '<input type="text" id="structName" value="' + esc(state.structureName) + '"' +
+        (state.factorsLocked ? " disabled" : "") + ">";
+      h += '<div class="job-grid" style="margin-top:0.6rem">';
+      h += '<div class="job-col"><h3>Appendix 2 jobs</h3>';
+      JOBS.forEach(function (nm, ix) {
+        if (state.selected.indexOf(ix) >= 0) return;
+        h += '<label class="pick' + (ui.availSel === ix ? " sel" : "") + '"><input type="radio" name="avail" data-avail="' + ix + '"' +
+          (ui.availSel === ix ? " checked" : "") + (state.factorsLocked ? " disabled" : "") + "> " + esc(nm) + "</label>";
+      });
+      h += '</div><div class="xfer">';
+      h += '<button class="btn" data-act="addJob" type="button"' + (state.factorsLocked ? " disabled" : "") + ">&gt;</button>";
+      h += '<button class="btn" data-act="remJob" type="button"' + (state.factorsLocked ? " disabled" : "") + ">&lt;</button>";
+      h += '</div><div class="job-col"><h3>This structure</h3>';
+      selectedJobs().forEach(function (ix) {
+        h += '<label class="pick' + (ui.inSel === ix ? " sel" : "") + '"><input type="radio" name="injob" data-in="' + ix + '"' +
+          (ui.inSel === ix ? " checked" : "") + (state.factorsLocked ? " disabled" : "") + "> " + esc(JOBS[ix]) + "</label>";
+      });
+      h += "</div></div>";
+      h += '<p style="margin-top:0.7rem"><button class="btn" data-act="adminDef"' + (state.factorsLocked ? " disabled" : "") + ">Administrative (exemplar)</button> ";
+      h += '<button class="btn" data-act="mktDef"' + (state.factorsLocked ? " disabled" : "") + ">Marketing</button> ";
+      h += '<button class="btn" data-act="swDef"' + (state.factorsLocked ? " disabled" : "") + ">Software development</button> ";
+      h += '<button class="btn" data-act="csDef"' + (state.factorsLocked ? " disabled" : "") + ">Customer Service</button> ";
+      h += '<button class="btn primary" data-act="to2">Continue</button></p>';
+      return h;
+    }
+
+    if (state.step === 2) {
+      ensureFactors(state.factors.length || 4);
+      if (ui.factorEdit > state.factors.length) ui.factorEdit = 1;
+      fac = state.factors[ui.factorEdit - 1];
+      nA = Number(fac.nAnchors) || 3;
+      bin = nA === 1;
+      lockDis = state.factorsLocked ? " disabled" : "";
+      h += topbar("Step 2 of 5 · Compensable factors");
+      h += '<div class="sec-head"><div class="sec-num">2</div><div><h2>This definition is the survey</h2>' +
+        '<p class="sec-sub">This structure has ' + nJobs() + " jobs. " + nJobs() +
+        " anchors is recommended so each job can occupy a distinct level. Use 1 anchor for a 0/1 factor.</p></div></div>";
+      if (state.factorsLocked) {
+        h += '<div class="callout ok">Point plan locked. Print the Appendix II degree statements, or unlock to edit.</div>';
+      }
+      h += '<label class="field">How many compensable factors?</label>';
+      h += '<div style="display:flex;gap:0.4rem;align-items:center;max-width:16rem">';
+      h += '<input type="number" id="nFac" min="1" max="8" value="' + state.factors.length + '"' + lockDis + ">";
+      h += '<button class="btn" data-act="applyN"' + lockDis + ">Apply</button></div>";
+      h += '<p class="note">Factor ' + ui.factorEdit + " of " + state.factors.length + "</p>";
+      h += '<label class="field">Label</label><input type="text" id="facLabel" value="' + esc(fac.label) + '"' + lockDis + ">";
+      h += '<label class="field">Definition</label><textarea id="facDef"' + lockDis + ">" + esc(fac.definition) + "</textarea>";
+      h += '<label class="field">Number of anchors (1 = 0/1)</label>';
+      h += '<input type="number" id="nAnch" min="1" max="5" value="' + nA + '"' + lockDis + ">";
+      if (bin) {
+        h += '<label class="field">First Degree (0) =</label><input type="text" id="a0" value="' + esc(fac.a0) + '"' + lockDis + ">";
+        h += '<label class="field">Second Degree (1) =</label><input type="text" id="a1" value="' + esc(fac.a1) + '"' + lockDis + ">";
+      } else {
+        for (i = 1; i <= nA; i++) {
+          h += '<label class="field">' + (DEGREE_WORD[i - 1] || i) + " Degree (" + i + ") =</label>";
+          h += '<input type="text" id="a' + i + '" value="' + esc(fac["a" + i] || "") + '"' + lockDis + ">";
+        }
+      }
+      h += '<p style="margin-top:0.7rem"><button class="btn" data-act="prevFac">Previous factor</button> ';
+      h += '<button class="btn" data-act="nextFac">Next factor</button> ';
+      h += '<button class="btn" data-act="back1">Back</button> ';
+      if (state.factorsLocked) {
+        h += '<button class="btn primary" data-act="showInstrument">Print degree statements</button> ';
+        h += '<button class="btn" data-act="unlockFactors">Unlock</button> ';
+        h += '<button class="btn primary" data-act="to3">Continue to raters</button></p>';
+      } else {
+        h += '<button class="btn primary" data-act="lockFactors">Lock and print degree statements</button> ';
+        h += '<button class="btn" data-act="to3">Continue without printing</button></p>';
+      }
+      return h;
+    }
+
+    if (state.step === 3) {
+      h += topbar("Step 3 of 5 · Raters");
+      h += '<div class="sec-head"><div class="sec-num">3</div><div><h2>Committee size</h2>' +
+        '<p class="sec-sub">Each rater takes a turn. The next rater does not start until every job is rated.</p></div></div>';
+      h += '<label class="field">Number of raters</label>';
+      h += '<select id="nRat"><option value="3"' + (state.nRaters === 3 ? " selected" : "") + ">3</option>";
+      h += '<option value="4"' + (state.nRaters === 4 ? " selected" : "") + ">4</option></select>";
+      h += '<p style="margin-top:0.7rem"><button class="btn" data-act="back2">Back</button> ';
+      h += '<button class="btn primary" data-act="to4">Continue</button></p>';
+      return h;
+    }
+
+    if (state.step === 4) {
+      jobs = selectedJobs();
+      if (state.curJob > jobs.length) state.curJob = 1;
+      idx = jobs[state.curJob - 1];
+      h += topbar("Step 4 of 5 · Survey");
+      h += '<div class="sec-head"><div class="sec-num">4</div><div><h2>One rater at a time</h2>' +
+        '<p class="sec-sub">Rater ' + state.curRater + " of " + state.nRaters +
+        " · Job " + state.curJob + " of " + jobs.length + " · " + esc(state.structureName) + "</p></div></div>";
+      h += '<div class="survey-job">' + esc(jobName(idx)) + "</div>";
+      h += '<p class="note">Other raters wait. Do not fill this screen for someone else. Use the locked degree statements.</p>';
+      for (f = 1; f <= state.factors.length; f++) {
+        fac = state.factors[f - 1];
+        h += "<label class=\"field\">" + esc(fac.label) + " — " + esc(fac.definition) + "</label>";
+        h += '<select data-cbo="' + f + '"><option value="">Select a degree</option>';
+        degreeEntries(fac).forEach(function (e) {
+          h += optionRow(e.code, e.word + " Degree — " + e.text, getRating(state.curRater, idx, f));
+        });
+        h += "</select>";
+      }
+      h += '<p style="margin-top:0.7rem"><button class="btn" data-act="back3">Back</button> ';
+      h += '<button class="btn primary" data-act="saveNext">Save and next</button></p>';
+      return h;
+    }
+
+    if (state.step === 5) {
+      h += topbar("Step 5 of 5 · Brief");
+      h += '<div class="sec-head"><div class="sec-num">5</div><div><h2>Print the committee brief</h2>' +
+        '<p class="sec-sub">The cover is the discussion agenda. Print / Save as PDF, or start a new structure.</p></div></div>';
+      if (!allRatingsComplete()) {
+        h += '<div class="msg err">Ratings are not complete.</div>';
+      } else {
+        h += '<div class="callout ok">The brief is below. Print / Save as PDF. Re-upload that PDF to continue. Do not type student names.</div>';
+      }
+      h += '<p><button class="btn primary" data-act="print">Print / Save as PDF</button> ';
+      h += '<button class="btn" data-act="newStruct">New structure</button></p>';
+      return h;
+    }
+    return h;
+  }
+
+  function optionRow(code, label, current) {
+    var sel = current === code ? " selected" : "";
+    return '<option value="' + code + '"' + sel + ">" + code + " — " + esc(label) + "</option>";
+  }
+
+  function readFactorFields() {
+    if (state.step !== 2 || state.factorsLocked) return;
+    var fac = state.factors[ui.factorEdit - 1];
+    if (!fac) return;
+    var lab = $("facLabel"), def = $("facDef"), nA = $("nAnch");
+    if (!lab) return;
+    fac.label = lab.value;
+    fac.definition = def.value;
+    fac.nAnchors = Math.max(1, Math.min(5, Number(nA.value) || 1));
+    ["a0", "a1", "a2", "a3", "a4", "a5"].forEach(function (k) {
+      var el = $(k);
+      if (el) fac[k] = el.value;
+    });
+  }
+
+  function render() {
+    ui.notice = ui.notice || "";
+    $("wizardBody").innerHTML = wizardStep();
+    if (ui.preview === "instrument") renderInstrument();
+    else if (state.step === 5) renderReport();
+    else $("report").innerHTML = "";
+    var file = $("restoreFile");
+    if (file) file.addEventListener("change", onRestoreFile);
+    var bar = $("barFile");
+    if (bar && !bar._bound) {
+      bar.addEventListener("change", onRestoreFile);
+      bar._bound = true;
+    }
+    ui.notice = "";
+  }
+
+  function onRestoreFile(ev) {
+    var file = ev.target.files && ev.target.files[0];
+    if (!file) return;
+    var name = (file.name || "").toLowerCase();
+    if (name.slice(-4) === ".pdf") {
+      restorePdf(file);
+    } else {
+      var reader = new FileReader();
+      reader.onload = function () {
+        try {
+          var text = String(reader.result || "");
+          var obj = null;
+          if (/\.html?$/i.test(name) || text.indexOf("<html") >= 0) {
+            var doc = new DOMParser().parseFromString(text, "text/html");
+            var el = doc.getElementById("mngt475-committee-state");
+            if (el) {
+              try { obj = JSON.parse(el.textContent); } catch (e0) { obj = null; }
+            }
+          }
+          if (!obj) obj = parsePayload(text);
+          if (!obj) throw new Error("No committee session found in that file.");
+          applyState(obj);
+        } catch (err) {
+          ui.notice = "";
+          alert(err.message || String(err));
+        }
+      };
+      reader.readAsText(file);
+    }
+  }
+
+  function restorePdf(file) {
+    if (typeof pdfjsLib === "undefined") {
+      alert("PDF restore needs a network connection the first time (pdf.js). Keep the appendix page when you print.");
+      return;
+    }
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    var reader = new FileReader();
+    reader.onload = function () {
+      pdfjsLib.getDocument({ data: new Uint8Array(reader.result) }).promise.then(function (pdf) {
+        var parts = [], p = 1;
+        function next() {
+          if (p > pdf.numPages) {
+            var obj = parsePayload(parts.join("\n"));
+            if (!obj) throw new Error("Could not extract session data from that PDF. Keep the appendix page when you print.");
+            applyState(obj);
+            return;
+          }
+          return pdf.getPage(p).then(function (page) {
+            return page.getTextContent().then(function (tc) {
+              parts.push(tc.items.map(function (it) { return it.str; }).join(""));
+              p += 1;
+              return next();
+            });
+          });
+        }
+        return next();
+      }).catch(function (err) {
+        alert(err.message || String(err));
+      });
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function loadDemo() {
+    state = blankState();
+    applyExemplar("Administrative");
+    state.nRaters = 3;
+    state.factorsLocked = true;
+    var cons = EXEMPLAR.Administrative.consensus, job, f, r, deg;
+    Object.keys(cons).forEach(function (job) {
+      for (f = 1; f <= 4; f++) {
+        deg = cons[job][f - 1];
+        for (r = 1; r <= 3; r++) putRating(r, Number(job), f, deg);
+      }
+    });
+    putRating(3, 1, 3, 2);
+    state.step = 5;
+    ui.preview = null;
+    ui.notice = "Exemplar Administrative plan (Appendix II). Yellow Appendix IV degrees, except Executive Assistant × Judgment and decision making (2, 3, 3) so the class still sees a Review flag.";
+    render();
+  }
+
+  document.addEventListener("click", function (ev) {
+    var t = ev.target.closest("[data-act]");
+    if (!t) return;
+    var act = t.getAttribute("data-act");
+    if (state.step === 2) readFactorFields();
+    if (act === "start") { state.step = 1; render(); }
+    else if (act === "demo") loadDemo();
+    else if (act === "addJob") {
+      if (state.factorsLocked) return;
+      if (ui.availSel == null) return;
+      if (state.selected.indexOf(ui.availSel) < 0) state.selected.push(ui.availSel);
+      ui.availSel = null;
+      render();
+    } else if (act === "remJob") {
+      if (state.factorsLocked) return;
+      if (ui.inSel == null) return;
+      state.selected = state.selected.filter(function (x) { return x !== ui.inSel; });
+      ui.inSel = null;
+      render();
+    } else if (act === "adminDef") {
+      if (state.factorsLocked) return;
+      applyExemplar("Administrative");
+      render();
+    } else if (act === "mktDef") {
+      if (state.factorsLocked) return;
+      applyExemplar("Marketing");
+      render();
+    } else if (act === "swDef") {
+      if (state.factorsLocked) return;
+      applyExemplar("Software development");
+      render();
+    } else if (act === "csDef") {
+      if (state.factorsLocked) return;
+      applyExemplar("Customer Service");
+      render();
+    } else if (act === "to2") {
+      var nm = $("structName");
+      if (nm && !state.factorsLocked) state.structureName = nm.value.trim();
+      if (!state.structureName) { alert("Name this job structure."); return; }
+      if (nJobs() < 2) { alert("A structure needs at least 2 jobs."); return; }
+      if (!state.factors.length) {
+        var keepSel = state.selected.slice();
+        var keepName = state.structureName;
+        applyExemplar("Administrative");
+        state.selected = keepSel;
+        state.structureName = keepName;
+      } else {
+        ensureFactors(state.factors.length);
+      }
+      state.step = 2;
+      render();
+    } else if (act === "applyN") {
+      if (state.factorsLocked) return;
+      ensureFactors(Number($("nFac").value) || 4);
+      ui.factorEdit = 1;
+      render();
+    } else if (act === "prevFac") {
+      if (ui.factorEdit > 1) ui.factorEdit--;
+      render();
+    } else if (act === "nextFac") {
+      if (ui.factorEdit < state.factors.length) ui.factorEdit++;
+      render();
+    } else if (act === "back1") { ui.preview = null; state.step = 1; render(); }
+    else if (act === "lockFactors") {
+      if (!factorsComplete()) { alert("Finish label, definition, and degree statements for every factor before locking."); return; }
+      state.factorsLocked = true;
+      ui.previewFrom = 2;
+      ui.preview = "instrument";
+      render();
+    } else if (act === "showInstrument") {
+      if (!factorsComplete()) { alert("Finish label, definition, and degree statements for every factor."); return; }
+      state.factorsLocked = true;
+      ui.previewFrom = state.step;
+      ui.preview = "instrument";
+      render();
+    } else if (act === "closeInstrument") {
+      ui.preview = null;
+      if (ui.previewFrom === 5 || allRatingsComplete()) state.step = 5;
+      else state.step = 3;
+      render();
+    } else if (act === "unlockFactors") {
+      if (!confirm("Unlock the point plan? Ratings and decisions for this structure will be cleared.")) return;
+      state.factorsLocked = false;
+      state.ratings = {};
+      state.decisions = {};
+      ui.preview = null;
+      state.step = 2;
+      render();
+    } else if (act === "to3") {
+      if (!factorsComplete()) { alert("Finish label, definition, and degree statements for every factor."); return; }
+      state.factorsLocked = true;
+      ui.preview = null;
+      state.step = 3; render();
+    } else if (act === "back2") { ui.preview = null; state.step = 2; render(); }
+    else if (act === "to4") {
+      state.nRaters = Number($("nRat").value) === 4 ? 4 : 3;
+      pruneRatingsToK(state.nRaters);
+      if (allRatingsComplete()) { state.step = 5; render(); return; }
+      resumeSurveyCursor();
+      state.step = 4;
+      render();
+    } else if (act === "back3") { state.step = 3; render(); }
+    else if (act === "saveNext") {
+      var jobs = selectedJobs(), idx = jobs[state.curJob - 1], f, sel, ok = true;
+      for (f = 1; f <= state.factors.length; f++) {
+        sel = document.querySelector('[data-cbo="' + f + '"]');
+        if (!sel || sel.value === "") { ok = false; break; }
+        putRating(state.curRater, idx, f, Number(sel.value));
+      }
+      if (!ok) { alert("Rate every compensable factor for this job."); return; }
+      if (state.curJob < jobs.length) { state.curJob++; render(); return; }
+      if (state.curRater < state.nRaters) {
+        alert("Rater " + state.curRater + " is complete. Hand the computer to the next rater.");
+        state.curRater++;
+        state.curJob = 1;
+        render();
+        return;
+      }
+      state.step = 5;
+      render();
+    }     else if (act === "print") { window.print(); }
+    else if (act === "newStruct") {
+      if (!confirm("Start a new structure? Print the current brief first if you still need it.")) return;
+      state = blankState();
+      state.step = 1;
+      render();
+    }
+  });
+
+  document.addEventListener("change", function (ev) {
+    var t = ev.target;
+    if (t.hasAttribute("data-avail")) ui.availSel = Number(t.getAttribute("data-avail"));
+    if (t.hasAttribute("data-in")) ui.inSel = Number(t.getAttribute("data-in"));
+    if (t.id === "nAnch") {
+      if (state.factorsLocked) return;
+      readFactorFields();
+      render();
+    }
+  });
+
+  window.addEventListener("beforeprint", function () {
+    if (ui.preview === "instrument") renderInstrument();
+    else if (state.step === 5) renderReport();
+  });
+
+  render();
+})();
+
+</script>
+</body>
+</html>
