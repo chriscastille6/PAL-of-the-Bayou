@@ -6,7 +6,7 @@ Tech stack: HTML + vanilla JS — FileReader only; nothing is uploaded or stored
 RELEVANT FILES:
   - Simulation/HCROI_After_Year1/scripts/build_hcroi_draft_reports.py (starter JSON in Canvas briefs)
   - Website/static/mngt-502/year2-hcroi-year3-budget/
-  Cache-bust: 2026-08-24-firm-picker
+  Cache-bust: 2026-09-25-year-split
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -86,6 +86,15 @@ RELEVANT FILES:
       font-weight: 600; cursor: pointer; margin: .2rem .3rem .2rem 0;
     }
     .btn.ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+    .tabs { display: flex; flex-wrap: wrap; gap: .35rem; margin: .65rem 0 .85rem; }
+    .tabs button {
+      background: #fff; color: var(--ink); border: 1px solid var(--line); border-radius: .5rem;
+      padding: .45rem .75rem; font: inherit; font-weight: 600; cursor: pointer;
+    }
+    .tabs button.on { background: var(--red); color: #fff; border-color: var(--red); }
+    .tabs button.locked { box-shadow: inset 0 0 0 1px #047857; }
+    .lockbar { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: .7rem 0 .2rem; }
+    .pane-locked input, .pane-locked select, .pane-locked textarea, .pane-locked button { pointer-events: none; background: #f8fafc; }
     .choice { display: flex; gap: .5rem; align-items: flex-start; margin: .22rem 0; font-size: .88rem; font-weight: 400; }
     .choice input { width: auto; margin-top: .2rem; }
     .how { font-size: .75rem; color: var(--muted); font-weight: 400; }
@@ -95,13 +104,32 @@ RELEVANT FILES:
     .bars span { display: block; height: 100%; }
     .legend { display: flex; flex-wrap: wrap; gap: .45rem .8rem; font-size: .75rem; color: var(--muted); }
     .swatch { display: inline-block; width: .7rem; height: .7rem; border-radius: .15rem; margin-right: .25rem; vertical-align: -1px; }
+    .pies { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: .75rem 0 1rem; }
+    .pie-card { border: 1px solid var(--line); border-radius: .65rem; padding: .7rem .8rem .85rem; background: #fff; }
+    .pie-card h3 { margin: 0 0 .2rem; font-size: .92rem; }
+    .pie-card .pie-total { font-size: .78rem; color: var(--muted); margin-bottom: .45rem; }
+    .pie-card .pie-tog { display: flex; gap: .3rem; margin: .15rem 0 .55rem; }
+    .pie-card .pie-tog button {
+      background: #fff; color: var(--ink); border: 1px solid var(--line); border-radius: .4rem;
+      padding: .2rem .5rem; font: inherit; font-size: .75rem; font-weight: 600; cursor: pointer;
+    }
+    .pie-card .pie-tog button.on { background: var(--red); color: #fff; border-color: var(--red); }
+    .pie-card .pie-body { display: grid; grid-template-columns: 120px 1fr; gap: .6rem; align-items: center; }
+    .pie-card svg { width: 120px; height: 120px; display: block; }
+    .pie-card ul { list-style: none; margin: 0; padding: 0; font-size: .75rem; }
+    .pie-card li { display: flex; justify-content: space-between; gap: .4rem; margin: .18rem 0; }
+    .pie-card li span:last-child { font-family: "JetBrains Mono", monospace; white-space: nowrap; }
     @media (max-width: 800px) {
-      .grid-2, .grid-4 { grid-template-columns: 1fr 1fr; }
+      .grid-2, .grid-4, .pies { grid-template-columns: 1fr 1fr; }
+      .pie-card .pie-body { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .pies { grid-template-columns: 1fr; }
     }
     @media print {
       .btn, .no-print, .drop { display: none !important; }
       body { background: #fff; }
-      .card, .disclaimer { break-inside: avoid; }
+      .card, .disclaimer, .pie-card { break-inside: avoid; }
     }
   </style>
 </head>
@@ -171,10 +199,10 @@ RELEVANT FILES:
   </section>
 
   <section class="card" id="shop">
-    <h2>3 · What you will pay for in Year 3</h2>
-    <p class="note">Hiring is computed from your loaded staffing strategy × Year 3 units. Everything else is opt-in. Default is off — that is the zero-based starting point, including programs you already ran in Years 1–2 if you mean to keep them.</p>
+    <h2>3 · Shop one quarter, then add it to the Year 3 ask</h2>
+    <p class="note">Each tab is that quarter’s budget. Hiring follows the staffing projection in every quarter. Benefits, extra training, wages, and programs on this tab are <strong>this quarter only</strong>. <strong>Add to Year 3 ask</strong> folds this quarter into the annual total (Q9+Q10+Q11+Q12). You can still change a quarter after it is in the ask — the year total updates as you edit.</p>
 
-    <h3>Production (sets the staffing ask)</h3>
+    <h3>Production (sets hiring in every quarter)</h3>
     <p class="how">Replace these units with this year’s production message when it posts. L1 need = units ÷ productivity. L2–L5 default to end-of-Year-2 headcount.</p>
     <div class="grid-4" id="y3Demand"></div>
     <div class="grid-2" style="margin-top:.5rem">
@@ -196,76 +224,68 @@ RELEVANT FILES:
       <div id="tpmEdit" style="margin-top:.5rem"></div>
     </details>
 
-    <h3>Compensation and benefits</h3>
-    <p class="how">The increment hits the HR budget <strong>once</strong>, in the quarter it takes effect (× that quarter’s payroll). After that it lives in unit labor cost, not as a repeating HR line.</p>
-    <div class="grid-2">
+    <div class="tabs no-print" id="qTabs" role="tablist"></div>
+    <p class="note" id="qStatus"></p>
+    <div id="qPane">
+      <div class="kpis" id="qKpis"></div>
+      <h3>Compensation and benefits <span id="benWhen" class="how"></span></h3>
+      <p class="how">The increment hits the HR budget <strong>once</strong>, in the first quarter you add a package above the base to the Year 3 ask (× that quarter’s payroll). Later quarters keep it in unit labor cost — you do not pay the increment again.</p>
       <div>
-        <label for="benStart">Benefits take effect in</label>
-        <select id="benStart">
-          <option value="Q9" selected>Q9</option>
-          <option value="Q10">Q10</option>
-          <option value="Q11">Q11</option>
-          <option value="Q12">Q12</option>
-        </select>
+        <label for="wageBump">Wage-increase charge this quarter ($)</label>
+        <input type="number" id="wageBump" value="0" min="0" step="1000">
       </div>
-      <div>
-        <label for="wageBumpQ">Wage-increase charge (optional)</label>
-        <select id="wageBumpQ">
-          <option value="Q9" selected>Q9</option>
-          <option value="Q10">Q10</option>
-          <option value="Q11">Q11</option>
-          <option value="Q12">Q12</option>
-        </select>
-        <input type="number" id="wageBump" value="0" min="0" step="1000" placeholder="Dollar charge that quarter" style="margin-top:.35rem">
+      <div class="grid-2">
+        <div>
+          <h3>Additional days</h3>
+          <div id="benDays"></div>
+          <h3>Retirement</h3>
+          <div id="benRetire"></div>
+        </div>
+        <div>
+          <h3>Health</h3>
+          <div id="benHealth"></div>
+          <h3>Add-ons</h3>
+          <div id="benAdd"></div>
+        </div>
       </div>
-    </div>
-    <div class="grid-2">
-      <div>
-        <h3>Additional days</h3>
-        <div id="benDays"></div>
-        <h3>Retirement</h3>
-        <div id="benRetire"></div>
-      </div>
-      <div>
-        <h3>Health</h3>
-        <div id="benHealth"></div>
-        <h3>Add-ons</h3>
-        <div id="benAdd"></div>
-      </div>
-    </div>
 
-    <h3>Training (annual amounts, split across Q9–Q12)</h3>
-    <p class="how">NH/P training is the floor from hires + promotions and cannot go below that. Each extra line caps at $80,000 per quarter. Enter the Year 3 total; we split it evenly so you can see ceiling pressure. Open the details if you need to time a quarter differently.</p>
-    <div class="grid-2">
-      <div>
-        <label for="mgrYear">Manager / supervisor training, Year 3 total ($)</label>
-        <input type="number" id="mgrYear" value="0" min="0" step="1000">
+      <h3>Training this quarter</h3>
+      <p class="how">NH/P training is the floor from this quarter’s hires + promotions and cannot go below that. Each extra line caps at $80,000 this quarter.</p>
+      <div class="grid-2">
+        <div>
+          <label for="mgrQ">Manager / supervisor training ($)</label>
+          <input type="number" id="mgrQ" value="0" min="0" step="1000">
+        </div>
+        <div>
+          <label for="safetyQ">Safety training ($)</label>
+          <input type="number" id="safetyQ" value="0" min="0" step="1000">
+        </div>
+        <div>
+          <label for="qualityQ">Quality training ($)</label>
+          <input type="number" id="qualityQ" value="0" min="0" step="1000">
+        </div>
+        <div>
+          <label for="nhpExtraQ">Extra above the NH/P floor ($)</label>
+          <input type="number" id="nhpExtraQ" value="0" min="0" step="1000">
+        </div>
       </div>
-      <div>
-        <label for="safetyYear">Safety training, Year 3 total ($)</label>
-        <input type="number" id="safetyYear" value="0" min="0" step="1000">
-      </div>
-      <div>
-        <label for="qualityYear">Quality training, Year 3 total ($)</label>
-        <input type="number" id="qualityYear" value="0" min="0" step="1000">
-      </div>
-      <div>
-        <label for="nhpExtraYear">Extra above the NH/P floor, Year 3 total ($)</label>
-        <input type="number" id="nhpExtraYear" value="0" min="0" step="1000">
-      </div>
-    </div>
 
-    <h3>Programs (on for all of Year 3, or off)</h3>
-    <p class="how">Charged every quarter the program is on. Check only what a Year 3 target requires — including programs you intend to keep.</p>
-    <p class="no-print">
-      <button class="btn ghost" type="button" id="btnHpws">Turn on participation, grievance, orientation, and PA</button>
-    </p>
-    <div id="progInputs"></div>
+      <h3>Programs this quarter</h3>
+      <p class="how">Charged in each quarter the program is on, once that quarter is in the Year 3 ask. Adding a quarter copies your checks into the next tab if you have not started it yet — keep or drop them there.</p>
+      <p class="no-print">
+        <button class="btn ghost" type="button" id="btnHpws">Turn on participation, grievance, orientation, and PA in this quarter</button>
+      </p>
+      <div id="progInputs"></div>
+    </div>
+    <div class="lockbar no-print">
+      <button class="btn" type="button" id="btnLock">Add this quarter to the Year 3 ask</button>
+      <button class="btn ghost" type="button" id="btnUnlock">Remove from Year 3 ask</button>
+    </div>
   </section>
 
   <section class="card" id="ask">
     <h2>4 · Year 3 budget ask</h2>
-    <p class="note">This is the number you take to the presentation. Headroom under the ceiling is allowed — you are not required to spend $1.4M. Red means over the sim constraint ($1,000 over in a quarter → 1 project point).</p>
+    <p class="note">Year 3 is the <strong>sum of Q9–Q12</strong>. Staffing and the NH/P floor are always in. Shop lines (benefits, extra training, wages, programs) enter a quarter when you add it to the ask — you can still edit that quarter afterward. Headroom under the ceiling is allowed. Red means over the sim constraint ($1,000 over in a quarter → 1 project point).</p>
     <div class="grid-2">
       <div>
         <label for="qBudgetCap">Quarterly HR ceiling ($)</label>
@@ -277,7 +297,8 @@ RELEVANT FILES:
       </div>
     </div>
     <div class="kpis" id="budgetKpis"></div>
-    <div id="mixBar"></div>
+    <p class="how">Each pie is one Year 3 bucket (Q9+Q10+Q11+Q12). Switch <strong>By line</strong> vs <strong>By quarter</strong> to see what you bought or when it hits.</p>
+    <div class="pies" id="mixBar"></div>
     <div id="budgetTable"></div>
     <div id="constraintNotes"></div>
     <label for="talentPitch">Talent marketplace argument (prints with the proposal)</label>
@@ -337,10 +358,35 @@ RELEVANT FILES:
   ];
 
   var packs = { year1: null, year2: null };
-  var FIRM_PACKS = {"HR Alliance":{"year1":{"kind":"mngt502-hcroi-starter","version":2,"window":"year1","quarters":["Q1","Q2","Q3","Q4"],"firm":"HR Alliance","benefits_rate":0.203,"productivity":225.0,"wages":{"5":18290.0,"4":14226.0,"3":12224.0,"2":10235.0,"1":15.66},"ytd":{"pay_benefits":28345881.8445,"contingent":0.0,"absence_days":1116.0,"accident_rate":278.0,"revenue":49800000.0,"expenses":49836011.411515385,"hccf":31161011.41151538,"hcroi":0.9988443439450726},"ops":{"fte_last":643.0,"hcroi_last":1.0650793967709802,"morale_last":83.0,"quality_last":75.0,"turnover_last":0.0684,"ulc_last":53.98,"absence_days_last":234.0},"budget_ytd":{"staffing":459000.0,"wages":125755.87999999999,"training":574000.0,"other":226500.0},"staffing":{"Q1":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":500.0},"resign":{"5":1.0,"4":2.0,"3":5.0,"2":6.0,"1":50.0},"promo":{"5":0.0,"4":1.0,"3":3.0,"2":8.0,"1":7.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":57.0}},"Q2":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":53.0,"1":500.0},"resign":{"5":0.0,"4":1.0,"3":3.0,"2":5.0,"1":39.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":2.0,"1":10.0},"hire":{"5":0.0,"4":1.0,"3":1.0,"2":3.0,"1":40.0}},"Q3":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":59.0,"1":491.0},"resign":{"5":1.0,"4":1.0,"3":3.0,"2":4.0,"1":37.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":2.0,"1":3.0},"hire":{"5":1.0,"4":1.0,"3":1.0,"2":2.0,"1":29.0}},"Q4":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":58.0,"1":480.0},"resign":{"5":1.0,"4":2.0,"3":2.0,"2":5.0,"1":34.0},"promo":{"5":0.0,"4":1.0,"3":3.0,"2":5.0,"1":11.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":54.0}}}},"year2":{"kind":"mngt502-hcroi-starter","version":2,"window":"year2","quarters":["Q5","Q6","Q7","Q8"],"firm":"HR Alliance","benefits_rate":0.2329,"productivity":233.0,"wages":{"5":18740.0,"4":14486.0,"3":12504.0,"2":10385.0,"1":16.8},"ytd":{"pay_benefits":27800409.90295,"contingent":0.0,"absence_days":950.0,"accident_rate":159.5,"revenue":49171200.0,"expenses":48413033.41107732,"hccf":29973833.411077324,"hcroi":1.0252942817998876},"ops":{"fte_last":550.0,"hcroi_last":0.9948280450003462,"morale_last":89.0,"quality_last":77.0,"turnover_last":0.0564,"ulc_last":59.11,"absence_days_last":208.0},"budget_ytd":{"staffing":104804.0,"wages":463180.08999999997,"training":723800.0,"other":289295.73},"staffing":{"Q5":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":59.0,"1":489.0},"resign":{"5":1.0,"4":0.0,"3":2.0,"2":3.0,"1":32.0},"promo":{"5":0.0,"4":1.0,"3":1.0,"2":3.0,"1":6.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":34.0}},"Q6":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":59.0,"1":485.0},"resign":{"5":1.0,"4":0.0,"3":1.0,"2":4.0,"1":29.0},"promo":{"5":0.0,"4":1.0,"3":1.0,"2":2.0,"1":2.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":0.0}},"Q7":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":55.0,"1":454.0},"resign":{"5":0.0,"4":1.0,"3":2.0,"2":5.0,"1":33.0},"promo":{"5":0.0,"4":0.0,"3":1.0,"2":3.0,"1":5.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":14.0}},"Q8":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":52.0,"1":430.0},"resign":{"5":0.0,"4":1.0,"3":0.0,"2":4.0,"1":26.0},"promo":{"5":0.0,"4":0.0,"3":1.0,"2":1.0,"1":2.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":4.0}}}}},"Hire Power":{"year1":{"kind":"mngt502-hcroi-starter","version":2,"window":"year1","quarters":["Q1","Q2","Q3","Q4"],"firm":"Hire Power","benefits_rate":0.2,"productivity":218.0,"wages":{"5":18360.0,"4":14280.0,"3":12240.0,"2":10200.0,"1":15.84},"ytd":{"pay_benefits":28611066.6,"contingent":0.0,"absence_days":1305.0,"accident_rate":321.75,"revenue":49800000.0,"expenses":50077155.220228404,"hccf":31402155.220228408,"hcroi":0.9911740064245695},"ops":{"fte_last":661.0,"hcroi_last":1.0328120860896142,"morale_last":76.0,"quality_last":72.0,"turnover_last":0.0681,"ulc_last":55.63,"absence_days_last":267.0},"budget_ytd":{"staffing":495000.0,"wages":153078.4,"training":527422.0,"other":224500.0},"staffing":{"Q1":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":500.0},"resign":{"5":1.0,"4":2.0,"3":5.0,"2":6.0,"1":50.0},"promo":{"5":0.0,"4":1.0,"3":3.0,"2":4.0,"1":7.0},"hire":{"5":0.0,"4":0.0,"3":4.0,"2":3.0,"1":28.0}},"Q2":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":471.0},"resign":{"5":0.0,"4":0.0,"3":3.0,"2":4.0,"1":39.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":3.0,"1":6.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":65.0}},"Q3":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":59.0,"1":491.0},"resign":{"5":0.0,"4":0.0,"3":2.0,"2":4.0,"1":34.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":5.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":42.0}},"Q4":{"begin":{"5":20.0,"4":25.0,"3":48.0,"2":60.0,"1":494.0},"resign":{"5":0.0,"4":2.0,"3":3.0,"2":5.0,"1":35.0},"promo":{"5":0.0,"4":0.0,"3":2.0,"2":5.0,"1":6.0},"hire":{"5":0.0,"4":0.0,"3":2.0,"2":5.0,"1":52.0}}}},"year2":{"kind":"mngt502-hcroi-starter","version":2,"window":"year2","quarters":["Q5","Q6","Q7","Q8"],"firm":"Hire Power","benefits_rate":0.2184,"productivity":222.0,"wages":{"5":18515.0,"4":14398.0,"3":12379.0,"2":10335.0,"1":17.18},"ytd":{"pay_benefits":28154093.5428,"contingent":0.0,"absence_days":1059.0,"accident_rate":225.25,"revenue":49171200.0,"expenses":49054545.59646719,"hccf":30615345.59646719,"hcroi":1.0038103245695933},"ops":{"fte_last":574.0,"hcroi_last":0.9467257563115122,"morale_last":88.0,"quality_last":77.0,"turnover_last":0.0679,"ulc_last":61.13,"absence_days_last":217.0},"budget_ytd":{"staffing":183760.0,"wages":409150.16000000003,"training":719000.0,"other":262387.79000000004},"staffing":{"Q5":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":61.0,"1":505.0},"resign":{"5":1.0,"4":0.0,"3":3.0,"2":4.0,"1":33.0},"promo":{"5":0.0,"4":1.0,"3":1.0,"2":4.0,"1":7.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":11.0}},"Q6":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":476.0},"resign":{"5":0.0,"4":0.0,"3":3.0,"2":3.0,"1":38.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":3.0,"1":3.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":23.0}},"Q7":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":57.0,"1":458.0},"resign":{"5":0.0,"4":0.0,"3":2.0,"2":3.0,"1":36.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":2.0,"1":1.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":4.0}},"Q8":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":53.0,"1":430.0},"resign":{"5":0.0,"4":1.0,"3":2.0,"2":4.0,"1":31.0},"promo":{"5":0.0,"4":0.0,"3":1.0,"2":3.0,"1":6.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":16.0}}}}},"IronLeaf Manufacturing Co.":{"year1":{"kind":"mngt502-hcroi-starter","version":2,"window":"year1","quarters":["Q1","Q2","Q3","Q4"],"firm":"IronLeaf Manufacturing Co.","benefits_rate":0.207,"productivity":223.0,"wages":{"5":18465.0,"4":14354.0,"3":12324.0,"2":10285.0,"1":16.15},"ytd":{"pay_benefits":28956540.7055,"contingent":0.0,"absence_days":1233.0,"accident_rate":298.75,"revenue":49800000.0,"expenses":50411137.73603295,"hccf":31736137.736032944,"hcroi":0.9807431597027932},"ops":{"fte_last":649.0,"hcroi_last":1.034674056975715,"morale_last":84.0,"quality_last":73.0,"turnover_last":0.0616,"ulc_last":55.95,"absence_days_last":268.0},"budget_ytd":{"staffing":409600.0,"wages":289770.29,"training":469800.0,"other":230000.0},"staffing":{"Q1":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":500.0},"resign":{"5":1.0,"4":2.0,"3":5.0,"2":6.0,"1":50.0},"promo":{"5":0.0,"4":1.0,"3":3.0,"2":8.0,"1":10.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":4.0,"1":58.0}},"Q2":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":498.0},"resign":{"5":0.0,"4":1.0,"3":4.0,"2":5.0,"1":42.0},"promo":{"5":0.0,"4":0.0,"3":1.0,"2":5.0,"1":10.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":52.0}},"Q3":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":498.0},"resign":{"5":0.0,"4":0.0,"3":2.0,"2":4.0,"1":33.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":2.0,"1":5.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":27.0}},"Q4":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":59.0,"1":487.0},"resign":{"5":0.0,"4":2.0,"3":2.0,"2":5.0,"1":31.0},"promo":{"5":0.0,"4":0.0,"3":1.0,"2":3.0,"1":9.0},"hire":{"5":0.0,"4":1.0,"3":0.0,"2":0.0,"1":47.0}}}},"year2":{"kind":"mngt502-hcroi-starter","version":2,"window":"year2","quarters":["Q5","Q6","Q7","Q8"],"firm":"IronLeaf Manufacturing Co.","benefits_rate":0.259,"productivity":235.0,"wages":{"5":18600.0,"4":14939.0,"3":13065.0,"2":10600.0,"1":17.05},"ytd":{"pay_benefits":28678012.0564,"contingent":0.0,"absence_days":985.0,"accident_rate":198.5,"revenue":48768000.0,"expenses":49081494.35651408,"hccf":30793494.356514085,"hcroi":0.9898194614458308},"ops":{"fte_last":548.0,"hcroi_last":0.9561790710854717,"morale_last":89.0,"quality_last":75.0,"turnover_last":0.0602,"ulc_last":61.35,"absence_days_last":220.0},"budget_ytd":{"staffing":142700.0,"wages":558686.63,"training":552200.0,"other":300703.26},"staffing":{"Q5":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":494.0},"resign":{"5":1.0,"4":0.0,"3":2.0,"2":4.0,"1":31.0},"promo":{"5":0.0,"4":1.0,"3":1.0,"2":3.0,"1":6.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":31.0}},"Q6":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":59.0,"1":488.0},"resign":{"5":0.0,"4":0.0,"3":0.0,"2":3.0,"1":29.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":0.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":1.0,"1":10.0}},"Q7":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":55.0,"1":449.0},"resign":{"5":0.0,"4":0.0,"3":1.0,"2":4.0,"1":27.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":1.0,"1":2.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":9.0}},"Q8":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":52.0,"1":429.0},"resign":{"5":0.0,"4":1.0,"3":2.0,"2":5.0,"1":25.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":0.0},"hire":{"5":0.0,"4":1.0,"3":2.0,"2":2.0,"1":0.0}}}}},"Tri-Hard Manufacturing":{"year1":{"kind":"mngt502-hcroi-starter","version":2,"window":"year1","quarters":["Q1","Q2","Q3","Q4"],"firm":"Tri-Hard Manufacturing","benefits_rate":0.229,"productivity":218.0,"wages":{"5":18460.0,"4":14210.0,"3":12320.0,"2":10205.0,"1":15.71},"ytd":{"pay_benefits":29235953.7045,"contingent":0.0,"absence_days":1452.0,"accident_rate":344.5,"revenue":49800000.0,"expenses":50728622.1793139,"hccf":32053622.179313898,"hcroi":0.9710291032283649},"ops":{"fte_last":663.0,"hcroi_last":1.016228410423931,"morale_last":77.0,"quality_last":68.0,"turnover_last":0.0643,"ulc_last":56.96,"absence_days_last":316.0},"budget_ytd":{"staffing":404000.0,"wages":301400.5,"training":498100.0,"other":196500.0},"staffing":{"Q1":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":500.0},"resign":{"5":1.0,"4":2.0,"3":5.0,"2":6.0,"1":50.0},"promo":{"5":0.0,"4":1.0,"3":3.0,"2":8.0,"1":14.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":64.0}},"Q2":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":500.0},"resign":{"5":1.0,"4":1.0,"3":4.0,"2":5.0,"1":36.0},"promo":{"5":0.0,"4":1.0,"3":2.0,"2":6.0,"1":10.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":32.0}},"Q3":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":59.0,"1":486.0},"resign":{"5":0.0,"4":0.0,"3":2.0,"2":4.0,"1":33.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":2.0,"1":8.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":58.0}},"Q4":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":61.0,"1":503.0},"resign":{"5":0.0,"4":2.0,"3":2.0,"2":6.0,"1":32.0},"promo":{"5":0.0,"4":0.0,"3":2.0,"2":4.0,"1":10.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":39.0}}}},"year2":{"kind":"mngt502-hcroi-starter","version":2,"window":"year2","quarters":["Q5","Q6","Q7","Q8"],"firm":"Tri-Hard Manufacturing","benefits_rate":0.2632,"productivity":231.0,"wages":{"5":18600.0,"4":14320.0,"3":12430.0,"2":10320.0,"1":16.24},"ytd":{"pay_benefits":28833426.39195,"contingent":0.0,"absence_days":869.0,"accident_rate":175.5,"revenue":49171200.0,"expenses":49513620.61558446,"hccf":31074420.615584463,"hcroi":0.9889806275128833},"ops":{"fte_last":552.0,"hcroi_last":0.9804119656352764,"morale_last":81.0,"quality_last":74.0,"turnover_last":0.0725,"ulc_last":59.71,"absence_days_last":158.0},"budget_ytd":{"staffing":149860.0,"wages":334462.41,"training":822500.0,"other":292955.45999999996},"staffing":{"Q5":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":61.0,"1":503.0},"resign":{"5":1.0,"4":0.0,"3":2.0,"2":4.0,"1":32.0},"promo":{"5":0.0,"4":1.0,"3":1.0,"2":3.0,"1":6.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":27.0}},"Q6":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":496.0},"resign":{"5":0.0,"4":1.0,"3":2.0,"2":5.0,"1":31.0},"promo":{"5":0.0,"4":0.0,"3":1.0,"2":3.0,"1":8.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":2.0}},"Q7":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":463.0},"resign":{"5":0.0,"4":0.0,"3":0.0,"2":4.0,"1":29.0},"promo":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":4.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":0.0,"1":26.0}},"Q8":{"begin":{"5":20.0,"4":25.0,"3":50.0,"2":60.0,"1":456.0},"resign":{"5":0.0,"4":2.0,"3":1.0,"2":6.0,"1":31.0},"promo":{"5":0.0,"4":0.0,"3":2.0,"2":3.0,"1":0.0},"hire":{"5":0.0,"4":0.0,"3":0.0,"2":2.0,"1":17.0}}}}}};
+  var FIRM_PACKS = {"HR Alliance":{"year1":{"kind":"mngt502-hcroi-starter","version":2,"window":"year1","quarters":["Q1","Q2","Q3","Q4"],"firm":"HR Alliance","benefits_rate":0.2329,"productivity":225,"wages":{"1":16.8,"2":10385,"3":12504,"4":14486,"5":18740},"ytd":{"pay_benefits":56146291.74745,"contingent":0,"absence_days":2066,"accident_rate":218.75,"revenue":98971200,"expenses":98249044.8225927,"hccf":31161011,"hcroi":1},"ops":{"fte_last":643,"hcroi_last":1.07,"morale_last":83,"quality_last":75,"turnover_last":0.0684,"ulc_last":53.98,"absence_days_last":234},"budget_ytd":{"staffing":459000,"wages":125756,"training":574000,"other":226500},"staffing":{"Q1":{"begin":{"1":500,"2":60,"3":50,"4":25,"5":20},"resign":{"1":50,"2":6,"3":5,"4":2,"5":1},"promo":{"1":7,"2":8,"3":3,"4":1,"5":0},"hire":{"1":57,"2":0,"3":0,"4":0,"5":0}},"Q2":{"begin":{"1":500,"2":53,"3":50,"4":25,"5":20},"resign":{"1":39,"2":5,"3":3,"4":1,"5":0},"promo":{"1":10,"2":2,"3":0,"4":0,"5":0},"hire":{"1":40,"2":3,"3":1,"4":1,"5":0}},"Q3":{"begin":{"1":491,"2":59,"3":50,"4":25,"5":20},"resign":{"1":37,"2":4,"3":3,"4":1,"5":1},"promo":{"1":3,"2":2,"3":0,"4":0,"5":0},"hire":{"1":29,"2":2,"3":1,"4":1,"5":1}},"Q4":{"begin":{"1":480,"2":58,"3":50,"4":25,"5":20},"resign":{"1":34,"2":5,"3":2,"4":2,"5":1},"promo":{"1":11,"2":5,"3":3,"4":1,"5":0},"hire":{"1":54,"2":0,"3":0,"4":0,"5":0}}},"productivity_path":{}},"year2":{"kind":"mngt502-hcroi-starter","version":2,"window":"year2","quarters":["Q5","Q6","Q7","Q8"],"firm":"HR Alliance","benefits_rate":0.2329,"productivity":233,"wages":{"1":16.8,"2":10385,"3":12504,"4":14486,"5":18740},"ytd":{"pay_benefits":56146291.74745,"contingent":0,"absence_days":2066,"accident_rate":218.75,"revenue":98971200,"expenses":98249044.8225927,"hccf":29973833,"hcroi":1.03},"ops":{"fte_last":550,"hcroi_last":0.99,"morale_last":89,"quality_last":77,"turnover_last":0.0564,"ulc_last":59.11,"absence_days_last":208},"budget_ytd":{"staffing":104804,"wages":463181,"training":723800,"other":289296},"staffing":{"Q5":{"begin":{"1":489,"2":59,"3":50,"4":25,"5":20},"resign":{"1":32,"2":3,"3":2,"4":0,"5":1},"promo":{"1":6,"2":3,"3":1,"4":1,"5":0},"hire":{"1":34,"2":0,"3":0,"4":0,"5":0}},"Q6":{"begin":{"1":485,"2":59,"3":50,"4":25,"5":20},"resign":{"1":29,"2":4,"3":1,"4":0,"5":1},"promo":{"1":2,"2":2,"3":1,"4":1,"5":0},"hire":{"1":0,"2":0,"3":0,"4":0,"5":0}},"Q7":{"begin":{"1":454,"2":55,"3":50,"4":25,"5":20},"resign":{"1":33,"2":5,"3":2,"4":1,"5":0},"promo":{"1":5,"2":3,"3":1,"4":0,"5":0},"hire":{"1":14,"2":0,"3":0,"4":0,"5":0}},"Q8":{"begin":{"1":430,"2":52,"3":50,"4":25,"5":20},"resign":{"1":26,"2":4,"3":0,"4":1,"5":0},"promo":{"1":2,"2":1,"3":1,"4":0,"5":0},"hire":{"1":4,"2":0,"3":0,"4":0,"5":0}}},"productivity_path":{}}},"Hire Power":{"year1":{"kind":"mngt502-hcroi-starter","version":2,"window":"year1","quarters":["Q1","Q2","Q3","Q4"],"firm":"Hire Power","benefits_rate":0.2184,"productivity":218,"wages":{"1":17.18,"2":10335,"3":12379,"4":14398,"5":18515},"ytd":{"pay_benefits":56765160.1428,"contingent":0,"absence_days":2364,"accident_rate":273.5,"revenue":98971200,"expenses":99131700.8166956,"hccf":31402155,"hcroi":0.99},"ops":{"fte_last":661,"hcroi_last":1.03,"morale_last":76,"quality_last":72,"turnover_last":0.0681,"ulc_last":55.63,"absence_days_last":267},"budget_ytd":{"staffing":495000,"wages":153078,"training":527422,"other":224500},"staffing":{"Q1":{"begin":{"1":500,"2":60,"3":50,"4":25,"5":20},"resign":{"1":50,"2":6,"3":5,"4":2,"5":1},"promo":{"1":7,"2":4,"3":3,"4":1,"5":0},"hire":{"1":28,"2":3,"3":4,"4":0,"5":0}},"Q2":{"begin":{"1":471,"2":60,"3":50,"4":25,"5":20},"resign":{"1":39,"2":4,"3":3,"4":0,"5":0},"promo":{"1":6,"2":3,"3":0,"4":0,"5":0},"hire":{"1":65,"2":0,"3":0,"4":0,"5":0}},"Q3":{"begin":{"1":491,"2":59,"3":50,"4":25,"5":20},"resign":{"1":34,"2":4,"3":2,"4":0,"5":0},"promo":{"1":5,"2":0,"3":0,"4":0,"5":0},"hire":{"1":42,"2":0,"3":0,"4":0,"5":0}},"Q4":{"begin":{"1":494,"2":60,"3":48,"4":25,"5":20},"resign":{"1":35,"2":5,"3":3,"4":2,"5":0},"promo":{"1":6,"2":5,"3":2,"4":0,"5":0},"hire":{"1":52,"2":5,"3":2,"4":0,"5":0}}},"productivity_path":{}},"year2":{"kind":"mngt502-hcroi-starter","version":2,"window":"year2","quarters":["Q5","Q6","Q7","Q8"],"firm":"Hire Power","benefits_rate":0.2184,"productivity":222,"wages":{"1":17.18,"2":10335,"3":12379,"4":14398,"5":18515},"ytd":{"pay_benefits":56765160.1428,"contingent":0,"absence_days":2364,"accident_rate":273.5,"revenue":98971200,"expenses":99131700.8166956,"hccf":30615346,"hcroi":1},"ops":{"fte_last":574,"hcroi_last":0.95,"morale_last":88,"quality_last":77,"turnover_last":0.0679,"ulc_last":61.13,"absence_days_last":217},"budget_ytd":{"staffing":183760,"wages":409150,"training":719000,"other":262388},"staffing":{"Q5":{"begin":{"1":505,"2":61,"3":50,"4":25,"5":20},"resign":{"1":33,"2":4,"3":3,"4":0,"5":1},"promo":{"1":7,"2":4,"3":1,"4":1,"5":0},"hire":{"1":11,"2":0,"3":0,"4":0,"5":0}},"Q6":{"begin":{"1":476,"2":60,"3":50,"4":25,"5":20},"resign":{"1":38,"2":3,"3":3,"4":0,"5":0},"promo":{"1":3,"2":3,"3":0,"4":0,"5":0},"hire":{"1":23,"2":0,"3":0,"4":0,"5":0}},"Q7":{"begin":{"1":458,"2":57,"3":50,"4":25,"5":20},"resign":{"1":36,"2":3,"3":2,"4":0,"5":0},"promo":{"1":1,"2":2,"3":0,"4":0,"5":0},"hire":{"1":4,"2":0,"3":0,"4":0,"5":0}},"Q8":{"begin":{"1":430,"2":53,"3":50,"4":25,"5":20},"resign":{"1":31,"2":4,"3":2,"4":1,"5":0},"promo":{"1":6,"2":3,"3":1,"4":0,"5":0},"hire":{"1":16,"2":0,"3":0,"4":0,"5":0}}},"productivity_path":{}}},"IronLeaf Manufacturing Co.":{"year1":{"kind":"mngt502-hcroi-starter","version":2,"window":"year1","quarters":["Q1","Q2","Q3","Q4"],"firm":"IronLeaf Manufacturing Co.","benefits_rate":0.259,"productivity":223,"wages":{"1":17.05,"2":10600,"3":13065,"4":14939,"5":18600},"ytd":{"pay_benefits":57634552.7619,"contingent":0,"absence_days":2218,"accident_rate":248.625,"revenue":98568000,"expenses":99492632.09254703,"hccf":31736138,"hcroi":0.98},"ops":{"fte_last":649,"hcroi_last":1.03,"morale_last":84,"quality_last":73,"turnover_last":0.0616,"ulc_last":55.95,"absence_days_last":268},"budget_ytd":{"staffing":409600,"wages":289770,"training":469800,"other":230000},"staffing":{"Q1":{"begin":{"1":500,"2":60,"3":50,"4":25,"5":20},"resign":{"1":50,"2":6,"3":5,"4":2,"5":1},"promo":{"1":10,"2":8,"3":3,"4":1,"5":0},"hire":{"1":58,"2":4,"3":0,"4":0,"5":0}},"Q2":{"begin":{"1":498,"2":60,"3":50,"4":25,"5":20},"resign":{"1":42,"2":5,"3":4,"4":1,"5":0},"promo":{"1":10,"2":5,"3":1,"4":0,"5":0},"hire":{"1":52,"2":0,"3":0,"4":0,"5":0}},"Q3":{"begin":{"1":498,"2":60,"3":50,"4":25,"5":20},"resign":{"1":33,"2":4,"3":2,"4":0,"5":0},"promo":{"1":5,"2":2,"3":0,"4":0,"5":0},"hire":{"1":27,"2":0,"3":0,"4":0,"5":0}},"Q4":{"begin":{"1":487,"2":59,"3":50,"4":25,"5":20},"resign":{"1":31,"2":5,"3":2,"4":2,"5":0},"promo":{"1":9,"2":3,"3":1,"4":0,"5":0},"hire":{"1":47,"2":0,"3":0,"4":1,"5":0}}},"productivity_path":{}},"year2":{"kind":"mngt502-hcroi-starter","version":2,"window":"year2","quarters":["Q5","Q6","Q7","Q8"],"firm":"IronLeaf Manufacturing Co.","benefits_rate":0.259,"productivity":235,"wages":{"1":17.05,"2":10600,"3":13065,"4":14939,"5":18600},"ytd":{"pay_benefits":57634552.7619,"contingent":0,"absence_days":2218,"accident_rate":248.625,"revenue":98568000,"expenses":99492632.09254703,"hccf":30793494,"hcroi":0.99},"ops":{"fte_last":548,"hcroi_last":0.96,"morale_last":89,"quality_last":75,"turnover_last":0.0602,"ulc_last":61.35,"absence_days_last":220},"budget_ytd":{"staffing":142700,"wages":558687,"training":552200,"other":300703},"staffing":{"Q5":{"begin":{"1":494,"2":60,"3":50,"4":25,"5":20},"resign":{"1":31,"2":4,"3":2,"4":0,"5":1},"promo":{"1":6,"2":3,"3":1,"4":1,"5":0},"hire":{"1":31,"2":0,"3":0,"4":0,"5":0}},"Q6":{"begin":{"1":488,"2":59,"3":50,"4":25,"5":20},"resign":{"1":29,"2":3,"3":0,"4":0,"5":0},"promo":{"1":0,"2":0,"3":0,"4":0,"5":0},"hire":{"1":10,"2":1,"3":0,"4":0,"5":0}},"Q7":{"begin":{"1":449,"2":55,"3":50,"4":25,"5":20},"resign":{"1":27,"2":4,"3":1,"4":0,"5":0},"promo":{"1":2,"2":1,"3":0,"4":0,"5":0},"hire":{"1":9,"2":0,"3":0,"4":0,"5":0}},"Q8":{"begin":{"1":429,"2":52,"3":50,"4":25,"5":20},"resign":{"1":25,"2":5,"3":2,"4":1,"5":0},"promo":{"1":0,"2":0,"3":0,"4":0,"5":0},"hire":{"1":0,"2":2,"3":2,"4":1,"5":0}}},"productivity_path":{}}},"Tri-Hard Manufacturing":{"year1":{"kind":"mngt502-hcroi-starter","version":2,"window":"year1","quarters":["Q1","Q2","Q3","Q4"],"firm":"Tri-Hard Manufacturing","benefits_rate":0.2632,"productivity":218,"wages":{"1":16.24,"2":10320,"3":12430,"4":14320,"5":18600},"ytd":{"pay_benefits":58069380.09645,"contingent":0,"absence_days":2321,"accident_rate":260,"revenue":98971200,"expenses":100242242.79489836,"hccf":32053623,"hcroi":0.97},"ops":{"fte_last":663,"hcroi_last":1.02,"morale_last":77,"quality_last":68,"turnover_last":0.0643,"ulc_last":56.96,"absence_days_last":316},"budget_ytd":{"staffing":404000,"wages":301400,"training":498100,"other":196500},"staffing":{"Q1":{"begin":{"1":500,"2":60,"3":50,"4":25,"5":20},"resign":{"1":50,"2":6,"3":5,"4":2,"5":1},"promo":{"1":14,"2":8,"3":3,"4":1,"5":0},"hire":{"1":64,"2":0,"3":0,"4":0,"5":0}},"Q2":{"begin":{"1":500,"2":60,"3":50,"4":25,"5":20},"resign":{"1":36,"2":5,"3":4,"4":1,"5":1},"promo":{"1":10,"2":6,"3":2,"4":1,"5":0},"hire":{"1":32,"2":0,"3":0,"4":0,"5":0}},"Q3":{"begin":{"1":486,"2":59,"3":50,"4":25,"5":20},"resign":{"1":33,"2":4,"3":2,"4":0,"5":0},"promo":{"1":8,"2":2,"3":0,"4":0,"5":0},"hire":{"1":58,"2":0,"3":0,"4":0,"5":0}},"Q4":{"begin":{"1":503,"2":61,"3":50,"4":25,"5":20},"resign":{"1":32,"2":6,"3":2,"4":2,"5":0},"promo":{"1":10,"2":4,"3":2,"4":0,"5":0},"hire":{"1":39,"2":0,"3":0,"4":0,"5":0}}},"productivity_path":{}},"year2":{"kind":"mngt502-hcroi-starter","version":2,"window":"year2","quarters":["Q5","Q6","Q7","Q8"],"firm":"Tri-Hard Manufacturing","benefits_rate":0.2632,"productivity":231,"wages":{"1":16.24,"2":10320,"3":12430,"4":14320,"5":18600},"ytd":{"pay_benefits":58069380.09645,"contingent":0,"absence_days":2321,"accident_rate":260,"revenue":98971200,"expenses":100242242.79489836,"hccf":31074421,"hcroi":0.99},"ops":{"fte_last":552,"hcroi_last":0.98,"morale_last":81,"quality_last":74,"turnover_last":0.0725,"ulc_last":59.71,"absence_days_last":158},"budget_ytd":{"staffing":149860,"wages":334463,"training":822500,"other":292955},"staffing":{"Q5":{"begin":{"1":503,"2":61,"3":50,"4":25,"5":20},"resign":{"1":32,"2":4,"3":2,"4":0,"5":1},"promo":{"1":6,"2":3,"3":1,"4":1,"5":0},"hire":{"1":27,"2":0,"3":0,"4":0,"5":0}},"Q6":{"begin":{"1":496,"2":60,"3":50,"4":25,"5":20},"resign":{"1":31,"2":5,"3":2,"4":1,"5":0},"promo":{"1":8,"2":3,"3":1,"4":0,"5":0},"hire":{"1":2,"2":0,"3":0,"4":0,"5":0}},"Q7":{"begin":{"1":463,"2":60,"3":50,"4":25,"5":20},"resign":{"1":29,"2":4,"3":0,"4":0,"5":0},"promo":{"1":4,"2":0,"3":0,"4":0,"5":0},"hire":{"1":26,"2":0,"3":0,"4":0,"5":0}},"Q8":{"begin":{"1":456,"2":60,"3":50,"4":25,"5":20},"resign":{"1":31,"2":6,"3":1,"4":2,"5":0},"promo":{"1":0,"2":3,"3":2,"4":0,"5":0},"hire":{"1":17,"2":2,"3":0,"4":0,"5":0}}},"productivity_path":{}}}};
 
   var wages = Object.assign({}, DEFAULT_WAGES);
   var fillingEdits = false;
+  var activeQ = "Q9";
+  var qDecisions = {};
+
+  function emptyDec() {
+    return {
+      locked: false,
+      touched: false,
+      days: "d0",
+      retire: "r0",
+      health: "h1",
+      addons: {},
+      wageBump: 0,
+      mgr: 0,
+      safety: 0,
+      quality: 0,
+      nhpExtra: 0,
+      programs: {}
+    };
+  }
+  function resetDecisions() {
+    qDecisions = {};
+    Y3Q.forEach(function (q) { qDecisions[q] = emptyDec(); });
+    activeQ = "Q9";
+  }
+  resetDecisions();
 
   function el(id) { return document.getElementById(id); }
   function num(id) { var n = parseFloat(el(id).value); return isFinite(n) ? n : 0; }
@@ -475,24 +521,141 @@ RELEVANT FILES:
     return rows;
   }
 
-  function radioPct(name) {
+  function selectedId(name) {
     var n = document.querySelector("input[name='" + name + "']:checked");
-    return n ? parseFloat(n.value) || 0 : 0;
+    return n ? n.getAttribute("data-id") : null;
   }
-  function addonPct() {
-    return ADDONS.reduce(function (s, it) {
-      return s + (el("add_" + it.id) && el("add_" + it.id).checked ? it.pct : 0);
-    }, 0);
+  function setRadio(name, id) {
+    document.querySelectorAll("input[name='" + name + "']").forEach(function (n) {
+      n.checked = n.getAttribute("data-id") === id;
+    });
   }
-  function programCostQ() {
-    return PROGRAMS.reduce(function (s, p) {
-      return s + (el("prog_" + p.id) && el("prog_" + p.id).checked ? p.cost : 0);
-    }, 0);
+  function itemPct(list, id) {
+    var it = list.filter(function (x) { return x.id === id; })[0];
+    return it ? it.pct : 0;
   }
-  function trainSplit(id) {
-    return Math.min(80000, Math.max(0, num(id) / 4));
+  function decBenPct(dec) {
+    if (!dec) return 0;
+    var add = 0;
+    ADDONS.forEach(function (it) { if (dec.addons && dec.addons[it.id]) add += it.pct; });
+    return itemPct(DAYS, dec.days) + itemPct(RETIRE, dec.retire) + itemPct(HEALTH, dec.health) + add;
   }
-  function qIndex(q) { return Y3Q.indexOf(q); }
+  function firstBenQ() {
+    var found = null;
+    Y3Q.forEach(function (q) {
+      if (!found && decBenPct(qDecisions[q]) > 0) found = q;
+    });
+    return found;
+  }
+  function cloneDec(dec) {
+    return JSON.parse(JSON.stringify(dec || emptyDec()));
+  }
+  function saveQuarterFromDom() {
+    var dec = qDecisions[activeQ] || emptyDec();
+    dec.days = selectedId("days") || "d0";
+    dec.retire = selectedId("retire") || "r0";
+    dec.health = selectedId("health") || "h1";
+    dec.addons = {};
+    ADDONS.forEach(function (it) {
+      dec.addons[it.id] = !!(el("add_" + it.id) && el("add_" + it.id).checked);
+    });
+    dec.wageBump = num("wageBump");
+    dec.mgr = num("mgrQ");
+    dec.safety = num("safetyQ");
+    dec.quality = num("qualityQ");
+    dec.nhpExtra = num("nhpExtraQ");
+    dec.programs = {};
+    PROGRAMS.forEach(function (p) {
+      dec.programs[p.id] = !!(el("prog_" + p.id) && el("prog_" + p.id).checked);
+    });
+    qDecisions[activeQ] = dec;
+  }
+  function loadQuarterToDom() {
+    fillingEdits = true;
+    var dec = qDecisions[activeQ] || emptyDec();
+    setRadio("days", dec.days || "d0");
+    setRadio("retire", dec.retire || "r0");
+    setRadio("health", dec.health || "h1");
+    ADDONS.forEach(function (it) {
+      if (el("add_" + it.id)) el("add_" + it.id).checked = !!(dec.addons && dec.addons[it.id]);
+    });
+    if (el("wageBump")) el("wageBump").value = dec.wageBump || 0;
+    if (el("mgrQ")) el("mgrQ").value = dec.mgr || 0;
+    if (el("safetyQ")) el("safetyQ").value = dec.safety || 0;
+    if (el("qualityQ")) el("qualityQ").value = dec.quality || 0;
+    if (el("nhpExtraQ")) el("nhpExtraQ").value = dec.nhpExtra || 0;
+    PROGRAMS.forEach(function (p) {
+      if (el("prog_" + p.id)) el("prog_" + p.id).checked = !!(dec.programs && dec.programs[p.id]);
+    });
+    fillingEdits = false;
+    var locked = !!dec.locked;
+    if (el("qPane")) el("qPane").className = "";
+    if (el("btnLock")) el("btnLock").disabled = false;
+    if (el("btnUnlock")) el("btnUnlock").disabled = !locked;
+    if (el("btnLock")) {
+      var next = Y3Q[Y3Q.indexOf(activeQ) + 1];
+      el("btnLock").textContent = locked
+        ? (next ? ("Keep " + activeQ + " in the ask → " + next) : (activeQ + " is in the Year 3 ask"))
+        : (next ? ("Add " + activeQ + " to the Year 3 ask → " + next) : ("Add " + activeQ + " to the Year 3 ask"));
+    }
+    var start = firstBenQ();
+    if (el("benWhen")) {
+      el("benWhen").textContent = start
+        ? (start === activeQ ? " — increment charges this quarter" : " — already took effect in " + start)
+        : " — no increment yet";
+    }
+  }
+  function renderTabs() {
+    if (!el("qTabs")) return;
+    el("qTabs").innerHTML = Y3Q.map(function (q) {
+      var dec = qDecisions[q] || emptyDec();
+      var cls = "tab" + (q === activeQ ? " on" : "") + (dec.locked ? " locked" : "");
+      return "<button type='button' class='" + cls + "' data-q='" + q + "'>" + q + (dec.locked ? " · in ask" : "") + "</button>";
+    }).join("") + "<button type='button' class='tab' data-go='ask'>Year 3 ask</button>";
+    var lockedN = Y3Q.filter(function (q) { return qDecisions[q] && qDecisions[q].locked; }).length;
+    if (el("qStatus")) {
+      el("qStatus").textContent = lockedN
+        ? (lockedN + " of 4 quarters in the Year 3 ask. Tabs stay editable — the year total is Q9+Q10+Q11+Q12.")
+        : "Nothing in the Year 3 ask yet besides required hiring. Add a quarter when its shop lines should count.";
+    }
+  }
+  function switchQuarter(q) {
+    if (Y3Q.indexOf(q) < 0) return;
+    saveQuarterFromDom();
+    activeQ = q;
+    loadQuarterToDom();
+    renderTabs();
+    recalc(false);
+  }
+  function lockCurrent() {
+    saveQuarterFromDom();
+    var wasLocked = !!(qDecisions[activeQ] && qDecisions[activeQ].locked);
+    qDecisions[activeQ].locked = true;
+    var i = Y3Q.indexOf(activeQ);
+    var next = Y3Q[i + 1];
+    if (!wasLocked && next && qDecisions[next] && !qDecisions[next].locked && !qDecisions[next].touched) {
+      var carry = cloneDec(qDecisions[activeQ]);
+      carry.locked = false;
+      carry.touched = false;
+      carry.wageBump = 0;
+      carry.mgr = 0;
+      carry.safety = 0;
+      carry.quality = 0;
+      carry.nhpExtra = 0;
+      qDecisions[next] = carry;
+    }
+    if (next) activeQ = next;
+    loadQuarterToDom();
+    renderTabs();
+    recalc(false);
+    if (!next && el("ask")) el("ask").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function unlockCurrent() {
+    qDecisions[activeQ].locked = false;
+    loadQuarterToDom();
+    renderTabs();
+    recalc(false);
+  }
 
   function matrixTable(M) {
     var html = "<table><thead><tr><th>From</th><th class='num'>Stay</th><th class='num'>Promote</th><th class='num'>Exit</th></tr></thead><tbody>";
@@ -500,6 +663,72 @@ RELEVANT FILES:
       html += "<tr><td>L" + lv + "</td><td class='num'>" + pct(M[lv].stay) + "</td><td class='num'>" + pct(M[lv].promo) + "</td><td class='num'>" + pct(M[lv].exit) + "</td></tr>";
     });
     return html + "</tbody></table>";
+  }
+
+  var pieView = { staff: "lines", train: "lines", pay: "lines", prog: "lines" };
+  var pieData = null;
+  var Q_COLORS = ["#0f172a", "#334155", "#64748b", "#94a3b8"];
+
+  function pieSvg(slices) {
+    var total = 0;
+    (slices || []).forEach(function (s) { total += Math.max(0, s.value || 0); });
+    if (total <= 0) {
+      return '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42" fill="#e2e8f0"/></svg>';
+    }
+    var positive = slices.filter(function (s) { return (s.value || 0) > 0; });
+    if (positive.length === 1) {
+      return '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42" fill="' + positive[0].color + '"/></svg>';
+    }
+    var acc = 0, r = 42, cx = 50, cy = 50, html = '<svg viewBox="0 0 100 100" aria-hidden="true">';
+    positive.forEach(function (s) {
+      var a0 = acc / total * 2 * Math.PI - Math.PI / 2;
+      acc += s.value;
+      var a1 = acc / total * 2 * Math.PI - Math.PI / 2;
+      var large = (a1 - a0) > Math.PI ? 1 : 0;
+      var x0 = cx + r * Math.cos(a0);
+      var y0 = cy + r * Math.sin(a0);
+      var x1 = cx + r * Math.cos(a1);
+      var y1 = cy + r * Math.sin(a1);
+      html += '<path fill="' + s.color + '" d="M' + cx + "," + cy + " L" + x0.toFixed(2) + "," + y0.toFixed(2) +
+        " A" + r + "," + r + " 0 " + large + " 1 " + x1.toFixed(2) + "," + y1.toFixed(2) + ' Z"/>';
+    });
+    return html + "</svg>";
+  }
+
+  function pieCard(key, title, pack) {
+    var view = pieView[key] || "lines";
+    var list = (pack && pack[view]) || [];
+    var total = 0;
+    list.forEach(function (s) { total += Math.max(0, s.value || 0); });
+    var tog = ["lines", "quarters"].map(function (v) {
+      return "<button type='button' class='" + (view === v ? "on" : "") + "' data-pie='" + key + "' data-view='" + v + "'>" +
+        (v === "lines" ? "By line" : "By quarter") + "</button>";
+    }).join("");
+    var items = list.map(function (s) {
+      if (view === "lines" && !(s.value > 0)) return "";
+      var share = total > 0 ? Math.round(100 * s.value / total) : 0;
+      return "<li><span><i class='swatch' style='background:" + s.color + "'></i>" + s.label +
+        "</span><span>" + money(s.value) + " · " + share + "%</span></li>";
+    }).join("");
+    if (!items) items = "<li><span>No spend in this bucket yet</span><span>$0</span></li>";
+    return "<div class='pie-card'><h3>" + title + "</h3><div class='pie-total'>Year 3 " + money(total) +
+      "</div><div class='pie-tog no-print'>" + tog + "</div><div class='pie-body'>" + pieSvg(list) +
+      "<ul>" + items + "</ul></div></div>";
+  }
+
+  function paintPies() {
+    if (!el("mixBar") || !pieData) return;
+    el("mixBar").innerHTML =
+      pieCard("staff", "Staffing", pieData.staff) +
+      pieCard("train", "Training", pieData.train) +
+      pieCard("pay", "Compensation &amp; benefits", pieData.pay) +
+      pieCard("prog", "Programs", pieData.prog);
+  }
+
+  function qSlices(amounts) {
+    return Y3Q.map(function (q, i) {
+      return { label: q, value: amounts[i] || 0, color: Q_COLORS[i] };
+    });
   }
 
   function radios(name, items, wrapId, defaultId) {
@@ -559,6 +788,122 @@ RELEVANT FILES:
     return JSON.parse(JSON.stringify(data));
   }
 
+  function escRe(s) {
+    return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  function numOf(raw) {
+    if (raw == null || raw === "") return null;
+    var s = String(raw);
+    if (/%/.test(s)) return parseFloat(s.replace(/[^0-9.-]/g, "")) / 100;
+    var n = parseFloat(s.replace(/[^0-9.-]/g, ""));
+    return isNaN(n) ? null : n;
+  }
+
+  function labeledRow(html, label) {
+    var re = new RegExp("<tr><t[dh][^>]*>" + escRe(label) + "</t[dh]>([\\s\\S]*?)</tr>", "i");
+    var m = html.match(re);
+    if (!m) return null;
+    var before = html.slice(0, m.index);
+    var rows = before.match(/<tr>[\s\S]*?<\/tr>/gi) || [];
+    var header = [];
+    for (var i = rows.length - 1; i >= 0; i--) {
+      if (rows[i].indexOf(">Q1<") < 0) continue;
+      var tags = rows[i].match(/<t[dh]/gi) || [];
+      if (!tags[1] || tags[1].toLowerCase() !== "<th") continue;
+      var hre = /<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi;
+      var hm;
+      while ((hm = hre.exec(rows[i]))) header.push(hm[1].replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim());
+      break;
+    }
+    var cells = [];
+    var cre = /<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi;
+    var c;
+    while ((c = cre.exec(m[1]))) cells.push(c[1].replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim());
+    var map = {};
+    header.slice(1).forEach(function (name, i) { map[name] = cells[i]; });
+    return map;
+  }
+
+  function sumQuarters(map, qs) {
+    if (!map) return null;
+    var total = 0, n = 0;
+    qs.forEach(function (q) {
+      var v = numOf(map[q]);
+      if (v == null) return;
+      total += v;
+      n += 1;
+    });
+    return n ? total : null;
+  }
+
+  function cardVal(html, label) {
+    var re = new RegExp("<div class=\"lbl\">" + escRe(label) + "<\\/div>\\s*<div class=\"val\">\\$?([0-9.,]+)", "i");
+    var m = html.match(re);
+    return m ? parseFloat(m[1].replace(/,/g, "")) : null;
+  }
+
+  function trimPath(path, qs) {
+    var out = {};
+    if (!path) return out;
+    qs.forEach(function (q) {
+      if (path[q] != null) out[q] = path[q];
+    });
+    return out;
+  }
+
+  function parseYearRollups(html) {
+    var hcroi = labeledRow(html, "HCROI ($ per $1 HCCF)");
+    var hccf = labeledRow(html, "HCCF");
+    if (!hcroi || !hccf) return null;
+    var fte = labeledRow(html, "FTE");
+    var turn = labeledRow(html, "Turnover");
+    var morale = labeledRow(html, "Morale");
+    var qual = labeledRow(html, "Quality");
+    var prod = labeledRow(html, "Productivity");
+    var ulc = labeledRow(html, "Unit labor cost");
+    var abs = labeledRow(html, "Absenteeism (days)");
+    var staff = labeledRow(html, "Staffing (HR budget)");
+    var wages = labeledRow(html, "Wage increases (charged to HR budget)");
+    var train = labeledRow(html, "Training &amp; development") || labeledRow(html, "Training & development");
+    var other = labeledRow(html, "Other programs / ER");
+    function one(qs, ytdLabel, lastQ) {
+      var ytdH = cardVal(html, ytdLabel);
+      if (ytdH == null) ytdH = numOf(hcroi[lastQ]);
+      return {
+        ytd: { hcroi: ytdH, hccf: sumQuarters(hccf, qs) },
+        ops: {
+          hcroi_last: numOf(hcroi[lastQ]),
+          fte_last: fte ? numOf(fte[lastQ]) : null,
+          morale_last: morale ? numOf(morale[lastQ]) : null,
+          quality_last: qual ? numOf(qual[lastQ]) : null,
+          turnover_last: turn ? numOf(turn[lastQ]) : null,
+          ulc_last: ulc ? numOf(ulc[lastQ]) : null,
+          absence_days_last: abs ? numOf(abs[lastQ]) : null
+        },
+        budget_ytd: {
+          staffing: staff ? sumQuarters(staff, qs) : null,
+          wages: wages ? sumQuarters(wages, qs) : null,
+          training: train ? sumQuarters(train, qs) : null,
+          other: other ? sumQuarters(other, qs) : null
+        },
+        productivity: prod ? numOf(prod[lastQ]) : null
+      };
+    }
+    return {
+      year1: one(Y1Q, "Year 1 YTD HCROI", "Q4"),
+      year2: one(Y2Q, "Year 2 YTD HCROI", "Q8")
+    };
+  }
+
+  function applyRollup(pack, roll) {
+    if (!roll) return;
+    if (roll.ytd) pack.ytd = Object.assign({}, pack.ytd || {}, roll.ytd);
+    if (roll.ops) pack.ops = Object.assign({}, pack.ops || {}, roll.ops);
+    if (roll.budget_ytd) pack.budget_ytd = roll.budget_ytd;
+    if (roll.productivity != null) pack.productivity = roll.productivity;
+  }
+
   function splitCombined(data) {
     var staffing = data.staffing || {};
     var y1s = {}, y2s = {};
@@ -570,6 +915,15 @@ RELEVANT FILES:
     var y2 = clonePack(data);
     y1.window = "year1"; y1.quarters = Y1Q.slice(); y1.staffing = y1s;
     y2.window = "year2"; y2.quarters = Y2Q.slice(); y2.staffing = y2s;
+    y1.productivity_path = trimPath(data.productivity_path, Y1Q);
+    y2.productivity_path = trimPath(data.productivity_path, Y2Q);
+    var rolls = data.year_rollups;
+    if (rolls) {
+      applyRollup(y1, rolls.year1);
+      applyRollup(y2, rolls.year2);
+    }
+    delete y1.year_rollups;
+    delete y2.year_rollups;
     return { year1: y1, year2: y2 };
   }
 
@@ -593,6 +947,10 @@ RELEVANT FILES:
     if (m) {
       var j2 = JSON.parse(m[1].trim());
       if (!j2 || j2.kind !== "mngt502-hcroi-starter") throw new Error("Starter pack in this HTML is not recognized.");
+      if (classifyWindow(j2) === "both") {
+        var rolls = parseYearRollups(trimmed);
+        if (rolls) j2.year_rollups = rolls;
+      }
       return j2;
     }
     return parseLegacyReport(trimmed);
@@ -835,15 +1193,29 @@ RELEVANT FILES:
     packs.year2 = null;
     if (el("firmPick")) el("firmPick").value = "";
     ["goalStaff", "goalPay", "goalTrain", "goalOther", "talentPitch"].forEach(function (id) { el(id).value = ""; });
-    ["mgrYear", "safetyYear", "qualityYear", "nhpExtraYear", "wageBump"].forEach(function (id) { el(id).value = 0; });
-    PROGRAMS.forEach(function (p) { if (el("prog_" + p.id)) el("prog_" + p.id).checked = false; });
-    ADDONS.forEach(function (it) { if (el("add_" + it.id)) el("add_" + it.id).checked = false; });
+    resetDecisions();
+    loadQuarterToDom();
+    renderTabs();
     renderStory();
     el("starterStatus").textContent = "Cleared. Nothing was stored.";
     recalc(true);
   }
 
+  function paintQuarterKpis(qAsk, capQ) {
+    if (!el("qKpis")) return;
+    var dec = qDecisions[activeQ] || emptyDec();
+    var over = qAsk - capQ;
+    el("qKpis").innerHTML = [
+      [activeQ + " ask", money(qAsk)],
+      ["Vs quarterly ceiling", qAsk > capQ ? money(over) + " over" : "OK"],
+      ["This tab", dec.locked ? "In the Year 3 ask — still editable" : "Draft — add to the Year 3 ask when ready"]
+    ].map(function (k) {
+      return "<div class='kpi'><div class='lbl'>" + k[0] + "</div><div class='val'>" + k[1] + "</div></div>";
+    }).join("");
+  }
+
   function recalc(resetEdits) {
+    if (!fillingEdits) saveQuarterFromDom();
     var tpmPack = packHasStaffing(packs.year2) ? packs.year2 : packs.year1;
     var base = tpmFromPack(tpmPack);
     if (!base) {
@@ -854,6 +1226,8 @@ RELEVANT FILES:
       el("budgetTable").innerHTML = "";
       el("mixBar").innerHTML = "";
       el("constraintNotes").innerHTML = "";
+      if (el("qKpis")) el("qKpis").innerHTML = "";
+      renderTabs();
       return;
     }
     if (resetEdits) fillEdits(base);
@@ -890,16 +1264,7 @@ RELEVANT FILES:
       return "<div class='kpi'><div class='lbl'>" + k[0] + "</div><div class='val'>" + k[1] + "</div></div>";
     }).join("");
 
-    var benStart = el("benStart").value;
-    var wageQ = el("wageBumpQ").value;
-    var benPct = radioPct("days") + radioPct("retire") + radioPct("health") + addonPct();
-    var progQ = programCostQ();
-    var extras = {
-      mgr: trainSplit("mgrYear"),
-      safety: trainSplit("safetyYear"),
-      quality: trainSplit("qualityYear"),
-      nhpExtra: trainSplit("nhpExtraYear")
-    };
+    var benStart = firstBenQ();
     var totals = [0, 0, 0, 0];
     var cat = { staff: 0, train: 0, pay: 0, prog: 0 };
 
@@ -914,32 +1279,59 @@ RELEVANT FILES:
     bhtml += "<th class='num'>Year 3</th></tr></thead><tbody>";
     var hireAmt = rows.map(function (r) { cat.staff += r.hireCost; return r.hireCost; });
     bhtml += add("Staffing (hires)", "Charged the quarter you hire", hireAmt);
-    var nhpAmt = rows.map(function (r, i) {
-      var v = r.trainFloor + extras.nhpExtra;
+    var staffByLv = { "5": 0, "4": 0, "3": 0, "2": 0, "1": 0 };
+    rows.forEach(function (r) {
+      LEVELS.forEach(function (lv) { staffByLv[lv] += (r.hires[lv] || 0) * HIRE_COST[lv]; });
+    });
+    var nhpAmt = rows.map(function (r) {
+      var extra = Math.max(0, (qDecisions[r.q] || emptyDec()).nhpExtra || 0);
+      var v = r.trainFloor + extra;
       if (v > 80000) v = 80000;
       cat.train += v;
       return v;
     });
-    bhtml += add("NH/P training (floor + extra)", "Cannot go below the hire/promote floor; cap $80k", nhpAmt);
+    bhtml += add("NH/P training (floor + extra)", "Cannot go below the hire/promote floor; cap $80k / quarter", nhpAmt);
+    var trainByLine = { nhp: 0, mgr: 0, safety: 0, quality: 0 };
+    nhpAmt.forEach(function (v) { trainByLine.nhp += v; });
+    var mgrAmt = [], safetyAmt = [], qualityAmt = [];
     ["mgr", "safety", "quality"].forEach(function (k) {
       var lab = { mgr: "Manager training", safety: "Safety training", quality: "Quality training" }[k];
-      var amt = Y3Q.map(function () { cat.train += extras[k]; return extras[k]; });
-      bhtml += add(lab, "Year total split evenly; cap $80k / quarter", amt);
+      var amt = rows.map(function (r) {
+        var v = Math.min(80000, Math.max(0, (qDecisions[r.q] || emptyDec())[k] || 0));
+        cat.train += v;
+        trainByLine[k] += v;
+        return v;
+      });
+      if (k === "mgr") mgrAmt = amt;
+      if (k === "safety") safetyAmt = amt;
+      if (k === "quality") qualityAmt = amt;
+      bhtml += add(lab, "Charged the quarter you spend; cap $80k", amt);
     });
-    var benAmt = Y3Q.map(function (q, i) {
-      var v = (q === benStart) ? rows[i].payroll * benPct : 0;
+    var benAmt = rows.map(function (r) {
+      var v = (benStart && r.q === benStart) ? r.payroll * decBenPct(qDecisions[r.q] || emptyDec()) : 0;
       cat.pay += v;
       return v;
     });
-    bhtml += add("Benefits increment", "Once, in " + benStart + " (then ULC)", benAmt);
-    var wageAmt = Y3Q.map(function (q) {
-      var v = (q === wageQ) ? num("wageBump") : 0;
+    bhtml += add("Benefits increment", benStart ? ("Once, in " + benStart + " (then ULC)") : "No increment yet", benAmt);
+    var wageAmt = rows.map(function (r) {
+      var v = Math.max(0, (qDecisions[r.q] || emptyDec()).wageBump || 0);
       cat.pay += v;
       return v;
     });
-    bhtml += add("Wage-increase charge", "Once, in " + wageQ, wageAmt);
-    var progAmt = Y3Q.map(function () { cat.prog += progQ; return progQ; });
-    bhtml += add("Programs", "Each quarter a checked program is on", progAmt);
+    bhtml += add("Wage-increase charge", "Charged only in the quarter you enter it", wageAmt);
+    var progById = {};
+    PROGRAMS.forEach(function (p) { progById[p.id] = 0; });
+    var progAmt = rows.map(function (r) {
+      var dec = qDecisions[r.q] || emptyDec();
+      var v = PROGRAMS.reduce(function (s, p) {
+        var on = dec.programs && dec.programs[p.id] ? p.cost : 0;
+        progById[p.id] += on;
+        return s + on;
+      }, 0);
+      cat.prog += v;
+      return v;
+    });
+    bhtml += add("Programs", "Each quarter a program is on", progAmt);
     bhtml += "<tr><th>Quarterly ask</th>";
     var yTot = 0;
     totals.forEach(function (v) { yTot += v; bhtml += "<td class='num'>" + money(v) + "</td>"; });
@@ -959,7 +1351,7 @@ RELEVANT FILES:
 
     var room = Math.max(0, capY - yTot);
     el("budgetKpis").innerHTML = [
-      ["Year 3 ask", money(yTot)],
+      ["Year 3 ask (Q9–Q12)", money(yTot)],
       ["Staffing", money(cat.staff)],
       ["Pay & benefits", money(cat.pay)],
       ["Training", money(cat.train)],
@@ -969,17 +1361,43 @@ RELEVANT FILES:
       return "<div class='kpi'><div class='lbl'>" + k[0] + "</div><div class='val'>" + k[1] + "</div></div>";
     }).join("");
 
-    var mixTot = cat.staff + cat.pay + cat.train + cat.prog || 1;
-    el("mixBar").innerHTML = "<div class='bars'>" +
-      "<span style='width:" + (100 * cat.staff / mixTot) + "%;background:#1e293b'></span>" +
-      "<span style='width:" + (100 * cat.pay / mixTot) + "%;background:#AE132A'></span>" +
-      "<span style='width:" + (100 * cat.train / mixTot) + "%;background:#075985'></span>" +
-      "<span style='width:" + (100 * cat.prog / mixTot) + "%;background:#047857'></span>" +
-      "</div><div class='legend'>" +
-      "<span><i class='swatch' style='background:#1e293b'></i>Staffing " + money(cat.staff) + "</span>" +
-      "<span><i class='swatch' style='background:#AE132A'></i>Pay &amp; benefits " + money(cat.pay) + "</span>" +
-      "<span><i class='swatch' style='background:#075985'></i>Training " + money(cat.train) + "</span>" +
-      "<span><i class='swatch' style='background:#047857'></i>Programs " + money(cat.prog) + "</span></div>";
+    var lvColors = ["#0f172a", "#1e293b", "#334155", "#475569", "#94a3b8"];
+    var trainQ = Y3Q.map(function (q, i) {
+      return (nhpAmt[i] || 0) + (mgrAmt[i] || 0) + (safetyAmt[i] || 0) + (qualityAmt[i] || 0);
+    });
+    var payQ = Y3Q.map(function (q, i) { return (benAmt[i] || 0) + (wageAmt[i] || 0); });
+    var progColors = ["#064e3b", "#047857", "#059669", "#10b981", "#34d399", "#6ee7b7"];
+    pieData = {
+      staff: {
+        lines: LEVELS.map(function (lv, i) {
+          return { label: "L" + lv + " hires", value: staffByLv[lv], color: lvColors[i] };
+        }),
+        quarters: qSlices(hireAmt)
+      },
+      train: {
+        lines: [
+          { label: "NH/P (floor + extra)", value: trainByLine.nhp, color: "#0c4a6e" },
+          { label: "Manager", value: trainByLine.mgr, color: "#075985" },
+          { label: "Safety", value: trainByLine.safety, color: "#0284c7" },
+          { label: "Quality", value: trainByLine.quality, color: "#7dd3fc" }
+        ],
+        quarters: qSlices(trainQ)
+      },
+      pay: {
+        lines: [
+          { label: "Benefits increment", value: cat.pay - wageAmt.reduce(function (s, v) { return s + v; }, 0), color: "#AE132A" },
+          { label: "Wage-increase charge", value: wageAmt.reduce(function (s, v) { return s + v; }, 0), color: "#d97706" }
+        ],
+        quarters: qSlices(payQ)
+      },
+      prog: {
+        lines: PROGRAMS.map(function (p, i) {
+          return { label: p.label, value: progById[p.id] || 0, color: progColors[i] };
+        }),
+        quarters: qSlices(progAmt)
+      }
+    };
+    paintPies();
 
     var anyQ = overPts.some(function (p) { return p > 0; });
     var ptsY = overPts.reduce(function (s, p) { return s + p; }, 0);
@@ -988,6 +1406,10 @@ RELEVANT FILES:
       : (yTot < capY
         ? "<p class='note'>Ask is " + money(room) + " under the annual ceiling. That is expected in zero-based budgeting — you are not filling the cap.</p>"
         : "");
+
+    var qi = Y3Q.indexOf(activeQ);
+    paintQuarterKpis(qi >= 0 ? totals[qi] : 0, capQ);
+    renderTabs();
   }
 
   function downloadJson() {
@@ -1004,7 +1426,8 @@ RELEVANT FILES:
       },
       demand: { Q9: num("demQ9"), Q10: num("demQ10"), Q11: num("demQ11"), Q12: num("demQ12") },
       ceilings: { quarterly: num("qBudgetCap"), annual: num("yBudgetCap") },
-      talentMarketplace: el("talentPitch").value
+      talentMarketplace: el("talentPitch").value,
+      qDecisions: qDecisions
     }, null, 2)], { type: "application/json" });
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -1025,10 +1448,13 @@ RELEVANT FILES:
 
   buildStatic();
   fillFirmSelect();
+  loadQuarterToDom();
+  renderTabs();
   document.querySelectorAll("input, select, textarea").forEach(function (n) {
     function onChange() {
       if (fillingEdits) return;
       if (n.type === "file") return;
+      if (el("qPane") && el("qPane").contains(n) && qDecisions[activeQ]) qDecisions[activeQ].touched = true;
       var isTpm = n.id && n.id.indexOf("edit") === 0;
       recalc(false);
       if (isTpm) recalc(false);
@@ -1036,6 +1462,24 @@ RELEVANT FILES:
     n.addEventListener("input", onChange);
     n.addEventListener("change", onChange);
   });
+  el("qTabs").addEventListener("click", function (e) {
+    var go = e.target.closest("[data-go]");
+    if (go && go.getAttribute("data-go") === "ask" && el("ask")) {
+      saveQuarterFromDom();
+      el("ask").scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    var b = e.target.closest("button[data-q]");
+    if (b) switchQuarter(b.getAttribute("data-q"));
+  });
+  el("mixBar").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-pie]");
+    if (!b) return;
+    pieView[b.getAttribute("data-pie")] = b.getAttribute("data-view");
+    paintPies();
+  });
+  el("btnLock").addEventListener("click", lockCurrent);
+  el("btnUnlock").addEventListener("click", unlockCurrent);
   el("btnDemo").addEventListener("click", loadDemo);
   el("btnClear").addEventListener("click", clearAll);
   el("btnFirm").addEventListener("click", function () {
@@ -1050,6 +1494,8 @@ RELEVANT FILES:
   el("btnJson").addEventListener("click", downloadJson);
   el("btnHpws").addEventListener("click", function () {
     ["part", "griev", "orient", "pa"].forEach(function (id) { el("prog_" + id).checked = true; });
+    if (qDecisions[activeQ]) qDecisions[activeQ].touched = true;
+    saveQuarterFromDom();
     recalc(false);
   });
   el("starterFiles").addEventListener("change", function (ev) {
